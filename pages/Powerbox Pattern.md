@@ -1,0 +1,5 @@
+- **The powerbox is a composition of objects that grants, revokes, negotiates, and in general manages, the authorities granted to another object.**
+- History:
+	- The powerbox pattern was invented during the development of CapDesk and the DarpaBrowser; the experiences with building both a good (secure and flexible) powerbox and a poor (rigid yet breachable) powerbox led to a better understanding of the concept. - [[How Emily Tamed the Caml]]
+- /The object to which a powerbox is assigned lies on the far side of a trust boundary.
+-
