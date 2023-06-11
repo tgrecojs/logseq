@@ -1,0 +1,13 @@
+- One approach for securing an application is to enforce POLA at the application level, but these efforts can be thwarted by adversaries without much sophistication.
+- Correct implementations of POLA require continuous implementation of POLA at finer granularities all the way down to the individual software object.
+- Finer granularities makes it infinitely more difficult to overtake a system.
+	- Successful attempts to breach a system with malicious code met with powerless objects incapable to carrying out the mission.
+	- Successful attempts to carry out an attack require a series of coordinated attacks taking place across many individual code modules
+- Scenario:
+	- Malcious JPEG in an Email
+		- A JPEG is encoded with malware intended to gain access to the address book of users, as well as the ability to send emails on behalf of the individual who opened the email.
+		- It achieves in gaining these powers by targeting the e-mail client's rendering engine. Even though the rendering engine doesn't have the explicit ability to send an email, or interact with the user's address book, **the lack of confinement between modules acts as a pathway to attackers via ambient authority.**
+		- The JPEG image, when read by the rendering engine, will achieve a full breach of the renderer. Because the renderer, as a part of the application, has all the application's authority, the attacker acquires both of the authorities needed to replicate itself.
+		- Confinement at the application level is insufficient.
+-
+	-

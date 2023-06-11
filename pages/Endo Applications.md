@@ -4,7 +4,7 @@
 - How Emily Tamed the Caml
 	- Research paper by Mark Miller and Mark Steigler focused around "Emily", an OCaml subset that made the language comply with POLA best practices.
 	- *Emily is a subset of OCaml that uses a design rule verifier to enforce object-capability principles. It demonstrates how memory-safe languages can be transformed into breach-resistant object-capability systems with little loss of either expressivity or performance.*
-	- [[Why Application Level Confinement is Insufficient]]
+	- [[Application-Level Confinement is Insufficient]]
 	-
 	- Takes an approach that is very similar to the one taken by Endo.
 		- Jessie.js disallows the use of `Array.prototype.push.

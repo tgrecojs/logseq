@@ -1,6 +1,0 @@
-- One approach for securing an application is to enforce POLA at the application level, however this can quickly be thwarted by adversaries without much sophistication.
-- Why
-- Correct implementations of POLA require continuous implementation of POLA at finer granularities all the way down to the individual software object.
-- The JPEG image, when read by the rendering engine (see Figure 2), will achieve a full breach of the renderer. Because the renderer, as a part of the application, has all the application's authority, the attacker acquires both of the authorities needed to replicate itself. Confinement at the application level is insufficient.
--
-	-
