@@ -1,0 +1,9 @@
+- The Endo Daemon provides users with a secure execution environment for creating Endo applications.
+- How Emily Tamed the Caml
+	- Research on making OCaml ocap-compliant.
+	- Takes an approach that is very similar to the one taken by Endo.
+		- Jessie.js disallows the use of `Array.prototype.push.
+		- In Emily, "hidden-but-present memory-violating functions (such as `Array.unsafe_set`) are disallowed"
+	- "Providing the reference to an object must grant the permission to use the object."
+		- It is not enough to just provide an application with a reference to `fs.readFile`. **In order to use `fs.readFile`, the application must hold the powers necessary to work with `fs`**
+-
