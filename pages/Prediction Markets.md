@@ -1,5 +1,5 @@
 - Need to lonk to the
-- [[Studies]]
+- [[Prediction Markets Studies]]
 -
 -
 -
