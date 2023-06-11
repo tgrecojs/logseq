@@ -1,0 +1,7 @@
+- Research paper by Mark Miller and Mark Steigler focused around "Emily", an OCaml subset that made the language comply with POLA best practices.
+- *Emily is a subset of OCaml that uses a design rule verifier to enforce object-capability principles. It demonstrates how memory-safe languages can be transformed into breach-resistant object-capability systems with little loss of either expressivity or performance.*
+- Takes an approach that is very similar to the one taken by Endo.
+- Jessie.js disallows the use of `Array.prototype.push.
+- In Emily, "hidden-but-present memory-violating functions (such as `Array.unsafe_set`) are disallowed"
+- "Providing the reference to an object must grant the permission to use the object."
+- It is not enough to just provide an application with a reference to `fs.readFile`. **In order to use `fs.readFile`, the application must hold the powers necessary to work with `fs`.**
