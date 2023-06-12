@@ -1,4 +1,9 @@
-- The Endo Daemon provides users with a secure execution environment for creating Endo applications.
+- daemon
+- `@endo/daemon`
+	- The Endo Daemon provides users with a secure execution environment for creating Endo applications.
+	- A tool for bootstrapping systems.
+-
+-
 - `@endo/daemon`'s `main` module
 	- **hands out to each module just enough authority to do the job needed by that particular module.**
 - [[How Emily Tamed the Caml]]
