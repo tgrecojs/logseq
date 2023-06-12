@@ -1,0 +1,24 @@
+- the `main` function seems is where “all of it” starts.
+	- Endo implements the powerbox pattern to enforce POLA.
+	- In the powerbox pattern... the “main” module of the application (where execution begins) hands out to each module just enough authority to do the job needed by that particular module. - [[How Emily Tamed the Caml]]
+	- There are 2 `main` modules in Endo:
+		- `src/daemon.js`
+			- the top-level `main` module.
+			- it's through this module that `worker` objects that hold power
+		- `worker`
+			- the `main` module for
+	- Endo
+- where does `main0` come from?
+- Regarding the locator...
+- what is the difference between:
+- statePath
+	- ephemeralStatePath
+	- sockPath
+	- cachePath
+- after coming across the term "noncelocator" a number of times while reading erights.org, I'm wondering what is the locator within the context of SwingSet?
+- What is the significance of `child.on` within the endo daemon's `start` function? What exactly occurs when a “message” event occurs?
+- What facets does `@endo/daemon` make accessible upon calling the `start` function?
+- Confusion around the `bootstrap` object.
+- `makeMessagesCapTP`
+- This function takes a `bootstrap` object as an argument, which is then passed into `makeCapTP` in exchange for a few values, one of which being `getBootstrap`.
+	- I'm trying to figure out how imports/exports of bootstrap objects work.

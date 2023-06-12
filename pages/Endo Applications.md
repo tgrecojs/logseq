@@ -1,6 +1,9 @@
-- daemon
+-
 - `@endo/daemon`
-	- The Endo Daemon provides users with a secure execution environment for creating Endo applications.
+	- `main`
+	- The Endo Daemon allows us to bootstrap systems designed to enforce POLA at the deepest level of granularity.
+	-
+	- execution environment for creating Endo applications.
 	- A tool for bootstrapping systems.
 -
 -
