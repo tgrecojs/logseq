@@ -1,0 +1,14 @@
+- How JavaScript's Prototype chain works:
+	- When a new object is created, it has the hidden field `__proto__`.
+		- `__proto__`
+			- points to the object that an object *inherits from*
+- **Proof by Induction**
+	- Proof by induction is a mathematical technique used to prove that a statement is true for all natural numbers.
+	- The proof involves two steps:
+		- a base case, which shows that the statement is true for the smallest possible value of the natural number
+		- an inductive step, which shows that if the statement is true for a particular natural number, then it must also be true for the next natural number.
+	- By combining these two steps, we can conclude that the statement is true for all natural numbers.
+-
+-
+- tags:: [recursion, javascript, prototypes, natural numbers]
+-

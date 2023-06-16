@@ -1,0 +1,9 @@
+- As odd as it may sound, the functional programming paradigm has played quite a significant role in my life. It's been a recurring character since January of 2017.
+-
+- has had a sigfnicant impact
+-
+-
+- a leading role in
+- the main characters
+- played a fairly significant role
+- been a fairly signficant
