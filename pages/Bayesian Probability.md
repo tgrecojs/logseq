@@ -1,0 +1,6 @@
+- [[Bayes Thereom]]
+- [[How to Systematically Approach Truth - Video]]
+- tags: [[Probability and Statistics, decision making, prediction markets]]
+-
+-
+-

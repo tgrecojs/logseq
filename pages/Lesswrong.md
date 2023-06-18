@@ -1,0 +1,9 @@
+- # FP Sequence
+	- ## Functional Programming and Technilogical Progression
+	- Last decade saw interest in the functional programming paradigm increase quite significantly among software developers. Taking a look at Google's Trends tool corroborates this statement.
+	-
+	-
+	- My personal experience related to the development of web applications. I entered into this sector in the early 2010s. Web applications were continuing to get increasingly complex
+	-
+	- @@html: <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3349_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/02ykw","geo":"","time":"2015-05-18 2023-06-18"}],"category":0,"property":""}, {"exploreQuery":"date=2015-05-18%202023-06-18&q=%2Fm%2F02ykw&hl=en","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>@@
+	- @@html: <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3349_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/02ykw","geo":"","time":"2015-05-18 2023-06-18"}],"category":0,"property":""}, {"exploreQuery":"date=2015-05-18%202023-06-18&q=%2Fm%2F02ykw&hl=en","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>@@

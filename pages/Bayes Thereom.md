@@ -1,0 +1,5 @@
+- **Bayes' Theorem** (also known as Bayes' Law) is a law of probability that describes the proper way to incorporate new evidence into prior probabilities to form an updated probability estimate. It is commonly regarded as the foundation of consistent rational reasoning under uncertainty.
+- Named after Reverend Thomas Bayes who proved the theorem in 1763.
+- ### Resources
+	- https://www.lesswrong.com/tag/bayes-theorem#
+	-
