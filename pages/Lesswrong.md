@@ -3,7 +3,12 @@
 	- Last decade saw interest in the functional programming paradigm increase quite significantly among software developers. Taking a look at Google's Trends tool corroborates this statement.
 	-
 	-
-	- My personal experience related to the development of web applications. I entered into this sector in the early 2010s. Web applications were continuing to get increasingly complex
+	- My personal journey began started a little over a decade ago within the context of web development.
+	-
+	- the web little over a decade ago.
+	-
+	-
+	- ![](https://miro.medium.com/v2/resize:fit:1276/1*oRBseHE_yxtlbcRTrbkRnQ.jpeg)
 	-
 	- @@html: <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3349_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/02ykw","geo":"","time":"2015-05-18 2023-06-18"}],"category":0,"property":""}, {"exploreQuery":"date=2015-05-18%202023-06-18&q=%2Fm%2F02ykw&hl=en","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>@@
 	- @@html: <script type="text/javascript" src="https://ssl.gstatic.com/trends_nrtr/3349_RC01/embed_loader.js"></script> <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/02ykw","geo":"","time":"2015-05-18 2023-06-18"}],"category":0,"property":""}, {"exploreQuery":"date=2015-05-18%202023-06-18&q=%2Fm%2F02ykw&hl=en","guestPath":"https://trends.google.com:443/trends/embed/"}); </script>@@
