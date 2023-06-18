@@ -5,7 +5,7 @@
 	-
 	- My personal journey began started a little over a decade ago within the context of web development.
 	-
-	- the web little over a decade ago.
+	-
 	-
 	-
 	- ![](https://miro.medium.com/v2/resize:fit:1276/1*oRBseHE_yxtlbcRTrbkRnQ.jpeg)
