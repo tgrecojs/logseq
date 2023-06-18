@@ -1,0 +1,13 @@
+.katex-display { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}    
+.katex-display .katex {
+    background: #D53602;
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 2px;
+    margin: 7.5px;
+}

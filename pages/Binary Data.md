@@ -1,0 +1,27 @@
+- Computers have electronic wires and circuits
+	- A wire with electricity flowing through it can either be:
+		- On or Off
+		- True of False
+		- 1 or 0
+- Bits allow us to represent lots of data.
+- ### Binary vs Decimal
+	- Number system mulitplies by 2 each time
+	- Goes from left to right
+		- 1001
+			- 1s
+			- 2s
+			- 4s
+			- 8s
+			- 16s
+			- 32s
+			- 64
+			- 128
+			- 256
+			-
+		- (1 * 8) + (0 * 4) + (0 * 2) + (1 * 1) = 9
+		- 1001 = 9
+	- **With 8 wires, you can represent numbers 0-255**
+		- `[11010111]`
+		-
+	-
+	- Decimal uses 10s

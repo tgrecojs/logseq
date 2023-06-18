@@ -1,0 +1,13 @@
+- People like Baye were trying to use mathematics to influence our decion making.
+- They didn't have the computers of the data we have today!
+- A theory for updating
+- a formal way to update the level of confidence in a belief.
+- For bayesians, this rule is the be-all and end-all for achieving optimal outcomes. A systematic way of reasoning about something over time.
+- Conditional Probability or "likelihood"
+- Conditional Probability
+- $$P\left(H\left|e\right.\right)=\frac{P\left(H\left|e\right|\right)P\left(H\right)}{P\left(e\right)}$$
+-
+- {{renderer :mathlive_lipikkruf}}[:div {:is "mathlive-lipikkruf"}]
+  output:: P\left(e\left|H\right.\right)=\frac{P\left(e\left|H\right.\right)P\left(H\right)}{P\left(e\right)}
+-
+-

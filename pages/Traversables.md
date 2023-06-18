@@ -1,0 +1,7 @@
+- `traverse`
+	- ***traverse*** is a general function that’s like ***map***, but..
+		- it flips two container-like data structures around while running the transform function.
+	-
+	-
+- tags: [[fantasyland]]
+-
