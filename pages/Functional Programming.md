@@ -1,2 +1,2 @@
 - [[FP Terminology]]
--
+- [[Category Theory]]

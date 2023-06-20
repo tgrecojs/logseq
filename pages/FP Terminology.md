@@ -1,8 +1,6 @@
 - Total functions vs. Partial functions
 	- If a function yields a result value for every passed argument, it is a total function.
 	- If a function does not yield a result value for even a single valid argument, it is merely a partial one.``
-	-
-	- `
 -
 - ```
 - // borrow::UserSear

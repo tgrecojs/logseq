@@ -75,8 +75,7 @@
 - SRI was the second node on the network.
 - Resource sharing system
 - Utah had graphics and NY had a data
-- Buffer overflow at LOG
--
+- Buffer overflow at "LOG"
 - Crashed when they were writing "LOGIN" after the "G"
 	- Buffer overflow
 	- Still plagued the industry for ever
