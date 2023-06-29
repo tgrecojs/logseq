@@ -1,0 +1,6 @@
+- June 27th 5:30PM EST
+- Host - Ryan Barber
+- Rural and Low Income Communities
+- Dallas and Atlanta - ACP
+- $30 per month
+-

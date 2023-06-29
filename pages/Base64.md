@@ -1,0 +1,9 @@
+- transforms data into a long string to be sent over a network without data being corrupted.
+- bits
+	- 0, 1
+- bytes
+	- eight bits.
+	- 1, 2, 4, 8, 16, 32, 64, 18, 256, 512, 1024
+	- ex. `1001001` equals one byte
+- ## Converting Binary to Decimal
+-

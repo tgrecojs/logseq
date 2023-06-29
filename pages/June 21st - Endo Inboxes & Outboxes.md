@@ -1,0 +1,54 @@
+- An entangled pair of objects
+	- Inbox - user holds to grant/deny access to powers requested by the party holding the outbox.
+- 4 mins
+	- Endo commands start
+- Comment from Kris on cutting down the available options `endo` shows when executed or more likely **creating a sub-command hierarchy.**
+- Endo petname with hyphens don't seem to work?
+-
+- What does "over the wire" mean
+	- Context -UInt8Arrays cant go over the wire, so we need to use an #Base64 Stream.
+	- Can't currently marshal UInt8Arrays
+- ### Endo `follow`
+	- prints a representation of each value from the named async iterable as it arrives.
+-
+- ![endo-eval.png](../assets/endo-eval_1687790854566_0.png){:height 83, :width 574}
+- ![endo-eval-variable-petname.png](../assets/endo-eval-variable-petname_1687791610256_0.png)
+-
+- Mathias
+	- Question where Endo differs from Service workers.
+	- With service workers, if you have something exported by a program that gets terminated, then that things that gets exported is severed. the reference is no longer useful.
+	- in Endo when you restart, the helloStream is a heap capability that exists when you restart.
+	- It's not that it still exist, but it has instructions for recreating.
+- Each time Endo execution takes a place, a new compartment is created
+- There is a compartment created each time execution takes place.
+- Any intermediate messages that would have to be replayed (in the case of a vat) can be garbage collected instead of having to persist a log.
+- Referencing recreation of Endo objects - Opportunity to go purely functional
+- Formulas
+	- each file in this directory captures the instructions for reconstructing it based off of the interactions.
+	- it replays the DAG of
+- signifgance of `0`
+	- hedge against something that is going to change.
+	- ex. `import-bundle0`
+- ## `base64` vs `sha-512`
+- ![Endo-Follow-SS.png](../assets/Endo-Follow-SS_1687911591371_0.png)
+-
+- ## counter examples
+- ### Maker vs. Provider
+	- Dan calls out that this function looks like a maker function, not a provider.
+	- This function creates a new function every single time it is called.
+- ### Bundling
+-
+- ![image.png](../assets/image_1687911419934_0.png)
+- ### `import-bundle`
+- creates an object as well as its powers.
+- ![image.png](../assets/image_1687912458861_0.png)
+- The side-effect of  `import-bundle` is the creation of an *outbox*.
+- ![Endo-import-bundle-demo.png](../assets/Endo-import-bundle-demo_1687913065341_0.png)
+- ## Inbox vs Outbox
+- Inbox
+	- Look at your pending request
+- Outbox
+	- Object that you grant to the other party.
+-
+-
+- tags:: [[Endo]], [[Endo Meetings]]

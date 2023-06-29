@@ -1,6 +1,9 @@
 - [[Endo Applications]]
 - [[Questions]]
-- /link
+- [[Frontend App]]
+- [[Meetings]]
+	- [[June 21st - Endo Inboxes & Outboxes]]
+	-
 - ### Endo Plugins
 - > Endo plugin is any Node.js program that implements an entrypoint module with some conventionally-named method that gets something like the Endo bootstrap object or an Endo Powers object. TBD based on emerging criteria. Could do either or both.
 - ## [[Node APIs]]
