@@ -52,5 +52,12 @@
 - ### Formulas
 	- each file in this directory captures the instructions for reconstructing it based off of the interactions.
 	- it replays the DAG of
+- ## Frontend App
+- Construct a message port
+	- `MessagePort`
+	- Webs equivalent of a UNIX pipe (instead it speaks in terms of structured clone).
+	- It frames messages.
+- Message Port gives you a reader and a writer.
+	- postMessage to send the otherside of the message port elsewhere.
 -
 - tags:: [[Endo]], [[Endo Meetings]]

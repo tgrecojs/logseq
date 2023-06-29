@@ -1,0 +1,3 @@
+- ![Screen Shot 2023-06-18 at 11.06.06 PM.png](../assets/Screen_Shot_2023-06-18_at_11.06.06_PM_1687308339085_0.png){:height 505, :width 432}
+- The next lowest fruit I would pluck would be making a plugin that hosts a localhost web server and does `*.endo.localhost:PORT` virtual hosting where * is a UUID.
+- That would be the host for both a CapTP WebSocket and for the static web content. Probably from a Zip file using endo/zip for now (it's very very limited) It might not work as a plugin. Might need deeper integration with the formula system in the daemon, so it can know both the UUID of the Powers and the SHA512 of the web content. Have not designed that yet.
