@@ -49,6 +49,8 @@
 	- Look at your pending request
 - Outbox
 	- Object that you grant to the other party.
--
+- ### Formulas
+	- each file in this directory captures the instructions for reconstructing it based off of the interactions.
+	- it replays the DAG of
 -
 - tags:: [[Endo]], [[Endo Meetings]]
