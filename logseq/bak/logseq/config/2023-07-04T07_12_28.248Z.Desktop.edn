@@ -248,9 +248,8 @@
  ;;  ["md" "Markdown"]
  ;;  ]
  
- :commands [
-  ["js", "JavaScript"]
-  ["javascript" [[:editor/input "```javascript\n\n```" {:backward-pos 4}]]]
+ :commands [          
+  ["javascript" [[:editor/input "```javascript\n\n```" {:backward-pos 4}]]],
   ["ocaml" [[:editor/input "```ocaml\n\n```" {:backward-pos 4}]]]
 ]
 
