@@ -1,5 +1,6 @@
-- can you provide me with an in-depth comparison between websockets and webRTC? please provide as much meaningful detail as possible in order to help me get a firm understanding how both the protocols differ, which advantages one protocol may hold over the other, as well as use-cases in which websockets is preferred over webRTC and vice versa
-  ---
+- can you provide me with an in-depth comparison between websockets and webRTC? please provide as much meaningful detail as possible in order to help me get a firm understanding how both the protocols differ, which advantages one protocol may hold over the other, as well as use-cases in which websockets is preferred over webRTC and vice versa.
+- ## Comparison Table
+- ---
   Raycast AI: |          | WebSockets                                   | WebRTC                                         |
   |----------|-------------------------------------------|---------------------------------------|
   | Protocol | Application layer protocol                   | Real-time communication protocol                   |
@@ -20,8 +21,7 @@
 - Real-time multimedia communication: WebRTC supports real-time audio, video, and data transmission, making it suitable for applications like video chats, conferencing, and live streaming.
 - Peer-to-peer communication: WebRTC allows direct communication between clients without the need for intermediate servers, enabling efficient and low-latency data transmission.
 - Built-in signaling and NAT traversal: WebRTC has built-in signaling mechanisms and NAT traversal techniques, simplifying the setup process for real-time communication.
-  
-  Use cases:
+- ## Use cases:
 - WebSockets: Real-time data updates in financial apps, chat applications, collaborative document editing, real-time sports scores, real-time notifications.
 - WebRTC: Video conferencing, voice calling, live streaming, multiplayer gaming, remote collaboration and screen sharing.In summary, WebSockets are suitable for applications that require persistent bidirectional communication, while WebRTC is preferable for applications demanding real-time multimedia communication and peer-to-peer connectivity.
 -
