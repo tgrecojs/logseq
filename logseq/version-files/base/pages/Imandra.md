@@ -1,7 +1,5 @@
 - ## UBS Dark Pool
 - https://docs.imandra.ai/imandra-docs/notebooks/ubs-case-study/
-- [[Transative Laws]]
-	-
 -
 -
 - ### FaceTime Bug
