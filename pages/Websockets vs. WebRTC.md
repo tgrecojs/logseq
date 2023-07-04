@@ -1,6 +1,4 @@
 - can you provide me with an in-depth comparison between websockets and webRTC? please provide as much meaningful detail as possible in order to help me get a firm understanding how both the protocols differ, which advantages one protocol may hold over the other, as well as use-cases in which websockets is preferred over webRTC and vice versa
-- Thomas Greco: can you provide me with an in-depth comparison between websockets and webRTC? please provide as much meaningful detail as possible in order to help me get a firm understanding how both the protocols differ, which advantages one protocol may hold over the other, as well as use-cases in which websockets is preferred over webRTC and vice versa
-  
   ---
   Raycast AI: |          | WebSockets                                   | WebRTC                                         |
   |----------|-------------------------------------------|---------------------------------------|
@@ -25,7 +23,6 @@
   
   Use cases:
 - WebSockets: Real-time data updates in financial apps, chat applications, collaborative document editing, real-time sports scores, real-time notifications.
-- WebRTC: Video conferencing, voice calling, live streaming, multiplayer gaming, remote collaboration and screen sharing.
-  
-  In summary, WebSockets are suitable for applications that require persistent bidirectional communication, while WebRTC is preferable for applications demanding real-time multimedia communication and peer-to-peer connectivity.
+- WebRTC: Video conferencing, voice calling, live streaming, multiplayer gaming, remote collaboration and screen sharing.In summary, WebSockets are suitable for applications that require persistent bidirectional communication, while WebRTC is preferable for applications demanding real-time multimedia communication and peer-to-peer connectivity.
+-
 -
