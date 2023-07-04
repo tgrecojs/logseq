@@ -11,7 +11,7 @@
   | Signaling | Not built-in, requires additional signaling methods | Built-in signaling using Session Description Protocol (SDP) and Interactive Connectivity Establishment (ICE) protocol |
   | NAT Traversal | Can require additional techniques for NAT traversal | Built-in NAT traversal using ICE protocol |
   | Compatibility | Supported in all modern web browsers           | Supported in modern web browsers and native applications                   |
-- Advantages of WebSockets:
+- ### Advantages of WebSockets:
 - Simplicity: WebSockets are relatively simple to implement and use compared to WebRTC.
 - Broad compatibility: WebSockets are supported in all modern web browsers, making it a reliable choice for web-based applications.
 - Persistent connection: WebSockets maintain a persistent connection between the client and server, allowing real-time bidirectional communication.
@@ -22,5 +22,7 @@
 - ## Use cases:
 - WebSockets: Real-time data updates in financial apps, chat applications, collaborative document editing, real-time sports scores, real-time notifications.
 - WebRTC: Video conferencing, voice calling, live streaming, multiplayer gaming, remote collaboration and screen sharing.In summary, WebSockets are suitable for applications that require persistent bidirectional communication, while WebRTC is preferable for applications demanding real-time multimedia communication and peer-to-peer connectivity.
+-
+- tags: [[websockets]] , [[webrtc]],  [[nodejs]]
 -
 -
