@@ -1,0 +1,4 @@
+- https://www.investopedia.com/articles/markets/050614/introduction-dark-pools.asp
+- The average trade size in dark pools has declined to 118 shares per trade!
+	- Source - https://www.finra.org/filing-reporting/otc-transparency/ats-quarterly-statistics
+	- This is down from 150 cited in the Investopedia Article

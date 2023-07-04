@@ -1,0 +1,19 @@
+- [Audible Link](https://www.audible.com/pd/Dark-Pools-Audiobook/B00883JQ8S)
+- Strategy that was crushing American Trading Systems
+	- scalping
+		- age-old stategy of buying low / selling high, quickly
+		- big in the mid-west
+	- 0+ (zero plus) scalping stray
+		- depth
+		- order in queue
+		- loss on any trades are limited at 0.
+	- probability of +1 tick gain on any trade is substantially greater than the probability of a minus 1 tick loss on any given trade.
+		- firm is so fast that it can always get priority in the trade queue.
+		- depth behind the is the market.
+		- rest of market is insurance.
+	- always a scratch or a cancel.
+	- 1% of the market-depth they would be able to successfully scalp
+	- uses the depth
+	- +1/-1
+	- 0 plus trader
+		-
