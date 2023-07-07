@@ -1,0 +1,5 @@
+- http://w3sdesign.com/?gr=c02&ugr=struct#gf
+-
+-
+- tags : #object-composition
+-

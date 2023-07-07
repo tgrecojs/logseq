@@ -1,0 +1,10 @@
+- [[hypothesis__/Diffie–Hellman Key Exchange - Practical Cryptography for Developers]]
+- ## The Discrete Logarithm Problem
+	- The discrete logarithm problem refers to the challenge of finding the exponent in a mathematical equation of the form \(a^x \mod p = b\), where \(a\), \(x\), and \(b\) are known values, and \(p\) is a prime number. The difficulty lies in determining the value of \(x\) when only \(a\), \(b\), and \(p\) are given, making it computationally difficult and the basis for the security of many cryptographic systems.
+- ### What role do prime numbers play in the discrete logarithm problem?
+	- Prime numbers play a crucial role in the discrete logarithm problem. The discrete logarithm problem is the mathematical problem of finding an exponent that solves the equation \(a^x \mod p = b\), where \(a\) and \(p\) are prime numbers, and \(b\) is an integer.
+	- The security of many cryptographic systems, such as the Diffie-Hellman key exchange and the Digital Signature Algorithm (DSA), relies on the difficulty of solving the discrete logarithm problem. Prime numbers are used to define the modulus \(p\) in these systems, and their properties ensure the computational complexity of solving the discrete logarithm problem.
+	- Specifically, prime numbers are chosen for the modulus because they possess certain mathematical properties that make the discrete logarithm problem computationally difficult. These properties include the fact that prime numbers have no divisors other than 1 and themselves, and they exhibit desirable patterns and relationships within modular arithmetic.
+	- By leveraging the properties of prime numbers, the discrete logarithm problem becomes challenging to solve, providing the foundation for the security of various cryptographic protocols.
+- {{video https://youtu.be/M-0qt6tdHzk}}
+-

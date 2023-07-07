@@ -1,0 +1,29 @@
+- ### July 5th 2023
+- ## Problems with Cloud
+- Networks get better as peer number increases.
+- ### Ubiquitous Computing
+- Moving away from the cloud towards edge:
+	- Data Proliferation
+	- Hardware Proliteration
+- The "Edge"
+	- Halfstep on the way to P2P.
+- ![CleanShot 2023-07-05 at 14.16.47.png](../assets/CleanShot_2023-07-05_at_14.16.47_1688581017555_0.png)
+- ## People don't know how P2P works
+- ![CleanShot 2023-07-05 at 14.17.02.png](../assets/CleanShot_2023-07-05_at_14.17.02_1688581038280_0.png)
+- ## NAT Traversal
+- ICE is an incomplete solution that adds more infrastructure.
+- Need to be able to figure out what your information is.
+- ### Stage-1
+	- Each peer has and needs 2 sockets.
+	- The first socket - primary second
+	- second - probe secoket
+	- Send out a message that says "Im interested in knowing external data about the socket"
+		- responds with address and port.
+	- ![CleanShot 2023-07-05 at 14.21.04.png](../assets/CleanShot_2023-07-05_at_14.21.04_1688581272852_0.png)
+-
+- ### Stage 2
+	- I have the address and port
+	- Now I need to ask 2 disticntly
+	-
+-
+- #[[Endo Meetings]]

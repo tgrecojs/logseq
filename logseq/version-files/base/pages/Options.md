@@ -1,0 +1,3 @@
+- ### 7 Myths about Options Contracts Debunked
+- https://www.stockoptionschannel.com/slideshows/seven-myths/most-options-expire-worthless/?confirm=1
+-

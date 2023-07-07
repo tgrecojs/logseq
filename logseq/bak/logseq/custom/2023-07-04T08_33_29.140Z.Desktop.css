@@ -3,7 +3,7 @@
  **/
 
 @font-face {
-  font-family: "Fira Sans", sans-serfif;
+  font-family: "Inter", sans-serfif;
   font-weight: 400;
   font-style: normal;
   font-stretch: normal;
@@ -25,8 +25,8 @@
 
 
 :root {
-  --ct-text-size: 16px;
+  --ct-text-size: 14px;
   --ct-line-height: 1.6;
-  --ls-font-family: "Fira Sans",
+  --ls-font-family: Inter,
   --ct-code-font-family: "Fira Sans";
 }
