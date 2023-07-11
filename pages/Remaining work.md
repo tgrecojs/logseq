@@ -1,0 +1,12 @@
+- Store the Amounts in the loanExo state
+- Add methods for repaying loan early.
+- Add method for calculating interest
+	- Already have the logic for getting timestanp.
+	- Just need to add
+- Method for transferring loan to new owner
+	- Allow loan holder to sell at whatever price they request.
+	- In situations where user's are attempting to make their loan purchasable at a significant discount, we can add UI behaviors for informing the them. ((A pop up)
+- Add wake handler function for expiration
+	- the expiry time is being passed into setWakeup, so this task is to add the final logic which is to create a function for incrementing the lenderSeat with the allocation held in collateralSeat.
+- Determine the metrics
+-
