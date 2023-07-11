@@ -1,0 +1,15 @@
+- ## Snyk xss
+	- Markdown specification explicitly supports [Raw HTML](https://spec.commonmark.org/0.30/#raw-html) almost to a full extent.
+	- This includes HTML attributes.
+	- That is a combination that allows the most classic XSS injections:
+	- (hit ▶️ to execute on the official Markdown live interpreter)
+		- [▶️](https://spec.commonmark.org/dingus/?text=%3Ciframe%20onload%3D%22alert(1)%22%3E) `<iframe onload="alert(1)">`
+		- [▶️](https://spec.commonmark.org/dingus/?text=%3Cimg%20src%3D%221%22%20onerror%3D%22alert(1)%22%3E) `<img src="1" onerror="alert(1)">`
+		- > Note that the interpreter executes those inside a sandboxed iframe, so instead of actually seeing an alert message, you’ll see a thrown CSP exception in the console, but the conclusion remains the same - **Markdown supports HTML, even if it triggers JavaScript execution!**
+- Summary
+	- JavaScript can be embedded within HTML, therefore it can also be embedded in markdown.
+- ## Questions
+	- So, if i'm understanding correctly, the process should look something like:
+		- HTML is sanitized properly.
+		- HTML should be rendered in an iframe with a strict CSP.
+		-
