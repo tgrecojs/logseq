@@ -1,0 +1,17 @@
+- ## Initial Thoughts
+	- Need to get more info from cooney.
+	- https://docs.pendle.finance/Introduction
+	- Purchase assets at a discount
+	- ### LARI & Pendle
+		- We can do something like this.
+		- It seems like we have a different variation of this.
+		- Seeing the projections made me think of an earlier thought of showing showings wrt interest rates / ROI
+		- Tokenized Treasuries? (See #RWA )
+	- ## Pendle UI
+		- Very cool! Very interesting, useful, etc!
+		- ## Markets Page
+		- ![CleanShot 2023-07-12 at 01.52.04@2x.png](../assets/pendle_finance_1.png)
+		- ## Buy Discount Page
+		- ![ss_07122023_000002@2x.png](../assets/ss_07122023_000002@2x_1689141631245_0.png)
+		-
+-

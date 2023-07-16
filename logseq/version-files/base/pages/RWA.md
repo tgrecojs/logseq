@@ -1,0 +1,9 @@
+- # Tokenized Treasuries
+- ## Tokenized Treasuries are blowing up
+	- ![rwa_tokenized_treasuries.png](../assets/rwa_tokenized_treasuries_1689142275814_0.png){:height 292, :width 576}
+	- **Source** - https://app.rwa.xyz/treasuries
+- ## An Allocators Guide to Tokenized Treasuries
+- New publication from RWA.xyz
+	- ![📄 An_Allocators_Guide_To_Tokenized_Treasuries.pdf](../assets/An_Allocators_Guide_To_Tokenized_Treasuries.pdf)
+	-
+-
