@@ -1,0 +1,6 @@
+- ## Recorder Kits
+	- [] cleaned up code flows
+	- added recorder kit for top level metrics
+	- added recorded kit for metrics on a loan level
+	-
+	-
