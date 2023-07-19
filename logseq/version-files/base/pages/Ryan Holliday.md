@@ -1,0 +1,6 @@
+- # the obstacle is the way
+- ![🖼 obstacle_is_the_way_1.jpeg](../assets/obstacle_is_the_way_1.jpeg)
+- ### perception
+- Choose not to be harmed and you won't feel harmed. Don't feel harmed - and you haven't been.
+- ### Control Your emotions
+- ![🖼 obstacle_is_the_way_2.jpeg](../assets/obstacle_is_the_way_2.jpeg)
