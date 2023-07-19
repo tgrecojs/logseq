@@ -1,5 +1,4 @@
 - ### Successfully merged old code into tgrecojs/daemon-docs branch
--
 - ```zsh
   $ git checkout tgrecojs/daemon-docs
   Switched to branch 'tgrecojs/daemon-docs'
@@ -36,7 +35,6 @@
   On branch tgrecojs/daemon-docs
   nothing to commit, working tree clean
   ```
--
 - https://learngitbranching.js.org/
 - To complete this level, do the following steps:
 	- Make a new branch called `bugFix`

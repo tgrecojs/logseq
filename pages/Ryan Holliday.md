@@ -1,7 +1,6 @@
 - # the obstacle is the way
-- ![2023-06-29-12-34-18.jpeg](../assets/2023-06-29-12-34-18.jpeg)
+- ![🖼 obstacle_is_the_way_1.jpeg](../assets/obstacle_is_the_way_1.jpeg)
 - ### perception
 - Choose not to be harmed and you won't feel harmed. Don't feel harmed - and you haven't been.
 - ### Control Your emotions
-- ![2023-06-29-12-39-23.jpeg](../assets/2023-06-29-12-39-23.jpeg)
--
+- ![🖼 obstacle_is_the_way_2.jpeg](../assets/obstacle_is_the_way_2.jpeg)
