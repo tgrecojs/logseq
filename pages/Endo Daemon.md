@@ -1,0 +1,6 @@
+- ### Endo CLI is now on NPM
+	- `npm i -g endo@cli`
+- ## Timestamps
+- ### 2:51
+	- recorded with starting daemon
+-

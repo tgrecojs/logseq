@@ -1,0 +1,5 @@
+- Defines the `Passable` objects, and the `passStyleOf` function for classifying them according to their `PassStyle`.
+- The Passable objects are those that can be passed by the [[@endo/marshal]] package.
+- **`Passable` defines the layer of abstraction on which Endo needs broad agreement for interoperability.** #card
+- One type of `Passable` is the `Tagged` object, which is the extension point for defining higher level data types, which do not need such broad agreement. The main such higher layer of abstraction is provided by the `@endo/patterns` package.
+-

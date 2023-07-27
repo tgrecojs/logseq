@@ -1,0 +1,3 @@
+- ### Endo CLI is now on NPM
+	- `npm i -g endo@cli`
+-

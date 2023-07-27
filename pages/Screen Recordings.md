@@ -1,0 +1,3 @@
+- ## July 26
+	- [[Endo Daemon]]
+-

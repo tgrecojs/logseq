@@ -66,7 +66,9 @@
 - https://medium.com/@drboolean/laziness-with-representable-functors-9bd506eae83f
 -
 -
--
-- [[Morphism in JS]]
+- ## Posts
+	- [[Contravariant Functors]]
+	-
+	- [[Morphism in JS]]
 -
 -
