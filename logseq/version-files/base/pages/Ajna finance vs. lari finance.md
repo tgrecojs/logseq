@@ -1,0 +1,3 @@
+- Price Specified Lending
+	-
+- > pricing of collateral and parameterization of loans are left to subjective decision making through governance rather than market forces, these protocols carry both solvency and liquidity risk. Governance and maintenance overhead create barriers to entry in the market for lending and borrowing of on-chain assets.

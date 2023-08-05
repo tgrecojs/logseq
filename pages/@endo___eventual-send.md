@@ -1,7 +1,6 @@
 - ## HandledPromise
 	-
 - ### Security (`isSafePromise`)
-	-
 	- ```javascript
 	  /**
 	     * If the promise `p` is safe, then during the evaluation of the
@@ -33,5 +32,3 @@
 	      );
 	    };
 	  ```
-		-
--

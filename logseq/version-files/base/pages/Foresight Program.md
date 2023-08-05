@@ -1,0 +1,49 @@
+- ### Details
+	- Thomas Greco
+	- tg18509@pm.me
+- ## Short Bio
+	-
+	- I'm a software engineer specializing in the application of the functional programming paradigm to develop large-scale, deterministic systems. Early on in my career I had the opportunity to receive mentorship from a highly respected engineer. Not only did this had a profound impact on my skillset, but this experience also showed me the impact that a strong mentorship can have on a person such as myself, who will always be striving to strengthen my abilities in an effort to create meaningful impact within the world we live in.
+	- I gravitated towards decentralized finance after spending some years working as a software engineering in the traditional financial sector. I spent time at the Federal Reserve Bank of New York where my team worked across several platforms, most notably FedWire. Bank of America where I was a member of the Global Banking and Markets team. Here, worked across a suite of derivatives trading applications which were used internally throughout the bank.
+	- Fast forward to present day, I created Lari Labs in an effort to assist the ecosystem of decentralized finance with realizing its potential and in turn, help the industry as a whole gain mainstream adoption. To accomplish this goal, we are developing markets in which users are given significantly greater agency over their choices compared to anything seen in the ecosystem thus far. More importantly, we are doing so securely by building atop the Agoric blockchain.
+	-
+	-
+	- my journey has led me to recently becoming a first-time founder of Lari Labs. Our focus revolves around helping the ecosystem of decentralized finance with realizing its potential in an effort to assist with the industry as a whole gain mainstream adoption. To accomplish this goal, we are developing extendible, secure smart contracting systems which run atop the Agoric blockchain.
+	-
+	-
+	- It's worth mentioning that I gravitated towards decentralized finance after spending some years working as a software engineering in the traditional financial sector. I spent time at the Federal Reserve Bank of New York where my team worked across several platforms, most notably FedWire.
+	- Bank of America where I was a member of the Global Banking and Markets team. Here, worked across a suite of derivatives trading applications which were used internally throughout the bank.
+	-
+	-
+	-
+	- I created Lari Labs in an effort to assist the ecosystem of decentralized finance with realizing its potential and in turn, help the industry as a whole gain mainstream adoption. To accomplish this goal, we are developing markets in which users are given significantly greater agency over their choices compared to anything seen in the ecosystem thus far.
+	-
+	- w where we are developing secure, extendible marketplaces atop the Agoric blockchain.
+	-
+	- in a new wave of on-chain marketplaces in which counterparties
+	- provide users with significantly
+	- a first-time founder
+	- impact on-chain marketplaces
+	- improving our focus is to have a significant impact on-chain marketplaces. Upon first being introduced to decentralized finance, I developed strong feelings regarding the problems with security that plagued the ecosystem at that time, and still continue today. After
+	- Prior to becoming a first-time founder, I work in the financial sector as a software engineer. It was during my time at the NY Federal Reserve Bank that I first witnessed  significant issues with
+	- Prior to becoming a first-time founder, I worked as a software engineering in the traditional financial sector. Specifically, I spent time at the Federal Reserve Bank of New York where my team worked across several platforms, most notably FedWire.
+	- Following this, I Bank of America where I was a member of the Global Banking and Markets team. Here, worked across a suite of derivatives trading applications which were used internally throughout the bank.
+	-
+	-
+	-
+	- I recently founded a company where our focus is to have a significant impact on-chain marketplaces. Upon first being introduced to decentralized finance, I developed strong feelings regarding the problems with security that plagued the ecosystem at that time, and still continue today. After
+	- This led me to find the Agoric platform
+	-
+	-
+	- blockchain-based marketplaces and I believe that
+	-
+	- ultimately help
+	-
+	- from their current state.
+	-
+	- hopes of helping the entire
+	- particularly with regards to security
+	-
+	- distributed ledger
+	-
+	- The motivating factors that led me to become a first-time founder stemmed from

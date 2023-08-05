@@ -1,0 +1,92 @@
+{:blocks (
+{:block/created-at 1690998418971
+:block/properties 
+{:ls-type :whiteboard-shape
+:logseq.tldraw.shape 
+{:blockType "P"
+:stroke ""
+:collapsed false
+:borderRadius 8
+:index 0
+:scale [1 1]
+:pageId "Library Runlet"
+:scaleLevel "md"
+:fill ""
+:compact false
+:isAutoResizing true
+:type "logseq-portal"
+:size [400 996.9999621975807]
+:strokeType "line"
+:strokeWidth 2
+:opacity 1
+:id "90fd84b0-315c-11ee-b5b4-77022c6a593c"
+:noFill false
+:point [24 304]
+:parentId "64c8bc0e-6202-4fcc-b128-4a88348157fa"
+:collapsedHeight 0
+:nonce 1690998413437}}
+:block/updated-at 1690998418971} 
+{:block/created-at 1690998573522
+:block/properties 
+{:ls-type :whiteboard-shape
+:logseq.tldraw.shape 
+{:stroke ""
+:index 1
+:scale [1 1]
+:scaleLevel "md"
+:fill ""
+:type "ellipse"
+:size [480 448]
+:strokeType "line"
+:strokeWidth 2
+:opacity 1
+:label "Librarian\n"
+:id "d737e1a0-315c-11ee-b5b4-77022c6a593c"
+:fontWeight 400
+:noFill false
+:point [1024 720]
+:fontSize 20
+:parentId "64c8bc0e-6202-4fcc-b128-4a88348157fa"
+:nonce 1690998531624
+:italic false}}
+:block/updated-at 1690998573522} 
+{:block/properties 
+{:ls-type :whiteboard-shape
+:logseq.tldraw.shape 
+{:stroke ""
+:index 2
+:scale [1 1]
+:scaleLevel "md"
+:fill ""
+:type "ellipse"
+:size [304 240]
+:strokeType "line"
+:strokeWidth 2
+:opacity 1
+:label ""
+:id "5c49e410-315d-11ee-b5b4-77022c6a593c"
+:fontWeight 400
+:noFill false
+:point [1248 1608]
+:fontSize 20
+:parentId "64c8bc0e-6202-4fcc-b128-4a88348157fa"
+:nonce 1690998754590
+:italic false}}
+:block/updated-at 1690998754776})
+:pages (
+{:block/uuid #uuid "64c8bc0e-6202-4fcc-b128-4a88348157fa"
+:block/properties 
+{:ls-type :whiteboard-page
+:logseq.tldraw.page 
+{:id "64c8bc0e-6202-4fcc-b128-4a88348157fa"
+:name "endo daemon library runlet"
+:bindings 
+{}
+:nonce 1
+:assets []
+:shapes-index ("90fd84b0-315c-11ee-b5b4-77022c6a593c" "d737e1a0-315c-11ee-b5b4-77022c6a593c" "5c49e410-315d-11ee-b5b4-77022c6a593c")}}
+:block/updated-at 1690998754775
+:block/created-at 1690876942991
+:block/type "whiteboard"
+:block/name "endo daemon library runlet"
+:block/original-name "Endo daemon library runlet"})}

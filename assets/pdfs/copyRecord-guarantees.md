@@ -21,7 +21,6 @@ This is a reentrancy attack against code that is simply looking at a simple data
 This plan is to have `assertRecord(r)` guarantee that `r` is not a proxy. Then, once this check is passed, the above code interleaving dangers are gone. Once validated, `r` is guaranteed to be not just stable but passive, as we intuitively expect data to be.
 
 If `r` is a proxy, then, if this plan goes as we expect, this test will throw without even giving the proxy an opportunity to interleave during the test.
-
 # How do I enumerate thee, let me list the ways
 
 Why only string-named own enumerable data properties? JavaScript has a tremendous number of different constructs for enumerating the properties of an object, with different semantics of what subset they choose to enumerate:
@@ -46,11 +45,9 @@ Why only string-named own enumerable data properties? JavaScript has a tremendou
            O.getOwnPropertyDescriptors
 
 Once an object passes `assertRecord(r)`, all of these are guaranteed to agree.
-
 # Like Records from Records & Tuples.
 
 Taken together, the security, robustness, and simplicity guarantees of `assertRecord(r)` are similar to that provided by the "records" of the TC39 "Records and Tuples" proposal. (TODO need link) These are close enough that, for many purposes, we can take CopyRecord as a shim for that portion of the Records and Tuples proposal. We can equally well take [CopyArray](./copyArray-guarantees.md) as a shim for the "tuples" of the "Records and Tuples" proposal.
-
 # Where CopyRecord fits in the Passable taxonomy
 
 Passable values are those for which `passStyleOf(r)` returns normally rather than throwing. If it returns normally, it returns a string classifying the kind of Passable that `r` is. CopyRecord, CopyArray, and some others are pass-by-copy containers, which are a kind of Passable.
@@ -59,7 +56,6 @@ Passable values are those for which `passStyleOf(r)` returns normally rather tha
 Thus, we can consider a pass-by-copy container to be the root of a tree of pass-by-copy containers, whose leaves are any of the other kinds of Passable, such as JavaScript primitive values, promises, and remotables (far objects and their remote presences). At the JavaScript level, this tree may actually be a dag (directed acyclic graph), but in the semantics of the distributed object system, it is equivalent to the tree that the dag unfolds into. Our distributed object system compares and serializes them only according to their contents as trees.
 * `passStyleOf(r)` validates that the pass-by-copy graph starting from a pass-by-copy `r` has no cycles, and therefore is equivalent to a finite tree.
 * The future proxy-safety plan explained above will ensure that all pass-by-copy objects in the tree are non-proxies. Put together, once a root has been validated as any pass-by-copy, the entire pass-by-copy tree will be guaranteed to act as simple stable passive data. Be aware that this plan, by design, would still allow proxies at the leaves of the pass-by-copy tree.
-
 # Hazards
 
 We have not yet implemented the proxy test explained above, so our "normal" coding style is currently vulnerable against proxy-based reentrancy attacks from malicious local callers. But this attack is not possible for malicious messages received across a vat boundary. Our plan is to enforce this proxy prohibition well before we allow arbitrary malicious code on-chain.

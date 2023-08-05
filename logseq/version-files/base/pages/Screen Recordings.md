@@ -1,3 +1,4 @@
 - ## July 26
 	- [[Endo Daemon]]
 -
+- tags:: #Endo

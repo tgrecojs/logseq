@@ -12,7 +12,6 @@ The input validation check `assertCopyArray(arr)` asserts that `passStyleOf(arr)
       * number-named (rather than symbol named) for the non-negative integers between `0` and `length - 1`. It has all of these, i.e., it has no holes. It has no own properties besides these and `length`.
       * enumerable,
       * data properties, rather than accessor properties, whose values are therefore stable
-
 # How do I enumerate thee, let me list the ways
 
 Why these properties restrictions? JavaScript has a tremendous number of different constructs for enumerating the properties of an object, with different semantics of what subset they choose to enumerate.
@@ -33,11 +32,9 @@ Why these properties restrictions? JavaScript has a tremendous number of differe
 
 Once an object passes `assertCopyArray(arr)`, all of these are guaranteed to agree except for `length`.
 Since an array's `length` property is a non-enumerable string-named property, `Reflect.ownKeys`, `Object.getOwnPropertyNames`, `Object.getOwnPropertyDescriptors` will see the `length` property. The others will not.
-
 # Like Tuples from Records & Tuples.
 
 Taken together, the security, robustness, and simplicity guarantees of `assertCopyArray(arr)` are similar to that provided by the "tuples" of the TC39 "Arrays and Tuples" proposal. (TODO need link) These are close enough that, for many purposes, we can take CopyArray as a shim for that portion of the Arrays and Tuples proposal. We can equally well take CopyRecord as a shim for the "records" of the "Records and Tuples" proposal.
-
 # Like CopyRecord
 
 In all other ways, the explanation at [CopyRecord](./copyRecord-guarantees.md) applies equally well for CopyArray.

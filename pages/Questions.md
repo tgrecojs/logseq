@@ -16,6 +16,7 @@
 	- sockPath
 	- cachePath
 - after coming across the term "noncelocator" a number of times while reading erights.org, I'm wondering what is the locator within the context of SwingSet?
+- What is the significance of `child.on` within the endo daemon's `start` function? What exactly occurs when a “message” event occurs?
 - **What is the significance of `child.on` within the endo daemon's `start` function? What exactly occurs when a “message” event occurs?**
 	- This is one of the wonders of daemonization. Daemonization is the process of spawning a child process, removing it from the parent process’s session, and handing it over to process 0 (init) to manage until it dies. On UNIX, by default, a child process remains in the parent process’s session, sees all of the same signals, and exits when the parent exits. Daemons are longer-lived.
 	- When a client like the CLI attempts to open a connection to the Endo daemon, there’s a possibility that the daemon is not running. So, the client will spawn and daemonize the daemon. But, owing to the vagaries of timing, the daemon will not be ready to receive connections from the client until it has run a while and started listening.

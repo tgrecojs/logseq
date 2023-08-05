@@ -23,7 +23,6 @@
 	- A function which deconstructs a structure into a single value. #card
 	- Examples:
 		- `reduceRight` is an example of a catamorphism for  the`Array` prototype.
-		- `reduceRight` is an example of a catamorphism for  the`Array` prototype.
 - ```js
   // sum is a catamorphism from [Number] -> Number
   const sum = xs => xs.reduceRight((acc, x) => acc + x, 0)
@@ -64,11 +63,6 @@
   to(from(() => ‘hi’)) // () => ‘hi’
   ```
 - https://medium.com/@drboolean/laziness-with-representable-functors-9bd506eae83f
--
--
 - ## Posts
 	- [[Contravariant Functors]]
-	-
 	- [[Morphism in JS]]
--
--

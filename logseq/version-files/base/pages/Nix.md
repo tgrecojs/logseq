@@ -1,0 +1,8 @@
+- Nix is a "declarative package management solution"
+- It's an OS (?)
+- ## Resources
+	- https://nixpacks.com/docs/providers/node
+	- YouTube Playlist - [Nix as a homebrew replacement](https://www.youtube.com/playlist?list=PLRGI9KQ3_HP_OFRG6R-p4iFgMSK1t5BHs)
+	- nix-pills series: https://nixos.org/guides/nix-pills/install-on-your-running-system
+	-
+	-

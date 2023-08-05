@@ -1,0 +1,19 @@
+## Questions
+	- How do alice and bob meet one another?
+	- A registry containing bobs
+		-
+- ### Book exchange
+	- I thought of an example runlet for sharing texts between two people.
+	- Alice's "library".
+		- A pet-store filled with articles, books, writings of all kinds that she wishes to share with others.
+	- Alice is the host.
+- ## Library App
+- ### #Pet-store
+	- contains zip files of different books, articles, etc.
+- ### Host (Librarian)
+	- responsible for granting access to the library.
+	- reacts to requests for adding additional files to the #pet-store.
+		- either accepts or denies them.
+	- Privileges
+		- Can delegate access to the "library" registry.
+		- delegates rights for interacting with the #pet-store

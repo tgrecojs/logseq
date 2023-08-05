@@ -8,6 +8,4 @@
 - Then there’s the transport layer (UNIX domain socket, Windows named pipe, TCP, TLS, &c) which I’ve chosen to adapt to async iterators everywhere. `@endo/stream-node` is one such adapter. The Pet Daemon’s power adapter turns sockets and pipes into async iterators of chunked byte streams.
 - So the architecture layering is: `MessageTransport(Transport > Message Framing) > Encoding (JSON/CBOR/Syrup) > CapTP(Agoric/OCapn)`
 -
-tags:: #[[Endo]]
-
--
+- tags:: #[[Endo]]

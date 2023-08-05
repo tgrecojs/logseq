@@ -1,0 +1,9 @@
+- I need the ability to lead 100%. I need to be able to call the play and then we need to run the play as instructed.
+	- I need you to assume that I have thought of any sort of edge case or performance hit and that we will be ready to tackle it.
+	- I don't think mutating is the root of all evil. Avoid it when possible but
+- This isn't a conversation about functional programming or any concepts.
+	- I need you to watch the lectures I sent you.
+	- There is no one specific way to accomplish something. I'm very much conscious
+- I can't have you looking at the code and scoffing at the way that *this* or *that* is done.
+	- I've made it clear that the codebase is going to change, very likely significantly.
+	-

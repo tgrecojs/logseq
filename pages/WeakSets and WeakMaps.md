@@ -5,7 +5,6 @@ tags:: [[WeakMaps]] [[WeakSets]] [[Garbage Collection]] [[Performance]]
 raindropid:: 601276855
 raindroptitle:: Understanding WeakMap and WeakSet Objects in JavaScript
 raindropurl:: https://medium.com/@stheodorejohn/understanding-weakmap-and-weakset-objects-in-javascript-3d5a22ea74f7
-
 - annotation-id:: 64a5d94c3a4768f299afc335
   > Unlike regular Map objects, WeakMap allows the keys to be weakly referenced. This means that if there are no other references to a key object, it can be garbage-collected.
 - annotation-id:: 64a5d9563a4768f299afc468
