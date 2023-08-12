@@ -1,5 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 - ### Overview
+=======
+## Overview
+	- > In category theory, a category is a collection of objects and arrows (or morphisms) between them, satisfying certain axioms. Here are a few examples of categories in JavaScript:
+>>>>>>> 617d85e (fix: related to the mp4 files.)
 =======
 ## Overview
 	- > In category theory, a category is a collection of objects and arrows (or morphisms) between them, satisfying certain axioms. Here are a few examples of categories in JavaScript:
@@ -13,11 +18,14 @@
 - {{renderer :mathlive_jjuwcpzn}}[:div {:is "mathlive-jjuwcpzn"}]
   output:: \int_0^{100}f\left(x\right)\cdot g\left(x\right)=f\left(g\left(x\right)\right)
 <<<<<<< HEAD
+<<<<<<< HEAD
 - d
 - ## Introduction
 - In category theory, a category is a collection of objects and arrows (or morphisms) between them, satisfying certain axioms. Here are a few examples of categories in JavaScript:
 -
 =======
+=======
+>>>>>>> 617d85e (fix: related to the mp4 files.)
 -
 - ## Resources
 	- [[Category Theory for Programmers]]
@@ -26,5 +34,8 @@
 	-
 	-
 	-
+<<<<<<< HEAD
+>>>>>>> 617d85e (fix: related to the mp4 files.)
+=======
 >>>>>>> 617d85e (fix: related to the mp4 files.)
 -

@@ -1,7 +1,10 @@
 # Articles
 <<<<<<< HEAD
+<<<<<<< HEAD
 - # Articles
 =======
+=======
+>>>>>>> 617d85e (fix: related to the mp4 files.)
 	- [Understanding the Differences between MQTT and WebSockets for IoT](https://www.hivemq.com/article/understanding-the-differences-between-mqtt-and-websockets-for-iot/)
 	  title:: Understanding the Differences between MQTT and WebSockets for IoT
 	  url:: https://www.hivemq.com/article/understanding-the-differences-between-mqtt-and-websockets-for-iot/
@@ -1101,5 +1104,9 @@
 	  date-saved:: [[08/05/2023]]
 	  last-updated:: [[08/05/2023]]
 		- ## Highlights
+<<<<<<< HEAD
+			- > The WebSocket protocol was created to give applications in web browsers access to TCP-based socket APIs, hence “WebSockets” .
+>>>>>>> 617d85e (fix: related to the mp4 files.)
+=======
 			- > The WebSocket protocol was created to give applications in web browsers access to TCP-based socket APIs, hence “WebSockets” .
 >>>>>>> 617d85e (fix: related to the mp4 files.)

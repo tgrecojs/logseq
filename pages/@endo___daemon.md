@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 - ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
+=======
+### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
+>>>>>>> 617d85e (fix: related to the mp4 files.)
 =======
 ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
 >>>>>>> 617d85e (fix: related to the mp4 files.)
@@ -84,6 +88,10 @@
 	- what does harbinger mean?
 		- is this our safety net?
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+-
+>>>>>>> 617d85e (fix: related to the mp4 files.)
 =======
 -
 >>>>>>> 617d85e (fix: related to the mp4 files.)

@@ -1,8 +1,11 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 - Price Specified Lending
 	-
 - > pricing of collateral and parameterization of loans are left to subjective decision making through governance rather than market forces, these protocols carry both solvency and liquidity risk. Governance and maintenance overhead create barriers to entry in the market for lending and borrowing of on-chain assets.
 =======
+=======
+>>>>>>> 617d85e (fix: related to the mp4 files.)
 -
 - # todo
 	- Liquidity provider balance
@@ -21,5 +24,9 @@
 - |Features | Ajna | Lari |
   |Permissionless listing| x | x |
   |Market-driven interest rates| x | x |
+<<<<<<< HEAD
+-
+>>>>>>> 617d85e (fix: related to the mp4 files.)
+=======
 -
 >>>>>>> 617d85e (fix: related to the mp4 files.)
