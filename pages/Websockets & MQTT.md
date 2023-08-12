@@ -1,0 +1,5 @@
+- #websockets
+- #mqtt
+	- [MQTT Essentials - 4 Part Series](https://www.hivemq.com/blog/mqtt-essentials-part-1-introducing-mqtt/)
+	- ![📄 hivemq-ebook-mqtt-essentials.pdf](file:///Users/tgreco/Desktop/Brave Downloads/hivemq-ebook-mqtt-essentials.pdf)
+-
