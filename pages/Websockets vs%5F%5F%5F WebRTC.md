@@ -24,5 +24,9 @@
 - WebRTC: Video conferencing, voice calling, live streaming, multiplayer gaming, remote collaboration and screen sharing.In summary, WebSockets are suitable for applications that require persistent bidirectional communication, while WebRTC is preferable for applications demanding real-time multimedia communication and peer-to-peer connectivity.
 -
 - tags: [[websockets]] , [[webrtc]],  [[nodejs]]
+<<<<<<< HEAD
+=======
+- tags: [[#websockets]] , [[#webrtc]],  [[nodejs]]
+>>>>>>> 617d85e (fix: related to the mp4 files.)
 -
 -
