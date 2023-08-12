@@ -4,6 +4,7 @@
 	- I read through Somm Info
 	-
 - ### Purpose for next meeting
+	- #### People need money markets, badly.
 	-
 	- I read through Somm Info
 		- Link to new proposal
