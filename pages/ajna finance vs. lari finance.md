@@ -1,0 +1,4 @@
+# Ajna
+- ### Key Terms
+	-
+-
