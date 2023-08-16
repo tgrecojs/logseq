@@ -9,5 +9,5 @@
 	- ### Not Boring
 		- https://www.notboring.co/p/everything-is-broken
 - ### Bain
-	- /ass
+	-
 	-
