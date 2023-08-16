@@ -1,6 +1,8 @@
 - [[Endo Applications]]
 - [[Daemon Videos]]
 - [[Attenuator]]
+- [[EventEmitter]]
+-
 -
 - ## [[@endo/{packages}]]
 - [[Questions]]

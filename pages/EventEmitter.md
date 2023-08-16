@@ -1,0 +1,24 @@
+- -
+- Well, I personally won’t touch `node:events` with a pole of any length regardless of how many layers of æsbestos it’s wrapped in, but that doesn’t mean it’s the source of your particular woes.
+- -
+- [20:15](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$QHm7kjibzingWopaBuSYqTQMoUHorMnp3JSTI6mhdvI?via=matrix.org&via=luxaritas.com&via=alteck.club)
+- Nearly everything you can do with an EventEmitter you can do with sufficient application of promise, iterator, and async iterator, and in the end, be more portable between web and node.
+- -
+- [](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$pmdtrv59MfSLSxmA6EawJX5y6PXgpIitN4Xh2el0cko?via=matrix.org&via=luxaritas.com&via=alteck.club)
+- In short, I will strike down any change to `daemon.js` that touches an EventEmitter. However, it’s necessary to tolerate some use of event emitters in `daemon-node-powers.js` as that’s where the domain-specific bindings occur.
+- -
+- [](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$OReP7xc8ITdkL9hUIiP3jwzLOyUuCQI_7fj38DZ7bbw?via=matrix.org&via=luxaritas.com&via=alteck.club)
+- EventEmitter can be used as a promise or async iterator if you’re careful with it, but generally, you’d be better served EITHER (for speed) by a delegate object with a well-defined type and well-defined state machine or (for ergonomics and avoiding foot-guns) an actual promise or async iterator.
+- -
+- [](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$SHdA3PPl_3TDNFf7y6S0eqouQu_XjC1eGCBftJ3yrvA?via=matrix.org&via=luxaritas.com&via=alteck.club)
+- EventEmitters are ad-hoc state machines. To program with them effectively, you need more comments than code to make that state machine explicit. Like, what events you can expect in each state and how state transitions occur. What order you expect those events to be emitted by transitions.
+- -
+- [](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$bqem5QDeedzP5BmuyvuXedv-BY8zXfwcd_OwMPIxB6o?via=matrix.org&via=luxaritas.com&via=alteck.club)
+- If you’re using an EventEmitter as a promise, you must register your listeners before the state change. If you’re using a promise, order does not matter at all.
+- -
+- [](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$M3CYInT31Fz3pGYyqkIqqcfr9iv4NCLL_ImKcZkOW10?via=matrix.org&via=luxaritas.com&via=alteck.club
+- If you use an EventEmitter, you get a “free” `error` event and if it’s emitted before the consumer registers a handler, that materializes as an uncaught exception and tears the process down.
+- (edited)
+- -
+- [](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$j9kMmG6943khEttTaxASbpq6x26QycbZJLa88gY0DIA?via=matrix.org&via=luxaritas.com&via=alteck.club)
+- Thanks for attending my TED talk.
