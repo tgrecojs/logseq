@@ -1,1 +1,2 @@
-- When
+- When a guest is granted a reference (to some resource), should we store it.
+-
