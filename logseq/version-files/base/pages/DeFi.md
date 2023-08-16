@@ -7,5 +7,7 @@
 	- ### RWA.xyz
 		- https://www.rwa.xyz/blog #RWA
 	- ### Not Boring
-		-
-		-
+		- https://www.notboring.co/p/everything-is-broken
+- ### Bain
+	- /ass
+	-
