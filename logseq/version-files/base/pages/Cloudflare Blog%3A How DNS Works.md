@@ -1,7 +1,13 @@
 hypothesis-uri:: https://www.cloudflare.com/learning/dns/what-is-dns/
 hypothesis-title:: What Is DNS? | How DNS Works | Cloudflare
 hypothesis-naming-scheme:: 0.2.0
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+=======
+>>>>>>> 617d85e (fix: related to the mp4 files.)
+=======
+>>>>>>> 617d85e (fix: related to the mp4 files.)
 -
 - 📌 DNS translates domain names to IP addresses so browsers can load Internet resources.
   hid:: 3EfpUh-GEe60VDc1yILjog

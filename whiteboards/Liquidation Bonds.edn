@@ -1,0 +1,44 @@
+{:blocks (
+{:block/created-at 1691819847013
+:block/properties 
+{:ls-type :whiteboard-shape
+:logseq.tldraw.shape 
+{:stroke ""
+:rotation 0
+:borderRadius 2
+:index 0
+:scale [1 -1]
+:scaleLevel "md"
+:fill ""
+:type "box"
+:size [320 528]
+:strokeType "line"
+:strokeWidth 2
+:opacity 1
+:label ""
+:id "1ad06ac0-38d5-11ee-a78a-af4802153e38"
+:fontWeight 400
+:noFill false
+:point [1664 712]
+:fontSize 20
+:parentId "64d6f6bb-0a61-4d61-8431-a88456b9de2e"
+:nonce 1691819842614
+:italic false}}
+:block/updated-at 1691819847013})
+:pages (
+{:block/uuid #uuid "64d6f6bb-0a61-4d61-8431-a88456b9de2e"
+:block/properties 
+{:ls-type :whiteboard-page
+:logseq.tldraw.page 
+{:id "64d6f6bb-0a61-4d61-8431-a88456b9de2e"
+:name "liquidation bonds"
+:bindings 
+{}
+:nonce 1
+:assets []
+:shapes-index ("1ad06ac0-38d5-11ee-a78a-af4802153e38")}}
+:block/updated-at 1691819848348
+:block/created-at 1691809467503
+:block/type "whiteboard"
+:block/name "liquidation bonds"
+:block/original-name "Liquidation Bonds"})}

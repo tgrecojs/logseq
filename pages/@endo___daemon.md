@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 - ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
 =======
 ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
@@ -95,4 +93,5 @@
 =======
 -
 >>>>>>> 617d85e (fix: related to the mp4 files.)
+-
 -

@@ -1,3 +1,4 @@
+- Source - https://www.hpl.hp.com/techreports/2006/HPL-2006-116.html
 - Source:
 	- https://www.hpl.hp.com/techreports/2006/HPL-2006-116.html
 - ### Overview
@@ -8,9 +9,11 @@
 		- Jessie.js disallows the use of `Array.prototype.push.
 		- In Emily, "hidden-but-present memory-violating functions (such as `Array.unsafe_set`) are disallowed"
 	- "Providing the reference to an object must grant the permission to use the object."
+	- It is not enough to just provide an application with a reference to `fs.readFile`. **In order to use `fs.readFile`, the application must hold the powers necessary to work with `fs`.**
 		- It is not enough to just provide an application with a reference to `fs.readFile`.
 		- **In order to use `fs.readFile`, the application must hold the powers necessary to work with `fs`.**
 		- ### `Sash` - "Safe Bash"
+- `Sash` - "Safe Bash"
 			- Powerbox for implementing safe bash commands
 			- Why?
 				- While we might not realize it, we often grant bash with excessive authority over our filesystem in exchange for having it carry out menial tasks.
@@ -23,6 +26,7 @@
 							- `=` grant "read" permissions to this argument
 							- `+` grant read/write permissions to this arguent.
 						-
+	- "forgery-resistant"
 			- ### "forgery-resistant"
 				- example of cli-phishing
 					- program attempting to acquire the password to a user's PGP key. The attacker formats the output to present itself to the user as a gpg command processor, and uses stdin to read the passphrase, in a phishing-style attack.
