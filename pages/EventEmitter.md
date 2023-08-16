@@ -1,10 +1,7 @@
-- -
 - Well, I personally won’t touch `node:events` with a pole of any length regardless of how many layers of æsbestos it’s wrapped in, but that doesn’t mean it’s the source of your particular woes.
-- -
-- [20:15](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$QHm7kjibzingWopaBuSYqTQMoUHorMnp3JSTI6mhdvI?via=matrix.org&via=luxaritas.com&via=alteck.club)
+- [20:15](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$QHm7kjibzingWopaBuSYqTQMoUHorMnp3JSTI6mhdvI?via=matrix.org&via=luxaritas.com&via=alteck.club
 - Nearly everything you can do with an EventEmitter you can do with sufficient application of promise, iterator, and async iterator, and in the end, be more portable between web and node.
-- -
-- [](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$pmdtrv59MfSLSxmA6EawJX5y6PXgpIitN4Xh2el0cko?via=matrix.org&via=luxaritas.com&via=alteck.club)
+- -[](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$pmdtrv59MfSLSxmA6EawJX5y6PXgpIitN4Xh2el0cko?via=matrix.org&via=luxaritas.com&via=alteck.club)
 - In short, I will strike down any change to `daemon.js` that touches an EventEmitter. However, it’s necessary to tolerate some use of event emitters in `daemon-node-powers.js` as that’s where the domain-specific bindings occur.
 - -
 - [](https://matrix.to/#/!MYcRZqNhDImDvJSOCX:matrix.org/$OReP7xc8ITdkL9hUIiP3jwzLOyUuCQI_7fj38DZ7bbw?via=matrix.org&via=luxaritas.com&via=alteck.club)
