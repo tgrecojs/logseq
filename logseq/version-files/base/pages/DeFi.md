@@ -9,5 +9,5 @@
 	- ### Not Boring
 		- https://www.notboring.co/p/everything-is-broken
 - ### Bain
-	-
+	- ![Bain - Private Asset Investing Desperately Needs New Market Infrastructure.pdf](../assets/Bain_-_Private_Asset_Investing_Desperately_Needs_New_Market_Infrastructure_1692174162659_0.pdf)
 	-
