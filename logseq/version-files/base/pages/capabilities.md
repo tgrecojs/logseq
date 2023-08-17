@@ -1,0 +1,20 @@
+-
+- ## Glossary
+	- #### Object-Capability Model
+		- a model of computation and security that aims to capture the semantics of many actual object-based programming languages and capability-based systems.
+	- #### Object-Capability System
+		- An instance of the model and comprises just a collection of objects, connected to each other by capabilities.
+		- An object is a protected entity comprising code and mutable state that together deﬁne its behaviour.
+		- An object’s state includes both data and the capabilities it possesses.
+			- A capability c is an unforgeable object reference that allows its holder to send messages to the object it references by invoking c. In any object-capability system, capabilities and data are primitively distinct, meaning that each can always be distinguished from the other 6 .
+	-
+	- ## Equality
+		- ## The Left Hand of Equals
+			- > Autognosis means ‘self knowledge’. An autognostic object can only have detailed knowledge of itself. All other objects are abstract. The converse is quite useful: any programming model that allows inspection of the representation of more than one abstraction at a time is not object-oriented.
+		-
+	- ## Powerbox
+	  collapsed:: true
+		- {{embed [[Powerbox Pattern]]}}
+- ### Waterken
+	- #### [Object message passing protocol](https://web.archive.org/web/20030207122651/http://waterken.com:80/dev/Web/Message/)
+	-

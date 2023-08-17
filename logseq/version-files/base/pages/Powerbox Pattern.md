@@ -34,6 +34,5 @@
 				- the renderer only has authority to the `document` API (assuming that the user-interface is being rendered within its own confined, frozen Compartment).
 			- example - Native Application - card deck shuffler
 -
-- Extending Powerboxes:
 -
 -
