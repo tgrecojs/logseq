@@ -5,7 +5,7 @@
 	- ### Positions
 		- `top-left`, `top-center`, `top-right`,
 		- `center-left`, `center-right`,
-		-
+		- `bottom-left`, `bottom-center`, `bottom-right`
 	- ### [Connections](https://d2lang.com/tour/connections)
 		- Defined via
 			- `—`
