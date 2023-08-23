@@ -6,6 +6,8 @@
 		- {{renderer :d2_lang_upozd}}
 			- ```d2
 			  father;
+			  father.son;
+			  father --> father.son
 			  
 			  ```
 -
