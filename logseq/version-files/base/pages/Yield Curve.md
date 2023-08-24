@@ -3,7 +3,8 @@
 	- Range from 3 months to 30 years
 	- Classifying Curves
 		- Normal
-			- Short-term > Long-term
+			- Short-term maturities produce lower yields than long term.
+			- than long-term
 			- Upward sloping
 			- This indicates that rates will likely rise.
 		- Flat
