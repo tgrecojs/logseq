@@ -3,5 +3,10 @@
 	- Range from 3 months to 30 years
 	- Classifying Curves
 		- Normal
+			- Short-term interest  Long-term
+			- Upward sloping
+			- This indicates that rates will likely rise.
+		- Flat
+		- Inverted
 			- Short-term
 tags:: #[[Financial Markets]]

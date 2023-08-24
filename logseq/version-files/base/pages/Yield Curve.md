@@ -1,3 +1,12 @@
 - Different IR paid by bonds with the same level of risk but different maturities.
-	- 3
+- ## Maturities
+	- Range from 3 months to 30 years
+	- Classifying Curves
+		- Normal
+			- Short-term > Long-term
+			- Upward sloping
+			- This indicates that rates will likely rise.
+		- Flat
+		- Inverted
+			- Short-term
 tags:: #[[Financial Markets]]
