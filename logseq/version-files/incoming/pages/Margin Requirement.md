@@ -16,4 +16,3 @@
 		-
 - ### Resources
 	- https://www.firstrade.com/resources/guides/margin/margin-requirements
--
