@@ -10,7 +10,8 @@
 		- ABC stock has an initial margin requirement of 50%. Alice wishes to get $10k exposure to ABC stock, which has an initial margin requirement of 50%.
 		- Alice needs to provide at least $5k of her own cash to access a position equal to $10k exposure. This $10k is referred to as her **buying power**.
 		- ![margin-requirement.png](../assets/margin-requirement_1693035129851_0.png)
-		-
+	- ### **Maintenance Margin Requirement**.
+		- The minumum percentage of value that a position must maintain.
 		-
 		-
 - ### Resources
