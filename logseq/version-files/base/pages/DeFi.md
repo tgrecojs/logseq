@@ -12,6 +12,7 @@
 			  > For example, it has been used to explain the stock market crash of 1987 (Brunnermeier and Pedersen (2009)), the LTCM crisis of 1998 (Gromb and Vayanos (2002)) and the current crisis (Bernanke (2009)). The Bank of England (BOE) incorporates this mechanism into their quantitative Risk Assessment Model for Systemic Institutions RAMSI (Aikman et al (2009)). 
 			  
 			  > In all of these cases, the initial trigger was relatively small in magnitude and local (e.g. the Russian default in 1998 and mergers and acquisitions related news in 1987) but spread rapidly and broadly to other markets globally. The amplification underlying these events is suggested to operate as follows: an initial shock tightens funding constraints, causing net worth of institutions to decrease, and funding conditions to tighten further.
+	-
 	- ![principle-agent-finance.pdf](../assets/principle-agent-finance_1692249422022_0.pdf)
 	-
 -
