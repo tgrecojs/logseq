@@ -6,6 +6,6 @@
 	- > According to Regulation T of the Federal Reserve Board, the Initial Margin requirement for stocks is 50%, and the Maintenance Margin Requirement is 25%, while higher requirements for both might apply for certain securities.
 	- ### Initial Margin Requirement
 		- The percentage of equity required when an investor opens a position.
-		- Ex. The s
+		- Ex. ABC stock which has an initial margin requirement of 50%. To receive
 - ### Resources
 	- https://www.firstrade.com/resources/guides/margin/margin-requirements
