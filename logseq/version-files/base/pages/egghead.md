@@ -1,6 +1,8 @@
 ### Secure ECMAScript
 	- ### Video 1
-		- Here we have an index.html file which is loading this index.js file using the script
+		- Here we have an index.html file which loads in this index.js file using the script element.
+		- Let's make use of this isFrozen function
+		-
 	- ### write file code
 	  collapsed:: true
 		- ```javascript
