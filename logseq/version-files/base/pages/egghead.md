@@ -7,6 +7,7 @@
 		- Luckily for us, we can prevents scenarios like this from taking place by importing the Secure ECMAScript library.
 		- Secure ECMASCript, or SES as it's commonly referred to is going to expose a global lockdown function which I'm going to invoke immediately after our import.
 		- Now if we reload the page, we'll see this our Array prototype is frozen!
+		- And just like that, we've mitigated the threat of prototype pollution from occuring.
 		-
 		-
 		-
