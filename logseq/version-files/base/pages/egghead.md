@@ -1,6 +1,10 @@
 ### Secure ECMAScript
 	- ### Video 1
 		- Here we have an index.html file which loads in this index.js file using the script element.
+		- Inside here we c2 things in this file we want to note:
+			- First,
+			  logseq.order-list-type:: number
+		-
 		- Let's make use of this isFrozen function things to investigate things that we know to be true.
 			- Specifically, let's check out our program's Array prototype.... if we reload the page, we'll see that this executes to be false.
 			- Although this is the expected behavior, the ability to mutate globals such as the Array prototype provides malicious 3rd parties with an opportunity to steal potentially sensitive data.

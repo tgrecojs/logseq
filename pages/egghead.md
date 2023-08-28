@@ -1,8 +1,8 @@
 ### Secure ECMAScript
 	- ### Video 1
 		- Here we have an index.html file which loads in this index.js file using the script element.
-		- Inside this file, we're doing 2 things.
-			- First, we
+		- Inside here we c2 things in this file we want to note:
+			- First,
 			  logseq.order-list-type:: number
 		-
 		- Let's make use of this isFrozen function things to investigate things that we know to be true.
