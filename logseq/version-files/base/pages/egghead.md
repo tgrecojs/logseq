@@ -15,7 +15,6 @@
 		- we can investigate things that we know to be
 		-
 	- ### write file code
-	  collapsed:: true
 		- ```javascript
 		  const isFrozen = (x) => Object.isFrozen(x);
 		  
