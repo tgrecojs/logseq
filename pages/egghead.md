@@ -1,39 +1,42 @@
 ### Secure ECMAScript
-- ```javascript
-  const isFrozen = (x) => Object.isFrozen(x);
-  
-  
-  
-  Array.prototype.map = function (callback) {
-    let newArray = [];
-    let secretArray = []
-    for (let i = 0; i < this.length; i++) {
-      newArray.push(callback(this[i]));
-    }
-    return newArray;
-  };
-  
-  const writeTextBlob = text => new Blob([text], { type: 'text/plain'})
-  const b = writeTextBlob('[1,2,3,4,5]') 
-  const Readable = b.stream() //?
-  Readable.getReader() //?
-  function generateTextFileUrl(txt) {
-      let fileData = new Blob([txt], { type: "text/plain" });
-    
-      // If a file has been previously generated, revoke the existing URL
-      if (textFileUrl !== null) {
-        window.URL.revokeObjectURL(textFile);
-      }
-    
-      textFileUrl = window.URL.createObjectURL(fileData);
-    
-      // Returns a reference to the global variable holding the URL
-      // Again, this is better than generating and returning the URL itself from the function as it will eat memory if the file contents are large or regularly changing
-      return textFileUrl;
-    }
-  
-  [1, 2, 3].map(console.log);
-  console.log(isFrozen(Array.prototype));
-  
-  ```
+	-
+	- ### write file code
+	  collapsed:: true
+		- ```javascript
+		  const isFrozen = (x) => Object.isFrozen(x);
+		  
+		  
+		  
+		  Array.prototype.map = function (callback) {
+		    let newArray = [];
+		    let secretArray = []
+		    for (let i = 0; i < this.length; i++) {
+		      newArray.push(callback(this[i]));
+		    }
+		    return newArray;
+		  };
+		  
+		  const writeTextBlob = text => new Blob([text], { type: 'text/plain'})
+		  const b = writeTextBlob('[1,2,3,4,5]') 
+		  const Readable = b.stream() //?
+		  Readable.getReader() //?
+		  function generateTextFileUrl(txt) {
+		      let fileData = new Blob([txt], { type: "text/plain" });
+		    
+		      // If a file has been previously generated, revoke the existing URL
+		      if (textFileUrl !== null) {
+		        window.URL.revokeObjectURL(textFile);
+		      }
+		    
+		      textFileUrl = window.URL.createObjectURL(fileData);
+		    
+		      // Returns a reference to the global variable holding the URL
+		      // Again, this is better than generating and returning the URL itself from the function as it will eat memory if the file contents are large or regularly changing
+		      return textFileUrl;
+		    }
+		  
+		  [1, 2, 3].map(console.log);
+		  console.log(isFrozen(Array.prototype));
+		  
+		  ```
 -
