@@ -5,8 +5,8 @@
 			- Specifically, let's check out our program's Array prototype.... if we reload the page, we'll see that this executes to be false.
 			- Although this is the expected behavior, the ability to mutate globals such as the Array prototype provides malicious 3rd parties with an opportunity to steal potentially sensitive data.
 		- Luckily for us, we can prevents scenarios like this from taking place by importing the Secure ECMAScript library.
-		- Secure ECMASCript, or SES as it's commonly re
-		- The SES library is going to expose a global lockdown function which I'm going to invoke immediately after our import.
+		- Secure ECMASCript, or SES as it's commonly referred to is going to expose a global lockdown function which I'm going to invoke immediately after our import.
+		- Now if we reload the page, we'll see this our Array prototype is frozen!
 		-
 		-
 		-
