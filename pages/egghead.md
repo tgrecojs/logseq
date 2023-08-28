@@ -1,6 +1,8 @@
 ### Secure ECMAScript
 	- ### Video 1
-		- Here we have an index.html file which is loading this index.js file as
+		- Here we have an index.html file which loads in this index.js file using the script element.
+		-
+		-
 	- ### write file code
 	  collapsed:: true
 		- ```javascript
