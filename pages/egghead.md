@@ -1,9 +1,9 @@
 ### Secure ECMAScript
 	- ### Video 1
 		- Here we have an index.html file which loads in this index.js file using the script element.
-		- Let's make use of this isFrozen function things to investigate things that we know to be true. Specifically, let's check out our program's Array prototype.... if we reload the page, we'll see that this executes to be false. Although this is the expected behavior, the ability to mutate, or change the behavior of globals such as the Array prototype can result in
-		- Now this behavior, although
-		- While this shouldn't come as a surprise, this behavior, although expected, can  this is the expected behavior.
+		- Let's make use of this isFrozen function things to investigate things that we know to be true.
+			- Specifically, let's check out our program's Array prototype.... if we reload the page, we'll see that this executes to be false.
+			- Although this is the expected behavior, the ability to mutate, or change the behavior of globals such as the Array prototype presents malicious 3rd parties with an opportunity to steal potentially sensitive data.
 		-
 		-
 		- we can investigate things that we know to be
