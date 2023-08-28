@@ -53,3 +53,12 @@
 		  
 		  ```
 -
+- Array.prototype.map = function (callback) {
+- let newArray = [];
+- *for* (let i = 0; i < this.length; i++) {
+- newArray.push(callback(this[i]));
+- console.log({ newArray, value: this[i] });
+- }
+- *return* newArray;
+- };
+- [1, 2, 3, 4].map((x) => x * 2);
