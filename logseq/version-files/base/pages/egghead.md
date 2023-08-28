@@ -1,7 +1,8 @@
 ### Secure ECMAScript
 	- ### Video 1
 		- Here we have an index.html file which loads in this index.js file using the script element.
-		- Let's make use of this isFrozen function things to investigate things that we know to be true. Specifically, let's check out our program's Array prototype.... if we reload the page, we'll see that this executes to be false
+		- Let's make use of this isFrozen function things to investigate things that we know to be true. Specifically, let's check out our program's Array prototype.... if we reload the page, we'll see that this executes to be false.
+		- No surprise here as this is the expected behavior.
 		-
 		-
 		- we can investigate things that we know to be
