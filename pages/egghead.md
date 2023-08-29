@@ -1,4 +1,4 @@
-### Secure ECMAScript
+### Writing Defensively Consistent Programs with Hardened JS
 	- ### Video 1
 		- #### Transcript
 			- ~~We have a bit of code, nothing too...~~
