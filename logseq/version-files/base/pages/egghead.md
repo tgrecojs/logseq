@@ -1,5 +1,6 @@
 ### Secure ECMAScript
 	- ### Video 1
+	  collapsed:: true
 		- Here we have an index.html file which loads in this index.js file using the script element.
 		- Inside here we c2 things in this file we want to note:
 			- First,
@@ -19,6 +20,7 @@
 		- we can investigate things that we know to be
 		-
 	- ### write file code
+	  collapsed:: true
 		- ```javascript
 		  const isFrozen = (x) => Object.isFrozen(x);
 		  
@@ -56,13 +58,3 @@
 		  console.log(isFrozen(Array.prototype));
 		  
 		  ```
--
-- Array.prototype.map = function (callback) {
-- let newArray = [];
-- *for* (let i = 0; i < this.length; i++) {
-- newArray.push(callback(this[i]));
-- console.log({ newArray, value: this[i] });
-- }
-- *return* newArray;
-- };
-- [1, 2, 3, 4].map((x) => x * 2);
