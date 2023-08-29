@@ -20,6 +20,8 @@
 				- Node.js includes additional intrinsics that are specific to server-side operations, such as `require` for module loading, `fs` for file system operations, and `http` for building HTTP servers. In contrast, browser-based JavaScript has additional intrinsics related to browser APIs, such as `document` for manipulating the HTML document, `window` for accessing the browser window object, and `fetch` for making HTTP requests.
 				- It's important to note that the specific set of intrinsics may vary depending on the JavaScript engine or environment being used.
 		-
+	- ### Harden JS
+		-
 	- ### Video 1
 		- #### Transcript
 			- ~~We have a bit of code, nothing too...~~
