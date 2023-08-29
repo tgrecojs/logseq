@@ -6,19 +6,19 @@
 		  :END:
 			- In the context of JavaScript, "intrinsics" refer to built-in objects and functions that are accessible directly from the language runtime. They are part of the JavaScript specification and provide core functionalities to the language. Examples of intrinsics in JavaScript include ﻿Object, ﻿Array, ﻿String, and ﻿Math. These intrinsics provide functionality and methods that can be used without requiring explicit imports or additional code.
 			- **Can you provide me with an exhaustive list of JavaScript intrinics?**
-			-
-			- Providing an exhaustive list of all JavaScript intrinsics would be challenging due to the vast number of built-in objects and functions. However, I can give you an overview of some commonly used ones in JavaScript:
-				- `Object`: Provides methods for creating and manipulating objects.
-				- `Array`: Represents an ordered list of elements and provides methods for working with arrays.
-				- `String`: Represents a sequence of characters and provides methods for working with strings.
-				- `Math`: Provides mathematical operations and functions.
-				- `Date`: Represents a date and time.
-				- `RegExp`: Represents a regular expression for pattern matching and manipulation.
-				- `Function`: Represents a JavaScript function.
-				- `Promise`: Represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
-		- Yes, there are some differences between the intrinsics available in Node.js and browser-based JavaScript. Node.js includes additional intrinsics that are specific to server-side operations, such as `require` for module loading, `fs` for file system operations, and `http` for building HTTP servers. In contrast, browser-based JavaScript has additional intrinsics related to browser APIs, such as `document` for manipulating the HTML document, `window` for accessing the browser window object, and `fetch` for making HTTP requests.
-		  
-		  It's important to note that the specific set of intrinsics may vary depending on the JavaScript engine or environment being used.
+				- Providing an exhaustive list of all JavaScript intrinsics would be challenging due to the vast number of built-in objects and functions. However, I can give you an overview of some commonly used ones in JavaScript:
+					- `Object`: Provides methods for creating and manipulating objects.
+					- `Array`: Represents an ordered list of elements and provides methods for working with arrays.
+					- `String`: Represents a sequence of characters and provides methods for working with strings.
+					- `Math`: Provides mathematical operations and functions.
+					- `Date`: Represents a date and time.
+					- `RegExp`: Represents a regular expression for pattern matching and manipulation.
+					- `Function`: Represents a JavaScript function.
+					- `Promise`: Represents the eventual completion (or failure) of an asynchronous operation and its resulting value.
+			- **Do node.js and browser-based JavaScript provide a different set of instrinics?**
+				- Yes, there are some differences between the intrinsics available in Node.js and browser-based JavaScript.
+				- Node.js includes additional intrinsics that are specific to server-side operations, such as `require` for module loading, `fs` for file system operations, and `http` for building HTTP servers. In contrast, browser-based JavaScript has additional intrinsics related to browser APIs, such as `document` for manipulating the HTML document, `window` for accessing the browser window object, and `fetch` for making HTTP requests.
+				- It's important to note that the specific set of intrinsics may vary depending on the JavaScript engine or environment being used.
 		-
 	- ### Video 1
 		- #### Transcript
