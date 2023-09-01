@@ -1,4 +1,6 @@
 ## Writing Defensively Consistent Programs with Hardened JS
+	- ## Lockdown
+		-
 	- ## Notes
 		- ### JavaScript Intrinsics
 		  :LOGBOOK:
@@ -113,3 +115,4 @@
 			  
 			  ```
 - ### Harden
+-
