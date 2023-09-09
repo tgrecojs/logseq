@@ -1,4 +1,5 @@
 ## `servePort`
+	- investigate usage of websockets within endo
 	-
 	-
 	- September 9th
