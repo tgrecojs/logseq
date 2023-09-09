@@ -1,5 +1,6 @@
 ## `servePort`
 id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
+collapsed:: true
 	- investigate usage of websockets within endo
 	- ### Action Item
 		- LATER add the logic for renaming a value in the pet storre directy fro the UI.
