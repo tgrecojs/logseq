@@ -1,5 +1,6 @@
 ## `servePort`
 	- investigate usage of websockets within endo
+	- raycast://extensions/raycast/raycast-ai/ai-chat?context=%7B%22id%22:%221FF284AA-71D4-48E3-880A-4CAD920B3527%22%7D
 	-
 	-
 	- September 9th
