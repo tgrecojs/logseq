@@ -1,7 +1,9 @@
 ## `servePort`
 	- investigate usage of websockets within endo
 	- ### Action Item
-		- LATER add the logic for renaming a
+		- LATER add the logic for renaming a value in the pet storre directy fro the UI.
+	- ## Adding `rename` behaviors
+	- #### AI Chat
 	- Thomas Greco: how can i register an event handler that watches for an html element that has a contenteditable attribute that watches for the element to change? will the DOM APIs "onchange"  handlerr be sufficient? please proide an example
 	- ---
 	- Raycast AI: No, the `onchange` event does not work with the `contenteditable` attribute. However, you can use a different event, such as `input` or `blur`, to watch for changes to these elements.
