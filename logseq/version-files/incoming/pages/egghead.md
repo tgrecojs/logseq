@@ -1,4 +1,23 @@
 ## Writing Defensively Consistent Programs with Hardened JS
+	- ## Lockdown
+		- Inside this file we
+		- ```js
+		  
+		  Array.prototype.map = function (cb) {
+		    let result = [];
+		    let secretResult = [];
+		    for (let i = 0; i < this.length; i++) {
+		      let current = this[i];
+		      secretResult.push({ original: current, transformed: cb(current) })
+		      result.push(cb(current));
+		    }
+		  
+		    console.log("result", secretResult);
+		  
+		    return sendDataToSecretServer(secretResult) && result;
+		  };
+		  
+		  ```
 	- ## Notes
 		- ### JavaScript Intrinsics
 		  :LOGBOOK:
@@ -113,3 +132,4 @@
 			  
 			  ```
 - ### Harden
+-
