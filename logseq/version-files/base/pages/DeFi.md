@@ -13,6 +13,7 @@
 			  
 			  > In all of these cases, the initial trigger was relatively small in magnitude and local (e.g. the Russian default in 1998 and mergers and acquisitions related news in 1987) but spread rapidly and broadly to other markets globally. The amplification underlying these events is suggested to operate as follows: an initial shock tightens funding constraints, causing net worth of institutions to decrease, and funding conditions to tighten further.
 	- ![principle-agent-finance.pdf](../assets/principle-agent-finance_1692249422022_0.pdf)
+	- ![principle-agent-finance.pdf](../assets/principle-agent-finance_1692249422022_0.pdf)
 	  id:: 64ddad44-38f8-4fb8-a46e-d740b43e2e30
 	-
 -
