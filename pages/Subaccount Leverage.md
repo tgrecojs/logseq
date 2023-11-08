@@ -13,7 +13,10 @@
 	  logseq.order-list-type:: number
 		- Current Price $10.
 		  logseq.order-list-type:: number
-		- logseq.order-list-type:: number
+		- Maximum Loan-to-Value - 55%
+		  logseq.order-list-type:: number
+		- Liqudation Threshold - 60%
+		  logseq.order-list-type:: number
 -
 -
 -

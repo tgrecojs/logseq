@@ -8,6 +8,16 @@
 	- Inter allows users to create  "vaults" using one of the protocol's accepted collateral types.
 	  it mints the stablecoin $IST.
 -
+- Here is more information on the markets supported by Inter Protocol:
+	- $ATOM
+	  logseq.order-list-type:: number
+		- Current Price $10.
+		  logseq.order-list-type:: number
+		- Maximum Loan-to-Value - 55%
+		  logseq.order-list-type:: number
+		- Liqudation Threshold - 60%
+		  logseq.order-list-type:: number
+-
 -
 -
 -
