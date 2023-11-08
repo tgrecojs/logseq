@@ -7,7 +7,18 @@
 	- A user opens a **vault** by depositing a payment from one of the accepted collateral types
 	- Inter allows users to create  "vaults" using one of the protocol's accepted collateral types.
 	  it mints the stablecoin $IST.
-	-
+-
+- Here is more information on the markets supported by Inter Protocol:
+	- $ATOM
+	  logseq.order-list-type:: number
+		- Current Price $10.
+		  logseq.order-list-type:: number
+		- logseq.order-list-type:: number
+-
+-
+-
+-
+-
 - A "vault" is made opened inter-protocol. The owner of the vault uses $1M work of $ATOM.
   logseq.order-list-type:: number
 	- "vault" now has ability to mint upto $50000 $IST.

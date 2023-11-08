@@ -7,12 +7,15 @@
 	- A user opens a **vault** by depositing a payment from one of the accepted collateral types
 	- Inter allows users to create  "vaults" using one of the protocol's accepted collateral types.
 	  it mints the stablecoin $IST.
-	-
-- A "vault" is made opened inter-protocol.
-  logseq.order-list-type:: number
-- $1M in $ATOM is deposited.
+-
+-
+-
+-
+-
+- A "vault" is made opened inter-protocol. The owner of the vault uses $1M work of $ATOM.
   logseq.order-list-type:: number
 	- "vault" now has ability to mint upto $50000 $IST.
 	  logseq.order-list-type:: number
+- logseq.order-list-type:: number
 - ### Minting LnL Tokens
   * I'd like to mint 1000 LnL tokens with each token representing the underlying collateral and debt.
