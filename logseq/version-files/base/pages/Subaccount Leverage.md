@@ -8,7 +8,7 @@
 	- Inter allows users to create  "vaults" using one of the protocol's accepted collateral types.
 	  it mints the stablecoin $IST.
 	-
-- A "vault" is made on inter-protocol.
+- A "vault" is made opened inter-protocol.
   logseq.order-list-type:: number
 - $1M in $ATOM is deposited.
   logseq.order-list-type:: number
