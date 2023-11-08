@@ -5,7 +5,7 @@
 		- ![📄 Lari Labs, Inc. Organizational Documents Final {10.19.22}.pdf](../assets/Lari Labs, Inc. Organizational Documents Final {10.19.22}.pdf)
 	-
 - ### Links #November
-	- [[RESEARCH NOV 8TH]]
+	- [[Tax (Con'td) #November]]
 	- https://corp.delaware.gov/tag/calculating-franchise-tax/
 	- https://corp.delaware.gov/tag/calculating-franchise-tax/
 	- https://corp.delaware.gov
