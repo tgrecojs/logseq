@@ -1,4 +1,4 @@
-## Resources
+## Resources\
 	- [How to Calculate Franchise Taxes](https://corp.delaware.gov/frtaxcalc/)
 	- ### Documents
 		- ![📄 Lari Labs, Inc. SAFE (Cogitent Ventures).pdf](../assets/Lari Labs, Inc. SAFE (Cogitent Ventures).pdf)
@@ -6,6 +6,8 @@
 	-
 - ### Links #November
 	- [[RESEARCH NOV 8TH]]
+	- https://corp.delaware.gov/tag/calculating-franchise-tax/
+	- https://corp.delaware.gov/tag/calculating-franchise-tax/
 	- https://corp.delaware.gov
 	- https://corp.delaware.gov/frtaxcalc/
 	- Thomas Greco: here is info on how to calculate franchise tax. please read through the text so i can ask you questions about calculating francise tax for my own delaware corp.
