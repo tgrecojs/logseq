@@ -5,6 +5,8 @@
 		- ![📄 Lari Labs, Inc. Organizational Documents Final {10.19.22}.pdf](../assets/Lari Labs, Inc. Organizational Documents Final {10.19.22}.pdf)
 	-
 - ### Links #November
+	- [[RESEARCH NOV 8TH]]
+	-
 	- https://corp.delaware.gov/frtaxcalc/
 	- Thomas Greco: here is info on how to calculate franchise tax. please read through the text so i can ask you questions about calculating francise tax for my own delaware corp.
 	- Here is the text:
@@ -43,3 +45,4 @@
 	  > **NOTE:** If an amendment changing your stock or par value was filed with the Division of Corporations during the year, issued shares and total gross assets within **30 days** of the amendment must be given for **each portion** of the year during which each distinct authorized amount of capital stock or par value was in effect. The tax is then prorated for each portion of the year dividing the number of days the stock/par value was in effect by 365 days (366 leap year), then multiplying this result by the tax calculated for that portion of the year. The total tax for the year is the sum of all the prorated taxes for each portion of the year.
 	- ---
 	- Raycast AI: Sure, I have gone through the text, now you can ask your questions related to franchise tax calculation for your Delaware corporation.
+-
