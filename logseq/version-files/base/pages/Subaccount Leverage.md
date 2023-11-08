@@ -1,6 +1,6 @@
-- can you help me work through a scenario. i would like to create a derivative product representing a 2x long position.
-  we will call these "LNL" tokens - "Lounge 'n' Leverage".  The name is subject to change, however it is a great description of the service LnL token holders receive.
-- LnL tokens are powered by CDP stablecoin protocol, Inter (or Inter Protocol). Inter works similar to Maker DAO's minting process for the $DAI stable-coi
+- can you help me work through a scenario. i would like to create a derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".  The name is subject to change, however it is a great description of the service LnL token holders receive.
+- ## How they work
+- LnL tokens are powered by CDP stablecoin protocol, Inter (or Inter Protocol). Inter's mechanism for minting $IST is very similiar to Maker. works similar to Maker DAO's minting process for the $DAI stable-coin, h
 - the protocol is "Inter Protocol" or "Inter". Inter's mechanism for minting $IST is very similiar to Maker.
 - A user opens a **vault** by depositing a payment from one of the accepted collateral types
 - Inter allows users to create  "vaults" using one of the protocol's accepted collateral types.
