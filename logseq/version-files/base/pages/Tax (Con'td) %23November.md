@@ -1,6 +1,6 @@
 ## Links
 	- ## corp.delaware.gov
-		- [how to calculate franchise taxes](https://corp.delaware.gov/frtaxcalc/)
+		- "How to Calculate Franchise Tax" - https://corp.delaware.gov/frtaxcalc/
 		- https://corp.delaware.gov/tag/calculating-franchise-tax/
 		-
 	-
