@@ -1,7 +1,9 @@
-### Links #November
+## Links
+	- https://corp.delaware.gov/tag/calculating-franchise-tax/
 	- https://corp.delaware.gov/frtaxcalc/
-	- Thomas Greco: here is info on how to calculate franchise tax. please read through the text so i can ask you questions about calculating francise tax for my own delaware corp.
-	- Here is the text:
+	-
+- ### Tax Convo
+	-
 	- Effective January 1, 2018, a domestic stock or non-stock for profit corporation incorporated in the State of Delaware is required to pay annual franchise tax. The minimum tax is $175.00, for corporations using the Authorized Shares method and a minimum tax of $400.00 for corporations using the Assumed Par Value Capital Method. All corporations using either method will have a maximum tax of $200,000.00. Corporations owing $5,000.00 or more make estimated payments with 40% due June 1st, 20% due by September 1st, 20% due by December 1st, and the remainder due March 1st.
 	- The Annual Franchise Tax assessment is based on the authorized shares. Use the method that results in the lesser tax. The total tax will never be less than $175.00, or more than $200,000.00.
 	- **Non-Stock for Profit**
