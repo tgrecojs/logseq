@@ -8,8 +8,12 @@
 - This need for stable medium-of-exchange translates into the blockchain ecosystem. Thus far, there have been two dominant systems of minting stable-coins that have emerged.
 	- Fiat-backed stablecoins
 	  logseq.order-list-type:: number
+		- These stable-coins are backed by
+		  logseq.order-list-type:: number
 	- Collateralized-Debt Position Stablecoins
 	  logseq.order-list-type:: number
+	-
+	-
 	-
 	- For this reason, marketplaces have evolved  currencies such as the US Dollar, or the Euro,
 	  logseq.order-list-type:: number
