@@ -3,7 +3,7 @@
 - LnL tokens are powered by CDP stablecoin protocol, Inter (or Inter Protocol). Stable-coins play a critical role in blockchain-based economies. They form the basis for marketplaces to emerge medium-of-exchange.
 	- crypto-economie s marketplaces 
 	  logseq.order-list-type:: number
-	- Instead of having to pay for goods or services with a volatile asset like Bitcoin or Ethereum. cryptocurrencies such as $IST, $DAI, and $USDC have emerg   Inter's mechanism for minting $IST is very similar to Maker DAO's process for minting $DAI. Maker allows users to open “vaults” by depositing Ethereum. The user can choose to mint $IST, a cryptocurrency pegged at $1.
+	- Instead of having to pay for goods or services with a volatile asset like Bitcoin or Ethereum. cryptocurrencies such as $IST, $DAI, and $USDC have    Inter's mechanism for minting $IST is very similar to Maker DAO's process for minting $DAI. Maker allows users to open “vaults” by depositing Ethereum. The user can choose to mint $IST, a cryptocurrency pegged at $1.
 	  logseq.order-list-type:: number
 	- users of Inter Protocol deposit $ATOM  
 	  logseq.order-list-type:: number
