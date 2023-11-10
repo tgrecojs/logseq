@@ -1,6 +1,6 @@
 - can you help me work through a scenario. i would like to create a derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".  The name is subject to change, however it is a great description of the service LnL token holders receive.
 - ## How they work
-- LnL tokens are powered by CDP stablecoin protocol, Inter (or Inter Protocol). Stable-coins play a critical role in blockchain-based economies as they provide users with the ability to price items  medium-of-exchange.
+- LnL tokens are powered by CDP stablecoin protocol, Inter (or Inter Protocol). Stable-coins play a critical role in blockchain-based economies. They form the basis for  marketplaces to emerge medium-of-exchange.
 	- crypto-economie s marketplaces 
 	  logseq.order-list-type:: number
 	- Instead of having to pay for goods or services with a volatile asset like Bitcoin or Ethereum. cryptocurrencies like $IST, $DAI, $USDC Inter's mechanism for minting $IST is very similar to Maker DAO's process for minting $DAI. Maker allows users to open “vaults” by depositing Ethereum. The user can choose to mint $IST, a cryptocurrency pegged at $1. 
