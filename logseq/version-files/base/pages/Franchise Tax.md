@@ -1,3 +1,4 @@
+## Resources
 ## Resources\
 	- [How to Calculate Franchise Taxes](https://corp.delaware.gov/frtaxcalc/)
 	- ### Documents
