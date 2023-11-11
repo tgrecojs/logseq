@@ -1,7 +1,8 @@
 ## Preface
 	- Decentralized tech has had moderate succe
 	- [
-	- ]
+	- [[[[[]]]]
+	  id:: 654f3b12-aa9c-41eb-93bf-b949b34f6b7b
 	- ### More than just a game (My Opionon) Decentralized systems
 		-
 		- The financial industry
