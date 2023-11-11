@@ -1,6 +1,6 @@
 ## Preface
 	- ### More than just a game (My Opionon)
-		- Individual
+		- The inaugural years
 		- The financial industry
 		-
 - We're building systems that have
