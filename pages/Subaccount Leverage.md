@@ -1,6 +1,7 @@
 ## Preface
+	- We are in a time
 	- ### More than just a game (My Opionon) Decentralized systems
-		- a glorified
+		-
 		- The financial industry
 		-
 - We're building systems that have
