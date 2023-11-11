@@ -1,5 +1,8 @@
 ## Preface
-	- ### DeFi
+	- ### More than just a game (My Opionon)
+		- Individual
+		- The financial industry
+		-
 - We're building systems that have
 - derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".
 -

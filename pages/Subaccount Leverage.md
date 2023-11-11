@@ -1,6 +1,6 @@
 ## Preface
 	- ### More than just a game (My Opionon)
-		-
+		- D
 		- The financial industry
 		-
 - We're building systems that have
