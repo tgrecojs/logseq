@@ -1,4 +1,19 @@
-- can you help me work through a scenario. i would like to create a derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".  The name is subject to change, however it is a great description of the service LnL token holders receive.
+## Preface
+	- The last few years
+	- DeFi ecosystem  alternative to the financial systems of today. If
+	- controversy
+	- moderate success in its initial years.
+	-
+	- [[[[[]]]]
+	  id:: 654f3b12-aa9c-41eb-93bf-b949b34f6b7b
+	- ### More than just a game (My Opionon) Decentralized systems
+		-
+		- The financial industry
+		-
+- We're building systems that have
+- derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".
+-
+- The name is subject to change, however it is a great description of the service LnL token holders receive.
 -
 	- Please be aware that I use the terms
 		- "coins" means "cryptocurrency"
