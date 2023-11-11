@@ -1,6 +1,6 @@
 ## Preface
-	- Decentralized tech has had moderate success in its initial years.
-	-
+	- Decentralized tech has been plagued with controversy
+	- moderate success in its initial years.
 	-
 	- [[[[[]]]]
 	  id:: 654f3b12-aa9c-41eb-93bf-b949b34f6b7b
