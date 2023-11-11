@@ -1,5 +1,5 @@
 ## Preface
-	- DeFi has shown its promise as a v
+	- DeFi has shown its promise as a viable alternative to financial systems. If
 	- controversy
 	- moderate success in its initial years.
 	-
