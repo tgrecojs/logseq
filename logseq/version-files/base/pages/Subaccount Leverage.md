@@ -1,7 +1,9 @@
 ## Preface
-	- ### More than just a game (My Opionon)
-		- LNL Decentralized systems
-		- a glorified
+	- Decentralized tech has had moderate succe
+	- [
+	- ]
+	- ### More than just a game (My Opionon) Decentralized systems
+		-
 		- The financial industry
 		-
 - We're building systems that have

@@ -1,5 +1,7 @@
 ## Preface
-	- Decentralized tech has been
+	- Decentralized tech has had moderate succe
+	- [
+	- ]
 	- ### More than just a game (My Opionon) Decentralized systems
 		-
 		- The financial industry
