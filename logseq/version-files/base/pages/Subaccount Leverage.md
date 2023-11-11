@@ -11,16 +11,9 @@
 - This need for stable medium-of-exchange translates into the blockchain ecosystem. Thus far, there have been two dominant systems of minting stable-coins that have emerged.
 	- Fiat-backed stablecoins
 	  logseq.order-list-type:: number
-		- The coins have a reserve of fiat currency that exists off-chain (i.e. in a bank account). The total value of this reserve is equal to the total value of the stablecoins
+		- The coins have a reserve of fiat currency that exists off-chain (i.e. in a bank account). For example, $USDC is a fiat-backed stablecoin. When $USDC is minted, then this reserve must grow, and when $USDC is "burned", the reserve will shrink.
 		  logseq.order-list-type:: number
-		- $USDC is a fiat-backed stablecoin by the company Circle.
-		  logseq.order-list-type:: number
-		- directly backed by whichever fiat currency their value is derived from. The re
-		  logseq.order-list-type:: number
-		- logseq.order-list-type:: number
-		- they are pegged to.
-		  logseq.order-list-type:: number
-		- For every 100 $USDC that are minted, the same amount of money has been placed into a reserve
+		- In simple terms - Let's take a scenario in which circle has minted 1 million $USDC. For this to occur, then $1M must be placed into the reserve so that each coin is accounted for. Otherwise, it is not truly fiat-backed.
 		  logseq.order-list-type:: number
 	- Collateralized-Debt Position Stablecoins
 	  logseq.order-list-type:: number
