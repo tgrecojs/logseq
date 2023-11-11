@@ -1,5 +1,5 @@
 ## Preface
-	- The last few years have been some of the most exciting
+	- It's an incredibly unique time to b  last few years
 	- DeFi ecosystem  alternative to the financial systems of today. If
 	- controversy
 	- moderate success in its initial years.
