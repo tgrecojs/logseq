@@ -3,7 +3,10 @@
 	- Please be aware that I use the terms
 		- "coins" means "cryptocurrency"
 - ## How they work
-	- LNL tokens
+	- A position, or *vault*, is created, open.
+		- logseq.order-list-type:: number
+		- LNL tokens
+		  logseq.order-list-type:: number
 		- LNL tokens are derived from
 		  logseq.order-list-type:: number
 		- shared “vault”     CDP stablecoin protocol, Inter (or Inter Protocol). Stable-coins play a critical role in blockchain-based economies. They form the basis for marketplaces to emerge medium-of-exchange.
