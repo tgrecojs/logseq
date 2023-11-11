@@ -3,7 +3,9 @@
 	- Please be aware that I use the terms
 		- "coins" means "cryptocurrency"
 - ## How they work
-- LNL tokens are derived from    CDP stablecoin protocol, Inter (or Inter Protocol). Stable-coins play a critical role in blockchain-based economies. They form the basis for marketplaces to emerge medium-of-exchange.
+- LNL tokens are derived from a
+	- shared “vault”     CDP stablecoin protocol, Inter (or Inter Protocol). Stable-coins play a critical role in blockchain-based economies. They form the basis for marketplaces to emerge medium-of-exchange.
+	  logseq.order-list-type:: number
 	- crypto-economie s marketplaces 
 	  logseq.order-list-type:: number
 	- It is unrealistic to envision the future of blockchain technology being one in which users pay for goods or services with a volatile assets, such as Bitcoin or Ethereum. It is extremely hard to accurately dictate prices that are denominated using volatile assets. For example, imagine if we were forced to choose between paying for our groceries using either Gold or Silver. The grocery store would have to constantly monitor each asset, and adjust their prices accordingly. Meanwhile, buyers would no longer have peace-of-mind that comes from the relative stability of currencies like US Dollar ($USD) and the Euro ($EUR).
