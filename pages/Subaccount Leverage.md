@@ -1,5 +1,5 @@
 ## Preface
-	- The introductory years of
+	- The introductory years of the DeFi ecosystem has
 	- controversy
 	- moderate success in its initial years.
 	-

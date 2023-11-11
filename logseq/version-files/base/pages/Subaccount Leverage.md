@@ -1,5 +1,5 @@
 ## Preface
-	- systems, especially been subjected to mass scrutiny.
+	- The introductory years of the DeFi ecosystem has
 	- controversy
 	- moderate success in its initial years.
 	-
