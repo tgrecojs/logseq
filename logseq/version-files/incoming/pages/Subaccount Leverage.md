@@ -4,7 +4,8 @@
 		- "coins" means "cryptocurrency"
 - ## How they work
 	- A position, or *vault*, is created, open.
-		- logseq.order-list-type:: number
+		- Once a vault is created, the holder of the object can mint $IST
+		  logseq.order-list-type:: number
 			- logseq.order-list-type:: number
 			- LNL tokens
 			  logseq.order-list-type:: number
