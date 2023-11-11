@@ -1,6 +1,7 @@
 ## Preface
 	- ### More than just a game (My Opionon)
-		- The products  a glorified
+		- Decentralized systems
+		- a glorified
 		- The financial industry
 		-
 - We're building systems that have
