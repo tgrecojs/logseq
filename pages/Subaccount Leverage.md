@@ -11,7 +11,7 @@
 - This need for stable medium-of-exchange translates into the blockchain ecosystem. Thus far, there have been two dominant systems of minting stable-coins that have emerged.
 	- Fiat-backed stablecoins
 	  logseq.order-list-type:: number
-		- The coins have a reserve of fiat currency that exists off-chain (i.e. in a bank account). Wh expands contracts as  number of tokens on a blockchain
+		- The coins have a reserve of fiat currency that exists off-chain (i.e. in a bank account). For example, $USDC is a fiat-backed stablecoin. As m $USDC expands contracts as  number of tokens on a blockchain
 		  logseq.order-list-type:: number
 		- $USDC is a fiat-backed stablecoin by the company Circle.
 		  logseq.order-list-type:: number
