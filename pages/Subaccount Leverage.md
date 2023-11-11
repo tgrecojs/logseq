@@ -1,5 +1,6 @@
 ## Preface
-	- Decentralized systems, especis controversy
+	- Decentralized systems have faced significant scrutiny.
+	- controversy
 	- moderate success in its initial years.
 	-
 	- [[[[[]]]]
