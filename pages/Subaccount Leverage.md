@@ -1,6 +1,5 @@
 ## Preface
-	- ### More than just a game (My Opionon)
-		- La Decentralized systems
+	- ### More than just a game (My Opionon) Decentralized systems
 		- a glorified
 		- The financial industry
 		-
