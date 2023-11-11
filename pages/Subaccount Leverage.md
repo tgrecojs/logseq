@@ -1,6 +1,6 @@
 ## Preface
 	- ### More than just a game (My Opionon)
-		- The
+		- The products  a glorified
 		- The financial industry
 		-
 - We're building systems that have
