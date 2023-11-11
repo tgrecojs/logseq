@@ -1,5 +1,6 @@
 ## Preface
-	- Decentralized tech has been plagued with controversy
+	- Decentralized payment systems have been subjected to mass scrutiny.
+	- controversy
 	- moderate success in its initial years.
 	-
 	- [[[[[]]]]
