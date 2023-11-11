@@ -1,4 +1,4 @@
-- can you help me work through a scenario. i would like to  derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".
+- can you help me work through a scenario. this example demonstrates  derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".
 -
 - The name is subject to change, however it is a great description of the service LnL token holders receive.
 -
