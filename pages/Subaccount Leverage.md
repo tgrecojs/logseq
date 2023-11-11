@@ -1,5 +1,5 @@
 ## Preface
-	- Decentralized systems, especially been subjected to mass scrutiny.
+	- DeFi i
 	- controversy
 	- moderate success in its initial years.
 	-

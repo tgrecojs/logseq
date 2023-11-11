@@ -1,5 +1,5 @@
 ## Preface
-	- Decentralized payment systems have been subjected to mass scrutiny.
+	- systems, especially been subjected to mass scrutiny.
 	- controversy
 	- moderate success in its initial years.
 	-
