@@ -1,4 +1,4 @@
-- "DeFi" is much deeper than just a buzzword.
+- Lounge and Lefv "DeFi" is much deeper than just a buzzword.
 - We're building systems that have
 - derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".
 -
