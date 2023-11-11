@@ -1,5 +1,5 @@
 ## Preface
-	- We are in a time
+	- Decentralized tech has been
 	- ### More than just a game (My Opionon) Decentralized systems
 		-
 		- The financial industry
