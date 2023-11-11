@@ -1,4 +1,6 @@
-- i'd like your help with som  derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".
+- "DeFi" is much deeper than just a buzzword.
+- We're
+- derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".
 -
 - The name is subject to change, however it is a great description of the service LnL token holders receive.
 -
