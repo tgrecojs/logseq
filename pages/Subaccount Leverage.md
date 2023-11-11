@@ -11,7 +11,7 @@
 - This need for stable medium-of-exchange translates into the blockchain ecosystem. Thus far, there have been two dominant systems of minting stable-coins that have emerged.
 	- Fiat-backed stablecoins
 	  logseq.order-list-type:: number
-		- As the name suggest, these are coins that are backed 1 to 1 by
+		- As the name suggest, these stablecoins are backed by the fiat currency that they are pegged to.
 		  logseq.order-list-type:: number
 		- For every 100 $USDC that are minted, the same amount of money has been placed into a reserve
 		  logseq.order-list-type:: number
