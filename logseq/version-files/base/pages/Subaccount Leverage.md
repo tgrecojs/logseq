@@ -1,5 +1,5 @@
 ## Preface
-	- The introductory years of the DeFi ecosystem has
+	- DeFi has shown its promise as a v
 	- controversy
 	- moderate success in its initial years.
 	-
