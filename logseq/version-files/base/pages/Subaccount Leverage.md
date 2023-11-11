@@ -1,5 +1,5 @@
 ## Preface
-	- DeFi has shown promise as an alternative to the financial systems of today. If
+	- The DeFi ecosystem an alternative to the financial systems of today. If
 	- controversy
 	- moderate success in its initial years.
 	-

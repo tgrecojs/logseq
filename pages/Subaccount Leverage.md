@@ -1,5 +1,5 @@
 ## Preface
-	- DeFi ha an alternative to the financial systems of today. If
+	- De DeFi ecosystem an alternative to the financial systems of today. If
 	- controversy
 	- moderate success in its initial years.
 	-
