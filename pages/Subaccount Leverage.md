@@ -1,6 +1,7 @@
 - can you help me work through a scenario. i would like to create a derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".  The name is subject to change, however it is a great description of the service LnL token holders receive.
 -
-- Please be aware that I use the term
+	- Please be aware that I use the terms
+		- "coins" means "cryptocurrency"
 - ## How they work
 - LnL tokens are powered by CDP stablecoin protocol, Inter (or Inter Protocol). Stable-coins play a critical role in blockchain-based economies. They form the basis for marketplaces to emerge medium-of-exchange.
 	- crypto-economie s marketplaces 
@@ -10,7 +11,7 @@
 - This need for stable medium-of-exchange translates into the blockchain ecosystem. Thus far, there have been two dominant systems of minting stable-coins that have emerged.
 	- Fiat-backed stablecoins
 	  logseq.order-list-type:: number
-		- As the name suggest, these
+		- As the name suggest, these are coins that are backed 1 to 1 by
 		  logseq.order-list-type:: number
 		- For every 100 $USDC that are minted, the same amount of money has been placed into a reserve
 		  logseq.order-list-type:: number
