@@ -11,7 +11,11 @@
 - This need for stable medium-of-exchange translates into the blockchain ecosystem. Thus far, there have been two dominant systems of minting stable-coins that have emerged.
 	- Fiat-backed stablecoins
 	  logseq.order-list-type:: number
-		- The coins are directly backed by whichever fiat currency their value is derived from. The
+		- The coins have a reserve of fiat currency that exists off-chain (i.e. in a bank account). The total value of this reserve is equal to the total value of the stablecoins
+		  logseq.order-list-type:: number
+		- $USDC is a fiat-backed stablecoin by the company Circle.
+		  logseq.order-list-type:: number
+		- directly backed by whichever fiat currency their value is derived from. The re
 		  logseq.order-list-type:: number
 		- logseq.order-list-type:: number
 		- they are pegged to.
