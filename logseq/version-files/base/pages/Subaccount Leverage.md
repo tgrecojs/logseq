@@ -1,6 +1,6 @@
 ## Preface
 	- ### More than just a game (My Opionon)
-		- Th preliminary years of DeFi have been
+		-
 		- The financial industry
 		-
 - We're building systems that have
