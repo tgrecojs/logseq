@@ -1,5 +1,5 @@
 ## Preface
-	- DeFi i
+	- The introductory years of
 	- controversy
 	- moderate success in its initial years.
 	-
