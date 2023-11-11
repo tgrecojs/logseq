@@ -1,5 +1,5 @@
 ## Preface
-	- ### Decentralized Systems
+	- ### DeFi
 - We're building systems that have
 - derivative product representing a 2x long position. we will call these "LNL" tokens - "Lounge 'n' Leverage".
 -
