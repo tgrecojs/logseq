@@ -43,6 +43,7 @@
 		  logseq.order-list-type:: number
 	- Collateralized-Debt Position Stablecoins
 	  logseq.order-list-type:: number
+		- logseq.order-list-type:: number
 	-
 	-
 	-
