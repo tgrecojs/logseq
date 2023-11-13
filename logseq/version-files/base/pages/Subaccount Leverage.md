@@ -83,8 +83,6 @@
 -
 -
 -
--
--
 - A "vault" is made opened inter-protocol. The owner of the vault uses $1M work of $ATOM.
   logseq.order-list-type:: number
 	- "vault" now has ability to mint upto $50000 $IST.
