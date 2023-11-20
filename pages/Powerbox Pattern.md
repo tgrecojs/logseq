@@ -1,11 +1,7 @@
-- Overview
-- ### tl;dr
+### tl;dr
 	- A Powerbox is an object with extensive authority. At minimum, it must hold all the authority that any of the applications it might service might need.
 	- At a minimum it must hold all the authority that any of the applications it might service might need.
 	- **The powerbox is a composition of objects that grants, revokes, negotiates, and in general manages, the authorities granted to another object.**
-	-
-- [[How Emily Tamed the Caml]]
-- History:
 - ## History:
 	- The powerbox pattern was invented during the development of CapDesk and the DarpaBrowser; the experiences with building both a good (secure and flexible) powerbox and a poor (rigid yet breachable) powerbox led to a better understanding of the concept.
 - ## Overview
