@@ -4,6 +4,7 @@
 	- **The powerbox is a composition of objects that grants, revokes, negotiates, and in general manages, the authorities granted to another object.**
 - ## History:
 	- The powerbox pattern was invented during the development of CapDesk and the DarpaBrowser; the experiences with building both a good (secure and flexible) powerbox and a poor (rigid yet breachable) powerbox led to a better understanding of the concept.
+	- [[How Emily Tamed the Caml]]
 - ## Overview
 	- The object to which a powerbox is assigned lies on the far side of a trust boundary, and the authorities for the differently-trusted object vary dynamically, at least on a session basis, or even during the session.
 		- Powerbox is on the trusted side.
@@ -13,10 +14,11 @@
 		- objects can change throughout an object's lifecycle.
 		- New capabilities may be needed
 		- object continues, capabilities
-	- The powerbox itself must have extensive authority. As a minimum it must hold all the authority that any of the applications it might service might need. The powerbox then dynamically doles out these authorities based on POLA, to the actual instantiated application.
+	- ### The Role of the Powerbox in Delegating Authority
+	- The powerbox itself must have extensive authority.
+	- As a minimum it must hold all the authority that any of the applications it might service might need. The powerbox then dynamically doles out these authorities based on POLA, to the actual instantiated application.
 	- A Powerbox is an object with extensive authority.
--
-	- The powerbox even negotiates with the user on the application’s behalf for additional authorities if the application finds itself unable to fulfill its obligations without more powers.
+		- The powerbox even negotiates with the user on the application’s behalf for additional authorities if the application finds itself unable to fulfill its obligations without more powers.
 - ## Powerbox Construction
 	- Modules in a powerbox
 		- `powerbox`
