@@ -89,29 +89,18 @@ Zoe introduces and uses several data types.
 	- This lets quotes be shared in a format letting others verify the time and values.
 - ## Ratio
   
-  **Ratios** are pass-by-value records that consist of a
-  *numerator* and a *denominator*. Both of these consist of a
-  **[Value](/reference/ertp-api/ertp-data-types.md#value)** and a **[Brand](/reference/ertp-api/brand.md)**,
-  just like **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**.
-  A **Ratio** cannot have a denominator value of 0.
+  **Ratios** are pass-by-value records that consist of a *numerator* and a *denominator*.
+- Both of these consist of a **[Value](/reference/ertp-api/ertp-data-types.md#value)** and a **[Brand](/reference/ertp-api/brand.md)**, just like **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. A **Ratio** cannot have a denominator value of 0.
   
-  The most common kind of **Ratio** is applied to an **Amount** of a particular **Brand**
-  and produces results of the same **Brand**.
+  The most common kind of **Ratio** is applied to an **Amount** of a particular **Brand** and produces results of the same **Brand**.
   
-  **Ratios** can also have two different **Brands**, essentially typing them such as miles per
-  hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
+  **Ratios** can also have two different **Brands**, essentially typing them such as miles per hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
 - ## TransferPart
   
-  **TransferParts** are the individual elements of the *transfer* array passed into the
-  **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** function. Each **TransferPart**
-  represents one or two **[Allocation](#allocation)** changes among existing
-  **[ZCFSeats](./zcfseat.md)**. Each **TransferPart** consists of 4 elements, each of which can be elided
-  in some cases:
+  **TransferParts** are the individual elements of the *transfer* array passed into the **[atomicRearrange()](./zoe-helpers.md#atomicrearrange-zcf-transfers)** function. Each **TransferPart** represents one or two **[Allocation](#allocation)** changes among existing **[ZCFSeats](./zcfseat.md)**. Each **TransferPart** consists of 4 elements, each of which can be elided in some cases:
   
-  * **fromSeat**?: **ZCFSeat** - The seat from which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being taken.
-  * **toSeat**?: **ZCFSeat** - The seat to which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being given.
-  * **fromAmounts**?: **[AmountKeywordRecord](#amountkeywordrecord)** - The **AmountKeywordRecord** which will be taken from the *fromSeat*.
-  * **toAmounts**?: **AmountKeywordRecord** - The **AmountKeywordRecord** which will be given to the *toSeat*.
+  * **fromSeat**?: **ZCFSeat** - The seat from which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being taken.* **toSeat**?: **ZCFSeat** - The seat to which an **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** is being given. * **fromAmounts**?:
+- **[AmountKeywordRecord](#amountkeywordrecord)** - The **AmountKeywordRecord** which will be taken from the *fromSeat*. * **toAmounts**?: **AmountKeywordRecord** - The **AmountKeywordRecord** which will be given to the *toSeat*.
   
   If a *fromSeat* is specified, then a *fromAmounts* is required. When you specify a *toSeat* without
   specifying a *toAmounts*, it means that the *fromAmount* will be taken from *fromSeat* and given to
