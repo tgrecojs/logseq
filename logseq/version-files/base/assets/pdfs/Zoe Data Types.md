@@ -65,27 +65,17 @@ Zoe introduces and uses several data types.
   `NaN` and `Infinity` are also not allowed as keywords.
 - ## MutableQuote
   
-  A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
-  current price level at a particular time. The significant content (prices 
-  and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated in the **[Payment](/reference/ertp-api/payment.md)** for veracity.
+  A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time. The significant content (prices and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated in the **[Payment](/reference/ertp-api/payment.md)** for veracity.
   
-  **MutableQuotes** should be used when you expect to make multiple calls, replacing the trigger
-  value. If you just need a single quote, and won't change the trigger level, you should use
-  **PriceQuotes**.
+  **MutableQuotes** should be used when you expect to make multiple calls, replacing the trigger value. If you just need a single quote, and won't change the trigger level, you should use **PriceQuotes**.
   
-  A **MutableQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
-  balance of the **Payment**.
+  A **MutableQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current  balance of the **Payment**.
 - ## ParsableNumber
   
   A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.
 - ## PriceQuote
   
-  A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
-  current price level at a particular time. The significant content (prices 
-  and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and repeated
-  in the **[Payment](/reference/ertp-api/payment.md)** for veracity. 
-  A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
-  balance of the **Payment**.
+  A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the  current price level at a particular time. The significant content (prices  and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and repeated in the **[Payment](/reference/ertp-api/payment.md)** for veracity. A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current  balance of the **Payment**.
   
   ```js
   const { quoteAmount, quotePayment } = priceQuote;

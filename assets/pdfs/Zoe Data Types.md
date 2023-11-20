@@ -75,12 +75,7 @@ Zoe introduces and uses several data types.
   A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.
 - ## PriceQuote
   
-  A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
-  current price level at a particular time. The significant content (prices 
-  and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and repeated
-  in the **[Payment](/reference/ertp-api/payment.md)** for veracity. 
-  A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
-  balance of the **Payment**.
+  A **PriceQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the  current price level at a particular time. The significant content (prices  and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)** and repeated in the **[Payment](/reference/ertp-api/payment.md)** for veracity. A **PriceQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current  balance of the **Payment**.
   
   ```js
   const { quoteAmount, quotePayment } = priceQuote;
@@ -94,17 +89,12 @@ Zoe introduces and uses several data types.
 	- This lets quotes be shared in a format letting others verify the time and values.
 - ## Ratio
   
-  **Ratios** are pass-by-value records that consist of a
-  *numerator* and a *denominator*. Both of these consist of a
-  **[Value](/reference/ertp-api/ertp-data-types.md#value)** and a **[Brand](/reference/ertp-api/brand.md)**,
-  just like **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**.
-  A **Ratio** cannot have a denominator value of 0.
+  **Ratios** are pass-by-value records that consist of a *numerator* and a *denominator*.
+- Both of these consist of a **[Value](/reference/ertp-api/ertp-data-types.md#value)** and a **[Brand](/reference/ertp-api/brand.md)**, just like **[Amounts](/reference/ertp-api/ertp-data-types.md#amount)**. A **Ratio** cannot have a denominator value of 0.
   
-  The most common kind of **Ratio** is applied to an **Amount** of a particular **Brand**
-  and produces results of the same **Brand**.
+  The most common kind of **Ratio** is applied to an **Amount** of a particular **Brand** and produces results of the same **Brand**.
   
-  **Ratios** can also have two different **Brands**, essentially typing them such as miles per
-  hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
+  **Ratios** can also have two different **Brands**, essentially typing them such as miles per hour or US dollars for Swiss francs (i.e., an exchange rate ratio).
 - ## TransferPart
   
   **TransferParts** are the individual elements of the *transfer* array passed into the
