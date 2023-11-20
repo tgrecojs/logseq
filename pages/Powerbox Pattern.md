@@ -15,10 +15,10 @@
 		- New capabilities may be needed
 		- object continues, capabilities
 	- ### The Role of the Powerbox in Delegating Authority
-	- The powerbox itself must have extensive authority.
-	- As a minimum it must hold all the authority that any of the applications it might service might need. The powerbox then dynamically doles out these authorities based on POLA, to the actual instantiated application.
-	- A Powerbox is an object with extensive authority.
-		- The powerbox even negotiates with the user on the application’s behalf for additional authorities if the application finds itself unable to fulfill its obligations without more powers.
+		- A Powerbox is an object with extensive authority.
+		- The powerbox itself **must have extensive authority.**
+			- As a minimum it must hold all the authority that any of the applications it might service might need. The powerbox then dynamically doles out these authorities based on POLA, to the actual instantiated application.
+			- The powerbox even negotiates with the user on the application’s behalf for additional authorities if the application finds itself unable to fulfill its obligations without more powers.
 - ## Powerbox Construction
 	- Modules in a powerbox
 		- `powerbox`
@@ -31,6 +31,3 @@
 				- address book has the authority to read from the address-book file.
 				- the renderer only has authority to the `document` API (assuming that the user-interface is being rendered within its own confined, frozen Compartment).
 			- example - Native Application - card deck shuffler
--
--
--
