@@ -49,22 +49,14 @@ Zoe introduces and uses several data types.
 	- **[E(Zoe).getPublicFacet()](./zoe.md#e-zoe-getpublicfacet-instance)**
 - ## Invitation
   
-  An **Invitation** is a kind of **[Payment](/reference/ertp-api/payment.md)**. It's a non-fungible eright
-  that can be held in **Payments** or **[Purses](/reference/ertp-api/purse.md)**, just like any other
-  eright. An **Invitation** **Payment** is a **Payment** holding an **Invitation**.
+  An **Invitation** is a kind of **[Payment](/reference/ertp-api/payment.md)**. It's a non-fungible eright that can be held in **Payments** or **[Purses](/reference/ertp-api/purse.md)**, just like any other eright. An **Invitation** **Payment** is a **Payment** holding an **Invitation**.
 - ## InvitationIssuer
   
-  The **InvitationIssuer** is a special type of **[Issuer](/reference/ertp-api/issuer.md)**. The single Zoe
-  instance has an **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come from the
-  **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
+  The **InvitationIssuer** is a special type of **[Issuer](/reference/ertp-api/issuer.md)**. The single Zoe instance has an **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come from the **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
   
-  **InvitationIssuer** has all the methods of regular **Issuers**, but the two methods that are most
-  often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)**
-  and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
+  **InvitationIssuer** has all the methods of regular **Issuers**, but the two methods that are most often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)** and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
   
-  A successful call of **anInvitationIssuer.claim()** means you are assured the **Invitation** passed into
-  the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation**
-  is exclusively yours and no one else has access to it.
+  A successful call of **anInvitationIssuer.claim()** means you are assured the **Invitation** passed into the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation** is exclusively yours and no one else has access to it.
 - ## Keyword
   
   An ASCII identifier string that must begin with an upper case letter
@@ -73,17 +65,11 @@ Zoe introduces and uses several data types.
   `NaN` and `Infinity` are also not allowed as keywords.
 - ## MutableQuote
   
-  A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
-  current price level at a particular time. The significant content (prices 
-  and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated
-  in the **[Payment](/reference/ertp-api/payment.md)** for veracity.
+  A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the current price level at a particular time. The significant content (prices and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated in the **[Payment](/reference/ertp-api/payment.md)** for veracity.
   
-  **MutableQuotes** should be used when you expect to make multiple calls, replacing the trigger
-  value. If you just need a single quote, and won't change the trigger level, you should use
-  **PriceQuotes**.
+  **MutableQuotes** should be used when you expect to make multiple calls, replacing the trigger value. If you just need a single quote, and won't change the trigger level, you should use **PriceQuotes**.
   
-  A **MutableQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current 
-  balance of the **Payment**.
+  A **MutableQuote** is an **Amount**-**Payment** pair, where the **Amount** is also the current  balance of the **Payment**.
 - ## ParsableNumber
   
   A **ParsableNumber** is defined as a **bigint**, **number**, or **string**.

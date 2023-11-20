@@ -39,36 +39,24 @@ Zoe introduces and uses several data types.
   ```
 - ## Handle
   
-  **Handles** are **Far** objects without any methods whose only useful property are their
-  unique identities. They're often created in order to designate some other object, where the
-  **Handles** can be passed around as reliable designators without giving access to the
-  designated objects.
+  **Handles** are **Far** objects without any methods whose only useful property are their unique identities. They're often created in order to designate some other object, where the **Handles** can be passed around as reliable designators without giving access to the designated objects.
 - ## Instance
   
-  An **Instance** is a handle that represents an instance of a contract.
-  You can get information about the contract instance via these methods:
-- **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
-- **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
-- **[E(Zoe).getTerms()](./zoe.md#e-zoe-getterms-instance)**
-- **[E(Zoe).getPublicFacet()](./zoe.md#e-zoe-getpublicfacet-instance)**
+  An **Instance** is a handle that represents an instance of a contract. **You can get information about the contract instance via these methods:**
+	- **[E(Zoe).getBrands()](./zoe.md#e-zoe-getbrands-instance)**
+	- **[E(Zoe).getIssuers()](./zoe.md#e-zoe-getissuers-instance)**
+	- **[E(Zoe).getTerms()](./zoe.md#e-zoe-getterms-instance)**
+	- **[E(Zoe).getPublicFacet()](./zoe.md#e-zoe-getpublicfacet-instance)**
 - ## Invitation
   
-  An **Invitation** is a kind of **[Payment](/reference/ertp-api/payment.md)**. It's a non-fungible eright
-  that can be held in **Payments** or **[Purses](/reference/ertp-api/purse.md)**, just like any other
-  eright. An **Invitation** **Payment** is a **Payment** holding an **Invitation**.
+  An **Invitation** is a kind of **[Payment](/reference/ertp-api/payment.md)**. It's a non-fungible eright that can be held in **Payments** or **[Purses](/reference/ertp-api/purse.md)**, just like any other eright. An **Invitation** **Payment** is a **Payment** holding an **Invitation**.
 - ## InvitationIssuer
   
-  The **InvitationIssuer** is a special type of **[Issuer](/reference/ertp-api/issuer.md)**. The single Zoe
-  instance has an **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come from the
-  **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
+  The **InvitationIssuer** is a special type of **[Issuer](/reference/ertp-api/issuer.md)**. The single Zoe instance has an **InvitationIssuer** for the entirety of its lifetime. All **Invitations** come from the **[Mint](/reference/ertp-api/mint.md)** associated with the Zoe instance's **InvitationIssuer**.
   
-  **InvitationIssuer** has all the methods of regular **Issuers**, but the two methods that are most
-  often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)**
-  and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
+  **InvitationIssuer** has all the methods of regular **Issuers**, but the two methods that are most often used are **[anIssuer.claim()](/reference/ertp-api/issuer.md#anissuer-claim-payment-optamount)** and **[anIssuer.getAmountOf()](/reference/ertp-api/issuer.md#anissuer-getamountof-payment)**.
   
-  A successful call of **anInvitationIssuer.claim()** means you are assured the **Invitation** passed into
-  the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation**
-  is exclusively yours and no one else has access to it.
+  A successful call of **anInvitationIssuer.claim()** means you are assured the **Invitation** passed into the method is recognized as valid by the **InvitationIssuer**. You are also assured the **Invitation** is exclusively yours and no one else has access to it.
 - ## Keyword
   
   An ASCII identifier string that must begin with an upper case letter
@@ -79,8 +67,7 @@ Zoe introduces and uses several data types.
   
   A **MutableQuote** represents a statement from a **[PriceAuthority](./price-authority.md)** as to the 
   current price level at a particular time. The significant content (prices 
-  and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated
-  in the **[Payment](/reference/ertp-api/payment.md)** for veracity.
+  and time) is packaged in the **[Amount](/reference/ertp-api/ertp-data-types.md#amount)**, and repeated in the **[Payment](/reference/ertp-api/payment.md)** for veracity.
   
   **MutableQuotes** should be used when you expect to make multiple calls, replacing the trigger
   value. If you just need a single quote, and won't change the trigger level, you should use
