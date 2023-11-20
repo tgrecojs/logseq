@@ -1,4 +1,6 @@
-### tl;dr
+public:: true
+
+- ### tl;dr
 	- A Powerbox is an object with extensive authority. At minimum, it must hold all the authority that any of the applications it might service might need.
 	- At a minimum it must hold all the authority that any of the applications it might service might need.
 	- **The powerbox is a composition of objects that grants, revokes, negotiates, and in general manages, the authorities granted to another object.**
