@@ -21,7 +21,7 @@
 	- ### The Role of the Powerbox in Delegating Authority
 		- > A Powerbox is an object with extensive authority.
 		- The powerbox itself **must have extensive authority.**
-			- At a minimum **it must hold all the authority that any of the applications it might service might need.** The powerbox then dynamically doles out these authorities based on POLA, to the actual instantiated application.
+			- At a minimum **it must hold all the authority that any of the applications it might service might need** so that it can fulfill its duty of **dynamically dole out authority to objects based on POLA, to the actual instantiated application.
 			- The powerbox even negotiates with the user on the application’s behalf for additional authorities if the application finds itself unable to fulfill its obligations without more powers.
 - ## Powerbox Construction
 	- Modules in a powerbox
