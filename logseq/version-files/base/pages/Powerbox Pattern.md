@@ -27,7 +27,7 @@
 			- application's lifecycle
 			-
 			-
-			- The authority that required for all objects in a system to function properly      Throughout an application's lifecycle   In some instances, a Powerbox may receive a request for a capability that it is not yet possession of a capability object that exists within its system requests a reference for a capability that the Powerbox itself does not possess
+			- The authority that required for all objects in a system to function properly      Throughout an application's lifecycle   In some instances, a Powerbox may receive a request for a capability that it does not yet posses,
 			- The powerbox even negotiates with the user on the application’s behalf for additional authorities if the application finds itself unable to fulfill its obligations without more powers.
 - ## Powerbox Construction
 	- Modules in a powerbox
