@@ -1,4 +1,4 @@
-public:: trueå
+public:: true
 
 - Source:
 	- https://www.hpl.hp.com/techreports/2006/HPL-2006-116.html
