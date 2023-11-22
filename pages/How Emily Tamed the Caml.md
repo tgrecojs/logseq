@@ -1,4 +1,5 @@
 public:: true
+
 - Source - https://www.hpl.hp.com/techreports/2006/HPL-2006-116.html
 - Source:
 	- https://www.hpl.hp.com/techreports/2006/HPL-2006-116.html
@@ -27,7 +28,6 @@ public:: true
 					- `=` grant "read" permissions to this argument
 					- `+` grant read/write permissions to this arguent.
 				-
-	- "forgery-resistant"
 	- ### "forgery-resistant"
 		- example of cli-phishing
 			- program attempting to acquire the password to a user's PGP key. The attacker formats the output to present itself to the user as a gpg command processor, and uses stdin to read the passphrase, in a phishing-style attack.
