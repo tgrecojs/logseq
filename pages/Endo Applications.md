@@ -1,3 +1,5 @@
+public:: true
+
 - The `endo` daemon is a tool for bootstrapping objects, and systems of objects.
 - In this sense, `endo` acts a powerbox for objects.
 - The experience of looking inside an Endo application is similar to Russian Matroshka doll.
