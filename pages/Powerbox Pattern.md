@@ -24,7 +24,7 @@
 			- At a minimum **it must hold all the authority that any of the applications it might service might need**. The powerbox then dynamically doles out these authorities based on POLA, to the actual instantiated (live) application (objects).
 		- Powersboxes can be dynamic
 			- As mentioned above, **the acts of a powerbox passing out authority (mentioned above) is an on-going process.**
-			- Just like
+			- application's lifecycle
 			-
 			-
 			- The authority that required for all objects in a system to function properly      Throughout an application's lifecycle   In some instances, a Powerbox may receive a request for a capability that it does itself not in possession of a capability object that exists within its system requests a reference for a capability that the Powerbox itself does not possess
