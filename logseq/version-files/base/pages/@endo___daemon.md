@@ -1,9 +1,7 @@
 ## `servePort`
 id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
-collapsed:: true
 	- investigate usage of websockets within endo
 	- ### Action Item
-		- LATER add the logic for renaming a value in the pet storre directy fro the UI.
 	- ## Adding `rename` behaviors
 	- #### AI Chat
 		- Thomas Greco: how can i register an event handler that watches for an html element that has a contenteditable attribute that watches for the element to change? will the DOM APIs "onchange"  handlerr be sufficient? please proide an example
@@ -103,7 +101,6 @@ collapsed:: true
 - ## Looming Questions
   id:: 64c8aef0-0261-43b0-a139-ad8c5b3ce0c1
 	- `SIGINT` and `process.exitCode`
-	  collapsed:: true
 		- `process.once('SIGINT', () => cancel(new Error('SIGINT')));`
 			- Researching looks like this will fire
 			- https://nodejs.org/api/process.html#signal-events

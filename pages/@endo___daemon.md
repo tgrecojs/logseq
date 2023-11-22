@@ -1,9 +1,7 @@
 ## `servePort`
 id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
-collapsed:: true
 	- investigate usage of websockets within endo
 	- ### Action Item
-		- LATER add the logic for renaming a value in the pet storre directy fro the UI.
 	- ## Adding `rename` behaviors
 	- #### AI Chat
 		- Thomas Greco: how can i register an event handler that watches for an html element that has a contenteditable attribute that watches for the element to change? will the DOM APIs "onchange"  handlerr be sufficient? please proide an example
@@ -38,6 +36,7 @@ collapsed:: true
   ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
   >>>>>>> 617d85e (fix: related to the mp4 files.)
 	- #### `makeMessageCapTP`
+	  collapsed:: true
 		- creates a CapTP connection.
 		- ```javascript
 		  export const makeMessageCapTP = (
@@ -76,6 +75,7 @@ collapsed:: true
 		  };
 		  ```
 	- ## CapTP Messages
+	  collapsed:: true
 		- #### Message Types
 			- `CTP_BOOTSTRAP`
 			  logseq.order-list-type:: number
@@ -116,6 +116,7 @@ collapsed:: true
 		- failure
 			- process.exitCode = 1;
 	- what does harbinger mean?
+	  collapsed:: true
 		- is this our safety net?
 		  <<<<<<< HEAD
 		  <<<<<<< HEAD
