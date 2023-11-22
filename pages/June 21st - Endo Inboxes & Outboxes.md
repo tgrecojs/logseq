@@ -1,3 +1,5 @@
+public:: true
+
 - An entangled pair of objects
 	- Inbox - user holds to grant/deny access to powers requested by the party holding the outbox.
 - 4 mins

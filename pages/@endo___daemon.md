@@ -4,6 +4,7 @@ id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
 	- ### Action Item
 	- ## Adding `rename` behaviors
 	- #### AI Chat
+	  collapsed:: true
 		- Thomas Greco: how can i register an event handler that watches for an html element that has a contenteditable attribute that watches for the element to change? will the DOM APIs "onchange"  handlerr be sufficient? please proide an example
 		- ---
 		- Raycast AI: No, the `onchange` event does not work with the `contenteditable` attribute. However, you can use a different event, such as `input` or `blur`, to watch for changes to these elements.
@@ -36,7 +37,6 @@ id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
   ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
   >>>>>>> 617d85e (fix: related to the mp4 files.)
 	- #### `makeMessageCapTP`
-	  collapsed:: true
 		- creates a CapTP connection.
 		- ```javascript
 		  export const makeMessageCapTP = (
@@ -75,7 +75,6 @@ id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
 		  };
 		  ```
 	- ## CapTP Messages
-	  collapsed:: true
 		- #### Message Types
 			- `CTP_BOOTSTRAP`
 			  logseq.order-list-type:: number

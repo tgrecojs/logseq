@@ -1,3 +1,5 @@
+public:: true
+
 - An entangled pair of objects
 	- Inbox - user holds to grant/deny access to powers requested by the party holding the outbox.
 - 4 mins
@@ -40,10 +42,10 @@
 -
 - ![image.png](../assets/image_1687911419934_0.png)
 - ### `import-bundle`
-- creates an object as well as its powers.
+	- creates an object as well as its powers.
 - ![image.png](../assets/image_1687912458861_0.png)
 - The side-effect of  `import-bundle` is the creation of an *outbox*.
-- ![Endo-import-bundle-demo.png](../assets/Endo-import-bundle-demo_1687913065341_0.png)
+	- ![Endo-import-bundle-demo.png](../assets/Endo-import-bundle-demo_1687913065341_0.png)
 - ## Inbox vs Outbox
 - Inbox
 	- Look at your pending request
