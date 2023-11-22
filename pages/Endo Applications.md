@@ -7,16 +7,15 @@
 - `@endo/daemon`
 	- `main`
 	- The Endo Daemon allows us to bootstrap systems designed to enforce POLA at the deepest level of granularity.
+	- Can be described as *an execution environment for creating Endo applications.*
 	- It contains access to all of the powers that it may ever need
 		- `store`
 		  `provide`
 		  `inbox`
 		  `followInbox`
-		  `request,`
-		  `resolve,
-		  `reject,`
-	- execution environment for creating Endo applications.
-	- A tool for bootstrapping systems.
+		  `request`
+		  `resolve`
+		  `reject`
 - `@endo/daemon`'s `main` module
 	- **hands out to each module just enough authority to do the job needed by that particular module.**
 - [[How Emily Tamed the Caml]]
