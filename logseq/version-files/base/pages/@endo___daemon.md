@@ -36,6 +36,7 @@ id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
   ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
   >>>>>>> 617d85e (fix: related to the mp4 files.)
 	- #### `makeMessageCapTP`
+	  collapsed:: true
 		- creates a CapTP connection.
 		- ```javascript
 		  export const makeMessageCapTP = (
@@ -74,6 +75,7 @@ id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
 		  };
 		  ```
 	- ## CapTP Messages
+	  collapsed:: true
 		- #### Message Types
 			- `CTP_BOOTSTRAP`
 			  logseq.order-list-type:: number
@@ -101,6 +103,7 @@ id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
 - ## Looming Questions
   id:: 64c8aef0-0261-43b0-a139-ad8c5b3ce0c1
 	- `SIGINT` and `process.exitCode`
+	  collapsed:: true
 		- `process.once('SIGINT', () => cancel(new Error('SIGINT')));`
 			- Researching looks like this will fire
 			- https://nodejs.org/api/process.html#signal-events
@@ -113,6 +116,7 @@ id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
 		- failure
 			- process.exitCode = 1;
 	- what does harbinger mean?
+	  collapsed:: true
 		- is this our safety net?
 		  <<<<<<< HEAD
 		  <<<<<<< HEAD

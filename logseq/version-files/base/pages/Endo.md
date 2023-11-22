@@ -1,3 +1,5 @@
+public:: true
+
 - [[Endo Applications]]
 - [[Daemon Videos]]
 	-
