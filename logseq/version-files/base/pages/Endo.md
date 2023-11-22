@@ -1,12 +1,10 @@
 public:: true
 
+-
 - [[Endo Applications]]
 - [[Daemon Videos]]
-	-
 - [[Attenuator]]
 - [[EventEmitter]]
--
--
 - ## [[@endo/{packages}]]
 - [[Questions]]
 - [[Frontend App]]
