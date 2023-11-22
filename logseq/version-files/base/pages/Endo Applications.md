@@ -3,8 +3,7 @@
 - The experience of looking inside an Endo application is similar to Russian Matroshka doll.
 	- In this comparison, we need exchange height and width and instead denote size according to the powers that an object has.
 	- Endo applications aren't in the physical world and therefore they do not have a height or a width.
-		- ![endo dolls](https://upload.wikimedia.org/wikipedia/commons/7/71/Russian-Matroshka.jpg){:height 288, :width 623}
-	- ![endo dolls](https://upload.wikimedia.org/wikipedia/commons/7/71/Russian-Matroshka.jpg)
+	- ![endo dolls](https://upload.wikimedia.org/wikipedia/commons/7/71/Russian-Matroshka.jpg){:height 412, :width 539}
 - `@endo/daemon`
 	- `main`
 	- The Endo Daemon allows us to bootstrap systems designed to enforce POLA at the deepest level of granularity.
