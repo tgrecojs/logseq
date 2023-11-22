@@ -1,3 +1,4 @@
+public:: true
 - Source - https://www.hpl.hp.com/techreports/2006/HPL-2006-116.html
 - Source:
 	- https://www.hpl.hp.com/techreports/2006/HPL-2006-116.html
@@ -14,24 +15,24 @@
 		- **In order to use `fs.readFile`, the application must hold the powers necessary to work with `fs`.**
 		- ### `Sash` - "Safe Bash"
 - `Sash` - "Safe Bash"
-			- Powerbox for implementing safe bash commands
-			- Why?
-				- While we might not realize it, we often grant bash with excessive authority over our filesystem in exchange for having it carry out menial tasks.
-				- `cp` vs. `sashcp`
-					- `cp`
-						- has read/write powers for entire filesystem on a user's computer
-						- in reality, it should only be granted the read permissions at the time of use, and these permissions should only apply to the specific file (or files) the user wishes to make a copy of. Similarly, the permission to write should be granted at the time of execution, and
-					- `sashcp=file1.txt+file1-copy.txt`
-						- the Sash powerbox interprets this command
-							- `=` grant "read" permissions to this argument
-							- `+` grant read/write permissions to this arguent.
-						-
+	- Powerbox for implementing safe bash commands
+	- Why?
+		- While we might not realize it, we often grant bash with excessive authority over our filesystem in exchange for having it carry out menial tasks.
+		- `cp` vs. `sashcp`
+			- `cp`
+				- has read/write powers for entire filesystem on a user's computer
+				- in reality, it should only be granted the read permissions at the time of use, and these permissions should only apply to the specific file (or files) the user wishes to make a copy of. Similarly, the permission to write should be granted at the time of execution, and
+			- `sashcp=file1.txt+file1-copy.txt`
+				- the Sash powerbox interprets this command
+					- `=` grant "read" permissions to this argument
+					- `+` grant read/write permissions to this arguent.
+				-
 	- "forgery-resistant"
-			- ### "forgery-resistant"
-				- example of cli-phishing
-					- program attempting to acquire the password to a user's PGP key. The attacker formats the output to present itself to the user as a gpg command processor, and uses stdin to read the passphrase, in a phishing-style attack.
-				- how to mitigate this:
-					- `sashcp` strips out any non-visible characters and postfixes every new line with `>`. It also ensures that newlines occur after a specific numbers of characters.
-					- at the end of its execution, the user is provided with output documenting the name of the command, along with information about what has just occurred.
-				- In other words, **provide users with the context they need in order to utilize programs while simultaneously demonstrating good security hygiene.**
-			-
+	- ### "forgery-resistant"
+		- example of cli-phishing
+			- program attempting to acquire the password to a user's PGP key. The attacker formats the output to present itself to the user as a gpg command processor, and uses stdin to read the passphrase, in a phishing-style attack.
+		- how to mitigate this:
+			- `sashcp` strips out any non-visible characters and postfixes every new line with `>`. It also ensures that newlines occur after a specific numbers of characters.
+			- at the end of its execution, the user is provided with output documenting the name of the command, along with information about what has just occurred.
+		- In other words, **provide users with the context they need in order to utilize programs while simultaneously demonstrating good security hygiene.**
+	-
