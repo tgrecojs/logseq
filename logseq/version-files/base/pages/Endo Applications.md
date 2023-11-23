@@ -7,6 +7,7 @@ public:: true
 	- Endo applications aren't in the physical world and therefore they do not have a height or a width.
 	- ![endo dolls](https://upload.wikimedia.org/wikipedia/commons/7/71/Russian-Matroshka.jpg){:height 412, :width 539}
 - `@endo/daemon`
+  id:: 64dc8342-bc8f-411b-acab-f64c58789afe
 	- `main`
 	- The Endo Daemon allows us to bootstrap systems designed to enforce POLA at the deepest level of granularity.
 	- Can be described as *an execution environment for creating Endo applications.*
