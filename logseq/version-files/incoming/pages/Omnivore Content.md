@@ -1,14 +1,3 @@
-- [Classics in the History of Psychology -- Miller (1956)](https://omnivore.app/me/classics-in-the-history-of-psychology-miller-1956-18bf946baf6)
-  collapsed:: true
-  site:: [psychclassics.yorku.ca](https://psychclassics.yorku.ca/Miller/)
-  author:: Dan J. Denis
-  date-saved:: [[11/22/2023]]
-- [Tech Tuesday - The Turing Machine](https://omnivore.app/me/tech-tuesday-the-turing-machine-18bf9322afd)
-  collapsed:: true
-  site:: [Mostly Harmless Ideas](https://blog.apiad.net/p/tech-tuesday-the-turing-machine)
-  author:: Alejandro Piad Morffis
-  date-saved:: [[11/22/2023]]
-  date-published:: [[10/24/2023]]
 - [Good-To-Know Dev Terms | Developer Portal](https://omnivore.app/me/good-to-know-dev-terms-developer-portal-18be10ae1b2)
   collapsed:: true
   site:: [tutorials.cosmos.network](https://tutorials.cosmos.network/tutorials/1-tech-terms/)
