@@ -1,3 +1,10 @@
+- [A Scheme Primer](https://omnivore.app/me/a-scheme-primer-18bfa8a865d)
+  collapsed:: true
+  site:: [spritely.institute](https://spritely.institute/static/papers/scheme-primer.html)
+  author:: Christine Lemmer-Webber and the Spritely Institute
+  labels:: [[scheme, racket, spritely]] [[scheme]] [[racket]] [[spritely]]
+  date-saved:: [[11/23/2023]]
+  date-published:: [[07/27/2022]]
 - [Classics in the History of Psychology -- Miller (1956)](https://omnivore.app/me/classics-in-the-history-of-psychology-miller-1956-18bf946baf6)
   collapsed:: true
   site:: [psychclassics.yorku.ca](https://psychclassics.yorku.ca/Miller/)
