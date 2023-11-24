@@ -1,3 +1,7 @@
+- [Blockchain Technology and Rehypothecation in the Repo Markets](https://omnivore.app/me/https-agoric-com-blog-guest-post-blockchain-technology-and-rehyp-18bff4c7925)
+  collapsed:: true
+  site:: [agoric.com](https://agoric.com/blog/guest-post/blockchain-technology-and-rehypothecation-in-the-repo-markets)
+  date-saved:: [[11/23/2023]]
 - [prof-frisby-notes.md](https://omnivore.app/me/u-0-b-89727-a-89-d-7-11-ee-866-d-57-afe-3-d-7-c-3-d-5-prof-frisb-18bfb3646df)
   collapsed:: true
   site:: [omnivore.app](https://omnivore.app/attachments/u/0b89727a-89d7-11ee-866d-57afe3d7c3d5/prof-frisby-notesmd.pdf)
