@@ -1,3 +1,8 @@
+- [Safe asset shortage and collateral reuse](https://omnivore.app/me/1813291853-18bff8ea982)
+  collapsed:: true
+  site:: [econstor.eu](https://www.econstor.eu/bitstream/10419/262212/1/1813291853.pdf)
+  author:: Jank, Stephan; Mönch, Emanuel; Schneider, Michael
+  date-saved:: [[11/23/2023]]
 - [Blockchain Technology and Rehypothecation in the Repo Markets](https://omnivore.app/me/https-agoric-com-blog-guest-post-blockchain-technology-and-rehyp-18bff4c7925)
   collapsed:: true
   site:: [agoric.com](https://agoric.com/blog/guest-post/blockchain-technology-and-rehypothecation-in-the-repo-markets)
