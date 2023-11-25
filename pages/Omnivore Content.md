@@ -1,3 +1,32 @@
+- [How DAT discovers peers](https://omnivore.app/me/super-high-level-18c07ef66d7)
+  collapsed:: true
+  site:: [blog.mauve.moe](https://blog.mauve.moe/posts/how-dat-discovers-peers)
+  labels:: [[DAT]] [[NAT Traversal]] [[DWeb]] [[P2P]]
+  date-saved:: [[11/25/2023]]
+	- ### Highlights
+	  collapsed:: true
+		- > A lot of the magic from the dat ecosystem comes from [discovery-swarm](https://github.com/mafintosh/discovery-swarm), the module that's responsible for finding peers to replicate with in the dat network. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#1b5f7c6f-a174-4b1d-b33b-fdf2b3c1fe81)
+		- > discovery-swarm provides an API to **join** networks using a **discovery key**, and then invokes a callback when it finds a peer to connect to.
+		  > 
+		  ```javascript
+		  > 
+		  ``` [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#393bae75-892c-49bb-8eb5-5e6cda354b6a)
+		- > dat-swarm provides a way to join multiple networks and automatically connect to peers, [discovery-channel](https://github.com/maxogden/discovery-channel) is the module responsible for actually finding peers for a given key. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#90b639cb-6e79-4342-8f2e-9496c0d5c741) 
+		  
+		  note:: This should be a logseq flashcard
+		- > Dat isn't the only p2p protocol that relies on peer discovery. Back when applications like BitTorrent and eMule were being developed, they relied a lot on "tracker" servers for announcing peers and searching for them. This resulted in a form of centralization which meant that if a tracker server got taken down or otherwise compromised, the p2p network couldn't function. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#6bb22760-03ff-45f0-a86f-9112c11db11e) 
+		  
+		  note:: Sets the stage for how Kademlia is used to handle routing within distributed systems.
+		- > The solution for this problem was to get rid of centralized trackers and replace them with a protocol that would split the discovery information amongst all the peers participating in the network. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#6a1534d6-8937-4d6f-add5-7f3785b473c7)
+		- > the idea is that each discovery key is sent to nodes whose id is _"close"_ to the key, and peers maintain connections to others that are varying levels of _"closeness"_ to themselves which makes it fast to find the nodes storing keys that you want. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#01e4df3d-e28e-43f9-b4fc-5c7949bc6b23)
+		- > discovery-channel uses this module by publishing it's IP/Port combination to the discovery key onto the DHT. Since there is no central authority or single point of failure, publishing on the DHT is resistant to censorship and can survive sketchy networks. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#8788de8e-a0b9-45d3-a933-13cd8eff61bd) 
+		  
+		  note:: However, this doesn't come without it's own set of problems.
+		- > the DHT requires a set of _"bootstrap nodes"_ which are used to find more nodes to start building up your network. These bootstrap nodes are a potential source of failure and DHT clients should attempt to save any nodes they find for later use in order to have a way to bootstrap should the bootstrap nodes go down.
+		  > 
+		  ##  [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#32b8b315-c354-4919-aff6-6543a5ac9e9b)
+		- > One of the problems with the DHT, is that items in the DHT don't expire right away, and searching for peers can yield a lot of false-positives. Also, maintining the connection information necessary for staying in the DHT takes up more computational resources. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#6318228e-b9d2-453f-a209-0e7c0efbcdb5)
+		- > the DHT can yield false positives and requires participating in a network. To make peer lookup faster, discovery-channel makes use of [dns-discovery](https://github.com/mafintosh/dns-discovery) to talk to a list of centralized DNS servers to find peers. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#a5819326-1e8f-4c83-93c5-443b700ead57)
 - [How NAT traversal works · Tailscale](https://omnivore.app/me/how-nat-traversal-works-tailscale-18c04f162ce)
   collapsed:: true
   site:: [Tailscale](https://tailscale.com/blog/how-nat-traversal-works/)
