@@ -1,3 +1,3 @@
 ## Agoric-SDK
-	-
-- Price Authority Notifiers
+	- Price Authority Notifiers
+		- `[asyncIterator]`
