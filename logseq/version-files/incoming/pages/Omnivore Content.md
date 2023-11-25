@@ -1,3 +1,40 @@
+- [Joe Duffy - Asynchronous Everything](https://omnivore.app/me/https-joeduffyblog-com-2015-11-19-asynchronous-everything-18bf4c3ff18)
+  collapsed:: true
+  site:: [joeduffyblog.com](https://joeduffyblog.com/2015/11/19/asynchronous-everything/)
+  author:: Joe Duffy
+  date-saved:: [[11/21/2023]]
+  date-published:: [[11/18/2015]]
+- [Safe asset shortage and collateral reuse](https://omnivore.app/me/1813291853-18bff8ea982)
+  collapsed:: true
+  site:: [econstor.eu](https://www.econstor.eu/bitstream/10419/262212/1/1813291853.pdf)
+  author:: Jank, Stephan; Mönch, Emanuel; Schneider, Michael
+  date-saved:: [[11/23/2023]]
+- [Blockchain Technology and Rehypothecation in the Repo Markets](https://omnivore.app/me/https-agoric-com-blog-guest-post-blockchain-technology-and-rehyp-18bff4c7925)
+  collapsed:: true
+  site:: [agoric.com](https://agoric.com/blog/guest-post/blockchain-technology-and-rehypothecation-in-the-repo-markets)
+  date-saved:: [[11/23/2023]]
+- [prof-frisby-notes.md](https://omnivore.app/me/u-0-b-89727-a-89-d-7-11-ee-866-d-57-afe-3-d-7-c-3-d-5-prof-frisb-18bfb3646df)
+  collapsed:: true
+  site:: [omnivore.app](https://omnivore.app/attachments/u/0b89727a-89d7-11ee-866d-57afe3d7c3d5/prof-frisby-notesmd.pdf)
+  date-saved:: [[11/23/2023]]
+- [A Scheme Primer](https://omnivore.app/me/a-scheme-primer-18bfa8a865d)
+  collapsed:: true
+  site:: [spritely.institute](https://spritely.institute/static/papers/scheme-primer.html)
+  author:: Christine Lemmer-Webber and the Spritely Institute
+  labels:: [[scheme, racket, spritely]] [[scheme]] [[racket]] [[spritely]]
+  date-saved:: [[11/23/2023]]
+  date-published:: [[07/27/2022]]
+- [Classics in the History of Psychology -- Miller (1956)](https://omnivore.app/me/classics-in-the-history-of-psychology-miller-1956-18bf946baf6)
+  collapsed:: true
+  site:: [psychclassics.yorku.ca](https://psychclassics.yorku.ca/Miller/)
+  author:: Dan J. Denis
+  date-saved:: [[11/22/2023]]
+- [Tech Tuesday - The Turing Machine](https://omnivore.app/me/tech-tuesday-the-turing-machine-18bf9322afd)
+  collapsed:: true
+  site:: [Mostly Harmless Ideas](https://blog.apiad.net/p/tech-tuesday-the-turing-machine)
+  author:: Alejandro Piad Morffis
+  date-saved:: [[11/22/2023]]
+  date-published:: [[10/24/2023]]
 - [Good-To-Know Dev Terms | Developer Portal](https://omnivore.app/me/good-to-know-dev-terms-developer-portal-18be10ae1b2)
   collapsed:: true
   site:: [tutorials.cosmos.network](https://tutorials.cosmos.network/tutorials/1-tech-terms/)

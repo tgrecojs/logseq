@@ -1,3 +1,9 @@
+- [How NAT traversal works · Tailscale](https://omnivore.app/me/how-nat-traversal-works-tailscale-18c04f162ce)
+  collapsed:: true
+  site:: [Tailscale](https://tailscale.com/blog/how-nat-traversal-works/)
+  author:: Tailscale
+  date-saved:: [[11/25/2023]]
+  date-published:: [[08/20/2020]]
 - [Joe Duffy - Asynchronous Everything](https://omnivore.app/me/https-joeduffyblog-com-2015-11-19-asynchronous-everything-18bf4c3ff18)
   collapsed:: true
   site:: [joeduffyblog.com](https://joeduffyblog.com/2015/11/19/asynchronous-everything/)
