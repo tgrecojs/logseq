@@ -1,3 +1,7 @@
+- [Projects We Love: ZKorum – Fission](https://omnivore.app/me/https-fission-codes-blog-projects-we-love-zkorum-18c09ba5698)
+  collapsed:: true
+  site:: [Fission](https://fission.codes/blog/projects-we-love-zkorum/)
+  date-saved:: [[11/25/2023]]
 - [How DAT discovers peers](https://omnivore.app/me/super-high-level-18c07ef66d7)
   collapsed:: true
   site:: [blog.mauve.moe](https://blog.mauve.moe/posts/how-dat-discovers-peers)
