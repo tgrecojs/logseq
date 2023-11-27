@@ -1,5 +1,4 @@
 - [buildMailbox`](https://github.com/Agoric/agoric-sdk/blob/299420ddd1e4ad1a5d07c93a2bb49fb20f20a6cf/packages/SwingSet/src/devices/mailbox/mailbox.js#L97)
-- [buildMailbox`](https://github.com/Agoric/agoric-sdk/blob/299420ddd1e4ad1a5d07c93a2bb49fb20f20a6cf/packages/SwingSet/src/devices/mailbox/mailbox.js#L97)
   id:: 648b9e11-6a9e-412c-9d29-7c02c0530ce4
 -
 - ### pattern matching
