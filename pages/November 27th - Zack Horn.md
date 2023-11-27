@@ -12,6 +12,9 @@ Get to know Zach a little more, his background, time at akash
 - ### Videos
 	- Walk thrus on how to set up different parts.
 	-
+- ### Community Pool
+	- Contributions
+	-
 	-
 - tags: #Akash, Akash-wgs, #jobs
 -
