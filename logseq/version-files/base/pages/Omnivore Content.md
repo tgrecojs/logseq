@@ -1,3 +1,8 @@
+- [Locke Lord QuickStudy: Down the Rabbit Hole: Digital Assets in ‎International Arbitration | News, blogs & events | Locke Lord](https://omnivore.app/me/locke-lord-quick-study-down-the-rabbit-hole-digital-assets-in-in-18c0f8d5c31)
+  collapsed:: true
+  site:: [lockelord.com](https://www.lockelord.com/newsandevents/publications/2022/01/down-the-rabbit-hole)
+  date-saved:: [[11/27/2023]]
+  date-published:: [[01/27/2022]]
 - [Projects We Love: ZKorum – Fission](https://omnivore.app/me/https-fission-codes-blog-projects-we-love-zkorum-18c09ba5698)
   collapsed:: true
   site:: [Fission](https://fission.codes/blog/projects-we-love-zkorum/)
