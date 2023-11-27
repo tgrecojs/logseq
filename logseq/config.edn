@@ -418,4 +418,5 @@
  ;;      ;use Percent-encoding for other invalid characters
  :file/name-format :triple-lowbar
  :graph/settings {:journal? true}
- :journal/page-title-format "MM/dd/yyyy"}
+ :journal/page-title-format "MM/dd/yyyy"
+ :editor/logical-outdenting? true}
