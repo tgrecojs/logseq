@@ -17,6 +17,7 @@ collapsed:: true
   >>>>>>> 617d85e (fix: related to the mp4 files.)
 	- #### `makeMessageCapTP`
 	  id:: 6562d4c4-0953-49a3-9940-93c68411c197
+	  collapsed:: true
 		- creates a CapTP connection.
 		- ```javascript
 		  export const makeMessageCapTP = (
