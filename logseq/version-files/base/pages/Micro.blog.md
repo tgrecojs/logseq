@@ -1,6 +1,7 @@
 ## Topics
 - ### TIL Series
-	- ((6498010e-6d74-438b-b4b5-0fe1be79c9ae))
+	- {{embed ((65644329-385f-4b76-b061-56fa909968a9))}}
+	-
 - ### 8 Weeks of OCAPs
 	- TODO caretaker pattern
 	- TODO rights amplification
