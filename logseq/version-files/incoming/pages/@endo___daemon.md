@@ -1,5 +1,22 @@
-### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
+## `servePort`
+id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
+collapsed:: true
+	- investigate usage of websockets within endo
+	- ### Action Item
+	- ## Adding `rename` behaviors
+	-
+	- September 9th
+-
+-
+- ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
+  =======
+- ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
+  >>>>>>> 617d85e (fix: related to the mp4 files.)
+  =======
+  ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
+  >>>>>>> 617d85e (fix: related to the mp4 files.)
 	- #### `makeMessageCapTP`
+	  id:: 6562d4c4-0953-49a3-9940-93c68411c197
 		- creates a CapTP connection.
 		- ```javascript
 		  export const makeMessageCapTP = (
@@ -78,6 +95,13 @@
 		- failure
 			- process.exitCode = 1;
 	- what does harbinger mean?
+	  collapsed:: true
 		- is this our safety net?
+		  <<<<<<< HEAD
+		  <<<<<<< HEAD
+		  =======
+- >>>>>>> 617d85e (fix: related to the mp4 files.)
+  =======
+- >>>>>>> 617d85e (fix: related to the mp4 files.)
 -
 -
