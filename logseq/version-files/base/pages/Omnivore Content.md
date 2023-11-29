@@ -1,3 +1,9 @@
+- [What Do You Do About Externalities?](https://omnivore.app/me/https-capitalgains-thediff-co-p-externalities-18c1c8f2f51)
+  collapsed:: true
+  site:: [Capital Gains](https://capitalgains.thediff.co/p/externalities)
+  author:: Byrne Hobart
+  date-saved:: [[11/29/2023]]
+  date-published:: [[11/29/2023]]
 - [Playing with ActivityPub - macwright.com](https://omnivore.app/me/https-macwright-com-2022-12-09-activitypub-html-18c18a4aa6f)
   collapsed:: true
   site:: [macwright.com](https://macwright.com/2022/12/09/activitypub.html)
