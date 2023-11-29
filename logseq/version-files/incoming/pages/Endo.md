@@ -1,6 +1,11 @@
-- [[Endo Applications]]
-- [[Daemon Videos]]
-- [[Attenuator]]
+public:: true
+- ## Sitemap
+	- [[Endo Applications]]
+	- [[Daemon Videos]]
+	-
+	- [[Attenuator]]
+	- [[EventEmitter]]
+-
 -
 - ## [[@endo/{packages}]]
 - [[Questions]]

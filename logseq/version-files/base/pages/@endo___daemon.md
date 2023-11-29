@@ -3,7 +3,29 @@ id:: 64fc1e40-f285-40df-8355-0c82a67ae8d5
 collapsed:: true
 	- investigate usage of websockets within endo
 	- ### Action Item
+		- LATER add the logic for renaming a value in the pet storre directy fro the UI.
 	- ## Adding `rename` behaviors
+	- #### AI Chat
+		- Thomas Greco: how can i register an event handler that watches for an html element that has a contenteditable attribute that watches for the element to change? will the DOM APIs "onchange"  handlerr be sufficient? please proide an example
+		- ---
+		- Raycast AI: No, the `onchange` event does not work with the `contenteditable` attribute. However, you can use a different event, such as `input` or `blur`, to watch for changes to these elements.
+		- Here's a basic example using the `input` event:
+		- ```javascript
+		  var editableElem = document.querySelector('[contenteditable=true]');
+		  - editableElem.addEventListener('input', function() {
+		  console.log('Content changed!');
+		  });
+		  ```
+		- In this code, the querySelector function locates the first HTML element with the `contenteditable` attribute set to true. It then attaches an event listener to that element, which listens for the `input` event. When the `input` event occurs (i.e., the user makes a change to the element), the event handler logs a message to the console.
+		- If you would like to handle changes when the content editable element loses focus (i.e, the user finishes editing), you can use the `blur` event as follows:
+		- ```javascript
+		  var editableElem = document.querySelector('[contenteditable=true]');
+		  - editableElem.addEventListener('blur', function() {
+		  console.log('Content changed!');
+		  });
+		  ```
+		- In this case, when the user clicks away from the element or otherwise causes it to lose focus, the event handler logs a message to the console.
+		- raycast://extensions/raycast/raycast-ai/ai-chat?context=%7B%22id%22:%221FF284AA-71D4-48E3-880A-4CAD920B3527%22%7D
 	-
 	- September 9th
 -
@@ -15,6 +37,7 @@ collapsed:: true
   =======
   ### Aug. 1st - Endo Daemon Investigtion #@endo/daemon
   >>>>>>> 617d85e (fix: related to the mp4 files.)
+	- #### `makeMessageCapTP`
 	- #### `makeMessageCapTP`
 	  id:: 6562d4c4-0953-49a3-9940-93c68411c197
 	  collapsed:: true
@@ -95,6 +118,7 @@ collapsed:: true
 			- process.exitCode = 0;
 		- failure
 			- process.exitCode = 1;
+	- what does harbinger mean?
 	- what does harbinger mean?
 	  collapsed:: true
 		- is this our safety net?
