@@ -1,3 +1,13 @@
+- [Playing with ActivityPub - macwright.com](https://omnivore.app/me/https-macwright-com-2022-12-09-activitypub-html-18c18a4aa6f)
+  collapsed:: true
+  site:: [macwright.com](https://macwright.com/2022/12/09/activitypub.html)
+  author:: Tom MacWright
+  date-saved:: [[11/28/2023]]
+  date-published:: [[12/08/2022]]
+	- ### Highlights
+	  collapsed:: true
+		- > ActivityPub is the kind of specification that’s so generic that everything implemented on top of it is a particular “flavor” of the specification. There’s an opinionated kind of ActivityPub that Mastodon speaks, which is different from [bookwyrm](https://bookwyrm.social/) or [pixelfed](https://pixelfed.org/). [⤴️](https://omnivore.app/me/https-macwright-com-2022-12-09-activitypub-html-18c18a4aa6f#8ffd756a-8fb7-4b74-9ffd-bab351067f09)
+		- > There are many Mastodon hosts and they don’t share any kind of cache so popular posts themselves [have been known to DDoS websites](https://www.jwz.org/blog/2022/11/mastodon-stampede/). [⤴️](https://omnivore.app/me/https-macwright-com-2022-12-09-activitypub-html-18c18a4aa6f#321f3c5d-1e33-481e-be6a-fbee8c6a696e)
 - [Locke Lord QuickStudy: Down the Rabbit Hole: Digital Assets in ‎International Arbitration | News, blogs & events | Locke Lord](https://omnivore.app/me/locke-lord-quick-study-down-the-rabbit-hole-digital-assets-in-in-18c0f8d5c31)
   collapsed:: true
   site:: [lockelord.com](https://www.lockelord.com/newsandevents/publications/2022/01/down-the-rabbit-hole)
