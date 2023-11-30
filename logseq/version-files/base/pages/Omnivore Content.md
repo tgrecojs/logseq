@@ -1,3 +1,7 @@
+- [messari.io](https://omnivore.app/me/https-messari-io-report-crypto-fundraising-brief-november-2023-r-18c2233dee2)
+  collapsed:: true
+  site:: [messari.io](https://messari.io/report/crypto-fundraising-brief-november-2023?referrer=research-reports)
+  date-saved:: [[11/30/2023]]
 - [What Do You Do About Externalities?](https://omnivore.app/me/https-capitalgains-thediff-co-p-externalities-18c1c8f2f51)
   collapsed:: true
   site:: [Capital Gains](https://capitalgains.thediff.co/p/externalities)
@@ -5,11 +9,11 @@
   date-saved:: [[11/29/2023]]
   date-published:: [[11/29/2023]]
 - [Playing with ActivityPub - macwright.com](https://omnivore.app/me/https-macwright-com-2022-12-09-activitypub-html-18c18a4aa6f)
-  collapsed:: true
   site:: [macwright.com](https://macwright.com/2022/12/09/activitypub.html)
   author:: Tom MacWright
   date-saved:: [[11/28/2023]]
   date-published:: [[12/08/2022]]
+  collapsed:: true
 	- ### Highlights
 	  collapsed:: true
 		- > ActivityPub is the kind of specification that’s so generic that everything implemented on top of it is a particular “flavor” of the specification. There’s an opinionated kind of ActivityPub that Mastodon speaks, which is different from [bookwyrm](https://bookwyrm.social/) or [pixelfed](https://pixelfed.org/). [⤴️](https://omnivore.app/me/https-macwright-com-2022-12-09-activitypub-html-18c18a4aa6f#8ffd756a-8fb7-4b74-9ffd-bab351067f09)
