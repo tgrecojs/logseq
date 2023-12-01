@@ -1,3 +1,7 @@
+- [How To Deconstruct Almost Anything](https://omnivore.app/me/http-www-fudco-com-chip-deconstr-html-18c27847e0f)
+  collapsed:: true
+  site:: [fudco.com](http://www.fudco.com/chip/deconstr.html)
+  date-saved:: [[12/01/2023]]
 - [messari.io](https://omnivore.app/me/https-messari-io-report-crypto-fundraising-brief-november-2023-r-18c2233dee2)
   collapsed:: true
   site:: [messari.io](https://messari.io/report/crypto-fundraising-brief-november-2023?referrer=research-reports)
