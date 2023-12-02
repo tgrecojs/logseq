@@ -1,3 +1,14 @@
+- [Horton's “Who Done It?”](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f)
+  collapsed:: true
+  site:: [erights.org](http://www.erights.org/elib/capability/horton/paper/)
+  author:: Mark S. Miller
+  date-saved:: [[12/01/2023]]
+	- ### Highlights
+	  collapsed:: true
+		- > There are two approaches to protect users from the harm programs can cause, _proactive control_ and _reactive control_. Proactive controls help prevent bad things from happening, or limit the damage when they do. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#053f1782-4d68-42c0-b072-4aabe464c243)
+		- > For reactive controls to work well, we must first proactively limit attackers to causing only repairable damage. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#08209e04-daec-42bd-8c0f-d71617579ef5)
+		- > Access Control List (ACL) systems support reactive control directly. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#0f89e23e-f6cc-425a-be4a-204af5bb1c1f)
+		- > ACL systems presume a program acts on behalf of its “user”. Access is allowed or disallowed by checking whether this operation on this resource is permitted for this user. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#dbe2f850-d439-4cfe-a1fc-e6736790f89e)
 - [How To Deconstruct Almost Anything](https://omnivore.app/me/http-www-fudco-com-chip-deconstr-html-18c27847e0f)
   collapsed:: true
   site:: [fudco.com](http://www.fudco.com/chip/deconstr.html)
