@@ -1,3 +1,42 @@
+- [Horton's “Who Done It?”](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f)
+  collapsed:: true
+  site:: [erights.org](http://www.erights.org/elib/capability/horton/paper/)
+  author:: Mark S. Miller
+  date-saved:: [[12/01/2023]]
+	- > ACL systems presume a program acts on behalf of its “user”. Access is allowed or disallowed by checking whether this operation on this resource is permitted for this user. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#dbe2f850-d439-4cfe-a1fc-e6736790f89e)
+	- > Access Control List (ACL) systems support reactive control directly. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#0f89e23e-f6cc-425a-be4a-204af5bb1c1f)
+	- > For reactive controls to work well, we must first proactively limit attackers to causing only repairable damage. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#08209e04-daec-42bd-8c0f-d71617579ef5)
+	- > There are two approaches to protect users from the harm programs can cause, _proactive control_ and _reactive control_. Proactive controls help prevent bad things from happening, or limit the damage when they do. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#053f1782-4d68-42c0-b072-4aabe464c243)
+	- ### Highlights
+	  collapsed:: true
+		- > There are two approaches to protect users from the harm programs can cause, _proactive control_ and _reactive control_. Proactive controls help prevent bad things from happening, or limit the damage when they do. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#053f1782-4d68-42c0-b072-4aabe464c243)
+		- > For reactive controls to work well, we must first proactively limit attackers to causing only repairable damage. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#08209e04-daec-42bd-8c0f-d71617579ef5)
+		- > Access Control List (ACL) systems support reactive control directly. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#0f89e23e-f6cc-425a-be4a-204af5bb1c1f)
+		- > ACL systems presume a program acts on behalf of its “user”. Access is allowed or disallowed by checking whether this operation on this resource is permitted for this user. [⤴️](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f#dbe2f850-d439-4cfe-a1fc-e6736790f89e)
+- [How To Deconstruct Almost Anything](https://omnivore.app/me/http-www-fudco-com-chip-deconstr-html-18c27847e0f)
+  collapsed:: true
+  site:: [fudco.com](http://www.fudco.com/chip/deconstr.html)
+  date-saved:: [[12/01/2023]]
+- [messari.io](https://omnivore.app/me/https-messari-io-report-crypto-fundraising-brief-november-2023-r-18c2233dee2)
+  collapsed:: true
+  site:: [messari.io](https://messari.io/report/crypto-fundraising-brief-november-2023?referrer=research-reports)
+  date-saved:: [[11/30/2023]]
+- [What Do You Do About Externalities?](https://omnivore.app/me/https-capitalgains-thediff-co-p-externalities-18c1c8f2f51)
+  collapsed:: true
+  site:: [Capital Gains](https://capitalgains.thediff.co/p/externalities)
+  author:: Byrne Hobart
+  date-saved:: [[11/29/2023]]
+  date-published:: [[11/29/2023]]
+- [Playing with ActivityPub - macwright.com](https://omnivore.app/me/https-macwright-com-2022-12-09-activitypub-html-18c18a4aa6f)
+  site:: [macwright.com](https://macwright.com/2022/12/09/activitypub.html)
+  author:: Tom MacWright
+  date-saved:: [[11/28/2023]]
+  date-published:: [[12/08/2022]]
+  collapsed:: true
+	- ### Highlights
+	  collapsed:: true
+		- > ActivityPub is the kind of specification that’s so generic that everything implemented on top of it is a particular “flavor” of the specification. There’s an opinionated kind of ActivityPub that Mastodon speaks, which is different from [bookwyrm](https://bookwyrm.social/) or [pixelfed](https://pixelfed.org/). [⤴️](https://omnivore.app/me/https-macwright-com-2022-12-09-activitypub-html-18c18a4aa6f#8ffd756a-8fb7-4b74-9ffd-bab351067f09)
+		- > There are many Mastodon hosts and they don’t share any kind of cache so popular posts themselves [have been known to DDoS websites](https://www.jwz.org/blog/2022/11/mastodon-stampede/). [⤴️](https://omnivore.app/me/https-macwright-com-2022-12-09-activitypub-html-18c18a4aa6f#321f3c5d-1e33-481e-be6a-fbee8c6a696e)
 - [Locke Lord QuickStudy: Down the Rabbit Hole: Digital Assets in ‎International Arbitration | News, blogs & events | Locke Lord](https://omnivore.app/me/locke-lord-quick-study-down-the-rabbit-hole-digital-assets-in-in-18c0f8d5c31)
   collapsed:: true
   site:: [lockelord.com](https://www.lockelord.com/newsandevents/publications/2022/01/down-the-rabbit-hole)
@@ -12,6 +51,28 @@
   site:: [blog.mauve.moe](https://blog.mauve.moe/posts/how-dat-discovers-peers)
   labels:: [[DAT]] [[NAT Traversal]] [[DWeb]] [[P2P]]
   date-saved:: [[11/25/2023]]
+	- > the DHT can yield false positives and requires participating in a network. To make peer lookup faster, discovery-channel makes use of [dns-discovery](https://github.com/mafintosh/dns-discovery) to talk to a list of centralized DNS servers to find peers. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#a5819326-1e8f-4c83-93c5-443b700ead57)
+	- > One of the problems with the DHT, is that items in the DHT don't expire right away, and searching for peers can yield a lot of false-positives. Also, maintining the connection information necessary for staying in the DHT takes up more computational resources. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#6318228e-b9d2-453f-a209-0e7c0efbcdb5)
+	- > the DHT requires a set of _"bootstrap nodes"_ which are used to find more nodes to start building up your network. These bootstrap nodes are a potential source of failure and DHT clients should attempt to save any nodes they find for later use in order to have a way to bootstrap should the bootstrap nodes go down.
+	  > 
+	  ##  [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#32b8b315-c354-4919-aff6-6543a5ac9e9b)
+	- > discovery-channel uses this module by publishing it's IP/Port combination to the discovery key onto the DHT. Since there is no central authority or single point of failure, publishing on the DHT is resistant to censorship and can survive sketchy networks. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#8788de8e-a0b9-45d3-a933-13cd8eff61bd) 
+	  
+	  note:: However, this doesn't come without it's own set of problems.
+	- > the idea is that each discovery key is sent to nodes whose id is _"close"_ to the key, and peers maintain connections to others that are varying levels of _"closeness"_ to themselves which makes it fast to find the nodes storing keys that you want. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#01e4df3d-e28e-43f9-b4fc-5c7949bc6b23)
+	- > The solution for this problem was to get rid of centralized trackers and replace them with a protocol that would split the discovery information amongst all the peers participating in the network. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#6a1534d6-8937-4d6f-add5-7f3785b473c7)
+	- > Dat isn't the only p2p protocol that relies on peer discovery. Back when applications like BitTorrent and eMule were being developed, they relied a lot on "tracker" servers for announcing peers and searching for them. This resulted in a form of centralization which meant that if a tracker server got taken down or otherwise compromised, the p2p network couldn't function. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#6bb22760-03ff-45f0-a86f-9112c11db11e) 
+	  
+	  note:: Sets the stage for how Kademlia is used to handle routing within distributed systems.
+	- > dat-swarm provides a way to join multiple networks and automatically connect to peers, [discovery-channel](https://github.com/maxogden/discovery-channel) is the module responsible for actually finding peers for a given key. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#90b639cb-6e79-4342-8f2e-9496c0d5c741) 
+	  
+	  note:: This should be a logseq flashcard
+	- > discovery-swarm provides an API to **join** networks using a **discovery key**, and then invokes a callback when it finds a peer to connect to.
+	  > 
+	  ```javascript
+	  > 
+	  ``` [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#393bae75-892c-49bb-8eb5-5e6cda354b6a)
+	- > A lot of the magic from the dat ecosystem comes from [discovery-swarm](https://github.com/mafintosh/discovery-swarm), the module that's responsible for finding peers to replicate with in the dat network. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#1b5f7c6f-a174-4b1d-b33b-fdf2b3c1fe81)
 	- ### Highlights
 	  collapsed:: true
 		- > A lot of the magic from the dat ecosystem comes from [discovery-swarm](https://github.com/mafintosh/discovery-swarm), the module that's responsible for finding peers to replicate with in the dat network. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#1b5f7c6f-a174-4b1d-b33b-fdf2b3c1fe81)

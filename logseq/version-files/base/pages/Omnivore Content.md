@@ -1,3 +1,12 @@
+- [Docker Architecture - Client-server - Working with Containers: Docker & Docker Compose](https://omnivore.app/me/docker-architecture-client-server-working-with-containers-docker-18bdff11550)
+  collapsed:: true
+  site:: [Educative](https://www.educative.io/courses/working-with-containers-docker-docker-compose/docker-architecture-client-server)
+  labels:: [[Docker]]
+  date-saved:: [[12/03/2023]]
+- [Docker Architecture - Image, Container](https://omnivore.app/me/https-www-educative-io-courses-working-with-containers-docker-do-18c318f1e13)
+  collapsed:: true
+  site:: [Educative](https://www.educative.io/courses/working-with-containers-docker-docker-compose/docker-architecture-image-container)
+  date-saved:: [[12/03/2023]]
 - [Horton's “Who Done It?”](https://omnivore.app/me/http-www-erights-org-elib-capability-horton-paper-18c28d56e7f)
   collapsed:: true
   site:: [erights.org](http://www.erights.org/elib/capability/horton/paper/)
