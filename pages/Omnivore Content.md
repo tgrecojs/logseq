@@ -1,3 +1,9 @@
+- [Combining proofs and programs in a dependently typed language | connolly's Library | Zotero](https://omnivore.app/me/combining-proofs-and-programs-in-a-dependently-typed-language-co-18c36a08de7)
+  collapsed:: true
+  site:: [zotero.org](https://www.zotero.org/connolly/items/3HTT8FZK)
+  labels:: [[RSS]]
+  date-saved:: [[03/14/2015]]
+  date-published:: [[03/14/2015]]
 - [Docker Architecture - Client-server - Working with Containers: Docker & Docker Compose](https://omnivore.app/me/docker-architecture-client-server-working-with-containers-docker-18bdff11550)
   collapsed:: true
   site:: [Educative](https://www.educative.io/courses/working-with-containers-docker-docker-compose/docker-architecture-client-server)
