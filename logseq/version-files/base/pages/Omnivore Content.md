@@ -1,3 +1,11 @@
+- [Layered Architectures & Protocol Stacks - Grokking Computer Networking for Software Engineers](https://omnivore.app/me/layered-architectures-protocol-stacks-grokking-computer-networki-18c413f7922)
+  collapsed:: true
+  site:: [Educative](https://www.educative.io/module/lesson/network-fundamentals/N72J4Dz26Qm)
+  date-saved:: [[12/06/2023]]
+- [What is the Internet? - Grokking Computer Networking for Software Engineers](https://omnivore.app/me/what-is-the-internet-grokking-computer-networking-for-software-e-18c413ef658)
+  collapsed:: true
+  site:: [Educative](https://www.educative.io/module/lesson/network-fundamentals/YVYK8KwGpEn)
+  date-saved:: [[12/06/2023]]
 - [Combining proofs and programs in a dependently typed language | connolly's Library | Zotero](https://omnivore.app/me/combining-proofs-and-programs-in-a-dependently-typed-language-co-18c36a08de7)
   collapsed:: true
   site:: [zotero.org](https://www.zotero.org/connolly/items/3HTT8FZK)
