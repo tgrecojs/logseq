@@ -77,6 +77,8 @@
 			- `-i` runs container in *interactive* mode. #card
 			- `-t` creates a pseudo terminal for us. #card
 		- #### `docker ps`
+			- Lists active containers.
+			-
 			- Command showing **running
 				- *CONTAINER ID*: shows the unique ID of each container
 				- *IMAGE*: the image from which the container is created
