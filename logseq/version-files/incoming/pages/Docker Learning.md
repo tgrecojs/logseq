@@ -150,7 +150,8 @@
 	- > Docker volumes are mostly created to share data within different containers, rather than sharing data with host and container.
 	- ### Bind mount
 		- Bind mount allows you to use the **host file system and mount it on the container**. #card
-		- #### Mounting a volume from my machine to
+		- #### Mounting a volume from my machine to an image when starting a container
+			- `docker run -it -v ./Desktop/Docker_Volumne_Example:/desktop date_project:1.0`
 		- Example
 			- Running a container using a local directory
 				-
