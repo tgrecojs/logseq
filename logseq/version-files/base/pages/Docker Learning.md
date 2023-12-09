@@ -131,8 +131,11 @@
 			- `docker ps`
 			- `docker ps -a`
 			- `docker create volume`
-		- ## Accessing Containers
+		- ### Key Points & Themes
+			- **Docker uses the Linux kernel for containers.**
 		-
+		-
+	-
 	-
 - ## Managing Data (Volumes)
 	- to access the host files in the container for faster access to data and while coding as well, because you cannot code, build, and then check your code.
