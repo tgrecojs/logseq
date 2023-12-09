@@ -133,7 +133,7 @@
 			- Running a container using a local directory
 				- `docker run -it -v ./Desktop/Docker_Volumne_Example:/desktop date_project:1.0`
 			- After mounting this directory, we will see it appear within our container as the name “desktop”.
-			-
+	- ##
 - ## Docker Fundamentals
 	- ### Recurring Theme
 	- > **Docker is Linux for containers.**
