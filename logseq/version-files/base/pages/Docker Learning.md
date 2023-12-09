@@ -125,6 +125,10 @@
 					  logseq.order-list-type:: number
 					- @@html: <iframe src="https://app.warp.dev/block/embed/2x8WT8KHMhAZm5mu9safXL" title="embedded warp block" style="width: 1662px; height: 416px; border:0; overflow:hidden;" allow="clipboard-read; clipboard-write"></iframe>@@
 					  logseq.order-list-type:: number
+		- #### Common commands
+			- `docker pull <image-name><verion?>`
+			- `docker run <image-name><verion?>`v
+			-
 		- ## Accessing Containers
 		-
 	-
