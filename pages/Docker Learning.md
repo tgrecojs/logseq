@@ -156,7 +156,8 @@
 						- `docker run -it -v ./Desktop/Docker_Volumne_Example:/desktop date_project:1.0`
 					- result:
 						- We will see it appear within our container as the name “desktop”.
-						- Any files, folders, etc. added to the local folder are
+					- ### Local
+						- **Any files, folders, etc. added to the local folder are reflected in the container.**
 					-
 			- ### volume commands #essentials
 				- `docker volume --help`: to get the volume help
