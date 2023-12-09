@@ -33,6 +33,7 @@
 				- > So, if you fetch a Python 3.5 image from Docker and run an instance of it, you can do whatever you were able to do in the host machine using a command line interface. If you make any mistake with that instance, you can delete the container and create a new one from the existing image. This way, your main environment remains intact in the form of an image and you can play around with the dependencies packaged in the image using containers.
 				-
 	- ## Docker Architecture (Continued)
+	  collapsed:: true
 		- #### Docker Ecosystem
 			- Docker Registry
 			  logseq.order-list-type:: number
@@ -143,9 +144,8 @@
 				  logseq.order-list-type:: number
 				- **avoid the mistake of unknowingly working in the wrong container ``
 				  logseq.order-list-type:: number
-			- logseq.order-list-type:: number
-		-
 - ## Managing Data (Volumes)
+  id:: 65741d2d-4d62-41d4-9510-c4d7eaccd043
 	- to access the host files in the container for faster access to data and while coding as well, because you cannot code, build, and then check your code.
 	- > Docker volumes are mostly created to share data within different containers, rather than sharing data with host and container.
 	- ### Bind mount
