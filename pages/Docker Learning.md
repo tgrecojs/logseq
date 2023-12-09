@@ -65,8 +65,7 @@
 				- The rest is left for Docker to take care of.
 				-
 	- ## Layers
-		- A docker image consists of layers. These layers are **responsible for housing any dependencies that a given image needs to function.**
-		-
+		- A docker image consists of layers. These layers are **responsible for housing any dependencies that a given image needs to function.
 		- #### Example - `docker pull nginx`
 			- The screenshot below shows the layers that nginx requires in order to function properly
 				- ![image.png](../assets/image_1701990415858_0.png)
@@ -76,6 +75,7 @@
 		- #### `docker run -it <image-name> <command-to-execute>` #card
 			- `-i` runs container in *interactive* mode. #card
 			- `-t` creates a pseudo terminal for us. #card
+		- 3
 		- #### `docker ps`
 			- Lists active (running) containers.
 				- **Running this with the `-a` flag **show all containers, regardless of their current status.**
