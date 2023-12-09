@@ -73,21 +73,21 @@
 			- Docker caches intermediatary layers to speed up the image building process.
 			- {{video https://www.icloud.com/attachment/?u=https%3A%2F%2Fcvws.icloud-content.com%2FB%2FAdFZ0Vqc3x6P3iZj922zkiZptNTfARSqziW7VvDgm5THuH1vDPz1ag3W%2F%24%7Bf%7D%3Fo%3DAvt-rtHKscAfw3Lk3Bl13HO_eWt0jsMUr0xJN_ufGKJq%26v%3D1%26x%3D3%26a%3DCAogREzQtulyxTvJ2hSJ9SUP21JMjSVctnoxoRWrjZhAOCkSbRDgneG0xDEY4K3ciM4xIgEAUgRptNTfWgT1ag3WaiZgSw9Mv1W1PGpFsxYTMCoLAP3OfZkYgfF-9ukVeatFNQiGmpkB2XImZygqRByY2wFy-OpC35Efh_3UN1JlIkvbBvm4gwgBPvfXkrHMUPQ%26e%3D1704583436%26fl%3D%26r%3D24E05676-3C0B-4BDF-A1A1-23AB2E2682E7-1%26k%3D%24%7Buk%7D%26ckc%3Dcom.apple.clouddocs%26ckz%3Dcom.apple.CloudDocs%26p%3D137%26s%3DZfk2mFNoWtpDh--ddDztai1d_qA&uk=2N8sdma-t2JQUVM_3irBmg&f=docker-pull-recording.mp4&sz=738754}}
 		- ### Docker CLI
-		- #### `docker run -it <image-name> <command-to-execute>` #card
-			- `-i` runs container in *interactive* mode. #card
-			- `-t` creates a pseudo terminal for us. #card
-		- ### Docker CLI
-		- #### `docker ps`
-			- Lists active (running) containers.
-				- **Running this with the `-a` flag **show all containers, regardless of their current status.**
-			- Command showing **running
-				- *CONTAINER ID*: shows the unique ID of each container
-				- *IMAGE*: the image from which the container is created
-				- *COMMAND*: command executed in the container while starting it
-				- *STATUS*: the current status of the container
-				- *PORTS*: if any of the container ports is connected to the host machine, it will be displayed here
-				- *NAMES*: this is the name of a container. If it is not provided while creating the container, Docker provides a unique name by default.
-				- *CREATED*: the time the container was created
+			-
+			- #### `docker run -it <image-name> <command-to-execute>` #card
+				- `-i` runs container in *interactive* mode. #card
+				- `-t` creates a pseudo terminal for us. #card
+			- #### `docker ps`
+				- Lists active (running) containers.
+					- **Running this with the `-a` flag **show all containers, regardless of their current status.**
+				- Command showing **running
+					- *CONTAINER ID*: shows the unique ID of each container
+					- *IMAGE*: the image from which the container is created
+					- *COMMAND*: command executed in the container while starting it
+					- *STATUS*: the current status of the container
+					- *PORTS*: if any of the container ports is connected to the host machine, it will be displayed here
+					- *NAMES*: this is the name of a container. If it is not provided while creating the container, Docker provides a unique name by default.
+					- *CREATED*: the time the container was created
 		- ### Committing updates to a Container
 			- #### What we did
 				- `Docker start <image-id>`
