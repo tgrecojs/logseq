@@ -32,7 +32,6 @@
 			- > So, if you fetch a Python 3.5 image from Docker and run an instance of it, you can do whatever you were able to do in the host machine using a command line interface. If you make any mistake with that instance, you can delete the container and create a new one from the existing image. This way, your main environment remains intact in the form of an image and you can play around with the dependencies packaged in the image using containers.
 			-
 - ### Docker Architecture (Continued)
-  collapsed:: true
 	- #### Docker Ecosystem
 		- Docker Registry
 		  logseq.order-list-type:: number
@@ -80,6 +79,7 @@
 				- `-t` creates a pseudo terminal for us. #card
 			- #### `docker ps`
 				- Lists active (running) containers.
+				  collapsed:: true
 					- **Running this with the `-a` flag **show all containers, regardless of their current status.**
 				- Command showing **running
 					- *CONTAINER ID*: shows the unique ID of each container
@@ -141,7 +141,7 @@
 			  logseq.order-list-type:: number
 			- **avoid the mistake of unknowingly working in the wrong container ``
 			  logseq.order-list-type:: number
-			- logseq.order-list-type:: number
+		- logseq.order-list-type:: number
 	-
 	-
 	-

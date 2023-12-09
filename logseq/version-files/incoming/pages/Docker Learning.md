@@ -62,33 +62,33 @@
 					- Containers
 					- Networks
 				- The rest is left for Docker to take care of.
-	- ## Docker Fundamentals
-		- ### Recurring Theme
-		- > **Docker is Linux for containers.**
-	- ### Layers
-		- A docker image consists of layers.
-		- are responsible for housing any dependencies that a given image needs to function.
+				-
+	- ## Layers
+		- A docker image consists of layers. These layers are **responsible for housing any dependencies that a given image needs to function.
 		- #### Example - `docker pull nginx`
 			- The screenshot below shows the layers that nginx requires in order to function properly
 				- ![image.png](../assets/image_1701990415858_0.png)
 		- **Layers can be shared across images.**
 			- Docker caches intermediatary layers to speed up the image building process.
 			- {{video https://www.icloud.com/attachment/?u=https%3A%2F%2Fcvws.icloud-content.com%2FB%2FAdFZ0Vqc3x6P3iZj922zkiZptNTfARSqziW7VvDgm5THuH1vDPz1ag3W%2F%24%7Bf%7D%3Fo%3DAvt-rtHKscAfw3Lk3Bl13HO_eWt0jsMUr0xJN_ufGKJq%26v%3D1%26x%3D3%26a%3DCAogREzQtulyxTvJ2hSJ9SUP21JMjSVctnoxoRWrjZhAOCkSbRDgneG0xDEY4K3ciM4xIgEAUgRptNTfWgT1ag3WaiZgSw9Mv1W1PGpFsxYTMCoLAP3OfZkYgfF-9ukVeatFNQiGmpkB2XImZygqRByY2wFy-OpC35Efh_3UN1JlIkvbBvm4gwgBPvfXkrHMUPQ%26e%3D1704583436%26fl%3D%26r%3D24E05676-3C0B-4BDF-A1A1-23AB2E2682E7-1%26k%3D%24%7Buk%7D%26ckc%3Dcom.apple.clouddocs%26ckz%3Dcom.apple.CloudDocs%26p%3D137%26s%3DZfk2mFNoWtpDh--ddDztai1d_qA&uk=2N8sdma-t2JQUVM_3irBmg&f=docker-pull-recording.mp4&sz=738754}}
-			- docker-pull-recording.mp4
-		- ### Accessing Containers
-		- #### `docker run -it <image-name> <command-to-execute>`
-			- `-i` runs container in *interactive* mode.
-			- `-t` creates a pseudo terminal for us.
-		- #### `docker ps`
-			- Command showing **running
-				- *CONTAINER ID*: shows the unique ID of each container
-				- *IMAGE*: the image from which the container is created
-				- *COMMAND*: command executed in the container while starting it
-				- *STATUS*: the current status of the container
-				- *PORTS*: if any of the container ports is connected to the host machine, it will be displayed here
-				- *NAMES*: this is the name of a container. If it is not provided while creating the container, Docker provides a unique name by default.
-				- *CREATED*: the time the container was created
-			- Running this with the `-a` flag shows **all** images.
+		- ### Docker CLI
+			- On the CLI and layers... #card
+				- **ONLY RUN, COPY, and ADD CREATE LAYERS** #card
+			- #### `docker run -it <image-name> <command-to-execute>` #card
+				- `-i` runs container in *interactive* mode. #card
+				- `-t` creates a pseudo terminal for us. #card
+			- #### `docker ps`
+				- Lists active (running) containers.
+				  collapsed:: true
+					- **Running this with the `-a` flag **show all containers, regardless of their current status.**
+				- Command showing **running
+					- *CONTAINER ID*: shows the unique ID of each container
+					- *IMAGE*: the image from which the container is created
+					- *COMMAND*: command executed in the container while starting it
+					- *STATUS*: the current status of the container
+					- *PORTS*: if any of the container ports is connected to the host machine, it will be displayed here
+					- *NAMES*: this is the name of a container. If it is not provided while creating the container, Docker provides a unique name by default.
+					- *CREATED*: the time the container was created
 		- ### Committing updates to a Container
 			- #### What we did
 				- `Docker start <image-id>`
@@ -125,13 +125,36 @@
 					  logseq.order-list-type:: number
 					- @@html: <iframe src="https://app.warp.dev/block/embed/2x8WT8KHMhAZm5mu9safXL" title="embedded warp block" style="width: 1662px; height: 416px; border:0; overflow:hidden;" allow="clipboard-read; clipboard-write"></iframe>@@
 					  logseq.order-list-type:: number
-	- ## Managing Data (Volumes)
-		- to access the host files in the container for faster access to data and while coding as well, because you cannot code, build, and then check your code.
-		- > Docker volumes are mostly created to share data within different containers, rather than sharing data with host and container.
-		- ### Bind mount
-			- Bind mount allows you to use the **host file system and mount it on the container**.
-			- Example
-				- Running a container using a local directory
-					- `docker run -it -v ./Desktop/Docker_Volumne_Example:/desktop date_project:1.0`
-				- After mounting this directory, we will see it appear within our container as the name “desktop”.
-				-
+		- #### Common commands
+			- `docker pull <image-name><verion?>`
+			- `docker run <image-name><verion?>`v
+			- `docker ps`
+			- `docker ps -a`
+			- `docker create volume`
+		- ### Key Points & Themes
+			- **Docker uses the Linux kernel for containers.**
+	- ## Working with Containers
+		- ### CLI
+		- `docker run && docker exec -it <container-that-was-just-run>`
+		  logseq.order-list-type:: number
+			- if a container is stopped, then it first needs to be run.
+			  logseq.order-list-type:: number
+			- **avoid the mistake of unknowingly working in the wrong container ``
+			  logseq.order-list-type:: number
+		- logseq.order-list-type:: number
+	-
+	-
+	-
+- ## Managing Data (Volumes)
+	- to access the host files in the container for faster access to data and while coding as well, because you cannot code, build, and then check your code.
+	- > Docker volumes are mostly created to share data within different containers, rather than sharing data with host and container.
+	- ### Bind mount
+		- Bind mount allows you to use the **host file system and mount it on the container**.
+		- Example
+			- Running a container using a local directory
+				- `docker run -it -v ./Desktop/Docker_Volumne_Example:/desktop date_project:1.0`
+			- After mounting this directory, we will see it appear within our container as the name “desktop”.
+	- ##
+- ## Docker Fundamentals
+	- ### Recurring Theme
+	- > **Docker is Linux for containers.**
