@@ -128,7 +128,9 @@
 		- #### Common commands
 			- `docker pull <image-name><verion?>`
 			- `docker run <image-name><verion?>`v
-			-
+			- `docker ps`
+			- `docker ps -a`
+			- `docker create volume`
 		- ## Accessing Containers
 		-
 	-
