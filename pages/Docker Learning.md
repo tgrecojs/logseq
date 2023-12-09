@@ -64,9 +64,9 @@
 					- Networks
 				- The rest is left for Docker to take care of.
 				-
-	- ### Layers
-		- A docker image consists of layers.
-		- are responsible for housing any dependencies that a given image needs to function.
+	- ## Layers
+		- A docker image consists of layers. These layers are **responsible for housing any dependencies that a given image needs to function.**
+		-
 		- #### Example - `docker pull nginx`
 			- The screenshot below shows the layers that nginx requires in order to function properly
 				- ![image.png](../assets/image_1701990415858_0.png)
