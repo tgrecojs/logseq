@@ -155,12 +155,13 @@
 					- command
 						- `docker run -it -v ./Desktop/Docker_Volumne_Example:/desktop date_project:1.0`
 					- result:
-						- After mounting this directory, we will see it appear within our container as the name “desktop”.]
-			- ###
-			- `docker volume --help`: to get the volume help
-			- `docker volume create`: to create a new volume
-			- `docker inspect` volume: to inspect the created volume
-			- `docker run -v:` to mount a volume
+					- After mounting this directory, we will see it appear within our container as the name “desktop”.
+			- ### volume commands #essentials
+				- `docker volume --help`: to get the volume help
+				- `docker volume create`: to create a new volume
+				- `docker inspect` volume: to inspect the created volume
+				- `docker run -v:` to mount a volume
+				-
 - ## Docker Fundamentals
 	- ### Recurring Theme
 	- > **Docker is Linux for containers.**
