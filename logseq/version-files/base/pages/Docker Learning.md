@@ -145,8 +145,6 @@
 				  logseq.order-list-type:: number
 			- logseq.order-list-type:: number
 		-
-		-
-		-
 - ## Managing Data (Volumes)
 	- to access the host files in the container for faster access to data and while coding as well, because you cannot code, build, and then check your code.
 	- > Docker volumes are mostly created to share data within different containers, rather than sharing data with host and container.
