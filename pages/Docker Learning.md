@@ -135,11 +135,11 @@
 			- **Docker uses the Linux kernel for containers.**
 	- ## Working with Containers
 		- ### CLI
-		- `docker run && docker exec -it`
+		- `docker run && docker exec -it <container-that`
 		  logseq.order-list-type:: number
 			- if a container is stopped, then it first needs to be run.
 			  logseq.order-list-type:: number
-			- ``
+			- **avoid the mistake of unknowingly working in the wrong container ``
 			  logseq.order-list-type:: number
 	-
 	-
