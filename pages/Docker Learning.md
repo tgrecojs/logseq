@@ -78,7 +78,7 @@
 			- `-t` creates a pseudo terminal for us. #card
 		- #### `docker ps`
 			- Lists active (running) containers.
-				- **the flag `-a` shows **
+				- **Running this with the `-a` flag **show all containers, regardless of their current status.**
 			- Command showing **running
 				- *CONTAINER ID*: shows the unique ID of each container
 				- *IMAGE*: the image from which the container is created
@@ -87,7 +87,6 @@
 				- *PORTS*: if any of the container ports is connected to the host machine, it will be displayed here
 				- *NAMES*: this is the name of a container. If it is not provided while creating the container, Docker provides a unique name by default.
 				- *CREATED*: the time the container was created
-			- Running this with the `-a` flag shows **all** images.
 		- ### Committing updates to a Container
 			- #### What we did
 				- `Docker start <image-id>`
