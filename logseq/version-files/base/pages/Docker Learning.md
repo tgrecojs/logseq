@@ -65,17 +65,18 @@
 				- The rest is left for Docker to take care of.
 				-
 	- ## Layers
-		- A docker image consists of layers. These layers are **responsible for housing any dependencies that a given image needs to function.**
+		- A docker image consists of layers. These layers are **responsible for housing any dependencies that a given image needs to function.
 		- #### Example - `docker pull nginx`
 			- The screenshot below shows the layers that nginx requires in order to function properly
 				- ![image.png](../assets/image_1701990415858_0.png)
 		- **Layers can be shared across images.**
 			- Docker caches intermediatary layers to speed up the image building process.
 			- {{video https://www.icloud.com/attachment/?u=https%3A%2F%2Fcvws.icloud-content.com%2FB%2FAdFZ0Vqc3x6P3iZj922zkiZptNTfARSqziW7VvDgm5THuH1vDPz1ag3W%2F%24%7Bf%7D%3Fo%3DAvt-rtHKscAfw3Lk3Bl13HO_eWt0jsMUr0xJN_ufGKJq%26v%3D1%26x%3D3%26a%3DCAogREzQtulyxTvJ2hSJ9SUP21JMjSVctnoxoRWrjZhAOCkSbRDgneG0xDEY4K3ciM4xIgEAUgRptNTfWgT1ag3WaiZgSw9Mv1W1PGpFsxYTMCoLAP3OfZkYgfF-9ukVeatFNQiGmpkB2XImZygqRByY2wFy-OpC35Efh_3UN1JlIkvbBvm4gwgBPvfXkrHMUPQ%26e%3D1704583436%26fl%3D%26r%3D24E05676-3C0B-4BDF-A1A1-23AB2E2682E7-1%26k%3D%24%7Buk%7D%26ckc%3Dcom.apple.clouddocs%26ckz%3Dcom.apple.CloudDocs%26p%3D137%26s%3DZfk2mFNoWtpDh--ddDztai1d_qA&uk=2N8sdma-t2JQUVM_3irBmg&f=docker-pull-recording.mp4&sz=738754}}
-		-
+		- ### Docker CLI
 		- #### `docker run -it <image-name> <command-to-execute>` #card
 			- `-i` runs container in *interactive* mode. #card
 			- `-t` creates a pseudo terminal for us. #card
+		- ### Docker CLI
 		- #### `docker ps`
 			- Lists active (running) containers.
 				- **Running this with the `-a` flag **show all containers, regardless of their current status.**
