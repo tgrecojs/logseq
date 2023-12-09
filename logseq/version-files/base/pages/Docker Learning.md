@@ -155,7 +155,9 @@
 					- command
 						- `docker run -it -v ./Desktop/Docker_Volumne_Example:/desktop date_project:1.0`
 					- result:
-						- After mounting this directory, we will see it appear within our container as the name “desktop”.]
+						- We will see it appear within our container as the name “desktop”.
+						- Any data
+					-
 			- ### volume commands #essentials
 				- `docker volume --help`: to get the volume help
 				- `docker volume create`: to create a new volume
