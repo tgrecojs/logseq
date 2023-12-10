@@ -1,3 +1,9 @@
+- [What is I2P and how does it work? - Proton VPN Blog](https://omnivore.app/me/what-is-i-2-p-and-how-does-it-work-proton-vpn-blog-18c527fc32e)
+  collapsed:: true
+  site:: [Proton VPN Blog](https://protonvpn.com/blog/what-is-i2p/)
+  author:: Douglas Crawford
+  date-saved:: [[12/10/2023]]
+  date-published:: [[06/30/2023]]
 - [PDF document](https://omnivore.app/me/u-0-d-50-ad-12-9724-11-ee-965-b-4-bb-9682-ef-48-e-pd-fdocument-p-18c52615487)
   collapsed:: true
   site:: [omnivore.app](https://omnivore.app/attachments/u/0d50ad12-9724-11ee-965b-4bb9682ef48e/PDFdocument.pdf)
