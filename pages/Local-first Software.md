@@ -7,5 +7,7 @@
 		- * Kyle Simpson Backend Banter
 		- https://narrowlink.com/docs/basic-tutorial/installation
 	- #### DXOS https://docs.dxos.org
-	- ### Articles, Websites,
+	- ### Articles, Blogs, Projects, oh my!
+		- https://unhosted.org/practice/29/Offline-first-web-app-design.html
+		-
 	-
