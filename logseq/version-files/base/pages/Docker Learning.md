@@ -155,6 +155,7 @@
 					- command
 						- `docker run -it -v ./Desktop/Docker_Volumne_Example:/desktop date_project:1.0`
 					- result:
+						- After mounting this directory, we will see it appear within our container as the name “desktop”
 						- We will see it appear within our container as the name “desktop”.
 					- ### Docker syncs Updates to a local directory
 						- **Any files, folders, etc. added to the local folder are reflected in the container.**
