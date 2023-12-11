@@ -1,3 +1,9 @@
+- [Marvelous Merkle Trees | Pangea](https://omnivore.app/me/https-pangea-cloud-docs-blog-marvelous-merkle-trees-18c5794ca03)
+  collapsed:: true
+  site:: [pangea.cloud](https://pangea.cloud/docs/blog/marvelous-merkle-trees)
+  author:: Ian ForrestDirector of Cool Hats
+  date-saved:: [[12/11/2023]]
+  date-published:: [[07/20/2022]]
 - [What is the difference between PBFT, Tendermint, HotStuff, and HotStuff-2?](https://omnivore.app/me/what-is-the-difference-between-pbft-tendermint-hot-stuff-and-hot-18c5726ee93)
   collapsed:: true
   site:: [decentralizedthoughts.github.io](https://decentralizedthoughts.github.io/2023-04-01-hotstuff-2/)
