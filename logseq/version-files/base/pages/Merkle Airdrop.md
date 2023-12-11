@@ -10,7 +10,9 @@
 -
 -
 - ### Instructions
-	- Ok so the contract would expose a method for adding their wallet to the merkle tree.
+	- Ok so the contract would expose a method for adding their wallet to the merkle tree. It could also expose a function for checking whether or not their wallet address exists within the current merkle tree.
+	-
+	-
 	- Once they do so, they would receive back a facet for verifying that their address has been included in the merkle tree. Is this function for verifying
 	-
 -
