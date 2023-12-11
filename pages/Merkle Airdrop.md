@@ -1,23 +1,19 @@
 - An easy implementation of a Merkle tree for ERC20 pull-based airdrops could involve the following steps:
 - Set up a smart contract on the Ethereum blockchain to manage the airdrop.  This contract should include functions for adding addresses to the airdrop list, generating the Merkle tree, and verifying inclusion of an 
   address in the airdrop list.
-- Create an array of wallet addresses  eligible for the airdrop, and use a cryptographic library to generate 
-  the hash of each address. These hashes will be the leaves of the Merkle 
-  tree.
-- Combine the hashes of each pair of leaves to create the next
-  level of the tree. Repeat this process until only one hash remains, 
+- Create an array of wallet addresses  eligible for the airdrop, and use a cryptographic library to generate  the hash of each address. These hashes will be the leaves of the Merkle  tree.
+- Combine the hashes of each pair of leaves to create the next level of the tree. Repeat this process until only one hash remains, 
   which will be the Merkle root.
 - Store the Merkle root on the blockchain, and make it available to users who want to verify their inclusion in the airdrop list.
-- Users
-  can use the smart contract's functions to verify their inclusion in the
-  airdrop list by providing their address and the necessary Merkle proof.
-  The smart contract can then use the provided data to verify the 
-  inclusion.
+- Users can use the smart contract's functions to verify their inclusion in the airdrop list by providing their address and the necessary Merkle proof. The smart contract can then use the provided data to verify the inclusion.
 - Once the user's address is verified, the smart contract can transfer the airdrop tokens to the user's address.
+-
+-
+- ### Instructions
+	-
+-
 - The users can use any ERC20 compatible wallet to interact with the smart contract and claim the tokens.
-- It's
-  worth noting that this is a high-level overview of the process, and 
-  specific implementation details may vary depending on the specific 
+- It'sworth noting that this is a high-level overview of the process, and  specific implementation details may vary depending on the specific 
   requirements and use case.
 - Here are some resources for reference that can be used to implement an ERC20 pull-based airdrop using a Merkle tree:
 - A blog article from Hackernoon, titled "Evolution of Airdrop from Common Spam to the Merkle Tree" [(https://hackernoon.com/evolution-of-airdrop-from-common-spam-to-the-merkle-tree-30caa2344170)](https://hackernoon.com/evolution-of-airdrop-from-common-spam-to-the-merkle-tree-30caa2344170), provides an overview of how Merkle tree can be used for airdrops and its advantages.
