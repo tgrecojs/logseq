@@ -10,7 +10,7 @@
 -
 -
 - ### Instructions
-	-
+	- Ok so in the context of an Agoric smart contract, the contract would have a public facet th
 -
 - The users can use any ERC20 compatible wallet to interact with the smart contract and claim the tokens.
 - It'sworth noting that this is a high-level overview of the process, and  specific implementation details may vary depending on the specific 
