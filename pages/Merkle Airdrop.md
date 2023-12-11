@@ -10,7 +10,8 @@
 -
 -
 - ### Instructions
-	- Ok so in the context of an Agoric smart contract, the contract would expose a method "addW
+	- Ok so in the context of an Agoric smart contract, the contract would expose a method for adding their wallet to the merkle tree.
+	- Once they do so, they would receive back a facet for
 -
 - The users can use any ERC20 compatible wallet to interact with the smart contract and claim the tokens.
 - It'sworth noting that this is a high-level overview of the process, and  specific implementation details may vary depending on the specific 
