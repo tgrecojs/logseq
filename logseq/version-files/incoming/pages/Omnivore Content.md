@@ -1,3 +1,39 @@
+- [What is I2P and how does it work? - Proton VPN Blog](https://omnivore.app/me/what-is-i-2-p-and-how-does-it-work-proton-vpn-blog-18c527fc32e)
+  collapsed:: true
+  site:: [Proton VPN Blog](https://protonvpn.com/blog/what-is-i2p/)
+  author:: Douglas Crawford
+  date-saved:: [[12/10/2023]]
+  date-published:: [[06/30/2023]]
+- [PDF document](https://omnivore.app/me/u-0-d-50-ad-12-9724-11-ee-965-b-4-bb-9682-ef-48-e-pd-fdocument-p-18c52615487)
+  collapsed:: true
+  site:: [omnivore.app](https://omnivore.app/attachments/u/0d50ad12-9724-11ee-965b-4bb9682ef48e/PDFdocument.pdf)
+  date-saved:: [[12/10/2023]]
+- [The Mirai Confessions: Three Young Hackers Who Built a Web-Killing Monster Finally Tell Their Story | WIRED](https://omnivore.app/me/the-mirai-confessions-three-young-hackers-who-built-a-web-killin-18c52556241)
+  collapsed:: true
+  site:: [WIRED](https://www.wired.com/story/mirai-untold-story-three-young-hackers-web-killing-monster/)
+  author:: Andy Greenberg
+  date-saved:: [[12/10/2023]]
+  date-published:: [[11/13/2023]]
+- [Ancient Balkan genomes trace the rise and fall of Roman Empire's frontier, reveal Slavic migrations](https://omnivore.app/me/ancient-balkan-genomes-trace-the-rise-and-fall-of-roman-empire-s-18c52532f34)
+  collapsed:: true
+  site:: [Phys.org](https://phys.org/news/2023-12-ancient-balkan-genomes-fall-roman.html)
+  author:: Science X
+  date-saved:: [[12/10/2023]]
+  date-published:: [[12/07/2023]]
+- [Layered Architectures & Protocol Stacks - Grokking Computer Networking for Software Engineers](https://omnivore.app/me/layered-architectures-protocol-stacks-grokking-computer-networki-18c413f7922)
+  collapsed:: true
+  site:: [Educative](https://www.educative.io/module/lesson/network-fundamentals/N72J4Dz26Qm)
+  date-saved:: [[12/06/2023]]
+- [What is the Internet? - Grokking Computer Networking for Software Engineers](https://omnivore.app/me/what-is-the-internet-grokking-computer-networking-for-software-e-18c413ef658)
+  collapsed:: true
+  site:: [Educative](https://www.educative.io/module/lesson/network-fundamentals/YVYK8KwGpEn)
+  date-saved:: [[12/06/2023]]
+- [Combining proofs and programs in a dependently typed language | connolly's Library | Zotero](https://omnivore.app/me/combining-proofs-and-programs-in-a-dependently-typed-language-co-18c36a08de7)
+  collapsed:: true
+  site:: [zotero.org](https://www.zotero.org/connolly/items/3HTT8FZK)
+  labels:: [[RSS]]
+  date-saved:: [[03/14/2015]]
+  date-published:: [[03/14/2015]]
 - [Docker Architecture - Client-server - Working with Containers: Docker & Docker Compose](https://omnivore.app/me/docker-architecture-client-server-working-with-containers-docker-18bdff11550)
   collapsed:: true
   site:: [Educative](https://www.educative.io/courses/working-with-containers-docker-docker-compose/docker-architecture-client-server)
