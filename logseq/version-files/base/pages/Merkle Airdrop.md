@@ -10,8 +10,8 @@
 -
 -
 - ### Instructions
-	- Ok so the contract would expose a method for adding their wallet to the merkle tree.
-	- Once they do so, they would receive back a facet for verifying that their address has been included in the merkle tree. This facet would be private t
+	- Ok so in the context of an Agoric smart contract, the contract would expose a method for adding their wallet to the merkle tree.
+	- Once they do so, they would receive back a facet for verifying that their address has been included in the merkle tree.
 	-
 -
 - The users can use any ERC20 compatible wallet to interact with the smart contract and claim the tokens.
