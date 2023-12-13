@@ -14,9 +14,14 @@
 			- They have their own petnames,
 			- inbox for receiving messages, etc.
 		- Send a card from the deck
-			-
 		-
 		-
+	- ### How guests and workers relate
+		- a worker is a process
+		- a guest is an inbox (a profile)
+		- Everytime you create a caplet it spawns a new worker
+		- problematic
+	- Endo make -w <> -
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
