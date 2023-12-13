@@ -40,7 +40,8 @@
 			- Implicit profiles for receiving caplets.
 			- an undeniable metaobject that exists within your inbox.
 				- What are the properties of the formula behind this thing i've been sent without directly putting them inside your inventory.
-			- If you're the host (ower of an app) you should be a
+			- If you're the host (ower of an app) you should be able to revoke it.
+			-
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
