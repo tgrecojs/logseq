@@ -71,5 +71,8 @@
 		- marking something as remotely
 	- ### Eventual Send (E operator)
 		- creating an API sugar for remote method invocation.
-		- Sort of like using HandledPromise as a promise
+		- Sort of like using HandledPromise as a proxy for promise
+		- E doesn't know anything about promises.
+		- It doesn't know anything about serialization.
+		-
 		-
