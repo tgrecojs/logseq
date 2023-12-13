@@ -28,7 +28,8 @@
 		- if you omit -b it creates a bundle for you.
 	- ### Wanted
 		- A trace aggregator
-		- Exposing a CapTP endpoint.
+		- workers can expose Exposing a CapTP endpoint for flushing their internal buffers for errors.
+		-
 		-
 	- ### Installing the App
 		- Installing the Application

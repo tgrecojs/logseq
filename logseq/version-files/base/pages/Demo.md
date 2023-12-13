@@ -21,11 +21,15 @@
 		- a guest is an inbox (a profile)
 		- Everytime you create a caplet it spawns a new worker
 		- problematic - want to make them more orthogonal?
-	- Endo make -w <> -p guestname -b bundlename
+	- `Endo make -w <> -p guestname -b bundlename`
 		- a capbility given the powers of that guest in the named worker.
 		- if you omit the worker it spawns it
 		- if you omit -p it gives you least Authority
 		- if you omit -b it creates a bundle for you.
+	- ### Wanted
+		- A trace aggregator
+		- workers can expose Exposing a CapTP endpoint for flushing their internal buffers for errors.
+		-
 		-
 	- ### Installing the App
 		- Installing the Application
