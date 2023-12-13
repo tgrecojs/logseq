@@ -6,7 +6,8 @@ public:: true
 	-
 	- [[Attenuator]]
 	- [[EventEmitter]]
-- ## Demo
+- ## [[Demo]]
+-
 -
 - ## [[@endo/{packages}]]
 - [[Questions]]
