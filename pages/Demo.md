@@ -3,6 +3,8 @@
 	- Persists through restarts
 	- Messages are persisted yet because it hasn't been implemented yet.
 	- ### Design is largely based on Spritely
+		- How does alice know that 1kce game is an app
+		- Using the endo cli we can inspect in the UI or in the CLI.
 		-
 	- ### Installing the App
 		- Installing the Application
