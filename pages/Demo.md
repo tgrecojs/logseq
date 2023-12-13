@@ -36,7 +36,9 @@
 		- The treble of the powers, the bundle,
 		- Reasonable to send the bundle along with the powers.
 		- Sending the app implies that you're sending your own powers with it.
-		-
+		- Wants
+			- Implicit profiles for receiving caplets.
+			-
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
