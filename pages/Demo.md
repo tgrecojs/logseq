@@ -5,7 +5,9 @@
 	- ### Design is largely based on Spritely
 		- How does alice know that 1kce game is an app
 		- Using the endo cli we can inspect in the UI or in the CLI.
-		-
+		- The internal type for the game (or any web app) is "web bundle".
+	- ### Unsafe
+		- Unsafe objects doesn't necessarily mean that they are unsafe
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
