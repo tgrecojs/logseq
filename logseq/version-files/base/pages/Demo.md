@@ -76,4 +76,6 @@
 		- It doesn't know anything about serialization.
 	- ### Pass-style of
 		- E is below the level of abstraction are below the pass-style level.
-		-
+	- ### Eval Twin
+		- When there are 2 modules
+		- Classes with Private Fields are an entire disaster.
