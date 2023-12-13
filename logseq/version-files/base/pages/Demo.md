@@ -20,8 +20,13 @@
 		- a worker is a process
 		- a guest is an inbox (a profile)
 		- Everytime you create a caplet it spawns a new worker
-		- problematic
-	- Endo make -w <> -
+		- problematic - want to make them more orthogonal?
+	- Endo make -w <> -p guestname -b bundlename
+		- a capbility given the powers of that guest in the named worker.
+		- if you omit the worker it spawns it
+		- if you omit -p it gives you least Authority
+		- if you omit -b it creates a bundle for you.
+		-
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
