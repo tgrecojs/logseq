@@ -57,4 +57,7 @@
 	- ### E
 		- is API sugar or interacting with handle promises
 		- eventual-send syntax is based off of the eventual send syntax.
+	- ### Whenables
+		- Psuedo-promises
+		- Not itself be a thennable, but it is something that E would treat as promise-like and E.when would treat as promise-like.
 		-
