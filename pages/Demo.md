@@ -34,7 +34,9 @@
 	- Chat list
 		- Filters the messages
 		- The treble of the powers, the bundle,
-		- Reasonable to st
+		- Reasonable to send the bundle along with the powers.
+		- Sending the app implies that you're sending your own powers with it.
+		-
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
