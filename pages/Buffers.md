@@ -1,11 +1,14 @@
 ## TypingMind Convo
 	- ## Part 1: Buffers from 0 to 100
 	  
-	  Buffers, as they are referred to in the Node.js, are designed to handle raw binary data. Each buffer corresponds to some raw memory allocated outside V8's heap. V8 is the JavaScript engine that powers Node.js and browsers. 
-	  
-	  1. Role of Buffers: Node.js is primarily used for I/O operations, and sometimes these include working with streams of data (files, network, console). The Buffer class in Node.js serves as an interface to interact with streams of binary data. They are part of Node.js's global scope and thus, you do not require to import it using any 'require' statement. Think of buffers as the temporarily stored 'chunks' of data that can be shipped around as packets.
-	  
-	  2. Buffer Utility: Buffers are crucial for working with binary data, which is central to tasks such as reading and writing to the filesystem, handling binary data in TCP streams, or even performing operations in cryptography where one needs to have access to every bit in a byte.
+	  Buffers, as they are referred to in the Node.js, are designed to handle raw binary data. Each buffer corresponds to some raw memory allocated outside V8's heap. V8 is the JavaScript engine that powers Node.js and browsers.
+		- Role of Buffers: Node.js is primarily used for I/O operations, and sometimes these include working with streams of data (files, network, console). The Buffer class in Node.js serves as an interface to interact with streams of binary data. They are part of Node.js's global scope and thus, you do not require to import it using any 'require' statement. Think of buffers as the temporarily stored 'chunks' of data that can be shipped around as packets.
+		  logseq.order-list-type:: number
+		- Buffer Utility: Buffers are crucial for working with binary data, which is central to tasks such as reading and writing to the filesystem, handling binary data in TCP streams, or even performing operations in cryptography where one needs to have access to every bit in a byte.
+		  logseq.order-list-type:: number
+		- logseq.order-list-type:: number
+		- logseq.order-list-type:: number
+	- 2. Buffer Utility: Buffers are crucial for working with binary data, which is central to tasks such as reading and writing to the filesystem, handling binary data in TCP streams, or even performing operations in cryptography where one needs to have access to every bit in a byte.
 	  
 	  3. JavaScript without Buffers: Without Buffers, in JavaScript, working with binary data efficiently would be nearly impossible, or at least, significantly more complex. JavaScript was created for the browser, not to handle binary streams of data, so Buffers help bring this ability to the language.
 	  
