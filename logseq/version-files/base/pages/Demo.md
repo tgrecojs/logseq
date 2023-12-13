@@ -11,7 +11,11 @@
 	- ### Profiles
 		- Syntehsizing the profile
 		- The spritely demo shows that what we've been calling hosts and guests are kinds of profiles.
-		- They have their own petnames, inbox for receiving messages, etc.
+			- They have their own petnames,
+			- inbox for receiving messages, etc.
+		- Send a card from the deck
+			-
+		-
 		-
 	- ### Installing the App
 		- Installing the Application
