@@ -8,6 +8,11 @@
 		- The internal type for the game (or any web app) is "web bundle".
 	- ### Unsafe
 		- Unsafe objects doesn't necessarily mean that they are unsafe but rather that it's running off of the filesystem and using pure node.js to do so.
+	- ### Profiles
+		- Syntehsizing the profile
+		- The spritely demo shows that what we've been calling hosts and guests are kinds of profiles.
+		- They have their own petnames, inbox for receiving messages, etc.
+		-
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
