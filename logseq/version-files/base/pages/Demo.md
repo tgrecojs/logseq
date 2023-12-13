@@ -60,4 +60,10 @@
 	- ### Whenables
 		- Psuedo-promises
 		- Not itself be a thennable, but it is something that E would treat as promise-like and E.when would treat as promise-like.
-		-
+	- Start with a default caplet
+	- Any motivation for leaving them out?
+		- Performance
+		- Eventual-Send 2x instantiating time.
+		- bundles create their own copies of everything.
+			- problem to be solved on its own
+			-
