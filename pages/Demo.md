@@ -32,7 +32,9 @@
 		- Errors can be collected and ascribed to petname workers for the purpose of following traces.
 			- Hey this happened in worker x because of something that happened in worker Y.
 	- Chat list
-		-
+		- Filters the messages
+		- The treble of the powers, the bundle,
+		- Reasonable to st
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
