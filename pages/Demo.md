@@ -29,7 +29,8 @@
 	- ### Wanted
 		- A trace aggregator
 		- workers can expose Exposing a CapTP endpoint for flushing their internal buffers for errors.
-		-
+		- Errors can be collected and ascribed to petname workers for the purpose of following traces.
+			- Hey this happened in worker x because of something that happened in worker Y.
 		-
 	- ### Installing the App
 		- Installing the Application
