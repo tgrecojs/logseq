@@ -81,3 +81,5 @@
 		- Classes with Private Fields are an entire disaster when dealing with eval-twins.
 		- We survive because we don't use them.
 		- TypeScript won't pass the type check
+	- The place this is really, really painful.
+	-
