@@ -38,7 +38,8 @@
 		- Sending the app implies that you're sending your own powers with it.
 		- Wants
 			- Implicit profiles for receiving caplets.
-			-
+			- an undeniable metaobject that exists within your inbox.
+				- What are the properties of the formula behind this thing i've been sent without directly putting them inside your inventory.cvc
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game

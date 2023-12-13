@@ -39,7 +39,8 @@
 		- Wants
 			- Implicit profiles for receiving caplets.
 			- an undeniable metaobject that exists within your inbox.
-				- What are the properties of the formula behind this thing i've been sent without
+				- What are the properties of the formula behind this thing i've been sent without directly putting them inside your inventory.
+			- If you're the host (ower of an app) you should be a
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
