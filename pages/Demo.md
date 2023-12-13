@@ -55,4 +55,7 @@
 	- ### Reason Not To
 		- Global scope for caplets.
 	- ### E
+		- is API sugar or interacting with handle promises
+		- eventual-send syntax is based off of the eventual send syntax.
+	- ### Whenables
 		-
