@@ -48,3 +48,7 @@
 		- Transferring objects
 	- ### Profiles
 		-
+		-
+- ## December 13th Notes
+	- ## E and Far as globals
+		-
