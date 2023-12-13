@@ -82,4 +82,6 @@
 		- We survive because we don't use them.
 		- TypeScript won't pass the type check
 	- The place this is really, really painful is that in every normal ocap language before SES, it was always the case that you could have an abstraction that you can recognize (brand), so that these brands can be recognized as obeying certain invariants.
-		- An object with methods created with the trusted constructed,
+		- An object with methods created with the trusted constructed, you can be assured that it is side-effect free.
+		- A copySet copyMap can't have methods because there is no
+		- Can't create a reliably shared constructor
