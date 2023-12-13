@@ -60,4 +60,6 @@
 	- ### Whenables
 		- Psuedo-promises
 		- Not itself be a thennable, but it is something that E would treat as promise-like and E.when would treat as promise-like.
+	- Start with a default caplet
+	- Any motivation for leaving them out?
 		-
