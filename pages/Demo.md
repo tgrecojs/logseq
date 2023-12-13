@@ -66,4 +66,4 @@
 		- Eventual-Send 2x instantiating time.
 		- bundles create their own copies of everything.
 			- problem to be solved on its own
-			-
+		- Train the bundler to recognize certain platform modules are exits.
