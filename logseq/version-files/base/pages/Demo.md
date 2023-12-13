@@ -66,4 +66,10 @@
 		- Eventual-Send 2x instantiating time.
 		- bundles create their own copies of everything.
 			- problem to be solved on its own
-		- Train the bundler to recognize certain platform modules are exits.
+		- Train the bundler to recognize certain platform modules are exits
+	- ### Far
+		- marking something as remotely
+	- ### Eventual Send (E operator)
+		- creating an API sugar for remote method invocation.
+		- Sort of like using HandledPromise as a promise
+		-
