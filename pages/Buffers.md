@@ -53,4 +53,5 @@
 	  
 	  Being aware of how JavaScript deals with these encoding concerns can save your debugging hours and confusion, particularly if your system needs to handle multilingual input or binary data storage and transmission.
 -
-- tags::
+- tags:: #buffers
+-
