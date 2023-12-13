@@ -1,5 +1,9 @@
 ## Notes
 	- Alice starts out with no inventory
+	- Persists through restarts
+	- Messages are persisted yet because it hasn't been implemented yet.
+	- ### Design is largely based on Spritely
+		-
 	- ### Installing the App
 		- Installing the Application
 		- Alice adopts the game
