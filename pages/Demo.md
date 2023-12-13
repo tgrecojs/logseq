@@ -14,8 +14,11 @@
 			- They have their own petnames,
 			- inbox for receiving messages, etc.
 		- Send a card from the deck
-			-
 		-
+		-
+	- ### How gursts and workers relate
+		- a worker is a process
+		- a guest is an inbox (a profile)
 		-
 	- ### Installing the App
 		- Installing the Application
