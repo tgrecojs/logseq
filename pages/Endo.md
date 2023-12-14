@@ -5,8 +5,8 @@ public:: true
 	- [[Daemon Videos]]
 	-
 	- [[Attenuator]]
-	- [[EventEmitter]]
-- ## [[Demo]]
+	- [[EventEmitter]
+	- [[Demo Notes**]]
 -
 -
 - ## [[@endo/{packages}]]
