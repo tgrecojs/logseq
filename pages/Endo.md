@@ -1,11 +1,10 @@
 public:: true
 
-- ## Sitemap
+- ### Knowledge Base
 	- [[Endo Applications]]
 	- [[Daemon Videos]]
-	-
 	- [[Attenuator]]
-	- [[EventEmitter]
+	- [[EventEmitter]]
 	- [[Demo Notes**]]
 -
 -
