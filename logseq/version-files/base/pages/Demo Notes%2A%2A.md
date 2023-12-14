@@ -14,6 +14,7 @@
 			- They have their own petnames,
 			- inbox for receiving messages, etc.
 		- Send a card from the deck
+		- When you send
 		-
 		-
 	- ### How guests and workers relate
