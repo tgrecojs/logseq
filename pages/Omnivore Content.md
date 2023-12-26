@@ -1,3 +1,8 @@
+- [Currying and Partial Application with Async Await and Optional Parameters | MarkBarry.dev](https://omnivore.app/me/currying-and-partial-application-with-async-await-and-optional-p-18c943c97ae)
+  collapsed:: true
+  site:: [markbarry.dev](https://www.markbarry.dev/currying-and-partial-application-with-async-await-optional-parameters/)
+  date-saved:: [[12/22/2023]]
+  date-published:: [[05/09/2020]]
 - [Marvelous Merkle Trees | Pangea](https://omnivore.app/me/https-pangea-cloud-docs-blog-marvelous-merkle-trees-18c5794ca03)
   collapsed:: true
   site:: [pangea.cloud](https://pangea.cloud/docs/blog/marvelous-merkle-trees)
