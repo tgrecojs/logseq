@@ -1,3 +1,21 @@
+- [Marvelous Merkle Trees | Pangea](https://omnivore.app/me/https-pangea-cloud-docs-blog-marvelous-merkle-trees-18c5794ca03)
+  collapsed:: true
+  site:: [pangea.cloud](https://pangea.cloud/docs/blog/marvelous-merkle-trees)
+  author:: Ian ForrestDirector of Cool Hats
+  date-saved:: [[12/11/2023]]
+  date-published:: [[07/20/2022]]
+- [What is the difference between PBFT, Tendermint, HotStuff, and HotStuff-2?](https://omnivore.app/me/what-is-the-difference-between-pbft-tendermint-hot-stuff-and-hot-18c5726ee93)
+  collapsed:: true
+  site:: [decentralizedthoughts.github.io](https://decentralizedthoughts.github.io/2023-04-01-hotstuff-2/)
+  author:: Decentralized Thinkers
+  date-saved:: [[12/10/2023]]
+  date-published:: [[03/31/2023]]
+- [What is a Merkle Tree?](https://omnivore.app/me/what-is-a-merkle-tree-18c57202f64)
+  collapsed:: true
+  site:: [decentralizedthoughts.github.io](https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/)
+  author:: Decentralized Thinkers
+  date-saved:: [[12/10/2023]]
+  date-published:: [[12/21/2020]]
 - [What is I2P and how does it work? - Proton VPN Blog](https://omnivore.app/me/what-is-i-2-p-and-how-does-it-work-proton-vpn-blog-18c527fc32e)
   collapsed:: true
   site:: [Proton VPN Blog](https://protonvpn.com/blog/what-is-i2p/)
