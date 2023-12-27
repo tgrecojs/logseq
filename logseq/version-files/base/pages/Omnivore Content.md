@@ -1,3 +1,17 @@
+- [functional-programming-in-js-with-categories-1](https://omnivore.app/me/u-9275-bf-0-a-a-48-a-11-ee-bc-9-a-6-b-8-e-3-c-6186-b-9-functiona-18caa3395f0)
+  collapsed:: true
+  site:: [omnivore.app](https://omnivore.app/attachments/u/9275bf0a-a48a-11ee-bc9a-6b8e3c6186b9/functional-programming-in-js-with-categories-1.pdf)
+  author:: dimitris papadimitriou
+  date-saved:: [[12/27/2023]]
+- [Logical Secrets](https://omnivore.app/me/u-4-f-673120-a-45-e-11-ee-be-47-f-7-da-231297-a-4-logical-secret-18ca91182d1)
+  collapsed:: true
+  site:: [omnivore.app](https://omnivore.app/attachments/u/4f673120-a45e-11ee-be47-f7da231297a4/LogicalSecrets.pdf)
+  date-saved:: [[12/26/2023]]
+- [Towards application capabilities](https://omnivore.app/me/towards-application-capabilities-18ca8a1dd54)
+  collapsed:: true
+  site:: [tailscale.com](https://tailscale.com/blog/acl-grants)
+  date-saved:: [[12/26/2023]]
+  date-published:: [[12/13/2023]]
 - [Currying and Partial Application with Async Await and Optional Parameters | MarkBarry.dev](https://omnivore.app/me/currying-and-partial-application-with-async-await-and-optional-p-18c943c97ae)
   collapsed:: true
   site:: [markbarry.dev](https://www.markbarry.dev/currying-and-partial-application-with-async-await-optional-parameters/)
