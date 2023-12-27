@@ -1,3 +1,10 @@
+- [Functional JavaScript: Traversing Trees with a Recursive Reduce](https://omnivore.app/me/functional-java-script-traversing-trees-with-a-recursive-reduce-18cac5c36cf)
+  collapsed:: true
+  site:: [James Sinclair](https://jrsinclair.com/articles/2019/functional-js-traversing-trees-with-recursive-reduce/)
+  author:: Written by James Sinclair
+  labels:: [[functional programming]] [[fp]]
+  date-saved:: [[12/27/2023]]
+  date-published:: [[06/12/2019]]
 - [functional-programming-in-js-with-categories-1](https://omnivore.app/me/u-9275-bf-0-a-a-48-a-11-ee-bc-9-a-6-b-8-e-3-c-6186-b-9-functiona-18caa3395f0)
   collapsed:: true
   site:: [omnivore.app](https://omnivore.app/attachments/u/9275bf0a-a48a-11ee-bc9a-6b8e3c6186b9/functional-programming-in-js-with-categories-1.pdf)
