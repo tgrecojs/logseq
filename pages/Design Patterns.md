@@ -21,7 +21,8 @@
   | Builder | Separates object construction from its representation; always creates the same type of object | Creational ||
   | Prototype | A fully initialized instance used for copying or cloning| |
   |--|--|--|--|
-  | **Pattern Type** | Behavioral | |
+  -------------------
+- ## **Pattern Type** - #Behavioral
   | Factory Method | Makes an instance of derived classes based on interfaced data or events | Creational||
 -
 - Prototype
