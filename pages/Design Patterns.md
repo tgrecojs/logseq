@@ -13,8 +13,9 @@
   |||||
   |--|--|--|--|
   |Name|Description|Pattern Family|
-  ||||||
-  | Factory Method | Makes an instance o f
+  |--|--|--|--|
+  | Factory Method | Makes an instance of derived classes based on interfaced data or events | ||
+-
 -
 - |||||
 -

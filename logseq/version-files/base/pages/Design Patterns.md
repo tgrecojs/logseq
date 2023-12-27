@@ -12,7 +12,10 @@
   
   |||||
   |--|--|--|--|
-  |Name|Description| |
+  |Name|Description|Pattern Family|
+  |--|--|--|--|
+  | Factory Method | Makes an instance of derived classes based on interfaced data or events |
+-
 - |||||
 -
 -
