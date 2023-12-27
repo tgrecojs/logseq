@@ -19,8 +19,9 @@
   | Factory Method | Makes an instance of derived classes based on interfaced data or events | Creational||
   | Abstract Factory | creates an instance of several families of classes without detailing concrete classes | Creational||
   | Builder | Separates object construction from its representation; always creates the same type of object | Creational ||
+  | Prototype | A fully initialized instance used for copying or cloning| |
   |--|--|--|--|
-  Pattern Family Behavioral
+  | Pattern Family | Behavioral | 
   | Factory Method | Makes an instance of derived classes based on interfaced data or events | Creational||
 -
 - Prototype
