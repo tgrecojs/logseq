@@ -12,7 +12,10 @@
   
   |||||
   |--|--|--|--|
-  |Name|Description| |
+  |Name|Description|Pattern Family|
+  ||||||
+  | Factory Method | Makes an instance o f
+-
 - |||||
 -
 -
