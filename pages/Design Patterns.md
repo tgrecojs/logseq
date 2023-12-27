@@ -14,7 +14,7 @@
   |--|--|--|--|
   |**Name**|**Description**|**Pattern Family**|
   |--|--|--|--|
-  | **Pattern Type** | Creational || 
+  ### Creational Patterns
   |--|--|--|--|
   | Factory Method | Makes an instance of derived classes based on interfaced data or events | Creational||
   | Abstract Factory | creates an instance of several families of classes without detailing concrete classes | Creational||
@@ -22,8 +22,8 @@
   | Prototype | A fully initialized instance used for copying or cloning| |
   |--|--|--|--|
   -------------------
-- ## **Pattern Type** - #Behavioral
-  | Factory Method | Makes an instance of derived classes based on interfaced data or events | Creational||
+- ## Behavioral Patterns
+- | Factory Method | Makes an instance of derived classes based on interfaced data or events | Creational||
 -
 - Prototype
 -
