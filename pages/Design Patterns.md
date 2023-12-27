@@ -12,9 +12,10 @@
   
   |||||
   |--|--|--|--|
-  |Name|Description|Pattern Family|
+  |**Name**|**Description**|**Pattern Family**|
   |--|--|--|--|
-  | Factory Method | Makes an instance of derived classes based on interfaced data or events | ||
+  | Factory Method | Makes an instance of derived classes based on interfaced data or events | Creational||
+  | Abstract Factory | creates an instance of several families of classes without detailing concrete classes | Creational||
 -
 -
 - |||||
