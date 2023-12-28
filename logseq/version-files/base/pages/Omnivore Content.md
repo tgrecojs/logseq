@@ -1,3 +1,7 @@
+- [Jermolene/TiddlyWiki5: A self-contained JavaScript wiki for the browser, Node.js, AWS Lambda etc.](https://omnivore.app/me/jermolene-tiddly-wiki-5-a-self-contained-java-script-wiki-for-th-18cb25b6b94)
+  collapsed:: true
+  site:: [GitHub](https://github.com/Jermolene/Tiddlywiki5)
+  date-saved:: [[12/28/2023]]
 - [Functional JavaScript: Traversing Trees with a Recursive Reduce](https://omnivore.app/me/functional-java-script-traversing-trees-with-a-recursive-reduce-18cac5c36cf)
   collapsed:: true
   site:: [James Sinclair](https://jrsinclair.com/articles/2019/functional-js-traversing-trees-with-recursive-reduce/)
