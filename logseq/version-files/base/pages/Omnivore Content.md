@@ -1,3 +1,10 @@
+- [The diminishing half-life of knowledge | Redowan's Reflections](https://omnivore.app/me/the-diminishing-half-life-of-knowledge-redowan-s-reflections-18cb36ebb7a)
+  collapsed:: true
+  site:: [Redowan's Reflections](https://rednafi.com/zephyr/diminishing_half_life_of_knowledge/)
+  author:: Redowan Delowar
+  labels:: [[Personal Growth]] [[Knowledge]]
+  date-saved:: [[12/28/2023]]
+  date-published:: [[11/11/2023]]
 - [Jermolene/TiddlyWiki5: A self-contained JavaScript wiki for the browser, Node.js, AWS Lambda etc.](https://omnivore.app/me/jermolene-tiddly-wiki-5-a-self-contained-java-script-wiki-for-th-18cb25b6b94)
   collapsed:: true
   site:: [GitHub](https://github.com/Jermolene/Tiddlywiki5)
