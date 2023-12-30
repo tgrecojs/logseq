@@ -1,3 +1,9 @@
+- [McDonald’s Ice Cream Machine Hackers Say They Found the ‘Smoking Gun’ That Killed Their Startup | WIRED](https://omnivore.app/me/mc-donald-s-ice-cream-machine-hackers-say-they-found-the-smoking-18cbaeef316)
+  collapsed:: true
+  site:: [WIRED](https://www.wired.com/story/kytch-taylor-mcdonalds-ice-cream-machine-smoking-gun/)
+  author:: Andy Greenberg
+  date-saved:: [[12/30/2023]]
+  date-published:: [[12/14/2023]]
 - [The diminishing half-life of knowledge | Redowan's Reflections](https://omnivore.app/me/the-diminishing-half-life-of-knowledge-redowan-s-reflections-18cb36ebb7a)
   collapsed:: true
   site:: [Redowan's Reflections](https://rednafi.com/zephyr/diminishing_half_life_of_knowledge/)
