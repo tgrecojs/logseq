@@ -1,3 +1,7 @@
+- [bafykbzacebgdv7toazeqnhsuj6ei4zhs2ks4m5wmf6dzqbfi34tmzsd3ai674](https://omnivore.app/me/-18cbe934bac)
+  collapsed:: true
+  site:: [cloudflare-ipfs.com](https://cloudflare-ipfs.com/ipfs/bafykbzacebgdv7toazeqnhsuj6ei4zhs2ks4m5wmf6dzqbfi34tmzsd3ai674?filename=%28Lecture+Notes+in+Computer+Science+11815%29+Klaus-Dieter+Schewe%2C+Neeraj+Kumar+Singh+-+Model+and+Data+Engineering_+9th+International+Conference%2C+MEDI+2019%2C+Toulouse%2C+France%2C+October+28%E2%80%9331%2C+2019%2C+Proceedi%28Z-Lib.io%29.pdf)
+  date-saved:: [[12/31/2023]]
 - [McDonald’s Ice Cream Machine Hackers Say They Found the ‘Smoking Gun’ That Killed Their Startup | WIRED](https://omnivore.app/me/mc-donald-s-ice-cream-machine-hackers-say-they-found-the-smoking-18cbaeef316)
   collapsed:: true
   site:: [WIRED](https://www.wired.com/story/kytch-taylor-mcdonalds-ice-cream-machine-smoking-gun/)
