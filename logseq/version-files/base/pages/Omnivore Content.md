@@ -1,3 +1,25 @@
+- [gRPC](https://omnivore.app/me/g-rpc-18ccd22c745)
+  collapsed:: true
+  site:: [dist-prog-book.com](http://dist-prog-book.com/chapter/1/gRPC.html)
+  date-saved:: [[01/02/2024]]
+- [Futures and Promises](https://omnivore.app/me/futures-and-promises-18ccd226e8f)
+  collapsed:: true
+  site:: [dist-prog-book.com](http://dist-prog-book.com/chapter/2/futures.html)
+  author:: Kisalaya Prasad, Avanti Patil, and Heather Miller
+  labels:: [[distirbuted computing]]
+  date-saved:: [[01/02/2024]]
+- [Message Passing and the Actor Model](https://omnivore.app/me/message-passing-and-the-actor-model-18ccd2204c9)
+  collapsed:: true
+  site:: [dist-prog-book.com](http://dist-prog-book.com/chapter/3/message-passing.html)
+  author:: Nathaniel Dempkowski
+  labels:: [[distirbuted computing]]
+  date-saved:: [[01/02/2024]]
+- [feat(WIP): pushing up code using WeakSet · lari-labs/dapp-meme-coin@1efd85f](https://omnivore.app/me/feat-wip-pushing-up-code-using-weak-set-lari-labs-dapp-meme-coin-18cccc5f798)
+  collapsed:: true
+  site:: [github.com](https://github.com/lari-labs/dapp-meme-coin/commit/1efd85f5ae86471a00a2c93ac4dde2318cab47a8)
+  author:: tgrecojs
+  date-saved:: [[01/02/2024]]
+  date-published:: [[01/01/2024]]
 - [bafykbzacebgdv7toazeqnhsuj6ei4zhs2ks4m5wmf6dzqbfi34tmzsd3ai674](https://omnivore.app/me/-18cbe934bac)
   collapsed:: true
   site:: [cloudflare-ipfs.com](https://cloudflare-ipfs.com/ipfs/bafykbzacebgdv7toazeqnhsuj6ei4zhs2ks4m5wmf6dzqbfi34tmzsd3ai674?filename=%28Lecture+Notes+in+Computer+Science+11815%29+Klaus-Dieter+Schewe%2C+Neeraj+Kumar+Singh+-+Model+and+Data+Engineering_+9th+International+Conference%2C+MEDI+2019%2C+Toulouse%2C+France%2C+October+28%E2%80%9331%2C+2019%2C+Proceedi%28Z-Lib.io%29.pdf)

@@ -1,3 +1,45 @@
+- [bafykbzacebgdv7toazeqnhsuj6ei4zhs2ks4m5wmf6dzqbfi34tmzsd3ai674](https://omnivore.app/me/-18cbe934bac)
+  collapsed:: true
+  site:: [cloudflare-ipfs.com](https://cloudflare-ipfs.com/ipfs/bafykbzacebgdv7toazeqnhsuj6ei4zhs2ks4m5wmf6dzqbfi34tmzsd3ai674?filename=%28Lecture+Notes+in+Computer+Science+11815%29+Klaus-Dieter+Schewe%2C+Neeraj+Kumar+Singh+-+Model+and+Data+Engineering_+9th+International+Conference%2C+MEDI+2019%2C+Toulouse%2C+France%2C+October+28%E2%80%9331%2C+2019%2C+Proceedi%28Z-Lib.io%29.pdf)
+  date-saved:: [[12/31/2023]]
+- [McDonald’s Ice Cream Machine Hackers Say They Found the ‘Smoking Gun’ That Killed Their Startup | WIRED](https://omnivore.app/me/mc-donald-s-ice-cream-machine-hackers-say-they-found-the-smoking-18cbaeef316)
+  collapsed:: true
+  site:: [WIRED](https://www.wired.com/story/kytch-taylor-mcdonalds-ice-cream-machine-smoking-gun/)
+  author:: Andy Greenberg
+  date-saved:: [[12/30/2023]]
+  date-published:: [[12/14/2023]]
+- [The diminishing half-life of knowledge | Redowan's Reflections](https://omnivore.app/me/the-diminishing-half-life-of-knowledge-redowan-s-reflections-18cb36ebb7a)
+  collapsed:: true
+  site:: [Redowan's Reflections](https://rednafi.com/zephyr/diminishing_half_life_of_knowledge/)
+  author:: Redowan Delowar
+  labels:: [[Personal Growth]] [[Knowledge]]
+  date-saved:: [[12/28/2023]]
+  date-published:: [[11/11/2023]]
+- [Jermolene/TiddlyWiki5: A self-contained JavaScript wiki for the browser, Node.js, AWS Lambda etc.](https://omnivore.app/me/jermolene-tiddly-wiki-5-a-self-contained-java-script-wiki-for-th-18cb25b6b94)
+  collapsed:: true
+  site:: [GitHub](https://github.com/Jermolene/Tiddlywiki5)
+  date-saved:: [[12/28/2023]]
+- [Functional JavaScript: Traversing Trees with a Recursive Reduce](https://omnivore.app/me/functional-java-script-traversing-trees-with-a-recursive-reduce-18cac5c36cf)
+  collapsed:: true
+  site:: [James Sinclair](https://jrsinclair.com/articles/2019/functional-js-traversing-trees-with-recursive-reduce/)
+  author:: Written by James Sinclair
+  labels:: [[functional programming]] [[fp]]
+  date-saved:: [[12/27/2023]]
+  date-published:: [[06/12/2019]]
+- [functional-programming-in-js-with-categories-1](https://omnivore.app/me/u-9275-bf-0-a-a-48-a-11-ee-bc-9-a-6-b-8-e-3-c-6186-b-9-functiona-18caa3395f0)
+  collapsed:: true
+  site:: [omnivore.app](https://omnivore.app/attachments/u/9275bf0a-a48a-11ee-bc9a-6b8e3c6186b9/functional-programming-in-js-with-categories-1.pdf)
+  author:: dimitris papadimitriou
+  date-saved:: [[12/27/2023]]
+- [Logical Secrets](https://omnivore.app/me/u-4-f-673120-a-45-e-11-ee-be-47-f-7-da-231297-a-4-logical-secret-18ca91182d1)
+  collapsed:: true
+  site:: [omnivore.app](https://omnivore.app/attachments/u/4f673120-a45e-11ee-be47-f7da231297a4/LogicalSecrets.pdf)
+  date-saved:: [[12/26/2023]]
+- [Towards application capabilities](https://omnivore.app/me/towards-application-capabilities-18ca8a1dd54)
+  collapsed:: true
+  site:: [tailscale.com](https://tailscale.com/blog/acl-grants)
+  date-saved:: [[12/26/2023]]
+  date-published:: [[12/13/2023]]
 - [Currying and Partial Application with Async Await and Optional Parameters | MarkBarry.dev](https://omnivore.app/me/currying-and-partial-application-with-async-await-and-optional-p-18c943c97ae)
   collapsed:: true
   site:: [markbarry.dev](https://www.markbarry.dev/currying-and-partial-application-with-async-await-optional-parameters/)
