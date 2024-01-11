@@ -1,3 +1,9 @@
+- [The Protocol Seeking Protocol](https://omnivore.app/me/the-protocol-seeking-protocol-18cf7428727)
+  collapsed:: true
+  site:: [Dan Finlay’s Blog](https://blog.danfinlay.com/protocol-seeking-protocol/)
+  author:: Dan Finlay
+  date-saved:: [[01/11/2024]]
+  date-published:: [[01/10/2024]]
 - [How I take Notes: Mastering the Basics - by Nicola Ballotta](https://omnivore.app/me/how-i-take-notes-mastering-the-basics-by-nicola-ballotta-18cf594cd16)
   collapsed:: true
   site:: [The Hybrid Hacker](https://hybridhacker.email/p/how-i-take-notes-mastering-the-basics)
