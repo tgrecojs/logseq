@@ -8,7 +8,8 @@
 	- ## Hash Functions
 		- #### Terms
 			- **digest**
-			- The output of a hash function is known as the **digest**.
+				- The output of a hash function is known as the **digest**.
+				- A digest holds a summary or a representation o fth eoriginal data.
 			-
 		- *SHA 256
 -
