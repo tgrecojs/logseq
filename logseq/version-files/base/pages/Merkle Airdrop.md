@@ -8,6 +8,8 @@
 	- ## Hash Functions
 		- #### Terms
 			- **digest**
+			- The output of a hash function is known as the **digest**.
+			-
 		- *SHA 256
 -
 - ## Entropy
