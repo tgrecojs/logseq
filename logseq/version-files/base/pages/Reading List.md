@@ -1,2 +1,3 @@
 - https://cryptoeconomics.study/docs/en/sync/1.1-lecture
+- http://www.ciphersbyritter.com/GLOSSARY.HTM
 -
