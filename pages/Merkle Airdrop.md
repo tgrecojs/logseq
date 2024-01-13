@@ -13,8 +13,9 @@
 				  logseq.order-list-type:: number
 			- Additive Identity Property - 0 exists and has the property `a + 0` = `a`.
 			  logseq.order-list-type:: number
-			- 1 exists.
+			- Mutiplicative identity - 1 exists and `a * 1 = a`
 			  logseq.order-list-type:: number
+			- logseq.order-list-type:: number
 	-
 	- ## Hash Functions
 		- #### Terms

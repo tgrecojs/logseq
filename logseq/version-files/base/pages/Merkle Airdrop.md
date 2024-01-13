@@ -5,6 +5,18 @@
 	- #[[Omnivore Content]]
 	-
 - ## #Cryptography
+	- ## Finite Field Operations
+		- A finite field is defined as a finite set of numbers and two operations, addition and mulitplication, which satisfy the following:
+			- Closed Property 
+			  logseq.order-list-type:: number
+				- if `a` and `b` are in the set, `a + b` and `a * b` are in the set.
+				  logseq.order-list-type:: number
+			- Additive Identity Property - 0 exists and has the property `a + 0` = `a`.
+			  logseq.order-list-type:: number
+			- Mutiplicative identity - 1 exists and `a * 1 = a`
+			  logseq.order-list-type:: number
+			- logseq.order-list-type:: number
+	-
 	- ## Hash Functions
 		- #### Terms
 			- **digest**
