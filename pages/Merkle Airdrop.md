@@ -23,7 +23,7 @@
 			- A function that takes a binary string and divides it into 32-bit blocks while computing the modular sum of those blocks.
 			- Benefits: easily computed, offers compression
 			- Cons: **NOT SAFE**
-				- It is
+				- It is possible to work backwards from the checksum to an input satisfying the sum, therefore it is not **preimage or second-preimage resistant**.
 	- MAC
 		- Message Authentication Code Algorithm
 -
