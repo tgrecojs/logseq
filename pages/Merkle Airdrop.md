@@ -5,6 +5,11 @@
 	- #[[Omnivore Content]]
 	-
 - ## #Cryptography
+	- ## Finite Field Operations
+		- A finite field is defined as a finite set of numbers and two operations, addition and mulitplication, which satisfy the following:
+			- if `a` and `b`
+			  logseq.order-list-type:: number
+		-
 	- ## Hash Functions
 		- #### Terms
 			- **digest**
