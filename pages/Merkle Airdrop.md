@@ -21,7 +21,9 @@
 				  logseq.order-list-type:: number
 		- ### checksums
 			- A function that takes a binary string and divides it into 32-bit blocks while computing the modular sum of those blocks.
-			-
+			- Benefits: easily computed, offers compression
+			- Cons: **NOT SAFE**
+				- It is
 	- MAC
 		- Message Authentication Code Algorithm
 -

@@ -19,7 +19,9 @@
 				  logseq.order-list-type:: number
 				- **Collision resistance:** It is computationally infeasible to ﬁnd any two inputs x 1 and x2  where x 1 = x 2 such that h(x 1 ) = h(x 2 ). This property is sometimes referred to as ̸ strong collision resistance.
 				  logseq.order-list-type:: number
-		- SHA 256
+		- ### checksums
+			- A function that takes a binary string and divides it into 32-bit blocks while computing the modular sum of those blocks.
+			-
 	- MAC
 		- Message Authentication Code Algorithm
 -
