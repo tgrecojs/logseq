@@ -12,6 +12,7 @@
 				- A digest holds a summary Aor a representation o fth eoriginal data.
 		- ### MAC
 			- Message Authentication Code Algorithm
+		-
 		- *SHA 256
 -
 - ## Entropy
