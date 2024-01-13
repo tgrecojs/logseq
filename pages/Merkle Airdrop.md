@@ -11,7 +11,7 @@
 				- The output of a hash function is known as the **digest**.
 				- A digest holds a summary Aor a representation o fth eoriginal data.
 		- ### MAC
-			- Message Aut hentication Code Algorithm
+			- Message Authentication Code Algorithm
 		- *SHA 256
 -
 - ## Entropy
