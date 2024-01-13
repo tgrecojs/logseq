@@ -10,9 +10,14 @@
 			- **digest**
 				- The output of a hash function is known as the **digest**.
 				- A digest holds a summary Aor a representation o fth eoriginal data.
-		- ### MAC
-			- Message Authentication Code Algorithm
-		- *SHA 256
+			- **MAC**
+		- ### Security Properties of Hash Function
+			- Preimage resistance: Given a hash value y for which a corresponding input is not known, it is computationally infeasible 2 to ﬁnd any input x such that y = h(x). This property is also known as one-wayness.
+		- 2. Second-preimage resistance: Given an input x 1 it is computationally infeasible to ﬁnd another input x 2 where x 1 = x 2 such that h(x 1 ) = h(x 2 ). This property is also referred ̸ to as weak collision resistance.
+		- 3. Collision resistance: It is computationally infeasible to ﬁnd any two inputs x 1 and x2  where x 1 = x 2 such that h(x 1 ) = h(x 2 ). This property is sometimes referred to as ̸ strong collision resistance.
+		- SHA 256
+	- MAC
+		- Message Authentication Code Algorithm
 -
 - ## Entropy
 - > Min entropy measures how likely you are to guess a value on your first try. If this probability is p, then the min entropy is defined as `-log_2 (p)`.
