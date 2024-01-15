@@ -1,3 +1,4 @@
 - https://johnnydecimal.com/10-19-concepts/11-core/
 - ### Overview
-	- The Johnny Decimal System is a system for organizing anything using a decimal system.  when using the Johnny Decimal System, you have a whole number with two digits, followed by a decimal, followed by another two digits.
+	- The Johnny Decimal System is a system for organizing anything using a decimal system.
+	- When using the Johnny Decimal System, you have a whole number with two digits, followed by a decimal, followed by another two digits.
