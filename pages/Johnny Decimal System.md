@@ -2,3 +2,8 @@
 - ### Overview
 	- The Johnny Decimal System is a system for organizing anything using a decimal system.
 	- When using the Johnny Decimal System, you have a whole number with two digits, followed by a decimal, followed by another two digits.
+	- The Johnny Decimal System is a system for organizing anything using a decimal system. So when using the Johnny Decimal System, you have a whole number with two digits, followed by a decimal, followed by another two digits.
+	- The purpose of using this system is to have a better structure for organizing folders.
+	- ### How the process works
+		- Every folder gets a number.
+		- so what you do is you start at zero one or eleven or twenty one and then every folder after that would be zero one, zero two, zero three and so we can say for example we have a system for our life and the first container or folder zero one is life administration, the second folder is home business and the third folder is music. Now inside life administration we would find another folder zero one finance and then zero two health, zero three education.
