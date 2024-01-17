@@ -1,5 +1,4 @@
--
-- # January 12th Meeting
+## Summary
 - ### Proposal, Evaluation Tool, Developer Roles, Issuer, Admin, Creator
   
   Patrick and Thomas discussed a proposal, the details of which were not clearly stated. They also talked about an evaluation tool and its potential usefulness. They touched upon the role of developers and the possibility of auto-generating some aspects of the system. They also discussed the role of an issuer and the creation of a brand. Towards the end, they mentioned the roles of an admin and a creator in the system. However, the conversation was not very clear, making it difficult to provide a precise summary.
