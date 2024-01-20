@@ -205,4 +205,5 @@
   hack among others have accounted for nearly half of the $5.7 billion 
   dollars in hacks over the past six years in DeFi.
 - [[Transcript]]
+- [[My Take]]
 -
