@@ -1,5 +1,4 @@
-- Developers 
-  looking to deploy new features on chain limit orders, and custom trading
+- looking to deploy new features on chain limit orders, and custom trading
    strategies can now build on top of the core libraries. Protocols become
    platforms, maker, synthetics, morpho, and others are building on this 
   trend heading into 2024. Other chains remain up for grabs. Trader Joe 
@@ -204,5 +203,9 @@
   Poly network hacks, $300 million wormhole hack and $200 million Nomad 
   hack among others have accounted for nearly half of the $5.7 billion 
   dollars in hacks over the past six years in DeFi.
-- [[Transcript]]
--
+- ## 1 Linked Reference
+  
+  [[
+  
+  ]]
+- ## Unlinked References

@@ -1,4 +1,95 @@
 ## All posts
+	- [Chapter 8: Top 10 Trends in DeFi](https://omnivore.app/me/chapter-8-top-10-trends-in-de-fi-18d261b7bd1)
+	  collapsed:: true
+	  site:: [Snipd](https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/summary)
+	  date-saved:: [[01/20/2024]]
+	  date-published:: [[01/07/2024]]
+		- ### Content
+		  collapsed:: true
+			- Snipd AI 
+			  
+			  This podcast explores the top 10 trends in DeFi, including DEX platform updates, trading aggregators, payments, DeFi lending, oracles, and RWA diversification. It also discusses the importance of trustless bridges and interoperability protocols, challenges in the crypto market data landscape, and the increase in new transactions and the L2 side chain ecosystem for Bitcoin. 
+			  
+			  Read more 
+			  
+			  \#\# Podcast summary created with Snipd AI
+			  
+			  \#\#\# Quick takeaways
+			  
+			  * DeFi applications have the lowest marginal cost of capital due to decreased operational costs, indicating potential for increased growth.
+			  * Liquid staking tokens (LSTs) have become the largest DeFi sector by TVL, offering yield-bearing IOUs and leveraging tokenized treasuries for safer lending alternatives.
+			  
+			  \#\#\# Deep dives
+			  
+			  \#\#\#\# DeFi's Growth and Potential
+			  
+			  DeFi represents a small fraction of global financial assets, indicating room for growth. On-chain financial rails offer safety and lower fees compared to off-chain rails. DeFi applications have the lowest marginal cost of capital due to decreased operational costs. The move towards regulation in DeFi might lead to changes that resemble reintermediation. However, Wall Street may also engage in DeFi storefronts, increasing volume over public blockchains in the long term.
+			  
+			  \#\# Get the Snipd  
+			  podcast app
+			  
+			  Unlock the knowledge in podcasts with the podcast player of the future. 
+			  
+			  \#\# AI-powered  
+			  podcast player
+			  
+			  Listen to all your favourite podcasts with AI-powered features 
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sJWcawIf7uOEm_lWCe9wa8eJIsB2ryEbHiRCapAyZRlM/https://share.snipd.com/assets/get-app/show-list-horizontal.png)
+			  
+			  \#\# Discover  
+			  highlights
+			  
+			  Listen to the best highlights from the podcasts you love and dive into the full episode 
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sI-lM-LR1a7lc8ehIHZ3q657v4kTWSJN5POYdCseXAqM/https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/assets/app-info/feed.png)
+			  
+			  \#\# Save any  
+			  moment
+			  
+			  Hear something you like? Tap your headphones to save it with AI-generated key takeaways 
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sLpjSOgUmjWEDeUfebocG4JzbD150lZXLEfM-MB6JArA/https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/assets/app-info/create_snip.png)
+			  
+			  \#\# Share  
+			  & Export
+			  
+			  Send highlights to Twitter, WhatsApp or export them to Notion, Readwise & more 
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,szswhBrsJIZEX1tmq6X_0FodhXDrehd3JeOzhuOZEG7U/https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/assets/app-info/share.png)
+			  
+			  \#\# AI-powered  
+			  podcast player
+			  
+			  Listen to all your favourite podcasts with AI-powered features 
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sJWcawIf7uOEm_lWCe9wa8eJIsB2ryEbHiRCapAyZRlM/https://share.snipd.com/assets/get-app/show-list-horizontal.png)
+			  
+			  \#\# Discover  
+			  highlights
+			  
+			  Listen to the best highlights from the podcasts you love and dive into the full episode 
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sI-lM-LR1a7lc8ehIHZ3q657v4kTWSJN5POYdCseXAqM/https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/assets/app-info/feed.png)
+	- [Messari's Crypto Theses for 2024 | Chapter 11: Bonus - Whatever I Want](https://omnivore.app/me/messari-s-crypto-theses-for-2024-chapter-11-bonus-whatever-i-wan-18d26234e7b)
+	  collapsed:: true
+	  site:: [share.transistor.fm](https://share.transistor.fm/s/b1ea3126)
+	  labels:: [[RSS]]
+	  date-saved:: [[01/08/2024]]
+	  date-published:: [[01/08/2024]]
+		- ### Content
+		  collapsed:: true
+			- **Chapter 11: Bonus - Whatever I Want**11.1Why You Must Write  
+			  11.2 No Idols  
+			  11.3 Must Read  
+			  11.4 Tips & Productivity Tricks  
+			  11.5 Life Advice
+			  
+			  (_End: Disclaimers)_
+			  
+			  \#\#\#\# What is Messari's Crypto Theses for 2024?
+			  
+			  The 2024 edition of crypto’s most popular year-end report, now available in podcast format. Written by Messari CEO and Co-founder Ryan Selkis, this recording explores key trends, people, companies, and projects to watch across the crypto landscape, with predictions for 2024\. Learn more and view the report at <https://messari.io/crypto-theses-for-2024>
 	- [What is a Merkle Tree?](https://omnivore.app/me/what-is-a-merkle-tree-18c57202f64)
 	  collapsed:: true
 	  site:: [decentralizedthoughts.github.io](https://decentralizedthoughts.github.io/2020-12-22-what-is-a-merkle-tree/)
