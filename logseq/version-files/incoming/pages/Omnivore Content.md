@@ -8,9 +8,9 @@
 		  collapsed:: true
 			- Snipd AI 
 			  
-			  This podcast explores the top 10 trends in DeFi, including DEX platform updates, trading aggregators, payments, DeFi lending, oracles, and RWA diversification. It also discusses the importance of trustless bridges and interoperability protocols, challenges in the crypto market data landscape, and the increase in new transactions and the L2 side chain ecosystem for Bitcoin. 
+			   This podcast explores the top 10 trends in DeFi, including DEX platform updates, trading aggregators, payments, DeFi lending, oracles, and RWA diversification. It also discusses the importance of trustless bridges and interoperability protocols, challenges in the crypto market data landscape, and the increase in new transactions and the L2 side chain ecosystem for Bitcoin. 
 			  
-			  Read more 
+			   Read more 
 			  
 			  \#\# Podcast summary created with Snipd AI
 			  
@@ -28,47 +28,47 @@
 			  \#\# Get the Snipd  
 			  podcast app
 			  
-			  Unlock the knowledge in podcasts with the podcast player of the future. 
+			   Unlock the knowledge in podcasts with the podcast player of the future. 
 			  
 			  \#\# AI-powered  
 			  podcast player
 			  
-			  Listen to all your favourite podcasts with AI-powered features 
+			   Listen to all your favourite podcasts with AI-powered features 
 			  
 			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sJWcawIf7uOEm_lWCe9wa8eJIsB2ryEbHiRCapAyZRlM/https://share.snipd.com/assets/get-app/show-list-horizontal.png)
 			  
 			  \#\# Discover  
 			  highlights
 			  
-			  Listen to the best highlights from the podcasts you love and dive into the full episode 
+			   Listen to the best highlights from the podcasts you love and dive into the full episode 
 			  
 			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sI-lM-LR1a7lc8ehIHZ3q657v4kTWSJN5POYdCseXAqM/https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/assets/app-info/feed.png)
 			  
 			  \#\# Save any  
 			  moment
 			  
-			  Hear something you like? Tap your headphones to save it with AI-generated key takeaways 
+			   Hear something you like? Tap your headphones to save it with AI-generated key takeaways 
 			  
 			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sLpjSOgUmjWEDeUfebocG4JzbD150lZXLEfM-MB6JArA/https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/assets/app-info/create_snip.png)
 			  
 			  \#\# Share  
 			  & Export
 			  
-			  Send highlights to Twitter, WhatsApp or export them to Notion, Readwise & more 
+			   Send highlights to Twitter, WhatsApp or export them to Notion, Readwise & more 
 			  
 			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,szswhBrsJIZEX1tmq6X_0FodhXDrehd3JeOzhuOZEG7U/https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/assets/app-info/share.png)
 			  
 			  \#\# AI-powered  
 			  podcast player
 			  
-			  Listen to all your favourite podcasts with AI-powered features 
+			   Listen to all your favourite podcasts with AI-powered features 
 			  
 			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sJWcawIf7uOEm_lWCe9wa8eJIsB2ryEbHiRCapAyZRlM/https://share.snipd.com/assets/get-app/show-list-horizontal.png)
 			  
 			  \#\# Discover  
 			  highlights
 			  
-			  Listen to the best highlights from the podcasts you love and dive into the full episode 
+			   Listen to the best highlights from the podcasts you love and dive into the full episode 
 			  
 			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sI-lM-LR1a7lc8ehIHZ3q657v4kTWSJN5POYdCseXAqM/https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/assets/app-info/feed.png)
 	- [Messari's Crypto Theses for 2024 | Chapter 11: Bonus - Whatever I Want](https://omnivore.app/me/messari-s-crypto-theses-for-2024-chapter-11-bonus-whatever-i-wan-18d26234e7b)
