@@ -1,4 +1,119 @@
 ## All posts
+	- [Delaware Certificate of Amendment | Harvard Business Services, Inc.](https://omnivore.app/me/delaware-certificate-of-amendment-harvard-business-services-inc-18d266cab7f)
+	  collapsed:: true
+	  site:: [Harvard Business Services, Inc.](https://www.delawareinc.com/blog/change-your-company-name-certificate-of-amendment/)
+	  author:: Brett Melson
+	  date-saved:: [[01/20/2024]]
+	  date-published:: [[06/22/2021]]
+		- ### Content
+		  collapsed:: true
+			- Is your company name outdated, or does it no longer reflect the nature of your business?
+			  
+			  You are allowed to officially change your company name. Often, people think it will be costly and time-consuming to change a company name, or that a new company must be filed with the new name.
+			  
+			  This is not true; your company name can be officially changed, quickly and easily.
+			  
+			  In some cases, the original name may have been too specific, such as Bob's Deck & Patio LLC, created before Bob began doing more general contracting and home building. In other cases, a company may be re-branding and want the centerpiece to be the new name.
+			  
+			  \#\# Famous company name changes
+			  
+			  Instead of filing a new company, you can simply call us. We can prepare and file a Delaware Certificate of Amendment to the Certificate of Formation (for LLCs) or Certificate of Incorporation (for corporations) with the Delaware Secretary of State’s office.
+			  
+			  Original Name Re-branded Name Quantum Computer Services AOL BackRub Google Brad’s Drink Pepsi-Cola Auction Web EBay Minnesota Mining and  
+			  Manufacturing Co 3M Peter’s Super Submarines SUBWAY U-Tote’m 7-Eleven
+			  
+			  \#\# What is a Certificate of Amendment?
+			  
+			  A Certificate of Amendment is a legal document that is typically required when corporations and other business entities want to indicate any changes, like a change of company name.
+			  
+			  This filing officially changes the name, either immediately or on an effective date, whichever option is selected by the client. This is used to make changes to a Delaware LLC's Certificate of Formation or for other Delaware business entities.
+			  
+			  Filing a name amendment, as opposed to filing a new company, will allow you to maintain the history that is connected to your original filing. Assets don’t change hands, liabilities remain the same, all contracts remain in force and all accounting and tax records remain the same.
+			  
+			  The name changes but everything else remains intact. This saves you the hassle of opening a new bank account, [obtaining a new EIN](https://www.delawareinc.com/ourservices/obtain-tax-id-or-ein-for-delaware-company/) and creating entirely new internal documents. The formation date of the company remains the date of the original formation, which is an important consideration for many entrepreneurs.
+			  
+			  \#\#\# How To File a Certificate of Amendment
+			  
+			  The first step in the name change process is choosing the name. This can be a tough decision. For assistance in picking out the right name for your company, read [What to Consider When Naming a Company](https://www.delawareinc.com/blog/what-to-consider-when-naming-a-company/).
+			  
+			  To make sure your company name is available in Delaware, take advantage of our [free corporation search](https://www.delawareinc.com/name-check/ "Check Your Company Name's Availability!").
+			  
+			  After the name has been selected, a Certificate of Amendment will have to be prepared; it must be signed by an authorized officer of the company.
+			  
+			  Next, the Certificate of Amendment needs to be filed with the state, and the name will officially change as of the date and time the document is filed, or at some specified date known as the "effective date," after the file date.
+			  
+			  Company names cannot be effective before the filing date of the name amendment. The state of Delaware typically takes three to five business days to return [certified copies](https://www.delawareinc.com/ourservices/certified-copies-of-corporate-documents/) of the filing documents. We can file your Certificate with the state of Delaware, relieving you of the hassle and paperwork. 
+			  
+			  Once the amendment is filed, you should make sure everyone--your clients, your bank, et al.--is aware of the new name for the company.
+			  
+			  The easy way to inform everyone is to make a list and inform everyone on the list of your new company name. Be sure to include:
+			  
+			  * government agencies your company works with
+			  * clients
+			  * vendors
+			  * banks
+			  * the post office
+			  * UPS
+			  * Federal Express
+			  * DHL
+			  * any other businesses your company deals with
+			  
+			  Some of the bureaucracies involved may have a form to fill out, and they may ask you to return the form with a copy of the approved Certificate of Amendment.
+			  
+			  The IRS allows this change to be made rather easily. Simply [send a letter to the IRS](https://www.delawareinc.com/blog/change-your-business-name-with-the-irs/) stating the new name of the company, the old name, your EIN (Employer ID Number) and the signature of a corporate officer.
+			  
+			  \#\#\# Filing Your New Name in Other States where You Do Business
+			  
+			  Wait, there’s more!
+			  
+			  Traditionally, you’ll want the registered name to match in all states where you do business, which may include some states where you are registered as a foreign entity. Once the name is amended and approved in Delaware (or whatever your company's home state may be), you can file to change the name on your foreign registration with the Secretary of State in other states. 
+			  
+			  We can assist you in understanding what needs to be done and checking the name to make sure it’s also available in each applicable state.
+			  
+			  \#\#\# Steps to changing your company name:
+			  
+			  1. Choose your new name.
+			  2. Do a corporation name search to make sure your new name is available with the state.
+			  3. Prepare and sign a Certificate of Amendment.
+			  4. Notify your employees, vendors, banks, and other parties about the new name.
+			  5. Send a letter to the IRS, including your company EIN, notifying them of the name change.
+			  6. Change your company names in any other states in which you are authorized to do business.
+			  
+			  Finally, go forward and prosper with the new company name that properly reflects the business you have worked so hard to build!
+			  
+			  Photo Credit: By Eviatar Bach (Own work) \[Public domain\], via Wikimedia Commons
+			  
+			  **\*Disclaimer\*:** Harvard Business Services, Inc. is neither a law firm nor an accounting firm and, even in cases where the author is an attorney, or a tax professional, nothing in this article constitutes legal or tax advice. This article provides general commentary on, and analysis of, the subject addressed. We strongly advise that you consult an attorney or tax professional to receive legal or tax guidance tailored to your specific circumstances. Any action taken or not taken based on this article is at your own risk. If an article cites or provides a link to third-party sources or websites, Harvard Business Services, Inc. is not responsible for and makes no representations regarding such source’s content or accuracy. Opinions expressed in this article do not necessarily reflect those of Harvard Business Services, Inc.
+			  
+			  More By [Brett Melson](https://www.delawareinc.com/blog/author/brett-melson/) 
+			  
+			  There are 7 comments left for **Change Your Company Name: Certificate of Amendment**
+			  
+			  Andrea Longenecker said: Monday, November 23, 2020
+			  
+			  my EIN name has changed from " Massage by Andrea" to "Hands to Wellness. I would like to amend my EIN. Thank you
+			  
+			  **Here's some information on changing your company name with the IRS. Please feel free to email us if you have additional questions.**
+			  
+			  **[https://www.delawareinc.com/blog/change-your-business-name-with-the-irs](https://www.delawareinc.com/blog/change-your-business-name-with-the-irs/)**
+			  
+			  How can we pay to Delaware Secretary of State for the certificate of amendment?
+			  
+			  **We would be happy to assist you with preparing and filing the Certificate of Amendment. You can also contact the Delaware Division of Corporations directly if you wish to prepare and file on your own. They can instruct you on how to make a direct payment.**
+			  
+			  I want to change my incorporation name. Can you let me know if it is possible ?
+			  
+			  **Pallav, we would be happy to assist you. You can reach us via LiveChat or call us 9-5 at 1-800-345-2677\. We'll guide you through the process.**
+			  
+			  Can I use the Certificate of Amendment to convert a California LLC into a Delaware Non Profit organization keeping the same name and the same operations? If not, please let me know the best way to go.
+			  
+			  **We can only assist with the Delaware side of a conversion by preparing and filing a Certificate of Conversion with the Delaware Secretary of State for approval. We will also prepare and file a Certificate of Incorporation with the Delaware Secretary of State for approval as well. Generally, clients will consult with an attorney convenient to them or their location or work with the California Division of Corporations directly to determine if the company will owe any fees in California prior to proceeding with the conversion. We can only assist with the Delaware part of this process.**
+			  
+			  Hi, I've stumbled upon your website looking to amend my Delaware company name. I would like to change the company name "Claimly Technologies, Inc." into "Cypher Technologies, Inc." Is it something you can help me with? Kind regards, Hyacinthe
+			  
+			  Yes, of course. You can reach us via LiveChat from our homepage or call us 9-5 at 1-800-345-2677\. We would be happy to assist you.
+			  
+			  1 | [2](https://www.delawareinc.com/blog/change-your-company-name-certificate-of-amendment/?startrow=6)
 	- [Chapter 8: Top 10 Trends in DeFi](https://omnivore.app/me/chapter-8-top-10-trends-in-de-fi-18d261b7bd1)
 	  collapsed:: true
 	  site:: [Snipd](https://share.snipd.com/episode/a4ddb7e5-8360-4286-87d0-a14a1b1534ff/summary)
