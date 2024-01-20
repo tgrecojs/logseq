@@ -1,4 +1,12 @@
 ## All posts
+	- [Delaware Certificate of Amendment | Harvard Business Services, Inc.](https://omnivore.app/me/u-1-c-3-fb-806-b-784-11-ee-8-b-41-3-baa-386450-bb-delaware-certi-18d268df2c9)
+	  collapsed:: true
+	  site:: [omnivore.app](https://omnivore.app/attachments/u/1c3fb806-b784-11ee-8b41-3baa386450bb/DelawareCertificateofAmendmentHarvardBusinessServicesInc.3.pdf)
+	  labels:: [[funding]] [[2024]] [[DeFi]]
+	  date-saved:: [[01/20/2024]]
+		- ### Content
+		  collapsed:: true
+			-
 	- [Delaware Certificate of Amendment | Harvard Business Services, Inc.](https://omnivore.app/me/delaware-certificate-of-amendment-harvard-business-services-inc-18d266cab7f)
 	  collapsed:: true
 	  site:: [Harvard Business Services, Inc.](https://www.delawareinc.com/blog/change-your-company-name-certificate-of-amendment/)
@@ -19,8 +27,8 @@
 			  
 			  Instead of filing a new company, you can simply call us. We can prepare and file a Delaware Certificate of Amendment to the Certificate of Formation (for LLCs) or Certificate of Incorporation (for corporations) with the Delaware Secretary of State’s office.
 			  
-			  Original Name Re-branded Name Quantum Computer Services AOL BackRub Google Brad’s Drink Pepsi-Cola Auction Web EBay Minnesota Mining and  
-			  Manufacturing Co 3M Peter’s Super Submarines SUBWAY U-Tote’m 7-Eleven
+			   Original Name Re-branded Name Quantum Computer Services AOL BackRub Google Brad’s Drink Pepsi-Cola Auction Web EBay Minnesota Mining and  
+			   Manufacturing Co 3M Peter’s Super Submarines SUBWAY U-Tote’m 7-Eleven
 			  
 			  \#\# What is a Certificate of Amendment?
 			  
