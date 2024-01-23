@@ -1,4 +1,642 @@
 ## All posts
+	- [strawman:concurrency [ES Wiki]](https://omnivore.app/me/strawman-concurrency-es-wiki-18d34d86412)
+	  collapsed:: true
+	  site:: [web.archive.org](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman%3Aconcurrency)
+	  date-saved:: [[01/23/2024]]
+	  date-published:: [[06/16/2013]]
+		- ### Content
+		  collapsed:: true
+			- The Wayback Machine - https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:concurrency
+			  
+			  * [Communicating Event-Loop Concurrency and Distribution](\#communicating%5Fevent-loop%5Fconcurrency%5Fand%5Fdistribution)  
+			   * [Concurrency Model and Promises](\#concurrency%5Fmodel%5Fand%5Fpromises)  
+			   * [Vats](\#vats)  
+			   * [Promises and Promise States](\#promises%5Fand%5Fpromise%5Fstates)  
+			   * [Eventual Operations](\#eventual%5Foperations)  
+			   * [Fundamental Static Q Methods](\#fundamental%5Fstatic%5Fq%5Fmethods)  
+			   * [Promise methods](\#promise%5Fmethods)  
+			   * [Syntactic Sugar](\#syntactic%5Fsugar)  
+			   * [Non-fundamental Static Q Conveniences](\#non-fundamental%5Fstatic%5Fq%5Fconveniences)  
+			         * [Q.delay](\#q.delay)  
+			         * [Q.race](\#q.race)  
+			         * [Q.all](\#q.all)  
+			         * [Q.join](\#q.join)  
+			         * [Q.memoize](\#q.memoize)  
+			         * [Q.async](\#q.async)  
+			         * [Q.defer()](\#q.defer)
+			  * [Examples](\#examples)  
+			   * [Infinite Queue](\#infinite%5Fqueue)  
+			   * [Spawn](\#spawn)  
+			   * [Vat.evalLater() as Async-PGAS](\#vat.evallater%5Fas%5Fasync-pgas)  
+			   * [Open Vat](\#open%5Fvat)  
+			   * [there](\#there)  
+			   * [Map-Reduce Lite](\#map-reduce%5Flite)  
+			   * [AMD Loader Lite](\#amd%5Floader%5Flite)
+			  * [See](\#see)
+			  
+			  \#\# Communicating Event-Loop Concurrency and Distribution
+			  
+			  On both the browser and the server, JavaScript’s de-facto concurrency model is increasingly “shared nothing” communicating event loops. JavaScript event loops within the browser (both frames and workers) send asynchronous messages to other JavaScript event loops via postMessage. JavaScript event loops in the browser send and receive asynchronous messages with servers using asynch XHR, and shortly, Server-Sent Events and WebSockets. And server-side JavaScript has a rapidly growing role as the counterparty of these protocols, and increasingly uses event loops to service them. 
+			  
+			  This strawman consists of several major parts, not all of which need be accepted together.
+			  
+			  1. **Reality:** Codifying and formalizing JavaScript’s de-facto concurrency model as a de-jure model.
+			  2. **Promises:** A way to  
+			   * (**Q(p).post(), Q(p).get()**) Make asynchronous requests of objects that may not be synchronously reachable, such as remote objects.  
+			   * (**Q(p).then()**) Ease the burden of local event loop programming, by reifying the ability to register a callback as a first class value.  
+			   * (**[Q.async, yield](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:async%5Ffunctions "strawman:async_functions"):**) for implicit registration of shallow continuations on promises.
+			  3. **Syntactic sugar**  
+			   * **The infix “`!`” operator:** An eventual analog of “`.`“, for making eventual requests look more like immediate requests.
+			  4. (**Q.makeFar()** and **Q.makeRemote()**) A promise extension mechanism, so that promise handlers can turn local promise operations into remote messages.  
+			   * **Transport independence:** Using remote object messaging as a symmetric abstraction layer, hiding the annoying differences among the various transports listed above as well as server-to-server TCP and UDP transports.
+			  5. (**Vat()**) An event-loop spawning mechanism for spawning new event loops that run concurrently with the event loop which spawned it.  
+			   * **Worker independence:** Using `Vat`  
+			   API  
+			    as an abstraction layer around worker spawning on the browser or process spawning on the server.
+			  6. (**Vat.evalLater(), there()**) Using JavaScript itself as mobile code, so event loops can safely inject new behavior into other event loops  
+			   * **Symmetric Mobile Code:** Generalizes from the current use of JavaScript as mobile code sent only from server and only to browsers.
+			  
+			  \#\# Concurrency Model and Promises
+			  
+			  Aggregate objects into process-like units called _vats_. Objects in one vat can only send asynchronous messages to objects in other vats. _Promises_ represent such references to potentially remote objects. _Eventual message sends_ queue _eventual-deliveries_ in the work queue of the vat hosting the target object. A vat’s thread processes each eventual-delivery to completion before proceeding to the next. Each such processing step is a _turn_. A _then expression_ registers a callback to happen in a separate turn once a promise is resolved, providing the callback with the promise’s _resolution_. The eventual send and then expressions immediately return a promise for the eventual outcome of the operation they register.
+			  
+			  This model is free of conventional race condition or deadlock bugs. While a turn is in progress, it has mutually exclusive access to all state to which it has synchronous access, i.e., all state within its vat, avoiding conventional race condition bugs without any explicit locking. The model presented here provides no locks or blocking constructs of any kind, although it does not forbid a host environment from providing blocking constructs (like `alert`). Without blocking, conventional deadlock is impossible. Of course, less conventional forms of race condition and deadlock bugs [remain](https://web.archive.org/web/20160404122250/http://www.hpl.hp.com/techreports/2009/HPL-2009-78.html "http://www.hpl.hp.com/techreports/2009/HPL-2009-78.html").
+			  
+			  \#\# Vats
+			  
+			  Partition the JavaScript reference graph into separate units, corresponding to prior concepts variously called vats, workers, processes, tanks, or grains. We adopt the “_vat_” terminology here for expository purposes. Vats are only asynchronously coupled to each other, and represent the minimal possible unit of concurrency, transparent distribution, orthogonal persistence, migration, partial failure, resource control, preemptive termination/deallocation, and defense from denial of service. Each vat consists of 
+			  
+			  * a single sequential thread of control,
+			  * a single call-return stack,
+			  * a single fifo queue holding _eventual-deliveries_,
+			  * an internal object heap,
+			  * and incoming and outgoing _remote references_.
+			  
+			  A vat’s thread of control dequeues the next eventual-delivery from the queue and processes it to completion before proceeding to the next. When the queue is empty, the vat is idle. 
+			  
+			  const vat = Vat(); //makes a new vat, as an object local to the creating vat.
+			  // A Vat has an ''evalLater'' method that evaluates a Program in a turn of that vat.
+			  // The ''evalLater'' method returns a promise for the evaluation's completion value.
+			  const funP = vat.evalLater('' + function fun(x, y) { return x + y; }); // see below
+			  const sumP = funP ! (3, 5); // sumP will eventually resolve to 8, unless...
+			  const doneP = vat.terminateAsap(new Error('die')); // that vat is terminated before ''sumP'' is resolved.
+			  // If the vat is terminated first, then ''sumP'' resolves to a //rejected// problem, with
+			  // (Error: die) as its alleged reason for rejection.
+			  // Once the vat is terminated, ''doneP'' will eventually resolve to ''true''.
+			  
+			  The vat object that represents a new vat is local to the creating vat, so that a vat may be terminated without waiting for that vat’s eventual-delivery queue to drain. 
+			  
+			  The vat abstraction differs from the WebWorker abstraction, even though both are based on communicating event loops, since inter-vat messages are always directed at objects within a vat, not a vat as a whole. We intend that WebWorkers can be implemented in terms of vats and vice versa. However, when vats are built on WebWorkers, in the absence of some kind of weak reference and gc notification mechanism, it is probably impossible to arrange for the collection of distributed garbage. Even with them, [much more](https://web.archive.org/web/20160404122250/http://erights.org/history/original-e/dgc/index.html "http://erights.org/history/original-e/dgc/index.html") is needed to enable collection of distributed cyclic garbage. On the other hand, when vats are provided more primitively, multiple vats within an address space can be jointly within the purview of a single concurrent garbage collector, enabling full gc among these co-resident vats. However, truly distributed vats would still be faced with these same distributed garbage collection worries.
+			  
+			  The “` '' + function... `” trick above depends on [function\_to\_string](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=harmony:function%5Fto%5Fstring "harmony:function_to_string") to actually pass a string which is the program source for the function, while nevertheless having the function itself appear in the spawning program as code rather than as a literal string. This helps IDEs, refactoring tools, etc. A vat’s `evalLater` method evaluates that string as a program in a safe scope – a scope containing only the standard global variables such as `Object`, `Array`, etc. Except for these, the source passed in should be _closed_ – should not contain free references to any other variables. If the function is closed but for these standard globals, and these standard globals are not shadowed or replaced in the spawning context, then an IDE’s scope analysis of the code remains accurate.
+			  
+			  \#\# Promises and Promise States
+			  
+			  We introduce a new opaque type of object, the _Promise_ to represent potentially remote references. A normal JavaScript direct reference may only designate an object within the same vat. Only promises may designate objects in other vats. A promise may be in one of several states:
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/0x0,s3MtXvPSlVBOuVroCwRCi7mcdELJGNC1uEMf9KMjOjhE/https://web.archive.org/web/20160404122250im_/http://wiki.ecmascript.org/lib/exe/fetch.php?w=&h=&cache=cache&media=strawman:refstates3.png)](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/lib/exe/detail.php?id=strawman%3Aconcurrency&cache=cache&media=strawman:refstates3.png "strawman:refstates3.png") (TODO: Revise diagram to replace “unresolved” with “pending” and “broken” with “rejected”.) 
+			  
+			  * _pending_ – when it is not yet determined what object the promise designates,  
+			   * _pending-local_ – when the right to determine what the promise designates resides in the same vat,  
+			   * _pending-remote_ – when that right is either in flight between vats or resides in a remote vat,
+			  * _fulfilled_ – resolved to successfully designate some object,  
+			   * _near_ – resolved to a direct reference to a local object,  
+			   * _far_ – resolved to designate a remote object,
+			  * _rejected_ – will never designate an object, for an alleged reason represented by an associated error.
+			  
+			  A promise may transition from _pending_ to any state. Additionally a promise can transition from _far_ to _rejected_. A _resolved_ promise can designate any non-promise value including primitives, `null`, and `undefined`. Primitives, `null`, `undefined`, and some objects are pass-by-copy. All other objects are pass-by-reference. A promise resolved to designate a pass-by-copy value is always near, i.e., it always designates a local copy of the value.
+			  
+			  If a function `foo` immediately returns either `X` or a promise which it later fulfills with `X`, we say that `foo` **_reveals_** `X`. Unless stated otherwise, we implicitly elide the error conditions from such statements. For the more explicit statement, append: _“or it throws, or it does not terminate, or it rejects the returned promise, or it never resolves the returned promise.”_ Put another way, such a function returns a **_reference_** to `X`, where by _reference_ we mean either `X` or a promise for `X`.
+			  
+			  \#\# Eventual Operations
+			  
+			  The existing JavaScript infix `.` (dot or _now_) operator enables synchronous interaction with the local object designated by a direct reference. We introduce a corresponding infix `!` (bang or _eventually_) operator for corresponding asynchronous interaction with objects eventually designated by either direct references or promises.
+			  
+			  Abstract Syntax: 
+			  
+			  Expression : ...
+			      Expression ! [ Expression ] Arguments    // eventual send
+			      Expression ! Arguments                   // eventual call
+			      Expression ! [ Expression ]              // eventual get
+			      Expression ! [ Expression ] = Expression // eventual put
+			      delete Expression ! [ Expression ]       // eventual delete
+			  
+			  The `...` means “and all the normal right hand sides of this production. By “abstract” here I mean the distinction that must be preserved by parsing, i.e., in an [ast](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:ast "strawman:ast"), but without explaining the precedence and associativity which explains how this is unambiguously parsed. In all cases, the eventual form of an expression queues a eventual-delivery recording the need to perform the corresponding immediate form in the vat hosting the (eventually) designated object. The eventual form immediately evaluates to a promise for the result of eventually performing this eventual-delivery.
+			  
+			  function add(x, y) { return x + y; }
+			  const sumP = add ! (3, 5); //sumP resolves in a later turn to 8.
+			  
+			  Attempted Concrete Syntax: 
+			  
+			  MemberExpression : ...
+			      MemberExpression [nlth] ! [ Expression ]
+			      MemberExpression [nlth] ! IdentifierName
+			  CallExpression : ...
+			      CallExpression [nlth] ! [ Expression ] Arguments
+			      CallExpression [nlth] ! IdentifierName Arguments
+			      MemberExpression [nlth] ! Arguments
+			      CallExpression [nlth] ! Arguments
+			      CallExpression [nlth] ! [ Expression ]
+			      CallExpression [nlth] ! IdentifierName
+			  UnaryExpression : ...
+			      delete CallExpression [nlth] ! [ Expression ]
+			      delete CallExpression [nlth] ! IdentifierName
+			  LeftHandSideExpression :
+			      Identifier
+			      CallExpression [ Expression ]
+			      CallExpression . IdentifierName
+			      CallExpression [nlth] ! [ Expression ]
+			      CallExpression [nlth] ! IdentifierName
+			  
+			  “`[nlth]`” above is short for “`[No LineTerminator here]`“, in order to unambiguously distinguish infix from prefix bang in the face of automatic semicolon insertion. 
+			  
+			  \#\# Fundamental Static Q Methods
+			  
+			  | Q(target) \-> targetP                         | Lifts the target argument into a promise designating the same object. If target is already a promise, then that promise is returned. (A promise for promise for T simplifies into a promise for T. Category theorists will be more pleased than Type theorists ;).)                                |
+			  | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+			  | Q.reject(reason) \-> rejectedP                | Makes and returns a fresh _rejected_ promise recording (a sanitized form of) reason as the alleged reason for rejection. reason should generally be an immutable pass-by-copy Error object.                                                                                                        |
+			  | Q.promise(f(resolve,reject)\->()) \-> promise | Makes a fresh promise, where the promise is initially _pending-local_, and the argument function f is called with resolve and reject functions for resolving this promise.                                                                                                                         |
+			  | Q.isPromise(target) \-> boolean               | Is target a promise? If not, then using target as a target in the various promise operations is still equivalent to using Q(target), i.e., the promise operations will automatically lift all values to promises.                                                                                  |
+			  | Q.makeFar(handler, nextSlotP) \-> promise     | Makes a resolved _far_ reference, which can only [further resolve](https://web.archive.org/web/20160404122250/http://wiki.erights.org/wiki/Proxy\#makeProxy "http://wiki.erights.org/wiki/Proxy\#makeProxy") to _rejected_.                                                                          |
+			  | Q.makeRemote(handler, nextSlotP) \-> promise  | Makes an _pending-remote_ promise, which can [further resolve](https://web.archive.org/web/20160404122250/http://wiki.erights.org/wiki/Proxy\#makeProxy "http://wiki.erights.org/wiki/Proxy\#makeProxy") to anything.                                                                                |
+			  | Q.ahorten(target1) \-> target2                | Returns the currently most resolved form of target1\. If target1 is a _fulfilled_ promise, return its resolution. If target1 is a promise that is following promise target2, then return target2. If target1 is a terminal _pending_ or _rejected_ promise, or a non-promise, then return target1. |
+			  
+			  Additional non-fundamental static Q convenience methods appear below.
+			  
+			  \#\# Promise methods
+			  
+			  Assuming `p` is a promise 
+			  
+			  | p.get(name) \-> valueP                    | Returns a promise for the result of eventually getting the value of the name property of target.                                                                                                                                               |
+			  | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+			  | p.post(opt\_name, args) \-> resultP       | Eventually invoke the named method of target with these args. Returns a promise for what the result will be.                                                                                                                                   |
+			  | p.send(opt\_name, ...args) \-> resultP    | p.send(m, a, b) is equivalent to p.post(m, \[a,b\])                                                                                                                                                                                            |
+			  | p.fcall(...args) \-> resultP              | p.fcall(a, b) is equivalent to p.post(void 0, \[a,b\])                                                                                                                                                                                         |
+			  | p.put(name, value) \-> voidP              | Eventually set the value of the name property of target to value. Return a promise-for-undefined, used for indicating completion.                                                                                                              |
+			  | p.delete(name) \-> trueP                  | Eventually delete the name property of target. Returns a promise for the boolean result.                                                                                                                                                       |
+			  | p.then(success, opt\_failure) \-> resultP | Registers functions success and opt\_failure to be called back in a later turn once target is _resolved_. If _fulfilled_, call success(resolution). Else if _rejected_, call opt\_failure(reason). Return a promise for the callback’s result. |
+			  | p.end()                                   | If p resolves to _rejected_, log the reason to wherever uncaught exceptions go on this platform, e.g., onerror(reason).                                                                                                                        |
+			  
+			  
+			  \#\# Syntactic Sugar
+			  
+			  | Abstract Syntax  | Expansion          | Simple Case  | Expansion            | JSON/RESTful equiv        |
+			  | ---------------- | ------------------ | ------------ | -------------------- | ------------------------- |
+			  | x ! \[i\](y, z)  | Q(x).send(i, y, z) | x ! p(y, z)  | Q(x).send(’p’, y, z) | POST https://...q=p {...} |
+			  | x ! (y, z)       | Q(x).fcall(y, z)   | \-           | \-                   | POST https://... {...}    |
+			  | x ! \[i\]        | Q(x).get(i)        | x ! p        | Q(x).get(’p’)        | GET https://...q=p        |
+			  | x ! \[i\] = v    | Q(x).put(i, v)     | x ! p = v    | Q(x).put(’p’, v)     | PUT https://...q=p {...}  |
+			  | delete x ! \[i\] | Q(x).delete(i)     | delete x ! p | Q(x).delete(’p’)     | DELETE https://...q=p     |
+			  
+			  
+			  \#\# Non-fundamental Static Q Conveniences
+			  
+			  \#\#\# Q.delay
+			  
+			  Reveal the `answer` sometime after `millis` milliseconds have elapsed.
+			  
+			  Q.delay = function(millis, answer = undefined) {
+			    return Q.promise(resolve => {
+			      setTimeout(() => resolve(answer), millis);
+			    });
+			  };
+			  
+			  \#\#\# Q.race
+			  
+			  Given a list of promises, returns a promise for the resolution of whichever promise we notice has completed first.
+			  
+			  Q.race = function(answerPs) {
+			    return Q.promise((resolve,reject) => {
+			      for (answerP of answerPs) {
+			        Q(answerP).then(resolve,reject);
+			      };
+			    });
+			  };
+			  
+			  We can compose `Q.race`, `Q.delay`, and `Q.reject` to timeout eventual requests.
+			  
+			  var answer = Q.race([bob ! foo(carol), 
+			                       Q.delay(5000, Q.reject(new Error("timeout")))]);
+			  
+			  \#\#\# Q.all
+			  
+			  Often it’s useful to collect several promised answers, in order to react either when _all_ the answers are ready or when _any_ of the promises becomes _rejected_.
+			  
+			  Q.all = function(answerPs) {
+			    let countDown = answerPs.length;
+			    const answers = [];
+			    if (countDown === 0) { return Q(answers); }
+			    return Q.promise((resolve,reject) => {
+			      answerPs.forEach((answerP, index) => {
+			        Q(answerP).then(answer => {
+			          answers[index] = answer;
+			          if (--countDown === 0) { resolve(answers); }
+			        }, reject);
+			      });
+			    });
+			  };
+			  
+			  We can compose `Q.all`, `then`, and [destructuring](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=harmony:destructuring "harmony:destructuring") to delay until several operands are revealed
+			  
+			  var sumP = Q.all([xP, yP]).then(([x, y]) => (x + y);
+			  
+			  \#\#\# Q.join
+			  
+			  Join is our eventual equality operation. Any messages sent on the join of `xP` and `yP` are only delivered if `xP` and `yP` both reveal the same target, in which case these messages are eventually delivered to that target and this joined promise itself eventually becomes fulfilled to designate that target. Otherwise, all these messages are discarded with the usual rejected promise contagion.
+			  
+			  Q.join = function(xP, yP) {
+			    return Q.all([xP, yP]).then(([x, y]) => {
+			      if (Object.is(x, y)) {
+			        return x;
+			      } else {
+			        throw new Error("not the same");
+			      }
+			    });
+			  };
+			  
+			  \#\#\# Q.memoize
+			  
+			  `Q.memoize` of a one argument function returns a new similar one argument function, except that it (eventually) calls the original function no more than once for each such argument. The memo function immediately returns a promise for what the original function will eventually return. Equivalence of arguments is determined by the optional memoMap passed in, which defaults to a new WeakMap() if absent. (Passing a memoMap in also allows the caller to seed the mapping with some prior associations.)
+			  
+			  The difference from a traditional synchronous memoizer is that the original function is called _eventually_ after a promise for its result is _already_ memoized, enabling cycles to work. For example, if memoF === memoize(f) and f(x) calls memoF(x), then an outer call to memoF(x) schedules an eventual call to f(x) which makes an inner call to memoF(x). Both outer and inner calls to memoF(x) returns a promise for what f(x) will eventually return.
+			  
+			   Q.memoize = function(oneArgFuncP, memoMap = WeakMap()) {
+			  
+			     return function oneArgMemo(arg) {
+			       if (memoMap.has(arg)) {
+			         return memoMap.get(arg);
+			       } else {
+			         const resultP = oneArgFuncP ! (arg);
+			         memoMap.set(arg, resultP);
+			         return resultP;
+			       }
+			     }
+			   };
+			  
+			  \#\#\# Q.async
+			  
+			  \#\#\# Q.defer()
+			  
+			  (Will likely be deprecated)
+			  
+			  Q.defer = function() {
+			    const deferred = {};
+			    deferred.promise = Q.promise((resolve,reject) => {
+			      deferred.resolve = resolve;
+			      deferred.reject = reject;
+			    });
+			    return deferred;
+			  };
+			  
+			  \#\# Examples
+			  
+			  \#\# Infinite Queue
+			  
+			  function makeQueue() {
+			    let rear;
+			    let front = Q.promise(r => { rear = r; });
+			    return Object.freeze({
+			      enqueue: function(elem) {
+			        let nextRear;
+			        const nextTail = Q.promise(r => { nextRear = r; });
+			        rear({head: elem, tail: nextTail});
+			        rear = nextRear;
+			      },
+			      dequeue: function() {
+			        const result = front ! head;
+			        front = front ! tail;
+			        return result;
+			      }
+			    });
+			  }
+			  
+			  Calling `queue.dequeue()` will return a promise for the next element that has or will be enqueued.
+			  
+			  \#\# Spawn
+			  
+			  The following `spawn` function is a simple abstraction built on `Vat` and `then` that captures a simple common case:
+			  
+			  function spawn(src) {
+			    const vat = Vat();
+			    const resultP = vat.evalLater(src);
+			    Q(resultP).then(function(_) {
+			      vat.terminateAsap(new Error('done')); 
+			    });
+			    return resultP;
+			  }
+			  
+			  const sumP = spawn('3+5'}); // sumP eventually resolves to 8.
+			  
+			  The argument string to `spawn` is evaluated in a new Vat spawned for that purpose. Spawn returns a promise for what that string will evaluate to. Once that promise resolves, the spawned vat is shut down.
+			  
+			  \#\# Vat.evalLater() as Async-PGAS
+			  
+			  In the Async-PGAS language X10, the “at” statement is defined as
+			  
+			  // x10 grammar, not javascript or proposed javascript
+			  Statement :
+			    at ( PlaceExpression ) Statement
+			  
+			  The “at” statement first evaluates the PlaceExpression to a place, which is analogous to a vat. It then evaluates the Statement at that place. The statement evaluates with the lexical scope containing the “at” statement, so the locality of the values bound to these identifiers is the locality they have at that place rather than at the location containing the “at” statement. Although the argument to `Vat.evalLater` must be a closed expression (modulo whitelisted globals), we can get the same effect, a bit more verbosely, by passing in these bindings as an explicit eventual call to a closed function.
+			  
+			  For example, the X10-ish program
+			  
+			  const x = 6;
+			  let ultimateP;
+			  at (place) { ultimateP = x*7; }
+			  
+			  can be expressed using `aVat.evalLater()` as
+			  
+			  const x = 6;
+			  let ultimateP = place.evalLater(x => x*7) ! (x);
+			  
+			  \#\# Open Vat
+			  
+			  The `makeOpenVat` function makes an `OpenVat` function. Each `OpenVat` function is like the `Vat` function, in that both make an return a new vat instance. Each `OpenVat` function additionally maintains a side table mapping from all incoming remote promises to the evaluation function of the open vat made by this `OpenVat` function. The reason we call such vats _open_ is that, given a remote promise into such a vat and the `OpenVat` function that made that vat, one can thereby inject new code into that vat.
+			  
+			  TODO: explain the membrane variation used below.
+			  
+			  function makeOpenVat() {
+			    const wm = WeakMap();
+			  
+			    function OpenVat() {
+			      const vat = Vat();
+			      const openVat = Object.freeze({
+			        evalLater: makeMembraneX(
+			          vat.evalLater,
+			          { registerRemote: function(remote) {
+			              wm.set(remote, openVat.evalLater); }}),
+			        terminateAsap: vat.terminateAsap
+			      });
+			      return openVat;
+			    }
+			    OpenVat.evalAt = function(p, src) {
+			      return wm.get(p)(src);
+			    };
+			    return OpenVat;
+			  }
+			  
+			  \#\# there
+			  
+			  The `there(p, ...)` function is analogous to `Q(p).then(...)`, except instead of merely relocating the execution of the callback in time till after `p` is resolved, it further relocates it in spacetime, to where and when p is near. Like `Q(p).then(...)`, `there` immediately returns a promise for the eventual outcome. We do not likewise relocate the errback, so that we can still notify it and it can still react on the requesting side to a partition between the requestor and `p`‘s host.
+			  
+			  function there(p, callback, opt_errback) {
+			    var callbackP = OpenVat.evalAt(p, '' + callback);
+			    return (callbackP ! (p)).then(
+			      v => v,
+			      opt_errback);
+			  }
+			  
+			  \#\# Map-Reduce Lite
+			  
+			  Given an initial result value, a list of potentially remote promises to elements, a closed mobile `mapper` function from elements to mapped result values, and an associative / commutative `reducer` function from pairs of references to result values to a new reference to a result value, `mapReduce` immediately returns a promise for the result of mapping all the elements where they live, and reducing all of these results together with the initial result value to a result.
+			  
+			  I call this “Map-Reduce Lite” because, unlike a production map-reduce infrastructure, the following `mapReduce` does all reductions on the spawning machine, which is therefore a scaling bottleneck, and has none of the fault-tolerance. Here, any failure causes the overall map-reduce to fail, i.e., the returned promise becomes a _rejected_ promise. The mapper and reduction functions are like the conventional functional programming variety, rather than the map-reduce variety which arranged for group-by keys.
+			  
+			  /**
+			   * Type/Guard syntax below is only a placeholder, not a serious proposal.
+			   * @param initValue ::T2
+			   * @param elemPs    ::Array[Ref[T1]]  // i.e., Array[T1 | Promise[T1]]
+			   * @param mapper    ::(T1 -> T2)      // closed mobile function
+			   * @param reducer   ::(T2 x T2 -> T2)
+			   * @reveals         ::T2              // i.e., @returns ::Ref[T2]
+			   */
+			  function mapReduce(initValue, elemPs, mapper, reducer) {
+			    let countDown = elemPs.length;
+			    if (countDown === 0) { return initValue; }
+			    let result = initValue;
+			  
+			    return Q.promise((resolve, reject) => {
+			      elemPs.forEach(elemP => {
+			        const mappedP = there(elemP, mapper);
+			        Q(mappedP).then(mapped => {
+			          result = reducer(result, mapped);
+			          if (--countDown === 0) { resolve(result); }
+			        }, reject);
+			      });
+			    });
+			  }
+			  
+			  \#\# AMD Loader Lite
+			  
+			  This is a minimal Asynchronous Module Definition (AMD) Loader for a subset of the [AMD API](https://web.archive.org/web/20160404122250/https://github.com/amdjs/amdjs-api/wiki/AMD "https://github.com/amdjs/amdjs-api/wiki/AMD") specification. In this subset, `define` is called with exactly two arguments, a `dependencies` list of module names, and a factory function with one parameter per dependency.
+			  
+			   function makeSimpleAMDLoader(fetch, moduleMap = Map()) {
+			     var loader;
+			  
+			     function rawLoad(id) {
+			       return Q(fetch(id)).then(src => {
+			         var result = Q.reject(new Error('"define" not called by: ' + id));
+			         function define(deps, factory) {
+			           result = Q.all(deps.map(loader)).then(imports => {
+			             return factory(...imports);
+			           });
+			         }
+			         define.amd = {lite: true};
+			  
+			         Function('define', src)(define);
+			         return result;
+			       });
+			     }
+			     return loader = Q.memoize(rawLoad, moduleMap);
+			   }
+			  
+			  If module “W” depends on modules “X”, “Y”, and “Z”, then only once the promises for the “X”, “Y”, and “Z” modules have all been fulfilled will the “W” factory function be called with these module instances. The result of calling this factory function will then become the “W” module instance.
+			  
+			  What it means to _be_ the source for the “W” module is that `fetch(”W”)` will eventually return that source string. For example, a given `fetch` function might fetch it from `https://example.com/prefix/W.js`.
+			  
+			  // At https://example.com/prefix/W.js
+			  define(['X', 'Y', 'Z'], function(X, Y, Z) {
+			    return X(Y, Z);
+			  })
+			  
+			  Since the memo mapping we need is from module names, which are strings rather than objects, we need to provide an explicit memoMap argument to `Q.memoize`, which should be a map that accepts strings as keys.
+			  
+			  Although the cycle tolerance of `Q.memoize` is generally useful, here it hurts. Because `define` won’t call the factory function until all (`Q.all`) of the dependencies are fulfilled, any cyclic AMD dependencies cause an undetected deadlock. Still, in the naive absence of this cycle tolerance, such cyclic dependencies would have instead caused an infinite regress which is even worse. Better would be cycle detection and rejection, which we leave as an exercise for the reader. 
+			  
+			  \#\# See
+	- [Finite Model Theory and Game Comonads: Part 1 | The n-Category Café](https://omnivore.app/me/finite-model-theory-and-game-comonads-part-1-the-n-category-cafe-18d32a7db59)
+	  collapsed:: true
+	  site:: [golem.ph.utexas.edu](https://golem.ph.utexas.edu/category/2023/09/finite_model_theory_and_game_c.html)
+	  date-saved:: [[01/22/2024]]
+	  date-published:: [[09/07/2023]]
+		- ### Content
+		  collapsed:: true
+			- \#\#\# Finite Model Theory and Game Comonads: Part 1
+			  
+			  \#\#\#\# Posted by Emily Riehl
+			  
+			  [![MathML-enabled post (click for more details).](https://proxy-prod.omnivore-image-cache.app/0x0,sSU_IkLson5g4653tePzSOpvq4vcmGk0czFf6ZfImxHk/https://golem.ph.utexas.edu/~distler/blog/images/MathML.png "MathML-enabled post (click for details).")](http://golem.ph.utexas.edu/~distler/blog/mathml.html)
+			  
+			  _guest post by [Elena Dimitriadis](https://www.math.univ-toulouse.fr/~edimitri/index%5Fen), [Richie Yeung](https://y-richie-y.github.io/), [Tyler Hanks](https://gataslab.org/), and [Zhixuan Yang](https://yangzhixuan.github.io/)_
+			  
+			  _Finite model theory_ ([Libkin 2004](https://doi.org/10.1007/978-3-662-07003-1)) studies finite models of logics. Its main motivation comes from computer science: a _finite relational structure_, i.e. a finite set AA with a finite set of relations on AA, is essentially a database in the sense of good old SQL tables, and a logic formula φ\\varphi with nn free variables is understood as a _query_ to the database that selects all nn\-tuples of AA that satisfy the formula φ\\varphi.
+			  
+			  [![MathML-enabled post (click for more details).](https://proxy-prod.omnivore-image-cache.app/0x0,sSU_IkLson5g4653tePzSOpvq4vcmGk0czFf6ZfImxHk/https://golem.ph.utexas.edu/~distler/blog/images/MathML.png "MathML-enabled post (click for details).")](http://golem.ph.utexas.edu/~distler/blog/mathml.html)
+			  
+			  Finite model theory is naturally related to _complexity theory_, as we may ask questions like what’s the time complexity to query a finite relational structure with a formula from some logic, and also the converse question—what kind of logic is needed to describe the algorithmic problems in a complexity class. For example, given a finite graph GG, we may ask if it is possible to write a first-order logic formula φ(u,v)\\varphi(u,v) using a relation symbol E(x,y)E(x,y) saying there is an edge from xx to yy, such that φ(u,v)\\varphi(u,v) is satisfied precisely by vertices u,v∈Gu, v \\in G that are connected by a path.
+			  
+			  From a logical point of view, what makes finite model theory interesting is that some prominent techniques in model theory fail for finite models. In particular, [compactness](https://en.wikipedia.org/wiki/Compactness%5Ftheorem) fails for finite model theory: a theory TT may not have a _finite_ model even if all its finite sub-theories S⊆TS \\subseteq T have finite models—consider e.g. T\={φ n∣n∈ℕ}T = \\left\\{ \\varphi\_n \\mid n \\in \\mathbb{N}\\right\\} where φ n\\varphi\_n asserts there are at least nn distinct elements.
+			  
+			  Fortunately there are model-theoretic techniques remaining valid in the finite context. One of them is _model-comparison games_, which characterise _logical equivalence_ of models, i.e. when two models satisfy exactly the same formulas of a logic.
+			  
+			  Such logical equivalences are very useful for showing _(in)expressivity_ of logics. For example, if we are able to show that two models 𝒜\\mathcal{A} and ℬ\\mathcal{B} of a theory satisfy exactly the same formulas from first-order logic, but there is a semantic property PP (in the meta-theory) which 𝒜\\mathcal{A} satisfies but ℬ\\mathcal{B} does not. Then we know the property PP necessarily cannot be expressed in first-order logic. This proof technique works for both finite and infinite models. In fact, using this technique one can show that connectivity of finite graphs cannot be expressed as a first-order logic formula with only the relation symbol E(x,y)E(x,y) for edges.
+			  
+			  Of course the logic equivalences for different logics need to be characterised by different games: first-order logic is characterised by _Ehrenfeucht-Fraïssé games_; the kk\-variable fragment of first-order logic is characterised by _pebble games_; modal logic is characterised by _bisimulation games_, and so on. 
+			  
+			  Despite being different, these games are structurally so similar that they almost begged to be unified. Their unification is eventually done by Abramsky and Shah ([2018](https://drops.dagstuhl.de/opus/volltexte/2018/9669), [2021](https://arxiv.org/abs/2010.06496)) in the categorical framework of _game comonads_. This two-part blog post aims to give a brief introduction to finite model theory and game comonads. This post will cover only a tiny part of this active research programme, but we will aim to exposit in a self-contained way the basics with some intuition that is hidden in the papers.
+			  
+			  \#\# Basics of First-Order Logic
+			  
+			  Let’s begin with a quick recap on classical _first-order logic_ (FOL). A _purely relational vocabulary_ σ\\sigma is a set of relation symbols {P 1,…,P i,…}\\left\\{P\_1,\\dots,P\_i,\\dots\\right\\} where each relation symbol P iP\_i has an associated arity n i∈ℕn\_i \\in \\mathbb{N}. In this post we do not consider vocabularies with function symbols or constants since they can be alternatively modelled as relations with axioms asserting their functionality, which slightly makes our life easier.
+			  
+			  The formulas φ\\varphi of FOL in a (purely relational) vocabulary σ\\sigma is inductively generated by the following grammar, where the meta-variable xx ranges over a countably infinite set of variables:
+			  
+			  φ ::\=x 1\=x 2|P i(x 1,…,x n i)|⊤|φ 1∧φ 2|⊥|φ 1∨φ 2|¬φ|∃x.φ|∀x.φ\\begin{array}{rl} \\varphi &::= x\_1 = x\_2 \\ |\\ P\_i(x\_1,\\dots,x\_{n\_i}) \\ |\\ \\top \\ |\\ \\varphi\_1 \\wedge \\varphi\_2 \\ |\\ \\bot \\ | \\ \\varphi\_1\\vee \\varphi\_2 \\ |\\ \\neg \\varphi \\ |\\ \\exists x. \\varphi \\ |\\ \\forall x. \\varphi \\end{array}
+			  
+			  A set TT of closed formulas (i.e. formulas with no free variables) is called a _theory_.
+			  
+			  We will only consider the classical semantics of FOL in the category of sets in this post. A _σ\\sigma\-relational structure_, or simply a _σ\\sigma\-structure_, 𝒜\=⟨A,⟨P i A⟩ P i∈σ⟩\\mathcal{A} = \\langle A, \\langle P\_i^A\\rangle\_{P\_i \\in \\sigma}\\rangle consists of a set AA and an n in\_i\-ary relation P i A⊆A n iP^A\_i \\subseteq A^{n\_i} on the set AA for each relation symbol P i∈σP\_i \\in \\sigma of arity n in\_i.
+			  
+			  A _homomorphism_ of σ\\sigma\-structures from 𝒜\\mathcal{A} to ℬ\\mathcal{B} is a function h:A→Bh\\colon A\\to B on the underlying sets such that for each relation symbol P iP\_i in σ\\sigma, we have P i A(a 1,…,a n i)P\_i^A(a\_1,\\dots,a\_{n\_i}) implies P i B(h(a 1),…,h(a n i))P\_i^B(h(a\_1),\\dots,h(a\_{n\_i})) for all a 1,…,a n i∈Aa\_1,\\dots,a\_{n\_i}\\in A. Each vocabulary σ\\sigma thus yields a category ℛ(σ)\\mathcal{R}(\\sigma) of σ\\sigma\-structures and homomorphisms.
+			  
+			  Let φ\\varphi be a FOL formula (in the vocabulary σ\\sigma) with nn free variables. The semantics of φ\\varphi in a σ\\sigma\-structure 𝒜\\mathcal{A} is an nn\-ary relation \[\[φ\]\]⊆A n\[\\!\[\\varphi\]\\!\] \\subseteq A^n on the set AA. We will write 𝒜⊧φ(a→)\\mathcal{A} \\models \\varphi (\\vec{a}) when some a→∈A n\\vec{a} \\in A^n is contained in \[\[φ\]\]\[\\!\[\\varphi\]\\!\] and also write 𝒜⊧φ\\mathcal{A} \\models \\varphi when φ\\varphi is a closed formula and ⟨⟩\\langle \\rangle is in \[\[φ\]\]⊆A 0\[\\!\[\\varphi\]\\!\] \\subseteq A^0. The relation \[\[φ\]\]\[\\!\[\\varphi\]\\!\] is inductively defined on φ\\varphi as follows (we implicity treats a→∈A n\\vec{a} \\in A^n as a function from the set of the nn free variables to the set AA):
+			  
+			  𝒜⊧(x i\=x j)(a→) ⇔ a→(x i)\=a→(x j) 𝒜⊧P i(x 1,…,x n i)(a→) ⇔ ⟨a→(x 1),…,a→(x n i)⟩∈P i A 𝒜⊧⊤ ⇔ true 𝒜⊧(φ 1∧φ 2)(a→) ⇔ 𝒜⊧φ 1(a→)and𝒜⊧φ 2(a→) 𝒜⊧⊥ ⇔ false 𝒜⊧(φ 1∨φ 2)(a→) ⇔ 𝒜⊧φ 1(a→)or𝒜⊧φ 2(a→) 𝒜⊧¬φ(a→) ⇔ 𝒜⊧φ(a→)does not hold 𝒜⊧(∃y.φ)(a→) ⇔ 𝒜⊧φ(a→\[y↦a′\])for some a′∈A 𝒜⊧(∀y.φ)(a→) ⇔ 𝒜⊧φ(a→\[y↦a′\])for all a′∈A\\begin{matrix} \\mathcal{A}\\models (x\_i = x\_j)(\\vec{a}) &\\iff& \\vec{a}(x\_i) = \\vec{a}(x\_j)\\\\ \\mathcal{A}\\models P\_i(x\_1,\\dots,x\_{n\_i})(\\vec{a}) &\\iff& \\langle \\vec{a}(x\_1),\\dots,\\vec{a}(x\_{n\_i})\\rangle \\in P\_i^A\\\\ \\mathcal{A}\\models \\top &\\iff& true\\\\ \\mathcal{A}\\models (\\varphi\_1 \\wedge \\varphi\_2)(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi\_1(\\vec{a}) \\ \\text{and}\\ \\mathcal{A}\\models\\varphi\_2(\\vec{a})\\\\ \\mathcal{A}\\models \\bot &\\iff& false\\\\ \\mathcal{A}\\models (\\varphi\_1 \\vee \\varphi\_2)(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi\_1(\\vec{a}) \\ \\text{or}\\ \\mathcal{A}\\models\\varphi\_2(\\vec{a})\\\\ \\mathcal{A}\\models \\neg\\varphi(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi(\\vec{a}) \\ \\text{does not hold}\\\\ \\mathcal{A}\\models (\\exists y. \\varphi)(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi(\\vec{a}\[y \\mapsto a'\])\\ \\text{for some }a'\\in A\\\\ \\mathcal{A}\\models (\\forall y. \\varphi)(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi(\\vec{a}\[y \\mapsto a'\])\\ \\text{for all } a'\\in A \\end{matrix}
+			  
+			  where a→\[y↦a′\]\\vec{a}\[y \\mapsto a'\] is the function mapping yy to a′a' and anything else xx to a→(x)\\vec{a}(x).
+			  
+			  \#\# Logical Equivalences and Ehrenfeucht-Fraïssé Games
+			  
+			  As motivated earlier, we are interested in characterising when two models 𝒜\\mathcal{A} and ℬ\\mathcal{B} of a relational vocabulary σ\\sigma satisfy exactly the same formulas, more precisely, when 𝒜⊧ϕ⇔ℬ⊧ϕ\\mathcal{A} \\models \\phi \\iff \\mathcal{B} \\models \\phi for all closed FOL formulas ϕ\\phi in the vocabulary σ\\sigma. When it is the case, 𝒜\\mathcal{A} and ℬ\\mathcal{B} are sometimes called _elementarily equivalent_.
+			  
+			  \#\#\# An Example of Logical Equivalence
+			  
+			  Let’s build up our intuition with a concrete example. Let σ\\sigma be the vocabulary with just one binary relation symbol ≤\\leq, and let 𝒜\\mathcal{A} be the model {0,1,…,1000}\\left\\{0, 1, \\dots, 1000\\right\\} with ≤\\leq being the usual linear order of natural numbers and similarly ℬ\\mathcal{B} be the model {0,1,…,1001}\\left\\{0, 1, \\dots, 1001\\right\\} with the same order. These two models are clearly different, and indeed they can be differentiated by a first-order logic formula in the vocabulary σ\\sigma—the formula 
+			  
+			  φ\=∃x 0∃x 1⋯∃x 1001.¬(x 0\=x 1)∧…¬(x i\=x j)…¬(x 1000\=x 1001)\\varphi = \\exists x\_0\\exists x\_1\\cdots\\exists x\_{1001}.\\ \\neg (x\_0 = x\_1) \\wedge \\dots \\neg(x\_i = x\_j) \\dots \\neg (x\_{1000} = x\_{1001})
+			  
+			  saying that there exist different elements is satisfied by ℬ\\mathcal{B} but not by 𝒜\\mathcal{A}.
+			  
+			  However, the formula φ\\varphi is a pretty big formula—it has 1002 quantifiers and 501501 clauses, so it is possible that small enough formulas cannot differentiate 𝒜\\mathcal{A} and ℬ\\mathcal{B} since they are pretty similar (they are both linear orders). Let’s consider some formulas with just a few quantifiers:
+			  
+			  * The vocabulary σ\={≤}\\sigma = \\left\\{ \\leq \\right\\} doesn’t have a constant, so there are no closed terms and thus no closed formulas other than ⊥\\bot and ⊤\\top. Thus 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all formulas with 0 quantifiers.
+			  * Consider formulas of the form ∃x.φ(x)\\exists x.\\varphi(x) where φ\\varphi doesn’t have any quantifiers. We argue that 𝒜⊧∃x.φ(x)\\mathcal{A} \\models \\exists x.\\varphi(x) iff ℬ⊧∃x.φ(x)\\mathcal{B} \\models \\exists x.\\varphi(x) as follows: supposing 𝒜⊧∃x.φ(x)\\mathcal{A} \\models \\exists x.\\varphi(x) holds, this means that there is some a∈𝒜a \\in \\mathcal{A} such that 𝒜⊧φ(a)\\mathcal{A} \\models \\varphi(a), then we may choose any b∈ℬb \\in \\mathcal{B}, say b\=0∈ℬb = 0 \\in \\mathcal{B}, making ℬ⊧φ(b)\\mathcal{B} \\models \\varphi(b) because the formula φ\\varphi is inductively built from the variable xx, relations ≤\\leq, \=\=, and propositional connectives; both a≤aa \\leq a and b≤bb \\leq b are true, so we can inductively show that φ(a)\\varphi(a) and φ(b)\\varphi(b) agree for all φ\\varphi. Conversely, if ℬ⊧∃x.φ(x)\\mathcal{B} \\models \\exists x. \\varphi(x) is witnessed by some bb, we can always pick an arbitrary a∈𝒜a \\in \\mathcal{A} witnessing 𝒜⊧∃x.φ(x)\\mathcal{A} \\models \\exists x. \\varphi(x).  
+			  Moreover, since the semantics of propositional connectives are defined compositionally, we can inductively show that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all closed formulas built out of exactly one ∃\\exists and \=\=, ¬\\neg, ∧\\wedge, and ∨\\vee. Since we are considering classical logic, universal quantification ∀x.φ(x)\\forall x. \\varphi(x) can be reduced to ¬∃x.φ(x)\\neg \\exists x. \\varphi(x), so 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on it so we conclude that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all FOL formulas with exactly one quanfier.
+			  * This example gets interesting when we consider two nested quantifiers. Supposing ψ\=∃x.∃y.φ\\psi = \\exists x. \\exists y. \\varphi where φ\\varphi is quanfier-free, if 𝒜⊧ψ\\mathcal{A} \\models \\psi, there exist aa and a′∈𝒜a' \\in \\mathcal{A} such that 𝒜⊧φ(⟨a,a′⟩)\\mathcal{A} \\models \\varphi (\\langle a, a'\\rangle). Then we can also choose any two elements b,b′∈ℬb, b' \\in \\mathcal{B} such that, importantly, (i) b≤b′b \\leq b' iff a≤a′a \\leq a', and (ii) b\=b′b = b' iff a\=a′a = a'. This ensures ℬ⊧φ(⟨b,b′⟩)\\mathcal{B} \\models \\varphi(\\langle b, b'\\rangle) since the atomic formulas in φ\\varphi are built from ≤\\leq, \=\=, xx and yy, on which 𝒜\\mathcal{A} with the variable assignment ⟨x↦a,y↦a′⟩\\langle x\\mapsto a, y \\mapsto a'\\rangle and ℬ\\mathcal{B} with ⟨x↦b,y↦b′⟩\\langle x\\mapsto b, y \\mapsto b'\\rangle agree. Conversely, if ℬ⊧ψ\\mathcal{B} \\models \\psi witnessed by b,b′∈ℬb, b' \\in \\mathcal{B} we can also choose a matching pair a,a′∈𝒜a, a' \\in \\mathcal{A} making 𝒜⊧ψ\\mathcal{A} \\models \\psi.  
+			  Now suppose ψ\=∃x.∀y.φ\\psi = \\exists x. \\forall y. \\varphi. Whenever 𝒜⊧ψ\\mathcal{A} \\models \\psi, there is some aa such that 𝒜⊧∀y.φ⟨x↦a⟩\\mathcal{A} \\models \\forall y.\\varphi \\langle x \\mapsto a\\rangle. In this case we can also choose an element b∈ℬb \\in \\mathcal{B} that mimics a∈𝒜a \\in \\mathcal{A}: if aa is the bottom element 00 in the structure 𝒜\\mathcal{A}, we let b\=0b = 0 as well; if aa is the top 10001000 in 𝒜\\mathcal{A}, we let bb be the top in ℬ\\mathcal{B}; otherwise we can choose an arbitrary 0<b<10010 \\lt b \\lt 1001. We then claim ℬ⊧∀y.φ⟨x↦b⟩\\mathcal{B} \\models \\forall y. \\varphi \\langle x \\mapsto b\\rangle as well, because if there is some b′b' making ℬ⊧φ⟨x↦b,y↦b′⟩\\mathcal{B} \\models \\varphi \\langle x\\mapsto b, y \\mapsto b'\\rangle not hold, we can also find an a′a' that is to aa in 𝒜\\mathcal{A} as b′b' is to bb in ℬ\\mathcal{B}: precisely, if b′\=bb' = b, we let a′\=aa' = a; if b′<bb' \\lt b, we let a′a' be any element in 𝒜\\mathcal{A} such that a′<aa' \\lt a, and similarly for the case b′\>bb' \\gt b (such a choice is always possible because earlier aa and bb are chosen to be at the same relative position). This choice of a′a' entails 𝒜⊧φ⟨x↦a,y↦a′⟩\\mathcal{A} \\models \\varphi\\langle x \\mapsto a, y \\mapsto a'\\rangle not true, leading to a contradiction. Therefore ℬ⊧ψ\\mathcal{B} \\models \\psi.  
+			  By a symmetric argument, ℬ⊧∃x.∀y.φ\\mathcal{B} \\models \\exists x. \\forall y. \\varphi implies 𝒜⊧∃x.∀y.φ\\mathcal{A} \\models \\exists x. \\forall y. \\varphi as well. Moreover, by the compositionality of the semantics of propositional connectives, the two paragraphs above imply that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all FOL formulas with quantifiers are nested at most once.
+			  
+			  Hopefully working through the example above reveals the intuition behind logical equivalence for FOL: two σ\\sigma\-structures 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on a FOL formula φ\\varphi whenever a quantifier in φ\\varphi picks an element xx in AA or BB, there is always an element yy in the other structure that “simulates the behaviour” of xx in the model.
+			  
+			  \#\#\# The Ehrenfeucht-Fraïssé Game
+			  
+			  The intuition is precisely formulated as _Ehrenfeucht-Fraïssé (EF) games_. Given two σ\\sigma\-structures 𝒜\\mathcal{A} and ℬ\\mathcal{B} for any vocabulary σ\\sigma and a natural number kk, the kk\-round EF game for 𝒜\\mathcal{A} and ℬ\\mathcal{B} is a turn-based game between two players, called _the spoiler_ and _the duplicator_. Roughly speaking, the goal of the spoiler is to point out the difference between 𝒜\\mathcal{A} and ℬ\\mathcal{B} while the goal of the duplicator is to advocate that 𝒜\\mathcal{A} and ℬ\\mathcal{B} are the same. The rules are very simple: 
+			  
+			  1. **Movement**: at each round, the spoiler picks an element from one of the structures and the duplicator must respond with an element from the other structure. For example, if the spoiler picks an element from the structure 𝒜\\mathcal{A}, then the duplicator must pick an element b∈ℬb\\in\\mathcal{B}.
+			  2. **Winning Condition**: After kk rounds, the game state consists of a→\=(a 1,…,a k)\\vec{a} = (a\_1,\\dots,a\_k) and b→\=(b 1,…,b i)\\vec{b} = (b\_1,\\dots,b\_i) representing the elements chosen from each structure at each round. The duplicator wins this play if the mapping a i↦b ia\_i \\mapsto b\_i defines a partial isomorphism between 𝒜\\mathcal{A} and ℬ\\mathcal{B}, i.e., if the substructures of 𝒜\\mathcal{A} and ℬ\\mathcal{B} generated by a→\\vec{a} and b→\\vec{b} are isomorphic. Otherwise, the spoiler has succeeded in showing the structures are different and wins.
+			  
+			  If the duplicator can guarantee a win after kk rounds no matter how the spoiler plays, we say the duplicator has a kk\-round winning strategy.
+			  
+			  The _quantifier rank_ qr(φ)\\mathop{qr}(\\varphi) of a FOL formula φ\\varphi is the depth of nesting of the quantifiers in φ\\varphi:
+			  
+			  qr(φ) \= 0 for atomicφ qr(o(φ 1,…,φ n)) \= max(qr(φ 1),…,qr(φ n)) for propositional connectiveso qr(Qx.φ) \= 1+qr(φ) for quantifiersQ\=∀,∃\\begin{array}{rcll} \\mathop{qr}(\\varphi) &=& 0 &\\text{for atomic}\\ \\varphi\\\\ \\mathop{qr}(o(\\varphi\_1, \\dots, \\varphi\_n)) &=& \\max(\\mathop{qr}(\\varphi\_1), \\dots, \\mathop{qr}(\\varphi\_n)) &\\text{for propositional connectives}\\ o\\\\ \\mathop{qr}(Q x. \\varphi) &=& 1 + \\mathop{qr}(\\varphi) &\\text{for quantifiers}\\ Q = \\forall, \\exists \\end{array}
+			  
+			  **Theorem** (Ehrenfeucht-Fraïssé). _If the duplicator has a winning strategy for the kk\-round EF game for 𝒜\\mathcal{A} and ℬ\\mathcal{B}, 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all closed FOL formulas of quantifier-rank kk. When the vocabulary σ\\sigma is finite, the converse is also true._
+			  
+			  _Proof sketch_: Assuming a winning strategy for the duplicator, and let ψ\\psi be any formula of quantifier rank kk. Without loss of generality, we can assume ψ\=Q 1x 1.⋯Q kx k.φ\\psi = Q\_{1} x\_{1}.\\cdots Q\_k x\_k.\\varphi where Q i∈{∀,∃}Q\_i \\in \\left\\{\\forall, \\exists\\right\\} are quantifiers and φ\\varphi is quantifier-free. We need to show 𝒜⊧ψ⇔ℬ⊧ψ\\mathcal{A} \\models \\psi \\iff \\mathcal{B} \\models \\psi. As we demonstrated in the example above, we consider how −⊧ψ\- \\models \\psi is defined inductively: if a quantifier Q i\=∃Q\_i = \\exists and one of 𝒜\\mathcal{A} and ℬ\\mathcal{B} satisfies the formula, we use the winning strategy for the duplicator to pick a matching element in the other structure; if a quantifier Q i\=∀Q\_i = \\forall and one of 𝒜\\mathcal{A} and ℬ\\mathcal{B} satisfies the formula, every counter-witness in the other structure leads to a counter-witness in this structure by the winning strategy of the duplicator, thus a contradiction.
+			  
+			  The converse direction is also interesting and is not demonstrated in the example in the last section. We only give a rough sketch here and refer interested readers to [Libkin (2004, section 3)](https://doi.org/10.1007/978-3-662-07003-1) for details. 
+			  
+			  Assuming that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all FOL formulas of rank kk, the duplicator’s strategy is that whenever the spoiler picks an element a i∈𝒜a\_i \\in \\mathcal{A} (or symmetrically b i∈ℬb\_i \\in \\mathcal{B}), the duplicator first constructs a FOL formula ϕ i\\phi\_{i} that “maximally describes the current board on 𝒜\\mathcal{A}”. Roughly speaking, ϕ i\\phi\_{i} is the conjunction of all formulas in the following set
+			  
+			  {ψ∣qr(ψ)\=i−1and𝒜⊧ψ⟨a 1,…,a i⟩}\\left\\{\\psi \\mid \\mathop{qr}(\\psi) = i - 1 \\ \\text{and}\\ \\mathcal{A} \\models \\psi\\, \\langle a\_1, \\dots, a\_i\\rangle\\right\\}
+			  
+			  A priori, this set may have infinitely many formulas, but since there are only finitely many atomic formulas when σ\\sigma is finite, ϕ i\\phi\_{i} can be reduced to a finite formula using the rules of propositional connectives. With the formula ϕ i\\phi\_{i} in hand, the duplicator can use the fact that 
+			  
+			  𝒜⊧∃x i.ϕ i⟨x 1↦a 1,…,x i−1⟩↦a i−1,\\mathcal{A} \\models \\exists x\_i. \\phi\_{i}\\langle x\_1 \\mapsto a\_1, \\dots, x\_{i-1}\\rangle \\mapsto a\_{i-1},
+			  
+			  witnessed by x i↦a ix\_i \\mapsto a\_i. Now using the assumption that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on FOL up to rank kk and the fact that ∃x i.ϕ i\\exists x\_i.\\phi\_i is of rank ii, ℬ\\mathcal{B} has an element witnessing the truth of this formula as well, which is going to be the duplicator’s response. □\\square
+			  
+			  EF games are very useful for showing inexpressivity results of FOL. Suppose we are interested in a property PP (in the meta-theory) on a class MM of σ\\sigma\-structures. If for every natural number kk, we can find two models 𝒜 k,ℬ k∈M\\mathcal{A}\_k, \\mathcal{B}\_k \\in M such that 
+			  
+			  1. the duplicator has a winning strategy for the kk\-round EF game on 𝒜 k\\mathcal{A}\_k and ℬ k\\mathcal{B}\_k, but
+			  2. only one of 𝒜 k\\mathcal{A}\_k and ℬ k\\mathcal{B}\_k satisfy the property PP,
+			  
+			  Then by the EF theorem, the property PP cannot be expressed by a FOL formula, whatever the quantifier it has. 
+			  
+			  For example, using this technique, we can show that the evenness of finite linear orders is not expressible—there isn’t a FOL formula φ\\varphi in the vocabulary {≤}\\left\\{\\leq\\right\\} such that for every finite linear order 𝒜\=⟨A,≤ A⟩\\mathcal{A} = \\langle A, \\leq^A\\rangle, 𝒜⊧φ\\mathcal{A} \\models \\varphi exactly when aa has an even number of elements. (Hint: we pick 𝒜 k\\mathcal{A}\_k and ℬ k\\mathcal{B}\_k to be the linear order of 2 k2^k and 2 k+12^k + 1 elements respectively and play the EF games.)
+			  
+			  Posted at September 8, 2023 2:19 PM UTC 
+			  
+			  TrackBack URL for this Entry: https://golem.ph.utexas.edu/cgi-bin/MT-3.0/dxy-tb.fcgi/3498
+			  
+			  Read the post [Finite Model Theory and Game Comonads: Part 2](https://golem.ph.utexas.edu/category/2023/09/finite%5Fmodel%5Ftheory%5Fand%5Fgame%5Fc%5F1.html)  
+			  **Weblog:** The n-Category Café  
+			  **Excerpt:** In the Part 1 of this post, we saw how logical equivalences of first-order logic (FOL) can be characterised by a combinatory game. But there are still a few unsatisfactory aspects, which we'll clear up now.  
+			  **Tracked:** September 11, 2023 4:09 PM
+	- [An invitation to category theory - Chalkdust](https://omnivore.app/me/an-invitation-to-category-theory-chalkdust-18d329ae0fb)
+	  collapsed:: true
+	  site:: [Chalkdust](https://chalkdustmagazine.com/features/an-invitation-to-category-theory/)
+	  author:: Tai-Danae Bradley
+	  date-saved:: [[01/22/2024]]
+	  date-published:: [[10/18/2018]]
+		- ### Content
+		  collapsed:: true
+			- ![post](https://proxy-prod.omnivore-image-cache.app/0x0,s5Dp9ObKGeSthHi_JsRok2AznAlNM0ePIj_aihjfevq0/https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/headerbridge.jpg?fit=1050%2C450&ssl=1)
+			  
+			  Image: Martin Damboldt
+			  
+			  Early in our mathematical education, we learn about a strong interplay between algebra and geometry—algebraic equations give rise to graphs and geometric figures, and geometric features can be encoded in algebraic expressions. It’s almost as if there’s a portal or bridge connecting these two realms in the grand landscape of mathematics: whatever occurs on one side of the bridge is mirrored on the other.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/429x383,syz4KWcEEo-FfGiTFr_ZDtfmdzG5uilIAdBZBmTnDcr8/https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/bridge-1024x915.jpg?resize=429%2C383)
+			  
+			  So although algebra and geometry are very different areas of mathematics, this connection suggests that they are intrinsically related. Incidentally, the \`bridge’ that spans them is a but a dim foreshadow of much deeper connections that exist between other branches of mathematics that also may, a priori, seem unrelated: set theory, group theory, linear algebra, topology, graph theory, differential geometry, and more. And what’s amazing is that these relationships—these bridges—are more than just a neat observation. They are _mathematics_, and that mathematics has a name: _category theory_.
+			  
+			  \#\# What is a category?
+			  
+			  Martin Kuppe once created a wonderful map of the mathematical landscape (see facing page) in which category theory hovers high above the ground, providing a sweeping vista of the terrain. It enables us to see relationships between various fields that are otherwise imperceptible at ground level, attesting that seemingly unrelated areas of mathematics aren’t so different after all. This becomes extraordinarily useful when you want to solve a problem in one realm (topology, say) but don’t have the right tools at your disposal. By ferrying the problem to a different realm (such as group theory), you’re able to see the problem in a different light and perhaps discover new tools that may help the solution become much easier. In fact, ==this is precisely how category theory came to be. It was birthed in the 1940s in an attempt to answer a difficult topological question by recasting it in an easier, algebraic light.==
+			  
+			  Thinking back to the mathematical landscape, you’ll notice that each realm consists of some objects (set theory has sets, group theory has groups, topology has topological spaces…) that relate to each other (sets relate via functions, groups relate via homomorphisms, topological spaces relate via continuous functions…) in sensible ways (such as composition and associativity).
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/654x520,sFkcmNx3sLB4lo__sWskVkmsXNEz6xFl_y8keFkW2Ym4/https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/MathematistanHiresForChalkdust-1024x814.jpg?resize=654%2C520)](https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/MathematistanHiresForChalkdust.jpg)
+			  
+			  Martin Kuppe’s map of the mathematical landscape (used with permission)
+			  
+			  This common thread weaves throughout the landscape and unites the various fields. The mathematics of category theory formalises this unification. More concretely, a _category_ is a collection of _objects_ with relationships between them (called _morphisms_) that behave nicely in terms of _composition_ and _associativity_. This provides a template for mathematics, and depending on what you feed into that template, you’ll recover one of the mathematical realms: the category of sets consists of sets and relationships (ie functions) between them; the category of groups consists of groups and relationships (ie group homomorphisms) between them; the category of topological spaces consists of topological spaces and relationships (ie continuous functions) between them; and so on.
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/654x113,snKkSO_Po-7hyCXFRbEP6uaj1cTg31qOSXgp7GqO6mbQ/https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/objects-1024x177.jpg?resize=654%2C113)](https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/objects.jpg)
+			  
+			  The analogy between a category and a template is due to Barry Mazur from his wonderfully written, non-technical introduction to category theory, [_When is one thing equal to some other thing?_](http://www.math.harvard.edu/~mazur/preprints/when%5Fis%5Fone.pdf) In it he writes, “This concept of category is an omni-purpose affair… There is hardly any species of mathematical object that doesn’t fit into this convenient, and often enlightening, template.” Indeed, as category theorist [Eugenia Cheng](http://chalkdustmagazine.com/interviews/in-conversation-with-eugenia-cheng/) so aptly put it in her treatise [_Higher-dimensional category theory_](http://cheng.staff.shef.ac.uk/misc/4000.pdf), ==“category theory is the mathematics of mathematics”.==
+			  
+			  \#\# It’s all about relationships
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/498x401,sLHqlP278FIyW4ZS5zQ3yWVmlVH-w23jS79ckpz8OvZ8/https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/list-1024x826.jpg?resize=498%2C401)](https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/list.jpg)One of the main features of category theory is that it strips away a lot of detail: it’s not really concerned with the individual elements in your set, or whether or not your group is solvable, or if your topological space has a countable basis. So you might be thinking, “Eh, category theory sounds so abstract. Can any good come from this?” Happily, the answer is yes! ==An advantage of ignoring details is that our attention is diverted away from the individual objects and turned towards the relationships—the morphisms—that exist between them. And as any category theorist will tell you,== _==relationships are everything.==_
+			  
+			  Indeed, ==one of== ==the main maxims of category theory is that== _==a mathematical object is completely determined by its relationships to all other objects==_==.== To put it another way, two objects are essentially indistinguishable if and only if they relate to every object in the category in the same way. This theme (which is a consequence of a famous result called the Yoneda lemma) isn’t too different from what we observe in life. You can learn a lot about people by looking at their relationships—their Facebook friends, who they follow on Twitter, who they hang out with on Friday nights, for instance. And if you ever meet two people who have the _exact same_ set of friends, and whose interactions on social media are _exactly the same_, and who hang out with the _exact same_ people on Friday nights, then you might jokingly say, “You can’t even tell them apart”. Category theory informs us that, all jokes aside, this is actually true mathematically!
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/360x183,s__a3_QkqRyPztZ6B6tMhOd-ya91GMapQviDMttvFJ-k/https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/arrows-1024x521.jpg?resize=360%2C183)](https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/arrows.jpg)  
+			  So you might wonder “Hmm, if mathematical relationships are _that_ important, then what about relationships between categories? Do _they_ exist?” Great question. The answer is: absolutely! In fact, these particular relationships have a name—they are called _functors_. But why stop there? What about the relationships between those relationships? They, too, have a name: _natural transformations._
+			  
+			  In fact, we can keep on going: “What about the relationships between the relationships between the relationships between the…?” Doing so will land us in higher-dimensional category theory, which is where much of Cheng’s research lies.
+			  
+			  As abstract as this may sound, these constructions—categories, functors, and natural transformations—comprise a treasure trove of theory that shows up almost everywhere, in mathematics _and_ in other disciplines! Since its inception, category theory has found natural applications in computer science, quantum physics, systems biology, chemistry, dynamical systems, and natural language processing, just to name a few. (The [website](http://appliedcategorytheory.org/workshops) \`Applied category theory’ contains a list of applications.) So even though category theory might sound a little abstract, it is highly applicable. And that’s no surprise. Category theory is all about relationships, and so is the world around us!
+			  
+			  \#\# Conclusion
+			  
+			  Categories are a little bit like anchovies: some folks love ’em, while for other folks they’re an acquired taste. So yes, it’s true that category theory may not help you find a delta for your epsilon, or determine if your group of order 520 is simple, or construct a solution to your PDE. For those endeavours, we do have to put our feet back on the ground. But thinking categorically can help serve as a beacon—it can strengthen your intuition and sharpen your insight—as you trek through the nooks and crannies of your favourite mathematical realms. And these days it’s especially hard to escape the pervasiveness of category theory throughout modern mathematics. So whatever your mathematical goals may be, learning a bit about categories will be well worth your time!
+			  
+			  _This article has been adapted from “What is Category Theory, Anyway?” first published on 17 January 2017 at [math3ma.com](http://math3ma.com/)_
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/150x150,sDTPntYsYNbbET28j84vez3lbvACMXIeN8egzsn91e5U/https://i0.wp.com/chalkdustmagazine.com/wp-content/uploads/2018/10/tai_danae_authorpic.jpg?resize=150%2C150)
+			  
+			  Tai-Danae Bradley is a PhD candidate in mathematics at the CUNY Graduate Center, where she spends much of her time thinking about category theory, topology, machine learning, and quantum physics. When not thinking on these things, she’s probably writing (and doodling) about them on her blog, Math3ma.
+		- ### Highlights
+		  collapsed:: true
+			- > this is precisely how category theory came to be. It was birthed in the 1940s in an attempt to answer a difficult topological question by recasting it in an easier, algebraic light. [⤴️](https://omnivore.app/me/an-invitation-to-category-theory-chalkdust-18d329ae0fb#f1e7164c-8a40-4bb7-b8bf-52c0a0cb0411)
+			- > “category theory is the mathematics of mathematics”. [⤴️](https://omnivore.app/me/an-invitation-to-category-theory-chalkdust-18d329ae0fb#d302a5d2-6216-4426-9545-58ce5376f38b)
+			- > An advantage of ignoring details is that our attention is diverted away from the individual objects and turned towards the relationships—the morphisms—that exist between them. And as any category theorist will tell you, _relationships are everything._ [⤴️](https://omnivore.app/me/an-invitation-to-category-theory-chalkdust-18d329ae0fb#056e54f9-e34b-4ff2-ae64-7e54ad6a21bd)
+			- > one of the main maxims of category theory is that _a mathematical object is completely determined by its relationships to all other objects_. [⤴️](https://omnivore.app/me/an-invitation-to-category-theory-chalkdust-18d329ae0fb#89fc3040-eced-4e8e-9e74-3aaae59525c2)
 	- [Delaware Certificate of Amendment | Harvard Business Services, Inc.](https://omnivore.app/me/u-1-c-3-fb-806-b-784-11-ee-8-b-41-3-baa-386450-bb-delaware-certi-18d268df2c9)
 	  collapsed:: true
 	  site:: [omnivore.app](https://omnivore.app/attachments/u/1c3fb806-b784-11ee-8b41-3baa386450bb/DelawareCertificateofAmendmentHarvardBusinessServicesInc.3.pdf)
