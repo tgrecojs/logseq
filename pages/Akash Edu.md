@@ -5,3 +5,4 @@
 - anyways, i just wanted to give that context. if anyone is interested in agoric or wants to chat about cross-chain UX (or even just wants to say hello) then plz do hit me up! also, I've been hard at working preparing an airdrop for a massive amount of cosmos wallets. i don't want to disclose too much but one of the core themes of this campaign is gamification, so anyone with interest in / knowledge of concepts like futarchy, definitely hmu!!
 -
 -
+-
