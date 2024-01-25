@@ -5,4 +5,6 @@
 - ### Defining Static Vats
 	- Defined in the configuration object at startup time.
 	- The root object of static vats are made available to the `bootstrap()` method, so they can be wired together as needed.
-	- ### Req
+	- ### Requirements
+		- The source for **all static vats must be available at the time the host application starts**.
+	- ### Differenti
