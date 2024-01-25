@@ -7,4 +7,5 @@
 	- The root object of static vats are made available to the `bootstrap()` method, so they can be wired together as needed.
 	- ### Requirements
 		- The source for **all static vats must be available at the time the host application starts**.
-	- ### Differenti
+	- ### Differentiating between dynamic and static vats
+	-
