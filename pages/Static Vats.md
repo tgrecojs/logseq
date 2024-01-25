@@ -10,8 +10,11 @@
 	-
 	- ### Cavetas
 		- The module which exports `buildRootObject` can import other modules as long as they are:
-			- pure JS (no native modules )
+			- pure JS (no native modules, binary libraries)
 			  logseq.order-list-type:: number
+			- compatible with SES.
+			  logseq.order-list-type:: number
+			- logseq.order-list-type:: number
 		- The source for **all static vats must be available at the time the host application starts**.
 	- ### Differentiating between dynamic and static vats
 	- ||Static Vats|Dynamic Vats||
