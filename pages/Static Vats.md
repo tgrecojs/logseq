@@ -1,0 +1,1 @@
+- A SwingSet machine has two sets of vats. The first are the *Static Vats*, which are defined in the configuration object, and created at startup time.
