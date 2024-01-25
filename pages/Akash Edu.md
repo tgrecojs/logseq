@@ -1,3 +1,4 @@
 -
 	- TODO Watch akash edu courses
--
+- noo doubt @splince!! some context - the agoric blockchain is powered by the SwingSet, a JavaScript virtual machine. The SwingSet layer communicates with the Cosmos SDK modules in order to properly handle reads/writes of blockchain state, enable IBC transactions, etc.
+- It's pretty bleeding edge, and while it is incredibly powerful, the state of things often leads developers like myself to find themselves working with an updated version of the SDK that isn't working quite as expected. to combat this while also combatting the need to spin up new, local validator / client nodes, i
