@@ -8,4 +8,8 @@
 	- ### Requirements
 		- The source for **all static vats must be available at the time the host application starts**.
 	- ### Differentiating between dynamic and static vats
-	-
+	- ||Static Vats|Dynamic Vats||
+	  |--|--|--|--|
+	  |Creation Process|Defined within a JS module file which exports a function named **buildRootObject**.|||
+	  |||||
+	  |||||
