@@ -6,8 +6,8 @@
 	- Defined in the configuration object at startup time.
 	- The root object of static vats are made available to the `bootstrap()` method, so they can be wired together as needed.
 	- ### Creation Process
-	- Static vats are defined by a JS module file which exports a function named buildRootObject. The file may export other names.
-	-
+		- Static vats are defined by a JS module file which exports a function named buildRootObject. The file may export other names.
+		- The static vat file will be scanned for its imports, and the entire dependency graph will be merged into a single “source bundle” object when the kernel first launches.
 	- ### Cavetas
 		- The module which exports `buildRootObject` can import other modules as long as they are:
 			- pure JS (no native modules, binary libraries)
