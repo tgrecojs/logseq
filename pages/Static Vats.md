@@ -6,8 +6,12 @@
 	- Defined in the configuration object at startup time.
 	- The root object of static vats are made available to the `bootstrap()` method, so they can be wired together as needed.
 	- ### Creation Process
-	- Static vats are defined by a JS module file which exports a function named buildRootObject. The file may export other names;
-	- ### Requirements
+	- Static vats are defined by a JS module file which exports a function named buildRootObject. The file may export other names.
+	-
+	- ### Cavetas
+		- The module which exports `buildRootObject` can import other modules as long as they are:
+			- pure JS (no native modules )
+			  logseq.order-list-type:: number
 		- The source for **all static vats must be available at the time the host application starts**.
 	- ### Differentiating between dynamic and static vats
 	- ||Static Vats|Dynamic Vats||
