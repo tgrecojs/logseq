@@ -1,6 +1,7 @@
 ## Where I need assistance
 	- Task management
-		-
+		- Write all remaining tasks out.
+			-
 -
 -
 - ## Baggage

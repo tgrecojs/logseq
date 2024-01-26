@@ -1,4 +1,10 @@
-## Baggage
+## Where I need assistance
+	- Task management
+		- Write all remaining tasks out.
+			-
+-
+-
+- ## Baggage
 	- values that need to exist through upgrade, chain restarts.
 	- during this case
 	- ###
