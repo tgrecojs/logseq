@@ -1,7 +1,9 @@
 ## Where I need assistance
 	- Task management
 		- Write all remaining tasks out.
-			-
+- ## Zaki Convo
+	- Creating a new narrative around what these app chains like Agoric are for.
+	-
 -
 -
 - ## Baggage
