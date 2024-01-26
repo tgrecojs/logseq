@@ -3,7 +3,9 @@
 		- Write all remaining tasks out.
 - ## Zaki Convo
 	- Creating a new narrative around what these app chains like Agoric are for.
-	-
+	- What is there purpose?
+	- UX is shitty, and doesn't really work.
+	- This is where I thi
 -
 -
 - ## Baggage
