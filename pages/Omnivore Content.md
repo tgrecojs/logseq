@@ -1,4 +1,103 @@
 ## All posts
+	- [Informal Blog - Reflecting on our CometBFT 2023 Journey: A Retrospective](https://omnivore.app/me/informal-blog-reflecting-on-our-comet-bft-2023-journey-a-retrosp-18d48d2a97a)
+	  collapsed:: true
+	  site:: [informal.systems](https://informal.systems/blog/reflecting-on-our-cometbft-2023-journey-a-retrospective)
+	  labels:: [[cosmos-sdk]] [[cometbft]]
+	  date-saved:: [[01/26/2024]]
+	  date-published:: [[12/14/2023]]
+		- ### Content
+		  collapsed:: true
+			- [![Informal Systems Logo](https://proxy-prod.omnivore-image-cache.app/0x0,slzZkKtvBdItujiIrMCGK8mL8cKFMRqxT6VPsMlhiS0Y/https://informal.systems/images/logo-informal.svg)](https://informal.systems/)
+			  
+			  \#\#\#\#\# Table of Contents
+			  
+			  The year 2023 has been an unforgettable year for the CometBFT team, and as the year ends, we would like to reflect on the most important events that took place during this year. 
+			  
+			  \#\#\# CometBFT debut
+			  
+			  Copy link to this section
+			  
+			  At the beginning of the year, we officially announced that Informal Systems would be responsible for [maintaining a fork of Tendermint Core ](https://x.com/informalinc/status/1613580954383040512) and [launching CometBFT ](https://informal.systems/blog/cosmos-meet-cometbft). 
+			  
+			  The team at Informal Systems assigned some of their most experienced engineers from Cosmos to work on this project. Although there were many unknowns and challenges, the team was eager and optimistic about being the project steward. 
+			  
+			  The Interchain Stack currently hosts almost 100 live blockchains with a combined market capitalization worth billions of dollars, all of which have widely embraced Tendermint consensus and CometBFT as their base layer. Despite the significant responsibility it entails, we are proud to have been chosen as stewards of CometBFT. 
+			  
+			  Our extensive contributions to the Cosmos Ecosystem have provided us with the knowledge and expertise to ensure that CometBFT continues to thrive under our care.
+			  
+			  \#\#\# First Official Release
+			  
+			  Copy link to this section
+			  
+			  In February, we announced the first official release, CometBFT [v0.34 ](https://github.com/cometbft/cometbft/blob/v0.34.27/CHANGELOG.md\#v03427). Our primary objective was to make it as easy as possible for users to switch from Tendermint Core v0.34 by making it fully compatible with the Tendermint Core v0.34 release series.
+			  
+			  In order to ensure that CometBFT works as expected, we started running more extensive QA with each new major release, starting with v0.34\. This allowed us to produce detailed [QA results ](https://github.com/cometbft/cometbft/tree/main/docs/qa) for each major release, giving developers insight into how those releases perform in 200-node networks, how they perform relative to previous releases, and reducing chances of regression. We also changed our major release process to [always include pre-releases ](https://github.com/cometbft/cometbft/blob/main/RELEASES.md\#pre-releases) such that it is clear to our users as to when a new release has been through QA.
+			  
+			  \#\#\# Building blocks of ABCI++ (ABCI 1.0)
+			  
+			  Copy link to this section
+			  
+			  In March, we achieved another significant milestone, a month after our previous one. We released CometBFT [v0.37 ](https://github.com/cometbft/cometbft/blob/v0.37.0/CHANGELOG.md\#v0370), which included ABCI 1.0\. This version introduced two new ABCI methods: PrepareProposal and ProcessProposal. With these new methods, we gave application developers more control over how blocks are built.
+			  
+			  \#\#\# Full ABCI++ (ABCI 2.0)
+			  
+			  Copy link to this section
+			  
+			  During the third quarter of this year, we launched ABCI 2.0 - the full implementation of ABCI++. The latest release (v0.38) introduced new ABCI methods which enable vote extensions \- a powerful new feature that allows application developers to address use cases such as validator-based price oracles and threshold-encrypted transactions. These methods, ExtendVote and VerifyVoteExtension,allow the application to add arbitrary data to pre-commit votes. These vote extensions are available to the proposer(s) of the next block height.
+			  
+			  Another significant change was the combination of the BeginBlock, DeliverTx, and EndBlock into a new method called FinalizeBlock. This release also included several other features, changes, bug fixes, and improvements.
+			  
+			  It marked the final release of ABCI++ - a significant evolution of ABCI. This project [began as a vision ](https://github.com/tendermint/spec/pull/254) several years ago, is the culmination of many teams’ work, and we are proud to have finally pushed it over the finish line.
+			  
+			  \#\#\# Beyond Releases: Highlighting Other Important Work
+			  
+			  Copy link to this section
+			  
+			  One of our significant accomplishments this year was the work carried out by our "optimization squads", with our primary goal being providing operators with ways to control, and ideally reduce, their costs. Since our team is not very big, but is too big for the whole team to work on a single task at a time, we’ve divided into two squads: one to work on bandwidth optimization and another squad to work on storage optimization. Allowing our core developers to concentrate on a particular aspect of the solution was very productive, which enabled us to make [significant progress on these two fronts, especially in Q3 ](https://informal.systems/blog/cometbft-engineering-update-q3-wrapped-up-and-q4-priorities), by releasing improvements and new features or conducting a series of experiments. 
+			  
+			  Some of the work here involved backwards-incompatible changes, and is therefore only available in the newest releases of CometBFT (such as the upcoming v1 release, with minor improvements in v0.34, v0.37 and v0.38).
+			  
+			  Another vital achievement to mention was our work in tackling security vulnerabilities. Ensuring [security ](https://github.com/cometbft/cometbft/blob/main/SECURITY.md) is our top priority, and we were pleased to work with the team responsible for the Interchain Bug Bounty program, successfully addressing a few [low-severity vulnerabilities ](https://github.com/cometbft/cometbft/security/advisories)that arose this year.
+			  
+			  \#\#\# The first CometBFT v1 pre-release
+			  
+			  Copy link to this section
+			  
+			  We are delighted to [announce ](https://informal.systems/blog/cometbft-v1-alpha-release) the release of the first pre-release version of the highly anticipated v1 release line. This version comes with many exciting features, including significant improvements in bandwidth consumption, new ways of optimizing storage usage, API versioning, enabling greater execution performance through parallelization in the interaction between CometBFT and the application, and a series of refactoring enhancements that aim to improve our team's efficiency. 
+			  
+			  \#\#\# Teamwork Makes the Dream Work: Acknowledging Our Partners and Collaborators
+			  
+			  Copy link to this section
+			  
+			  We are deeply grateful for our users' and partners' unwavering support and invaluable feedback. Your contributions have also been pivotal in developing the Interchain Stack and CometBFT. We understand that our progress is only possible because of your trust and collaboration, and we are truly thankful for that.
+			  
+			  We recognize that a resilient ecosystem is built on open communication and collective efforts. Your feedback has helped us to adapt and improve continuously, and we cannot thank you enough for your fantastic support and encouragement throughout this year. 
+			  
+			  Things to improve on a non-technical front: We want to forge closer collaborations with teams that are at the bleeding edge of CometBFT adoption, and which would therefore benefit from closer alignment. There is no magic formula for making this happen, it takes building trust through patience and deliberate, constructive communication.
+			  
+			  As we embark on a new year, we want to continue to work closely with you and strengthen our collaboration. We value your input and would be honored to receive your feedback on how we can continue to improve and grow together.
+			  
+			  \#\#\# Looking Ahead: Our Plans for 2024
+			  
+			  Copy link to this section
+			  
+			  In the short term, our top priority is to finalize the release for v1, and we are working diligently towards that objective. We also have several other improvements in the pipeline, such as Proposer-Based Timestamps (PBTS), improved testing infrastructure, better documentation, a more modular CometBFT, and many other enhancements that will benefit our users as outlined in the [Interchain Stack Roadmap 2024 ](https://docs.google.com/document/d/1j%5FVnHsM0Hsi2so9gf2oLFKhy3wVa7csCa3lTjlMYCsI/edit\#heading=h.aazbrhskhzvr)
+			  
+			  As the year draws to a close, we look forward to planning for the next year with enthusiasm and optimism. We are committed to providing our users exceptional value and fulfilling our promises. 
+			  
+			  We are honored to be part of the Interchain and are deeply grateful for the opportunity to play a role in its success.
+			  
+			  We extend our warmest wishes to all those involved.
+			  
+			  \#\# Subscribe to Blog Updates
+			  
+			  Stop obsessively reloading and let us email you when there are new posts. No spam. Promise.
+			  
+			  \#\# Start your career with Informal Systems
+			  
+			  Explore career opportunities at our cooperatively owned and governed organization, with world-class expertise in distributed systems, formal methods, and open-source ecosystem development.
+			  
+			  [Apply Now](https://informalsystems.bamboohr.com/careers)
 	- [Notes on Functional Programming III: Functor, Applicative & Monad || Chrysanthium](https://omnivore.app/me/notes-on-functional-programming-iii-functor-applicative-monad-ch-18d38448346)
 	  collapsed:: true
 	  site:: [chrysanthium.com](https://chrysanthium.com/notes-on-functional-programming-iii)
