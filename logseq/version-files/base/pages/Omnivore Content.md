@@ -20,35 +20,35 @@
 			  * [Trust vs. verification in dapps](\#trust-vs-verification-in-dapps)
 			  * [The benefits of IPFS for (d)app developers and users](\#the-benefits-of-ipfs-for-dapp-developers-and-users)
 			  * [Primer on web app architectures: SPAs, MPA, PWA and dapps](\#primer-on-web-app-architectures-spas-mpa-pwa-and-dapps)  
-			   * [The client-server spectrum](\#the-client-server-spectrum)  
-			   * [SPA and MPA can be easily published to IPFS](\#spa-and-mpa-can-be-easily-published-to-ipfs)  
-			   * [SPA and MPA can also be PWA](\#spa-and-mpa-can-also-be-pwa)  
-			   * [Dapps](\#dapps)  
-			   * [How dapps get chain state](\#how-dapps-get-chain-state)
+			     * [The client-server spectrum](\#the-client-server-spectrum)  
+			     * [SPA and MPA can be easily published to IPFS](\#spa-and-mpa-can-be-easily-published-to-ipfs)  
+			     * [SPA and MPA can also be PWA](\#spa-and-mpa-can-also-be-pwa)  
+			     * [Dapps](\#dapps)  
+			     * [How dapps get chain state](\#how-dapps-get-chain-state)
 			  * [Publishing dapps: approaches and trade-offs](\#publishing-dapps-approaches-and-trade-offs)  
-			   * [Without IPFS](\#without-ipfs)  
-			   * [Publishing to IPFS](\#publishing-to-ipfs)
+			     * [Without IPFS](\#without-ipfs)  
+			     * [Publishing to IPFS](\#publishing-to-ipfs)
 			  * [Loading dapps from IPFS: approaches and trade-offs](\#loading-dapps-from-ipfs-approaches-and-trade-offs)  
-			   * [From a public gateway](\#from-a-public-gateway)  
-			   * [With a local IPFS node](\#with-a-local-ipfs-node)  
-			   * [With a local IPFS node & IPFS Companion browser extension](\#with-a-local-ipfs-node--ipfs-companion-browser-extension)  
-			   * [With the Brave browser](\#with-the-brave-browser)
+			     * [From a public gateway](\#from-a-public-gateway)  
+			     * [With a local IPFS node](\#with-a-local-ipfs-node)  
+			     * [With a local IPFS node & IPFS Companion browser extension](\#with-a-local-ipfs-node--ipfs-companion-browser-extension)  
+			     * [With the Brave browser](\#with-the-brave-browser)
 			  * [When running a Kubo node is not an option](\#when-running-a-kubo-node-is-not-an-option)
 			  * [What if content addressing were native to the web?](\#what-if-content-addressing-were-native-to-the-web)
 			  * [In-browser CID verification with JavaScript](\#in-browser-cid-verification-with-javascript)  
-			   * [Browser constraints](\#browser-constraints)  
-			   * [Approaches to IPFS in the browser](\#approaches-to-ipfs-in-the-browser)  
-			   * [Helia and IPFS in the browser](\#helia-and-ipfs-in-the-browser)  
-			   * [Verifying top-level pages, sub-resources, and async data](\#verifying-top-level-pages-sub-resources-and-async-data)  
-			   * [Fetching and verifying async data with Helia](\#fetching-and-verifying-async-data-with-helia)  
-			   * [Making Helia lighter and developer-friendly](\#making-helia-lighter-and-developer-friendly)  
-			   * [Helia in a Service Worker](\#helia-in-a-service-worker)  
-			   * [Local app installer](\#local-app-installer)
+			     * [Browser constraints](\#browser-constraints)  
+			     * [Approaches to IPFS in the browser](\#approaches-to-ipfs-in-the-browser)  
+			     * [Helia and IPFS in the browser](\#helia-and-ipfs-in-the-browser)  
+			     * [Verifying top-level pages, sub-resources, and async data](\#verifying-top-level-pages-sub-resources-and-async-data)  
+			     * [Fetching and verifying async data with Helia](\#fetching-and-verifying-async-data-with-helia)  
+			     * [Making Helia lighter and developer-friendly](\#making-helia-lighter-and-developer-friendly)  
+			     * [Helia in a Service Worker](\#helia-in-a-service-worker)  
+			     * [Local app installer](\#local-app-installer)
 			  * [Most users don’t use CIDs directly](\#most-users-dont-use-cids-directly)
 			  * [Naming systems and mutable pointer](\#naming-systems-and-mutable-pointer)  
-			   * [DNSLink](\#dnslink)  
-			   * [Ethereum Name System (ENS)](\#ethereum-name-system-ens)  
-			   * [IPNS](\#ipns)
+			     * [DNSLink](\#dnslink)  
+			     * [Ethereum Name System (ENS)](\#ethereum-name-system-ens)  
+			     * [IPNS](\#ipns)
 			  * [Conclusion](\#conclusion)
 			  
 			  If you are a decentralized web app (dapp) developer, there’s a good chance that you already publish the frontend of your dapp to IPFS. However, today, even if you do so, your users cannot benefit from the integrity IPFS provides without running their own IPFS node. If your users’ browser isn’t verifying that the frontend's source and resources match the CID you published, they are exposed to a wider attack surface, which can lead in the worst case to stolen funds.
@@ -362,28 +362,28 @@
 			  There are three common approaches to this problem that provide a **stable identifier** that can change upon version releases. The following is a high level comparison:
 			  
 			  * **DNSLink**  
-			   * **What are they:** A DNS TXT record points to a specific CID.  
-			   * **Human friendly:** 👍  
-			   * **Verifiable:** 👎  
-			   * **Example name:** [blog.ipfs.tech (opens new window)](http://blog.ipfs.tech/) (technically `_dnslink.blog.ipfs.tech`)  
-			   * **Integration with the IPFS:** through IPFS gateways under the `/ipns` namespace: [ipfs.io/ipns/blog.ipfs.tech/ (opens new window)](http://ipfs.io/ipns/DNS.NAME) or using subdomain resolution: [https://blog-ipfs-tech.ipns.cf\-ipfs.com/ (opens new window)](https://blog-ipfs-tech.ipns.cf-ipfs.com/)
+			     * **What are they:** A DNS TXT record points to a specific CID.  
+			     * **Human friendly:** 👍  
+			     * **Verifiable:** 👎  
+			     * **Example name:** [blog.ipfs.tech (opens new window)](http://blog.ipfs.tech/) (technically `_dnslink.blog.ipfs.tech`)  
+			     * **Integration with the IPFS:** through IPFS gateways under the `/ipns` namespace: [ipfs.io/ipns/blog.ipfs.tech/ (opens new window)](http://ipfs.io/ipns/DNS.NAME) or using subdomain resolution: [https://blog-ipfs-tech.ipns.cf\-ipfs.com/ (opens new window)](https://blog-ipfs-tech.ipns.cf-ipfs.com/)
 			  * **Ethereum Name System** (**ENS):**  
-			   * **What are they:** records for a `.ETH` name are stored on-chain and can point to any URL or CID, e.g. `ipfs://bafy...`  
-			   * **Human friendly:** 👍  
-			   * **Verifiable:** Potentially  
-			   * **Example name:** `vitalik.eth`  
-			   * **Integration with the IPFS:**  
-			         * **IPFS path gateways:** under the `/ipns` namespace: [ipfs.io/ipns/vitalik.eth (opens new window)](http://ipfs.io/ipns/vitalik.eth)\`  
-			         * **Subdomain gateways:** subdomain resolution (dots become dashes): [vitalik-eth.ipns.dweb.link (opens new window)](https://vitalik-eth.ipns.dweb.link/)  
-			         * Using an ENS resolver like [eth.link (opens new window)](http://eth.link/) or eth.limo: [vitalik.eth.limo (opens new window)](https://vitalik.eth.limo/)
+			     * **What are they:** records for a `.ETH` name are stored on-chain and can point to any URL or CID, e.g. `ipfs://bafy...`  
+			     * **Human friendly:** 👍  
+			     * **Verifiable:** Potentially  
+			     * **Example name:** `vitalik.eth`  
+			     * **Integration with the IPFS:**  
+			           * **IPFS path gateways:** under the `/ipns` namespace: [ipfs.io/ipns/vitalik.eth (opens new window)](http://ipfs.io/ipns/vitalik.eth)\`  
+			           * **Subdomain gateways:** subdomain resolution (dots become dashes): [vitalik-eth.ipns.dweb.link (opens new window)](https://vitalik-eth.ipns.dweb.link/)  
+			           * Using an ENS resolver like [eth.link (opens new window)](http://eth.link/) or eth.limo: [vitalik.eth.limo (opens new window)](https://vitalik.eth.limo/)
 			  * **IPNS**  
-			   * **What are they:** mutable pointers based on public keys and signed IPNS records pointing to a CID. Typically published to the DHT, though IPNS is transport agnostic and can be resolved and advertised using the delegated routing HTTP API.  
-			   * **Human friendly:** 👎  
-			   * **Verifiable:** 👍  
-			   * **Example name:** `k51qzi5uqu5dhp48cti0590jyvwgxssrii0zdf19pyfsxwoqomqvfg6bg8qj3s`  
-			   * **Integration with the IPFS:** through IPFS gateways  
-			         * Path resolution: `https://cloudflare-ipfs.com/ipns/k51qzi5uqu5dhp48cti0590jyvwgxssrii0zdf19pyfsxwoqomqvfg6bg8qj3s`  
-			         * Subdomain resolution : `https://k51qzi5uqu5dhp48cti0590jyvwgxssrii0zdf19pyfsxwoqomqvfg6bg8qj3s.ipns.dweb.link/`
+			     * **What are they:** mutable pointers based on public keys and signed IPNS records pointing to a CID. Typically published to the DHT, though IPNS is transport agnostic and can be resolved and advertised using the delegated routing HTTP API.  
+			     * **Human friendly:** 👎  
+			     * **Verifiable:** 👍  
+			     * **Example name:** `k51qzi5uqu5dhp48cti0590jyvwgxssrii0zdf19pyfsxwoqomqvfg6bg8qj3s`  
+			     * **Integration with the IPFS:** through IPFS gateways  
+			           * Path resolution: `https://cloudflare-ipfs.com/ipns/k51qzi5uqu5dhp48cti0590jyvwgxssrii0zdf19pyfsxwoqomqvfg6bg8qj3s`  
+			           * Subdomain resolution : `https://k51qzi5uqu5dhp48cti0590jyvwgxssrii0zdf19pyfsxwoqomqvfg6bg8qj3s.ipns.dweb.link/`
 			  
 			  Some of these approaches can be combined, and there are some crucial security implications to each of the approaches and the way they are implemented.
 			  
