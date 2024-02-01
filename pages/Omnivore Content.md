@@ -1,4 +1,189 @@
 ## All posts
+	- [Demystifying Project Estimation](https://omnivore.app/me/demystifying-project-estimation-18d66150ce8)
+	  collapsed:: true
+	  site:: [substack.com](https://substack.com/inbox/post/140700152)
+	  author:: Substack
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- As a former System Engineer, I often found project estimations frustrating and seemingly useless.
+			  
+			  However, as I progressed into management and leadership roles, I came to understand that the issue was not with the estimates themselves; it was more about how my managers were handling them.
+			  
+			  Estimating a project or the latest feature you aim to deliver holds incredible value, not only for the business your team serves but also for you and your team. In fact, estimations bring clarity and alignment, which are crucial for delivering quickly and with minimal stress.
+			  
+			  That's why today, I’d like to delve deeper into this topic and try to demystify project estimations in all their aspects.
+			  
+			  To achieve this, I wanted to go beyond my own experience as an Engineering Leader and I invited my friend Jordan Cutler, an expert from the development side, to co-author this article and provide a well-rounded perspective.
+			  
+			  So before everything, I'll let him introduce himself.
+			  
+			  Hey there! I’m Jordan, Senior Software Engineer and author of the [High Growth Engineer](https://careercutler.substack.com/?r=1to968) newsletter that reached 40k subscribers in less than 1 year. I also teach a course on Maven called Mid-level to Senior Engineer. I love providing **actionable** advice to help you achieve your goals based on real-world experience.
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1456x971,syh61I1A-jAa0X3NuDxr1IpH_A1MZl2qP2rUYfnweE7Y/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc70b94da-cde6-4a67-8ffc-3835de9168e9_4608x3072.jpeg)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc70b94da-cde6-4a67-8ffc-3835de9168e9%5F4608x3072.jpeg)
+			  
+			  \#\# ❓What is an Estimate?
+			  
+			  Estimates are **informed predictions** or assessments about a project, a feature, or a task. Let me reiterate: predictions. Very rarely will an estimate be 100% accurate, and it's crucial that all teams working together (stakeholders included) are aligned on this principle.
+			  
+			  But why are estimates so frustrating?
+			  
+			  These are just a few reasons:
+			  
+			  * 🤝 **Lack of collaboration**: often, teams work in silos instead of collaborating to achieve a common objective.
+			  * 🧠 **Lack of knowledge**: there's often a lack of mutual understanding in each other's fields.
+			  * 🌐 **More teams involved**: it's already challenging to estimate projects when your team is the only one involved; imagine the complexity when external teams join the party.
+			  * 🎯 **Estimations are just guesses**: estimating projects is a time-consuming process, and even when all factors are known, they are, at best, educated guesses.
+			  
+			  \#\#\# What Affects Estimates Confidence
+			  
+			  Estimates' reliability can be influenced by multiple factors. Based on my experience, these are the most frequent:
+			  
+			  * 🏞️ **Nature of the project**: do you have domain knowledge of the project? Is this an iteration or something completely new? Is the project involving R&D? These are all factors that highly affect estimates.
+			  * 👩‍🔬 **Experience**: the more experience your team has in one field, the more they will be able to do accurate estimates.
+			  * ⏱️ **Invested time**: building precise requirements, conducting tech discoveries, brainstorming together, and defining T-Shirt sizes of tasks involved in a project to prioritize them, are all activities that take time. The more time you invest, the more accurate your estimates will become.
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1456x973,sXQuBHLtsKwT7CVXBIzriRiPiXwF96R8MZlynEjF2JNc/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc9ad01ca-7488-4bc1-a3d3-a560b55ef670_3000x2004.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc9ad01ca-7488-4bc1-a3d3-a560b55ef670%5F3000x2004.png)
+			  
+			  I find this last point (Invested Time) particularly important, as it should also determine the confidence level of your estimates. 
+			  
+			  How much time you should invest in estimating a project depends on the level of confidence you want to achieve within a certain project. 
+			  
+			  This will be influenced by how critical it is for your stakeholders to have an accurate timeline from the beginning.
+			  
+			  \#\# ⏱️ Should you Estimate Projects?
+			  
+			  The reality is that it depends on company culture and other factors. Personally (and this is how I approach it within my teams), I believe estimates are required in the following cases:
+			  
+			  * 🎯 **Prioritization**: when your stakeholders have to decide where to allocate resources.
+			  * 🤝 **More parties are involved**: if you have to coordinate with many functions that are external to your team.
+			  * ⏳ **Time-sensitive Projects**: there are projects that require being delivered in a precise amount of time due to other dependencies or external events you can’t control.
+			  
+			  If you look at these 3 cases, you’ll notice that they are essentially the norm when it comes to product development teams, leading me to say that you’ll need estimates in approximately 85% of cases. 
+			  
+			  However, there is one particular scenario where I often try to avoid any estimation: projects that are primarily focused or that involve a lot of R&D.
+			  
+			  R&D is inherently unknown, so attempting to estimate it becomes pointless and in some cases counterproductive. What I usually do with projects involving R&D is include them as part of the discovery process, effectively integrating them into the estimation itself.
+			  
+			  \#\#\# A Different Point of View ( )
+			  
+			  Believe it or not, estimates are in your benefit as an engineer.
+			  
+			  * If you’re leading a project with other engineers, having a “target date” **promotes accountability**.
+			  * Having a “target date” makes it **clear to execs what you are working on** and the value of your work.  
+			   * For example, I’ve been on “neverending” projects before with no clear end and senior leaders would assume nothing is getting done without a target date.
+			  * Having a “target date” makes it easier to **decline scope creep**.  
+			   * For example, you can say, “I’m ok with adding that into the scope, but we’ll need to push the estimate back a bit to make up for it. Is that ok with you?”  
+			   * Or more aggressively, “If we add that in, we’d need to push our estimate back more than I’d like. I think we should hold off on adding it for now.”
+			  
+			  I refer to the estimate as a “target date” because that can be another way to view it.
+			  
+			  In an ideal world, you ship on your estimated date, but it might not always happen. Still, having that “target” is good for goal setting.
+			  
+			  \#\# 🔍 How to Estimate Projects?
+			  
+			  There are numerous ways and frameworks to estimate projects, and it would be challenging to cover them all. However, I have some principles that I believe are essential to follow:
+			  
+			  * **⏳ No Deadlines**: estimates should never be confused with deadlines. They are informed predictions that become more precise with increased time investment.
+			  * **🔄 Update Your Estimates**: building on the first principle, don't hesitate to continuously update your estimates. Again, they are not rigid deadlines; they are there to guide teams towards successful project completion.
+			  * **🔍 Split Projects/Features into Smaller Chunks**: this approach makes projects and features more manageable and enhances the accuracy of estimates.
+			  
+			  Regarding methodology, I have explored various approaches throughout my career, and what I can confidently say is that 'leaner is better.' No story-points, Fibonacci, endless sprint plannings, etc.
+			  
+			  Within my teams, this is what we do: 
+			  
+			  * 👕 We prefer to use **T-shirt sizes** to assess initiatives, along with **customer value** they bring, to prioritize them.
+			  * 📊 We then create **rough time estimates** to visualize them on a Gantt chart (using Clickup), making dependencies and progress more visible.
+			  * 📌 Then, we use **Kanban** approach to get things done.
+			  * 🔄 We regularly **update our estimates** as we progress until the release.
+			  
+			  It's nothing too fancy; we keep it simple and stress-free. 
+			  
+			  I recently engaged in a [meaningful conversation](https://www.linkedin.com/feed/update/urn:li:activity:7153316045993238528?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7153316045993238528%2C7153318844478959616%29&replyUrn=urn%3Ali%3Acomment%3A%28activity%3A7153316045993238528%2C7153361335198576642%29&dashCommentUrn=urn%3Ali%3Afsd%5Fcomment%3A%287153318844478959616%2Curn%3Ali%3Aactivity%3A7153316045993238528%29&dashReplyUrn=urn%3Ali%3Afsd%5Fcomment%3A%287153361335198576642%2Curn%3Ali%3Aactivity%3A7153316045993238528%29) on LinkedIn with [Tom Hill](https://www.linkedin.com/in/thedeskoftom/) (Head of Software at MHR) where he wrote about the concept of '**slices of value**', which aligns with the idea of breaking initiatives into smaller, more manageable components, based on their value. 
+			  
+			  Tom also explained how they use historical data to estimate how many slices of value they can accommodate within a fixed timeframe (cycle time), resulting in increasingly accurate estimates over time. 
+			  
+			  I suggest to give it a read!
+			  
+			  I'll now leave it to Jordan to explain how he tackles estimates in a practical walkthrough.
+			  
+			  \#\#\# A Practical Use Case ( )
+			  
+			  I’ll run you through my exact process for building an estimate using an example.
+			  
+			  Let’s say we want to build this row of filters on Pinterest: 
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1456x736,sQsrBHXkVl87UVZpbsUAFgYbVsNtoxxOGo5tz25TSxrw/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F03be93d1-1836-4d6b-9547-97a1eeb45caf_3000x1517.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F03be93d1-1836-4d6b-9547-97a1eeb45caf%5F3000x1517.png)
+			  
+			  When you click it, it “refines” your search to include what you clicked.
+			  
+			  For example, clicking “Outdoor” in the above image searches for “outdoor christmas decoration.”
+			  
+			  First, I write out each of the non-trivial behaviors to support, along with their prioritization using the [MoSCoW framework](https://www.productplan.com/glossary/moscow-prioritization/).
+			  
+			  1. **Pill UI component (Must have):** Create the UI for a Clickable Pill component
+			  2. **Pill text (Must have):** Determine pill texts to use and link the search upon click
+			  3. **Pill row (Must have):** Display pills in a responsive row
+			  4. **Images in pills (Should have):** Display a preview image in each pill
+			  5. **Pill colors (Could have):** Display pills using a rotating set of colors
+			  
+			  You could have broken it down differently. The general idea is to focus on the behaviors from the user’s perspective.
+			  
+			  Your breakdown will be a bit more technical than what your product manager creates. You can use what your product manager made as a starting point for these requirements you want to implement.
+			  
+			  The combination of your requirements should support the use cases your product manager defined in a “Product Spec” or “[Product Requirements Document](https://www.productplan.com/glossary/product-requirements-document/).”
+			  
+			  **Now, you need to determine how much time each of these requirements will take.**
+			  
+			  So you break down each of those requirements into their tasks.
+			  
+			  Here’s an example using the “Pill text” requirement:
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1456x819,srD31qBj5QVXn1s1MJ-BxvbS2diuiUbnhh4GvZ63PXxI/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F3c2b02e5-9d18-4d76-809f-db3d7a5f1d89_3000x1688.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F3c2b02e5-9d18-4d76-809f-db3d7a5f1d89%5F3000x1688.png)
+			  
+			  I create a table for each one, give a t-shirt size, and then give a rough estimate including tests and PR reviews.
+			  
+			  Finally, I add up all the times. In this case, we get 2 weeks.
+			  
+			  **After doing this breakdown, it gets added to the original “Requirements” table.**
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1456x863,sa9Q9kW1P-HSGMr26LdSuxFP2IiNajwZe-9CzRvPxG2Y/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F548d8f0f-f05e-4ea7-83fb-22a9d6d8d44f_3000x1778.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F548d8f0f-f05e-4ea7-83fb-22a9d6d8d44f%5F3000x1778.png)
+			  
+			  After doing the breakdown for each requirement, you’ll have a variety of ranges.
+			  
+			  Only doing “Must haves,” the project could take 4 weeks.
+			  
+			  But if you include everything everyone wants to do, it would be 8.5 weeks.
+			  
+			  Now, you’re able to look like a pro 😎 by prioritizing only the most valuable work and cutting scope where possible.
+			  
+			  As a final step, I put this estimate table in the technical design doc to showcase how long each part will take.
+			  
+			  Then I incorporate time for rolling out the feature, PTO, holidays, etc. in the “Milestones” section of that design doc.
+			  
+			  Here’s what that looks like:
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1456x863,snc-asg4cUGiR25xKBgHvZHfLHDM_6EaJ-ICcaUzqMcU/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F6d7366b7-4663-46f8-88c2-bc03d3d7734e_3000x1778.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F6d7366b7-4663-46f8-88c2-bc03d3d7734e%5F3000x1778.png)
+			  
+			  Now you’re able to feel confident about the milestones you set, know you’re not missing anything, and make effective prioritization decisions.
+			  
+			  > _If you liked this in-depth deep dive, you can get access to the full template, example, and plenty of other templates like this by [becoming a paid subscriber to High Growth Engineer here](https://careercutler.substack.com/?r=1to968). Jordan also teaches this live in my Maven course, [Mid-level to Senior Engineer](https://maven.com/jordan-cutler/mid-level-to-senior)._
+			  
+			  \#\# 📐 Project Estimation Tips
+			  
+			  In conclusion, I'd like to provide you with some additional tips for effectively estimating projects:
+			  
+			  * 📚 **Educate your team and stakeholders:** cultivate a culture where all parties work together, feel involved, and are aligned on what is an estimate.
+			  * 📋 **Estimate the estimates:** as we've seen, estimating projects can be a time-consuming task. That's why I believe it's a good practice to include the time required for estimation within the estimation process itself.
+			  * 🔗 **Consider dependencies:** one of the most common errors I see when people estimate projects is missing dependencies. They estimate their work without taking other parties into consideration, resulting in inaccurate estimations.
+			  * 💡 **Consider people's availability:** another common error I have observed many times is not considering people's availability when creating project timelines. Your team and others involved may have holidays or could be working on other projects, so it's important to factor this in when making your estimates.
+			  * 🚧 **Add a 15% buffer:** I mentioned earlier that estimates are not deadlines, but some people may still treat the estimated timeline as a fixed deadline. Adding a buffer helps to avoid unrealistic expectations.
+			  * 🔄 **Review and adjust regularly:** as the project progresses, regularly review your estimates and adjust them based on actual progress and any new information that arises.
+			  * 📊 **Use Historical Data:** look at similar past projects to understand how long tasks took and what resources were needed. This can provide a realistic basis for your estimates.
+			  
+			  \#\# ✌️ That’s all folks
+			  
+			  That's all for today! As always, I would love to hear from my readers (and if you've made it this far, you're definitely one of the bravest). Please don't hesitate to connect with me on [LinkedIn](https://www.linkedin.com/in/nicolaballotta) and send a message. I always respond to everyone!
 	- [The State of Dapps on IPFS: Trust vs. Verification | IPFS Blog & News](https://omnivore.app/me/the-state-of-dapps-on-ipfs-trust-vs-verification-ipfs-blog-news-18d568f8590)
 	  collapsed:: true
 	  site:: [IPFS Blog & News](https://blog.ipfs.tech/dapps-ipfs/)
