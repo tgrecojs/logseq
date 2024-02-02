@@ -1,4 +1,134 @@
 ## All posts
+	- [https://book.micro.blog/the-way-forward/](https://omnivore.app/me/https-book-micro-blog-the-way-forward-18d67e8e8aa)
+	  collapsed:: true
+	  site:: [book.micro.blog](https://book.micro.blog/the-way-forward/)
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- Your link is being saved...
+	- [0.3 - mission to movement](https://omnivore.app/me/mission-to-movement-indie-microblogging-18d67e7f8aa)
+	  collapsed:: true
+	  site:: [book.micro.blog](https://book.micro.blog/mission-to-movement/)
+	  labels:: [[indie microblogging]]
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- _“Progress depends on our changing the world to fit us. Not the other way around.” — Halt and Catch Fire_
+			  
+			  Basecamp started as the Chicago-based 37signals, a web design company known for pushing back against accepted conventions. They used to say that [copywriting is a form of user interface design](https://gettingreal.37signals.com/ch09%5FCopywriting%5Fis%5FInterface%5FDesign.php):
+			  
+			  > Great interfaces are written. If you think every pixel, every icon, every typeface matters, then you also need to believe every letter matters.
+			  
+			  The best products don’t just have marketing copy; they have a mission statement. They don’t just sell a tool; they sell a movement.
+			  
+			  Sometimes our products are confusing to new users — a UI that is too different, or trying to do too many things. These failures are an opportunity to improve beyond just bug fixes. Instead of only explaining what the product does, how can we pitch it in a way that strengthens a community around the idea, spreading through members in a more meaningful way than we can by ourselves.
+			  
+			  And unlike a one-way press release, a community is inherently two-way. Every mention of the idea is both marketing and feedback. Someone blogs about how they’re excited for the product, but also how they wish it had a certain missing feature. Someone in the press writes a review, but also with a list of pros and cons.
+			  
+			  This cycle means the product gets better. And if we’re thoughtful in that first approach to marketing copy, then every blog post, review, and tweet that follows is laced with a little part of our mission statement.
+			  
+			  Who doesn’t want to build products that resonate so well, that go from nice utilities or productivity apps to something our customers fall in love with?
+			  
+			  [Kyle Neath echoed this in a blog post](https://warpspire.com/posts/idea-businesses), writing that it’s about ideas, not products:
+			  
+			  > People want to be part of ideas. Being part of a company who builds a successful product is cool… but being part of an idea is a lot more attractive. If you can build a business where both your employees and your customers think they’re part of an idea, you’ve created something special.
+			  
+			  The venture capitalist (and blogger) Fred Wilson [wrote about](https://avc.com/2020/01/what-to-work-on/) focusing on work that is inspiring and that can have an impact:
+			  
+			  > You must work on something that inspires you and others, you must work on something with a significant impact, and you must do it in a way that makes getting where you want to go as easy as possible and keeps you there as long as possible.
+			  
+			  People are increasingly disillusioned with larger companies. When a company gets too big, that company inevitably forgets why they exist. Not even the greatest, mission-driven companies seem to be able to escape this fate. The only way to stay true to your roots is to stay small. And smaller companies will inherently discourage centralization.
+			  
+			  It might seem that short and often ephemeral posts have trained us with short-attention spans. To see the movement we must look over a longer period at the collection of all those posts — not just our own posts, but the potential for microblog posts all across the web.
+			  
+			  This book you’re reading is longer than I had intended, especially ironic given that its subject matter is short posts. But the goal is big. It’s not about any one new social network. It’s about a new way of thinking about publishing on the web.
+			  
+			  It’s not enough to have temporary, viral movements like `\#DeleteFacebook` or outrage over Elon Musk’s latest meme tweets. We need something sustainable that permanently changes the narrative.
+			  
+			  What is the mission for indie microblogging? There are four guiding themes in this book that we will keep returning to:
+			  
+			  * **Better features.** Learning from the user interface innovations of social networks — both the good choices and what we can do better.
+			  * **Open standards.** How the work of the IndieWeb and even older blogging APIs can improve interoperability and freedom on the web.
+			  * **Content ownership.** Why nearly everything starts with personal domain names.
+			  * **Smaller social networks.** The technical overview of Micro.blog, Mastodon, and pushback against massive social networks.
+			  
+			  It’s the combination of all four themes that will move the web forward.
+			  
+			  [Next: The way forward →](https://book.micro.blog/the-way-forward/)
+	- [0.2 - Uses for a microblog · Indie Microblogging.](https://omnivore.app/me/uses-for-a-microblog-indie-microblogging-18d67e6779f)
+	  collapsed:: true
+	  site:: [book.micro.blog](https://book.micro.blog/uses-for-microblog/)
+	  labels:: [[indie microblogging]]
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- _“You donʼt know if your idea is any good the moment itʼs created. Neither does anyone else. The most you can hope for is a strong gut feeling that it is. And trusting your feelings is not as easy as the optimists say it is. Thereʼs a reason why feelings scare us.” — Hugh MacLeod, [Ignore Everybody](https://hughcards.net/book/)_
+			  
+			  Sometimes it’s hard to put words down. Staring at a large, empty text box from blog software that wants you to give your post a title, as if every thought is fully formed before you know what to say. Doubt and imposter’s syndrome creep in.
+			  
+			  The solution is easier, quick posting. Just start writing without the pressure of getting it all right.
+			  
+			  People who haven’t been posting regularly to their own blog also often struggle with deciding what content should be on a social network and what should be posted to a microblog. My default is to post everything on my own site, and cross-post to other networks, which takes the guesswork out of where to post. But there are several types of content that are naturally well-suited to an indie microblog that you control.
+			  
+			  **Photos**
+			  
+			  Sharing photos is an important part of Micro.blog. I put a custom photo picker and filters in the original Micro.blog iOS app to encourage everyone to post photos to their blog, so that you end up with a great collection of your best photos at your own domain name. Because photos are square by default, they look great in the Micro.blog timeline, and with cross-posting Micro.blog can attach photos to your tweets or send posts to other social networks.
+			  
+			  Some people on Micro.blog focus almost exclusively on posting photos, like [Robert Brook](https://micro.blog/robertbrook). Some people have even created separate blogs just for their photos at their own domain name hosted on Micro.blog, like [burk.photos](http://burk.photos/). There’s [a special section of our curated Discover section](https://micro.blog/discover/photos) that features photos from more Micro.blog users.
+			  
+			  We’ll cover photos extensively in Part 4.
+			  
+			  **Linkblogging**
+			  
+			  Essentially two types of link blogs have evolved since the early days of blogging. The most traditional link blog can be seen in Dave Winer’s posts. These are links with a very short commentary. Many tweets are like this. In a way, this format is the purest form of microblogging.
+			  
+			  The second type of link blog starts to fall outside the limits of microblogging. Instead of just including a URL, authors use a quote from the linked material as the foundation for the post. The majority of Daring Fireball posts adopt this format. While author John Gruber is known for his full essays, those longer posts are infrequent today. He keeps his site active by linking to other interesting essays and tacking on his own brief opinion.
+			  
+			  **Books**
+			  
+			  Micro.blog has a Goodreads-inspired feature called Bookshelves that helps you track what books you’re reading or want to read. When you’re done reading a book, a quick click on the “New Post” button will prepare a microblog post with the book name, author, and link to the book details. It’s an easy way to share your favorite books and keep everything on your own blog.
+			  
+			  There’s also a books API and companion app for iOS and Android called Epilogue, plus third-party IndieWeb apps like IndieBookClub. If we put more of our content on our own blogs, services like Micro.blog can aggregate book data together, forming a more distributed version of centralized sites like Goodreads.
+			  
+			  **Travel blogs**
+			  
+			  Travel blogs tend to combine text about the trip and photos, with individual blog posts for days or major sections of the trip. This can be seen in microblogs like [this one from Mary Hatfield](https://marydhat.micro.blog/) as they travel and adventure across the world, but a microblog is also great for remembering short trips and vacations.
+			  
+			  We designed our Micro.blog companion app Sunlit for these kind of travel posts. The main interface on iOS allows grouping text and photos from multiple days into a blog post.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sx_kVrlAFy3Vaoj9YoKfQwWo4fUd0e5TTUyeuYf_gFDQ/https://book.micro.blog/uploads/2020/51a9bd6263.png)
+			  
+			  Travel blogs can be longer posts, or short check-in posts with just the venue name. This can often be automated. Many people use the service [OwnYourSwarm](https://ownyourswarm.p3k.io/) to copy Swarm check-ins to a microblog.
+			  
+			  **Business blogs**
+			  
+			  A microblog can be used for a company’s news updates or product release notes. For Micro.blog, we have [news.micro.blog](https://news.micro.blog/) where we post about new features or server downtime. These posts are short and also easy to copy over to a company’s account on social media.
+			  
+			  One advantage for businesses is that unlike social media, a microblog can be completely branded with the company’s web site design and domain name. Posts can also be included automatically in a company’s main web site using Micro.blog’s [Sidebar.js](https://help.micro.blog/2016/sidebar-js/) script.
+			  
+			  **Conversations**
+			  
+			  Blog posts are a great way to get feedback about an idea. Conversations around a blog post can take the form of replies on Micro.blog, or comments on external blog posts like WordPress.
+			  
+			  See Part 6 for more about replies and building communities.
+			  
+			  **Microcasting**
+			  
+			  Micro.blog is about making short-form content you own as simple to post as a tweet because we believe blogging should be easier. Podcasting should be easier too.
+			  
+			  Everyone had a story to tell, but for some people it’s too daunting to even think about needing to talk for half an hour. Microcasts are short-form podcasts. Creating a microcast is fun because it’s much easier to record and edit than the longer podcasts we’re all used to.
+			  
+			  Chet Collins has [published a microcast](https://chetjcollins.com/chetcast) where he shares bits from his day with his kids. He wrote [on his blog](https://www.chetjcollins.com/2020/04/20/why-i-microcast.html) about why a podcast is such a nice format for capturing these memories:
+			  
+			  > Audio recordings, in an open format, are about as future-proof as you can get. Even more than that, these recordings deliver the actual sound of my children’s voices, their laughter, and their unfiltered thoughts. They are the perfect time capsule of my children, recorded and preserved for the future.
+			  
+			  Using a podcast essentially provides some structure, transforming audio snippets from everyday life into a format that can be easily reviewed later. It’s more organized than a digital junk drawer of random video clips, which for most people are unlikely to ever be edited. Podcasts inherently have a narrator to give context.
+			  
+			  **…and everything else**
+			  
+			  What you had for lunch. The movie you just watched. If it’s something that could go on Twitter or Facebook, it can be a microblog post at your own site.
+			  
+			  [Next: Mission to movement →](https://book.micro.blog/mission-to-movement/)
 	- [Demystifying Project Estimation](https://omnivore.app/me/demystifying-project-estimation-18d66150ce8)
 	  collapsed:: true
 	  site:: [substack.com](https://substack.com/inbox/post/140700152)
