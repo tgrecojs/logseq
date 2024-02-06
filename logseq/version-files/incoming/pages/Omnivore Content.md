@@ -1,4 +1,280 @@
 ## All posts
+	- [1.2 - Pulled Away from Blogs](https://omnivore.app/me/pulled-away-from-blogs-indie-microblogging-18d67ed194d)
+	  collapsed:: true
+	  site:: [book.micro.blog](https://book.micro.blog/pulled-away-from/)
+	  labels:: [[indie microblogging]]
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- _“You were the captain of a ship, sailing aimlessly through the wilds of the Web. Occasionally you would drop anchor and stop to peruse all the great content that netizens were putting out into the world.” — [The Web Is Fucked](https://thewebisfucked.com/)_
+			  
+			  If you wanted to publish anything on the web in the early 2000s, you created a blog. Blogs had personality. People commented on each others blog, helping build loose communities. They met in person at events like the SXSW Interactive conference.
+			  
+			  Slowly, the rise of larger platforms pulled attention away from blogs. More and more former bloggers posted their content on social networks first.
+			  
+			  Anil Dash was interviewed by Matt Mullenweg [on the Distributed podcast](https://distributed.blog/2019/12/12/transcript-episode-16-anil-dash/), talking about blogging less often because there were other venues to post to like Twitter:
+			  
+			  > the biggest thing chipping away at it is having other venues and other platforms
+			  
+			  When I talked to Tantek Çelik for the interview in Part 3, he acknowledged this period as Twitter was taking off where even he stopped blogging:
+			  
+			  > Just even personally, the last blog post I wrote on my old blog was in August of 2008\. I did not have anything on my own site in 2009\. 2009 was a really weird transitional period, because I both saw that happening and I saw it happening to myself.
+			  
+			  By 2010, you could see this pattern across the web. Many of the pioneers of blogging had either completely stopped posting, or cut back their posts to longer essays a few times a year.
+			  
+			  What happened? Social networks were simply easier to post to, and the feeling of engagement in getting likes or replies was more compelling than publishing into the void of the blogosphere, wondering if anyone was listening.
+			  
+			  At the same time, blog comments were getting harder to manage. There was more comment spam. Bloggers started pointing their readers to social networks if they wanted to reply to a post, effectively offloading user registration and moderation to other centralized platforms.
+			  
+			  It wasn’t a stretch to embrace social networks because bloggers were already actively using some centralized platforms, like Flickr. If a blog was already leaning on Flickr for photo storage, it was a small step to go to other platforms for short text posts.
+			  
+			  Before Twitter was large enough and stable enough to dominate centralized microblogging, several competing social networks were launched with a focus on microblogging.
+			  
+			  ---
+			  
+			  Twitter now has over 300 million monthly active users. Centralized platforms have become a winner-take-all game because you can’t move your followers. Leaving Twitter or Facebook means starting over.
+			  
+			  Earlier it wasn’t clear Twitter would dominate. In 2007, Twitter was still small enough that you and all your friends could try a new service without feeling like you were leaving everything behind. Twitter was often flaky, with the “fail whale” as a reminder that maybe a better, more stable network existed elsewhere.
+			  
+			  There was Pownce with private posts and more sharing options. Ello and App.net as reactions to Twitter’s developer-hostile API. LiveJournal, MySpace, Jaiku, and Diaspora.
+			  
+			  Every one of these competitors had their own unique take on microblogging. How long should a post be? Should the friends model by asymmetrical, so anyone can follow anyone, or require approval of friend requests?
+			  
+			  In 2009, Facebook overtook MySpace [in unique visitors in the US](https://www.pcworld.com/article/523618/facebook%5Fovertakes%5Fmyspace%5Fin%5Fus.html). No other social network would reach the same scale until Instagram.
+			  
+			  ---
+			  
+			  Google Reader had become the most popular platform for subscribing to RSS feeds. It was free and easy to use, but aspects of its centralized nature such as comments and favorites were stuck in a silo, difficult to migrate away from.
+			  
+			  Paid services that are as popular as Google Reader aren’t usually discontinued as Google Reader was, but Google Reader wasn’t a paid service. It’s because Google Reader was free and ad-supported — but just a small part of Google’s business — that they were able to drop it.
+			  
+			  When Google Reader shut down, there was no migration plan to other RSS readers. Marco Arment, early Tumblr developer and creator of the podcast app Overcast, [blogged in 2013](https://marco.org/2013/03/14/baby-steps-replacing-google-reader) that developers needed to move quickly to fill the void left by Google, standardizing on a Reader-compatible API that could work with most apps without major API changes:
+			  
+			  > We need to start simple. We don’t have much time. And if we _don’t_ do it this way, the likely alternative is that a few major clients will make their own custom sync solutions that won’t work with any other company’s clients, which won’t bring them nearly as much value as it will remove from their users.
+			  
+			  A common API didn’t happen. Instead, we do have a few popular feed reader platforms like Feedbin and Feedly that tried to fill the void. Apps like NetNewsWire and Reeder have been updated to support multiple APIs.
+			  
+			  This modern feed sync ecosystem might be healthier than one dominated by a single player, but it created friction and doubt in what people should move to. It was easier to just use Twitter and convince yourself you weren’t missing anything from RSS feeds.
+			  
+			  Blogs survived in the background because they were still a better fit for people who wanted to own their content, carving out a little space for themselves on the web. The death of Google Reader was a reminder to indie-minded bloggers that ad-based platforms had advertisers as customers, not users.
+			  
+			  [Next: Leaving Twitter →](https://book.micro.blog/leaving-twitter/)
+	- [1.1 - Penn Station
+	  ](https://omnivore.app/me/penn-station-indie-microblogging-18d67ec9e8a)
+	  collapsed:: true
+	  site:: [book.micro.blog](https://book.micro.blog/penn-station/)
+	  labels:: [[indie microblogging]]
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- _“The station structure, designed after the Qual d’Orsay, Paris, but twice as large, will be 1,500 ft. in length by 500 ft. in width, three decked, inclose 25 tracks at tunnel level, which will be approached by gradual carriage drive and walkway.” — The Brooklyn Daily Eagle Almanac, 1906_
+			  
+			  When my family was visiting New York City a few years ago, we took a train out of Pennsylvania Station on the way up to Montreal for the second half of our vacation. It was raining a little as we walked from the hotel, but I thought we’d still have no trouble finding the station. After a few minutes we gave up and had to ask someone where the entrance was.
+			  
+			  We couldn’t find it because it looked like every other street corner in Manhattan. But it wasn’t always like that. It used to look like this:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sknyiPoYnXNiwV32s1U3AOk00WI7YGYFa5RQ4IvVsw_4/https://book.micro.blog/uploads/2019/30b89f1d7d.jpg "Pennsylvania Station in the 1910s")
+			  
+			  The New York Times [recently described the old Penn Station this way](https://www.nytimes.com/2019/04/24/nyregion/old-penn-station-pictures-new-york.html):
+			  
+			  > With its swarming crowds and dust motes dancing in shafts of smoky light, the station was catnip to midcentury photographers, filmmakers, artists and architects. It was the architectural embodiment of New York’s vaulted ambition and open arms.
+			  
+			  In the 1960s, facing declining train usage and financial problems, the Pennsylvania Railroad sold the rights to everything above ground and the incredible station pictured above was demolished. It was only afterwards, when it actually happened, that everyone fully realized what they had lost. Determined to not let other beautiful architectural landmarks get destroyed, the city passed a law to restrict similar demolition. Grand Central Terminal was preserved because of the lesson learned from letting Pennsylvania Station go.
+			  
+			  I was thinking about this story — failing to do the right thing, but applying that knowledge to the _next_ thing — while re-reading [Marco Arment’s excellent post on the future of podcasting](https://marco.org/2016/05/07/apple-role-in-podcasting). In it, he lays out the technical details for how podcasting works today, and makes the case for leaving it alone. I especially like this part, on his determination to keep Overcast a sort of pure MP3 client:
+			  
+			  > By the way, while I often get pitched on garbage podcast-listening-behavioral-data integrations, **I’m never adding such tracking to Overcast.** Never. The biggest reason I made a free, mass-market podcast app was so I could take stands like this.
+			  
+			  I should have realized it earlier, but I don’t think I really connected all of Marco’s goals with Overcast until Daniel Jalkut and I had him on our podcast Core Intuition, [episode 200](http://coreint.org/200). We talked about many of these same themes as Marco was finishing up Overcast 2.0\. Marco talked about larger podcast software teams that are trying to lock down podcasting:
+			  
+			  > They’re trying to lock it down for themselves. Usually it’s: let’s build a closed platform, and our technology can power your podcasting. And it’s like all these buzzwords that really just mean we are trying to lock down this open medium to a centralized close thing that we control. And then we are the gatekeepers, and we have all the power, and all the money flows through us.
+			  
+			  Everywhere I looked there seemed to be a debate about the role of podcast aggregators like Spotify and Apple. There was a great discussion [on Upgrade](https://www.relay.fm/upgrade/88) with Myke Hurley and Jason Snell about this. It started [about halfway through](https://overcast.fm/+DeCngCgj8/43:07), with Myke describing the potential for Apple to lock down podcasting:
+			  
+			  > For there to be more data about listeners — like to know stuff about where you are in the world, demographic information, how old you are, to know if you’ve listened to the whole show, what parts you’ve skipped — for Apple to know this information, they would have to kind of lock down a lot of the way that podcasts work. They would probably need to be hosting the files and reserving them on their own. They would need to do more tracking.
+			  
+			  And [in a response to Marco on MacStories](https://www.macstories.net/stories/a-podcasting-divergence/), Federico Viticci wrote about the parallel trend in the web industry toward centralized services like Facebook and Medium that allow “content professionals” to monetize their writing. In doing so, those writers give up many of the benefits of the open web:
+			  
+			  > But the great thing about the free and decentralized web is that the aforementioned web platforms are optional and they’re alternatives to an existing open field where independent makers can do whatever they want. I can own my content, offer my RSS feed to anyone, and resist the temptation of slowing down my website with 10 different JavaScript plugins to monitor what my users do. No one is forcing me to agree to the terms of a platform.
+			  
+			  While the open web still exists, we dropped the ball protecting and strengthening it. Fewer people’s first choice for publishing is to start a web site hosted at their own domain. Like the destruction of Pennsylvania Station, sometimes you only know in hindsight that you’ve made a mistake. We were so caught up in Twitter and Facebook that we let the open web crumble. I’m not giving up — I think we can get people excited about blogging and owning their own content again — but it would have been easier if we had realized [what we lost](http://anildash.com/2012/12/the-web-we-lost.html) earlier.
+			  
+			  Reading posts like Marco’s and Federico’s, and listening to Jason and Myke on Upgrade, I’m convinced that podcasting will remain open because as a community _we know better now_. We can see the dominance of YouTube controlling nearly all web video. We can learn from the mistakes with the web and the threats of closed platforms, making sure that podcasting is preserved as a simple technology that no one controls.
+			  
+			  And we can take a fresh look at all the blogging platforms that have come before, learn from what worked well with previous social networks and what failed, and recommit to bringing the best parts back to today’s web. This time, prepared for the future.
+			  
+			  [Next: Pulled away from blogs →](https://book.micro.blog/pulled-away-from/)
+	- [0.4 -, The way forward · Indie Microblogging.](https://omnivore.app/me/the-way-forward-indie-microblogging-18d67e8ee5e)
+	  collapsed:: true
+	  site:: [book.micro.blog](https://book.micro.blog/the-way-forward/)
+	  labels:: [[indie microblogging]]
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- _“Most important things in life are a hassle. If life’s hassles disappeared, you’d want them back.” — Hayao Miyazaki_
+			  
+			  The blog AltPlatform had published a number of articles about the open web and indie blogging. Brian Hendrickson [wrote about emerging protocols from the IndieWeb and Mastodon](http://web.archive.org/web/20170913190455/http://altplatform.org/2017/06/22/flip-the-iceberg/), and how these standards could eventually reach a scale that would “flip the iceberg” to become the more dominant way we communicate online:
+			  
+			  > Open source tools like WordPress, [1999.io](http://1999.io/) and Mastodon.social are creating many small networks of publishers, and popular tools like Twitter and Micro.blog could peer with them. If all of the social networks outside of Facebook interoperated at some level, they might eventually “flip the iceberg” and become the dominant form of social networking.
+			  
+			  Compatibility between new blog-focused platforms could eventually become bigger than any one social network. This compatibility comes from open standards. (I’ll talk more about the IndieWeb and Mastodon in parts 3 and 5.)
+			  
+			  It is daunting to create a new microblog platform — to compete with Twitter and Facebook, to go up against more established companies with better funding — and creating a new social network from scratch usually does not work. The huge platforms are [super-aggregators](https://stratechery.com/2017/defining-aggregators/), ad-based with little cost to acquire content or scale, and difficult to compete with network effects.
+			  
+			  For years many developers have wanted an alternative but have not been able to get mainstream traction. Developers and entrepreneurs with the best intentions, great talent, and a larger team than we have for Micro.blog.
+			  
+			  So to flip the iceberg, we must start with a simpler goal: encourage more people to blog. We must play the long game, building deliberately so that the foundation will last for years.
+			  
+			  It’s not about leaving Twitter and moving to the next platform. It’s about redistributing microblog posts across the web, with a diverse set of platforms.
+			  
+			  This redistribution is already happening. [Indie Map](https://indiemap.org/) took thousands of independent blogs and started mapping the relationships as people use their blog to link and reply across sites. Instead of a concentration of users on a single site like Twitter or Facebook, users are spread out, posting at sites they control.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,scxLUkF4Wp72QH1EbCE1A66RgBFgovqNQNjiHTt1pTpE/https://book.micro.blog/uploads/2020/458ccd0c59.png)
+			  
+			  Blogging at a personal domain name is a kind of investment in the future of the web. It’s a statement that you value your own writing and are ready to contribute to making the web better.
+			  
+			  This book is divided into 6 major parts:
+			  
+			  * **Part 1: Rewind** takes us back to early social networks and blogging platforms. It also includes interview questions with Marco Arment about the early days of Tumblr, and a conversation with Leah Culver about Pownce.
+			  * **Part 2: Foundation** outlines the basics of indie microblogging, with a quick-start guide for WordPress and how Micro.blog fits into the ecosystem of indie microblogs. There’s an overview of JSON Feed and an interview with NetNewsWire developer Brent Simmons.
+			  * **Part 3: IndieWeb** is all about the IndieWeb movement. I’ll cover why we care about owning our content and the building block API standards of the IndieWeb. It’s capped off with an interview with IndieWeb co-founders Tantek Çelik and Aaron Parecki.
+			  * **Part 4: Hypertext** covers the unique nature of web formats, focusing on photography, UI, and HTML.
+			  * **Part 5: Decentralization** takes us to Mastodon, WebSub, and real-time notifications between blogs.
+			  * **Part 6: Community** is about the intersection between blogs and platforms. The impact of harassment, misinformation, and politics on healthy communities. We end with a conversation with Micro.blog community manager Jean MacDonald.
+			  
+			  Getting millions of new bloggers to post to their own site won’t be easy. Nothing worthwhile ever is. It seems like a never-ending hassle to convince people to blog when Facebook onboards new users so effortlessly. But we’ve seen in the years since Micro.blog launched that this will work. There’s no question that more people are blogging today because of Micro.blog and the larger IndieWeb movement, and we’ve only scratched the surface.
+			  
+			  [Next: Part 1: Rewind →](https://book.micro.blog/rewind/)
+	- [https://book.micro.blog/the-way-forward/](https://omnivore.app/me/https-book-micro-blog-the-way-forward-18d67e8e8aa)
+	  collapsed:: true
+	  site:: [book.micro.blog](https://book.micro.blog/the-way-forward/)
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- Your link is being saved...
+	- [0.3 - mission to movement](https://omnivore.app/me/mission-to-movement-indie-microblogging-18d67e7f8aa)
+	  collapsed:: true
+	  site:: [book.micro.blog](https://book.micro.blog/mission-to-movement/)
+	  labels:: [[indie microblogging]]
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- _“Progress depends on our changing the world to fit us. Not the other way around.” — Halt and Catch Fire_
+			  
+			  Basecamp started as the Chicago-based 37signals, a web design company known for pushing back against accepted conventions. They used to say that [copywriting is a form of user interface design](https://gettingreal.37signals.com/ch09%5FCopywriting%5Fis%5FInterface%5FDesign.php):
+			  
+			  > Great interfaces are written. If you think every pixel, every icon, every typeface matters, then you also need to believe every letter matters.
+			  
+			  The best products don’t just have marketing copy; they have a mission statement. They don’t just sell a tool; they sell a movement.
+			  
+			  Sometimes our products are confusing to new users — a UI that is too different, or trying to do too many things. These failures are an opportunity to improve beyond just bug fixes. Instead of only explaining what the product does, how can we pitch it in a way that strengthens a community around the idea, spreading through members in a more meaningful way than we can by ourselves.
+			  
+			  And unlike a one-way press release, a community is inherently two-way. Every mention of the idea is both marketing and feedback. Someone blogs about how they’re excited for the product, but also how they wish it had a certain missing feature. Someone in the press writes a review, but also with a list of pros and cons.
+			  
+			  This cycle means the product gets better. And if we’re thoughtful in that first approach to marketing copy, then every blog post, review, and tweet that follows is laced with a little part of our mission statement.
+			  
+			  Who doesn’t want to build products that resonate so well, that go from nice utilities or productivity apps to something our customers fall in love with?
+			  
+			  [Kyle Neath echoed this in a blog post](https://warpspire.com/posts/idea-businesses), writing that it’s about ideas, not products:
+			  
+			  > People want to be part of ideas. Being part of a company who builds a successful product is cool… but being part of an idea is a lot more attractive. If you can build a business where both your employees and your customers think they’re part of an idea, you’ve created something special.
+			  
+			  The venture capitalist (and blogger) Fred Wilson [wrote about](https://avc.com/2020/01/what-to-work-on/) focusing on work that is inspiring and that can have an impact:
+			  
+			  > You must work on something that inspires you and others, you must work on something with a significant impact, and you must do it in a way that makes getting where you want to go as easy as possible and keeps you there as long as possible.
+			  
+			  People are increasingly disillusioned with larger companies. When a company gets too big, that company inevitably forgets why they exist. Not even the greatest, mission-driven companies seem to be able to escape this fate. The only way to stay true to your roots is to stay small. And smaller companies will inherently discourage centralization.
+			  
+			  It might seem that short and often ephemeral posts have trained us with short-attention spans. To see the movement we must look over a longer period at the collection of all those posts — not just our own posts, but the potential for microblog posts all across the web.
+			  
+			  This book you’re reading is longer than I had intended, especially ironic given that its subject matter is short posts. But the goal is big. It’s not about any one new social network. It’s about a new way of thinking about publishing on the web.
+			  
+			  It’s not enough to have temporary, viral movements like `\#DeleteFacebook` or outrage over Elon Musk’s latest meme tweets. We need something sustainable that permanently changes the narrative.
+			  
+			  What is the mission for indie microblogging? There are four guiding themes in this book that we will keep returning to:
+			  
+			  * **Better features.** Learning from the user interface innovations of social networks — both the good choices and what we can do better.
+			  * **Open standards.** How the work of the IndieWeb and even older blogging APIs can improve interoperability and freedom on the web.
+			  * **Content ownership.** Why nearly everything starts with personal domain names.
+			  * **Smaller social networks.** The technical overview of Micro.blog, Mastodon, and pushback against massive social networks.
+			  
+			  It’s the combination of all four themes that will move the web forward.
+			  
+			  [Next: The way forward →](https://book.micro.blog/the-way-forward/)
+	- [0.2 - Uses for a microblog · Indie Microblogging.](https://omnivore.app/me/uses-for-a-microblog-indie-microblogging-18d67e6779f)
+	  collapsed:: true
+	  site:: [book.micro.blog](https://book.micro.blog/uses-for-microblog/)
+	  labels:: [[indie microblogging]]
+	  date-saved:: [[02/01/2024]]
+		- ### Content
+		  collapsed:: true
+			- _“You donʼt know if your idea is any good the moment itʼs created. Neither does anyone else. The most you can hope for is a strong gut feeling that it is. And trusting your feelings is not as easy as the optimists say it is. Thereʼs a reason why feelings scare us.” — Hugh MacLeod, [Ignore Everybody](https://hughcards.net/book/)_
+			  
+			  Sometimes it’s hard to put words down. Staring at a large, empty text box from blog software that wants you to give your post a title, as if every thought is fully formed before you know what to say. Doubt and imposter’s syndrome creep in.
+			  
+			  The solution is easier, quick posting. Just start writing without the pressure of getting it all right.
+			  
+			  People who haven’t been posting regularly to their own blog also often struggle with deciding what content should be on a social network and what should be posted to a microblog. My default is to post everything on my own site, and cross-post to other networks, which takes the guesswork out of where to post. But there are several types of content that are naturally well-suited to an indie microblog that you control.
+			  
+			  **Photos**
+			  
+			  Sharing photos is an important part of Micro.blog. I put a custom photo picker and filters in the original Micro.blog iOS app to encourage everyone to post photos to their blog, so that you end up with a great collection of your best photos at your own domain name. Because photos are square by default, they look great in the Micro.blog timeline, and with cross-posting Micro.blog can attach photos to your tweets or send posts to other social networks.
+			  
+			  Some people on Micro.blog focus almost exclusively on posting photos, like [Robert Brook](https://micro.blog/robertbrook). Some people have even created separate blogs just for their photos at their own domain name hosted on Micro.blog, like [burk.photos](http://burk.photos/). There’s [a special section of our curated Discover section](https://micro.blog/discover/photos) that features photos from more Micro.blog users.
+			  
+			  We’ll cover photos extensively in Part 4.
+			  
+			  **Linkblogging**
+			  
+			  Essentially two types of link blogs have evolved since the early days of blogging. The most traditional link blog can be seen in Dave Winer’s posts. These are links with a very short commentary. Many tweets are like this. In a way, this format is the purest form of microblogging.
+			  
+			  The second type of link blog starts to fall outside the limits of microblogging. Instead of just including a URL, authors use a quote from the linked material as the foundation for the post. The majority of Daring Fireball posts adopt this format. While author John Gruber is known for his full essays, those longer posts are infrequent today. He keeps his site active by linking to other interesting essays and tacking on his own brief opinion.
+			  
+			  **Books**
+			  
+			  Micro.blog has a Goodreads-inspired feature called Bookshelves that helps you track what books you’re reading or want to read. When you’re done reading a book, a quick click on the “New Post” button will prepare a microblog post with the book name, author, and link to the book details. It’s an easy way to share your favorite books and keep everything on your own blog.
+			  
+			  There’s also a books API and companion app for iOS and Android called Epilogue, plus third-party IndieWeb apps like IndieBookClub. If we put more of our content on our own blogs, services like Micro.blog can aggregate book data together, forming a more distributed version of centralized sites like Goodreads.
+			  
+			  **Travel blogs**
+			  
+			  Travel blogs tend to combine text about the trip and photos, with individual blog posts for days or major sections of the trip. This can be seen in microblogs like [this one from Mary Hatfield](https://marydhat.micro.blog/) as they travel and adventure across the world, but a microblog is also great for remembering short trips and vacations.
+			  
+			  We designed our Micro.blog companion app Sunlit for these kind of travel posts. The main interface on iOS allows grouping text and photos from multiple days into a blog post.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sx_kVrlAFy3Vaoj9YoKfQwWo4fUd0e5TTUyeuYf_gFDQ/https://book.micro.blog/uploads/2020/51a9bd6263.png)
+			  
+			  Travel blogs can be longer posts, or short check-in posts with just the venue name. This can often be automated. Many people use the service [OwnYourSwarm](https://ownyourswarm.p3k.io/) to copy Swarm check-ins to a microblog.
+			  
+			  **Business blogs**
+			  
+			  A microblog can be used for a company’s news updates or product release notes. For Micro.blog, we have [news.micro.blog](https://news.micro.blog/) where we post about new features or server downtime. These posts are short and also easy to copy over to a company’s account on social media.
+			  
+			  One advantage for businesses is that unlike social media, a microblog can be completely branded with the company’s web site design and domain name. Posts can also be included automatically in a company’s main web site using Micro.blog’s [Sidebar.js](https://help.micro.blog/2016/sidebar-js/) script.
+			  
+			  **Conversations**
+			  
+			  Blog posts are a great way to get feedback about an idea. Conversations around a blog post can take the form of replies on Micro.blog, or comments on external blog posts like WordPress.
+			  
+			  See Part 6 for more about replies and building communities.
+			  
+			  **Microcasting**
+			  
+			  Micro.blog is about making short-form content you own as simple to post as a tweet because we believe blogging should be easier. Podcasting should be easier too.
+			  
+			  Everyone had a story to tell, but for some people it’s too daunting to even think about needing to talk for half an hour. Microcasts are short-form podcasts. Creating a microcast is fun because it’s much easier to record and edit than the longer podcasts we’re all used to.
+			  
+			  Chet Collins has [published a microcast](https://chetjcollins.com/chetcast) where he shares bits from his day with his kids. He wrote [on his blog](https://www.chetjcollins.com/2020/04/20/why-i-microcast.html) about why a podcast is such a nice format for capturing these memories:
+			  
+			  > Audio recordings, in an open format, are about as future-proof as you can get. Even more than that, these recordings deliver the actual sound of my children’s voices, their laughter, and their unfiltered thoughts. They are the perfect time capsule of my children, recorded and preserved for the future.
+			  
+			  Using a podcast essentially provides some structure, transforming audio snippets from everyday life into a format that can be easily reviewed later. It’s more organized than a digital junk drawer of random video clips, which for most people are unlikely to ever be edited. Podcasts inherently have a narrator to give context.
+			  
+			  **…and everything else**
+			  
+			  What you had for lunch. The movie you just watched. If it’s something that could go on Twitter or Facebook, it can be a microblog post at your own site.
+			  
+			  [Next: Mission to movement →](https://book.micro.blog/mission-to-movement/)
 	- [Demystifying Project Estimation](https://omnivore.app/me/demystifying-project-estimation-18d66150ce8)
 	  collapsed:: true
 	  site:: [substack.com](https://substack.com/inbox/post/140700152)

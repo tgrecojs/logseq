@@ -1,4 +1,269 @@
 ## All posts
+	- [Re: UMP / CORS: Implementor Interest from Mark S. Miller on 2010-04-22 (public-webapps@w3.org from April to June 2010)](https://omnivore.app/me/re-ump-cors-implementor-interest-from-mark-s-miller-on-2010-04-2-18d7afa5cb5)
+	  collapsed:: true
+	  site:: [lists.w3.org](https://lists.w3.org/Archives/Public/public-webapps/2010AprJun/0293.html)
+	  author:: Mark S. Miller (erights@google.com)
+	  date-saved:: [[02/05/2024]]
+	  date-published:: [[04/21/2010]]
+		- ### Content
+		  collapsed:: true
+			- On Mon, Apr 19, 2010 at 12:43 AM, Anne van Kesteren <[annevk@opera.com](mailto:annevk@opera.com?Subject=Re%3A%20UMP%20%2F%20CORS%3A%20Implementor%20Interest&In-Reply-To=%3Cj2x4d2fac901004221633h6cd611dide6041ee5e6f8e2d%40mail.gmail.com%3E&References=%3Cj2x4d2fac901004221633h6cd611dide6041ee5e6f8e2d%40mail.gmail.com%3E)>wrote:
+			  
+			  > Hopefully it helps calling out attention to this in a separate thread.
+			  >
+			  > In <http://lists.w3.org/Archives/Public/public-webapps/2010AprJun/0043.htmlMaciej> states Apple has no interest in implementing UMP from the UMP
+			  > specification. (I believe this means that a CORS defined subset that roughly
+			  > matches UMP is fine.) They want to retain their CORS support.
+			  >
+			  > For Opera I can say we are planning on supporting on CORS in due course and
+			  > have no plans on implementing UMP from the UMP specification.
+			  >
+			  > It would be nice if the three other major implementors (i.e. Google,
+			  > Mozilla, and Microsoft) also stated their interest for both specifications,
+			  > especially including whether removing their current level of CORS support is
+			  > considered an option.
+			  >
+			  
+			  Caja does plan to implement UMP and not CORS. Caja is a user agent built as
+			  a virtual browser-in-browser, translating from the subset of future web
+			  standards it accepts (e.g., a subset of ES5/strict) into the subset of
+			  future web standards supported by current browsers (e.g., a subset of ES3).
+			  Caja accepts not just JavaScript of course -- Caja parses a sanitized subset
+			  of HTML HTML5's tag soup algorithm. Since Caja helps protect the Yahoo! home
+			  page, in some quantitative sense it is a larger user agent than Safari,
+			  Opera, or Chrome.
+			  
+			  Caja intermediates the dereferencing of all URLs through a
+			  container-supplied URL translation policy. Say cajoled code inlined on a
+			  page running on site X makes a cross-origin request to a server addressed as
+			  site Y. Caja does support all Yahoo! A-grade browsers including IE6. To
+			  emulate the cross-origin request on IE6, obviously, our only choice is to
+			  relay the request through the X server. Since the X server has no access to
+			  the browser's cookies for site Y, obviously, we cannot emulate the CSRF
+			  vulnerabilities of full CORS even if we wanted to. UniformRequests can be
+			  faithfully relayed through intermediaries. Full CORS cannot. Thus,
+			  UniformRequests have a better incremental transition story for software that
+			  can be deployed today.
+			  
+			  
+			  >
+			  >
+			  > --
+			  > Anne van Kesteren
+			  > <http://annevankesteren.nl/>
+			  >
+			  >
+			  
+			  
+			  -- 
+			    Cheers,
+			    --MarkM
+	- [Anxiety, Mood Swings and Sleepless Nights: Life Near a Bitcoin Mine - The New York Times](https://omnivore.app/me/anxiety-mood-swings-and-sleepless-nights-life-near-a-bitcoin-min-18d7336016a)
+	  collapsed:: true
+	  site:: [The New York Times](https://www.nytimes.com/2024/02/03/us/bitcoin-arkansas-noise-pollution.html?referringSource=articleShare&smid=nytcore-ios-share)
+	  author:: Gabriel J.X. Dance
+	  date-saved:: [[02/04/2024]]
+	  date-published:: [[02/03/2024]]
+		- ### Content
+		  collapsed:: true
+			- ![](https://proxy-prod.omnivore-image-cache.app/0x0,swwjTFKyeD8OaMmOXma6Oif7wuSZejWucV3h5DSTpavw/https://static01.nyt.com/images/2024/01/17/autossell/bitcoin-loop/bitcoin-loop-threeByTwoMediumAt2X.jpg)
+			  
+			  A Bitcoin operation that opened last May near Greenbrier, Ark.Credit...Video by Rory Doyle for The New York Times
+			  
+			  Pushed by an advocacy group, Arkansas became the first state to shield noisy cryptocurrency operators from unhappy neighbors. A furious backlash has some lawmakers considering a statewide ban.
+			  
+			  A Bitcoin operation that opened last May near Greenbrier, Ark.Credit...Video by Rory Doyle for The New York Times
+			  
+			  [Gabriel J.X. Dance](https://www.nytimes.com/by/gabriel-dance)
+			  
+			  Gabriel J.X. Dance visited several Bitcoin operations in Arkansas, including one near Greenbrier.
+			  
+			  On a sweltering July evening, the din from thousands of computers mining for Bitcoins pierced the night. Nearby, Matt Brown, a member of the Arkansas legislature, monitored the noise alongside a local magistrate.
+			  
+			  As the two men investigated complaints about the operation, Mr. Brown said, a security guard for the mine loaded rounds into an AR-15-style assault rifle that had been stored in a car.
+			  
+			  “He wanted to make sure that we knew he had his gun — that we knew it was loaded,” Mr. Brown, a Republican, said in an interview.
+			  
+			  The Bitcoin outfit here, 45 minutes north of Little Rock, is one of three sites in Arkansas owned by a network of companies embroiled in tense disputes with residents, who say the noise generated by computers performing trillions of calculations per second ruins lives, lowers property values and drives away wildlife.
+			  
+			  Scores of the operations have popped up in recent years across the United States. When a mining computer lands on numbers that Bitcoin’s algorithm accepts, the payout is currently worth about a quarter-million dollars. The more computers an operation has, the better chance of earning the payout.
+			  
+			  The industry is often criticized for its vast energy use — [often a boon for the fossil-fuel industry](https://www.nytimes.com/2023/04/09/business/bitcoin-mining-electricity-pollution.html) — and noise is a common complaint. Though some elected officials like Mr. Brown and other Bitcoin operators in Arkansas have voiced support for the beleaguered residents, a new state law has given the companies a significant leg up.
+			  
+			  Image
+			  
+			  ![A fenced compound surrounded by trees and power lines. ](https://proxy-prod.omnivore-image-cache.app/600x399,sP4nXzlBNQ-SBSHE0IXVLjmG33B3TViLYM3Z3JaWx9Kw/https://static01.nyt.com/images/2024/01/17/multimedia/00bitcoin-arkansas-wjgf/00bitcoin-arkansas-wjgf-articleLarge.jpg?quality=75&auto=webp&disable=upscale)
+			  
+			  The site north of Little Rock is one of three in the state owned by a network of companies embroiled in tense disputes with residents.Credit...Rory Doyle for The New York Times
+			  
+			  The Arkansas Data Centers Act, popularly called the Right to Mine law, offers Bitcoin miners legal protections from communities that may not want them operating nearby. Passed just eight days after it was introduced, the law was written in part by the Satoshi Action Fund, a nonprofit advocacy group based in Mississippi whose co-founder worked in the Trump administration rolling back Obama-era climate policies.
+			  
+			  “The state of Arkansas has pulled off a surprise victory and become the first in the nation to pass the ‘Right to Mine’ \#Bitcoin bill in both the House and Senate,” Dennis Porter, the fund’s chief executive, [posted](https://twitter.com/Dennis%5FPorter%5F/status/1644544978251808768) on social media when the law passed last April.
+			  
+			  A similar bill passed in Montana last May, and the group has said it hopes to enact its successful formula in more than a dozen other states. Bills written in collaboration with the group were introduced last month in several states including [Indiana](https://iga.in.gov/pdf-documents/123/2024/house/bills/HB1388/HB1388.01.INTR.pdfhttps://iga.in.gov/pdf-documents/123/2024/house/bills/HB1388/HB1388.01.INTR.pdf), [Missouri](https://documents.house.mo.gov/billtracking/bills241/hlrbillspdf/3683H.01I.pdf), [Nebraska](https://nebraskalegislature.gov/bills/view%5Fbill.php?DocumentID=54648) and [Virginia](https://lis.virginia.gov/cgi-bin/legp604.exe?241+ful+SB339+pdf).
+			  
+			  Founded five years ago as the Energy 45 Fund, the group sought to tout Mr. Trump’s energy and environmental agenda and “[defend the greatest president in modern history](https://www.eenews.net/articles/ex-epa-official-on-rollbacks-snowballs-and-selling-trump/).” Its founder, Mandy Gunasekara, had spent the previous two years at the Environmental Protection Agency, where she played a key role in the decision to pull the United States out of the Paris climate accord and helped repeal the Clean Power Plan, which aimed to reduce emissions from coal-burning power plants.
+			  
+			  The group is widely lionized by the Bitcoin community, both for its legislative work and for its combative stance toward critics of the industry. But the fund’s aggressive approach has riled others in the Bitcoin community who say they prefer to build consensus around cryptocurrency operations.
+			  
+			  Arry Yu, executive director of the U.S. Blockchain Coalition, an industry group, said Arkansas residents were “taken advantage” of.
+			  
+			  “We need to take a humble approach, work with the communities, don’t hijack their journeys and their lives,” Ms. Yu said. “And if they move slowly, too slow for you, too bad.”
+			  
+			  The strife in Arkansas reflects disagreements across the United States as Bitcoin mining has grown by leaps and bounds. Environmental activists, troubled by the industry’s electricity consumption and resulting pollution, have called for federal regulation, while backers of the operations say the mines often help stabilize vulnerable electrical grids and provide jobs in rural areas.
+			  
+			  Concerns about the Arkansas mines have expanded beyond the initial noise complaints to include their connections to Chinese nationals. The operations are connected to a larger influx of Chinese ownership across the United States, The New York Times [reported](https://www.nytimes.com/2023/10/13/us/bitcoin-mines-china-united-states.html) in October, some of which has drawn national security scrutiny.
+			  
+			  A web of shell companies connects the Arkansas operators to a multibillion-dollar business partially owned by the Chinese government, according to public records obtained by residents opposed to the operations. In November, the Arkansas attorney general’s office opened an [investigation](https://arkansasadvocate.com/wp-content/uploads/2023/12/12.11.23-Act-636-Letters.pdf) into them for potentially violating a state law barring businesses controlled by Chinese nationals from owning land.
+			  
+			  A lawyer representing the operations said an independent security contractor was responsible for the incident near Greenbrier and the company never authorized any guard to “brandish a firearm.” They also said that the attorney general’s investigation was based on a “misunderstanding” and that they are legally allowed to conduct business.
+			  
+			  Despite efforts to build bipartisan support, the Satoshi fund has succeeded predominantly in red states. But in Arkansas, where the state legislature is dominated by Republicans, it is conservatives who have led calls to repeal the law, including Senator Bryan King, a poultry farmer whose district includes a property purchased by one of the companies tied to the Chinese government. He said it was not fair that the Bitcoin operators received special protections under the law, which shields them from “[discriminatory industry specific regulations and taxes,”](https://www.arkleg.state.ar.us/Home/FTPDocument?path=%2FACTS%2F2023R%2FPublic%2FACT851.pdf) including noise ordinances and zoning restrictions.
+			  
+			  “They’re in a protected class more than any other business out there,” Mr. King said.
+			  
+			  As restrictions introduced in Congress have failed to gain traction, states and cities have stepped in to fill the void. But as Arkansas has demonstrated, unsatisfying results can leave residents feeling betrayed.
+			  
+			  Image
+			  
+			  ![A portrait of a woman in a pink shirt.](https://proxy-prod.omnivore-image-cache.app/0x0,sQupyK5gHaw_ahA2-AdWzz_wzoPXYGsS8guLsRHrZwAw/https://static01.nyt.com/images/2024/02/05/multimedia/00bitcoin-arkansas-print-2/00bitcoin-arkansas-04-jbvc-articleLarge.jpg?quality=75&auto=webp&disable=upscale)
+			  
+			  Gladys Anderson and nearly two dozen neighbors filed a lawsuit against the owners of a Bitcoin operation near Greenbrier, Ark., blaming the operation for various health problems.Credit...Rory Doyle for The New York Times
+			  
+			  \#\# ‘It’s Exhausting’
+			  
+			  “Hell” is how Gladys Anderson describes life since the Bitcoin operation near Greenbrier opened last May less than 100 yards from her home.
+			  
+			  Computers have been running mostly around the clock, she said, creating so much noise — they require constant cooling by loud fans — that her son no longer goes outside. “The reason we moved out here was to get away from people, get away from noise,” she said.
+			  
+			  Her son, who requires full-time care for autism, has also grown more agitated and aggressive, she said. “It’s exhausting mentally, emotionally, physically,” Ms. Anderson said.
+			  
+			  In July, she and nearly two dozen neighbors filed a lawsuit against the owners, NewRays One, blaming the operation for various health problems, including increased blood pressure, anxiety, difficulty sleeping and mood swings.
+			  
+			  The lawsuit also suggests the mine has depressed property values.
+			  
+			  “Who would want to purchase property near the noisy site?” one of the residents, Rebecca Edwards, wrote in an affidavit. “Short answer: No one.”
+			  
+			  Lawyers representing NewRays are seeking to have the case thrown out, citing the Right to Mine law, among other arguments. Recently, the same judge overseeing the lawsuit ruled in a separate case that a local ordinance restricting noise at a related operation was likely to be discriminatory, violating the state law.
+			  
+			  A lawyer for NewRays disputed the allegations made by Ms. Anderson and the other residents, telling The Times that the company looked forward to defending itself in court. As for the lawsuit at the related operation, in which NewRays is a partner, the lawyer said the mine would be a “responsible neighbor” and hoped to find additional ways “to give back to the community.”
+			  
+			  Image
+			  
+			  ![A house and a computing compound separated by a smattering of trees. ](https://proxy-prod.omnivore-image-cache.app/0x0,sk7rNpInS-g_HrFUxkrEXo5UHYE_ndJ7O3t5G8pesLQg/https://static01.nyt.com/images/2024/02/05/multimedia/00bitcoin-arkansas-print-1/00bitcoin-arkansas-02-jbvc-articleLarge.jpg?quality=75&auto=webp&disable=upscale)
+			  
+			  The Bitcoin mine, left, is less than 100 yards from Ms. Anderson’s home, top right.Credit...Rory Doyle for The New York Times
+			  
+			  After the law was signed by Gov. Sarah Huckabee Sanders in April, 49 of the state’s 76 counties enacted ordinances limiting noise levels at data centers, including cryptocurrency mining operations, before it took effect in August, according to the Association of Arkansas Counties. The legality of those ordinances, and local governments’ inability to regulate the industry, is now central to the struggle between residents and the Bitcoin operators, with some elected officials who voted for the state law now opposing it.
+			  
+			  “What wasn’t explained was the nature of these crypto mines and how they can cause an intolerable noise with no regard for neighbors or wildlife,” Representative Jeremiah Moore, a Republican whose district includes a Bitcoin operation, said in an email.
+			  
+			  Mr. Moore said the mining bill had been disingenuously promoted to lawmakers as protecting an industry that would create jobs and benefit nearby communities. He recently joined several other lawmakers in drafting a proposed statewide ban on industrial-level cryptocurrency mining.
+			  
+			  Senator Joshua Bryant, a Republican co-sponsor of the pro-mining legislation, said in an interview that the law was meant to protect the property rights of Bitcoin miners and that he believed a significant amount of pushback was a result of misdirected anti-Chinese sentiment.
+			  
+			  Mr. Bryant said he that was exploring the possibility of a statewide noise ordinance “to address potential health and safety harms to citizens of the state,” and that “ultimately we have to continue to figure out how to live with our neighbors.”
+			  
+			  The primary sponsor of the law, Representative Rick McClure, also a Republican, did not respond to requests for comment from The Times.
+			  
+			  A primary backer of the legislation was Cryptic Farms, a Bitcoin-mining company run by Cameron Baker, an Arkansas native. Mr. Baker said his company did not anticipate that “bad actors” might exploit the law.
+			  
+			  “It wasn’t really on our radar that somebody was going to come in right behind the passage of this bill and present themselves as this perfect villain that does everything wrong,” he said in an interview.
+			  
+			  Tom Harford, an executive at Cryptic Farms who leads the Arkansas Blockchain Council, an industry group, said that he regretted putting residents in a position “where they have no recourse” and that “no law is perfect.”
+			  
+			  Mr. Harford said he “helped tweak” the law, but it was primarily written by Eric Peterson, head of policy at the Satoshi Action Fund. Mr. Peterson declined to comment.
+			  
+			  “It’s a Satoshi bill,” Mr. Harford said.
+			  
+			  Image
+			  
+			  ![A woman speaks into a microphone.](https://proxy-prod.omnivore-image-cache.app/0x0,sICeoTCsFVaYnAg9TJ6ePeAFxZ9-bdR0I2IsjcABReug/https://static01.nyt.com/images/2024/01/17/multimedia/00bitcoin-arkansas-pqzv/00bitcoin-arkansas-pqzv-articleLarge.jpg?quality=75&auto=webp&disable=upscale)
+			  
+			  Mandy Gunasekara, a founder of the Satoshi Action Fund, which helped write the Bitcoin law.Credit...Rogelio V. Solis/Associated Press
+			  
+			  \#\# From Trump to Bitcoin
+			  
+			  The history of the Satoshi Action Fund is unconventional, to say the least.
+			  
+			  Ms. Gunasekara, its co-founder, gained notoriety in 2015 while working for Senator Jim Inhofe, Republican of Oklahoma, bringing him a snowball on the Senate floor while he argued that climate change was a hoax.
+			  
+			  She is married to a lobbyist who for years represented the oil industry (and who is also a co-founder of the fund), and has railed against what she calls the left’s “[woke](https://dailycaller.com/2022/06/08/gunasekara-republican-climate-plan-will-stop-bidens-assault-on-american-energy-and-american-pocketbooks/)” climate agenda. Last year, the Mississippi Supreme Court disqualified her in an election for a utilities regulatory board because she did not meet residency requirements.
+			  
+			  Before launching the fund in 2019, Ms. Gunasekara worked as a senior adviser to Scott Pruitt, the first E.P.A. administrator under Mr. Trump. After she returned to the E.P.A. in 2020 as chief of staff to Mr. Pruitt’s successor, Andrew Wheeler, the fund appeared to languish, changing its name from the Energy 45 Fund to Energy Moms and then to Alliance for Energy Workers.
+			  
+			  Legal experts who reviewed the group’s tax filings during those years described them as slapdash and containing obvious contradictions. The group reported to the I.R.S., for instance, that its board of directors had zero members — but then, on the same form, reported that it had documented every meeting the board held.
+			  
+			  As of 2021, it appeared to be an empty vessel waiting for a purpose. That purpose appears to have arrived by way of a phone call from Mr. Pruitt. On a [podcast](https://www.youtube.com/watch?v=N%5FuL7Cnu3qc), Ms. Gunasekara said Mr. Pruitt suggested that two of them start a business selling electricity contracts to Bitcoin miners.
+			  
+			  It is unclear if Ms. Gunasekara and her old E.P.A. boss went into business; neither she nor Mr. Pruitt responded to requests for comment. But nearly a year later, Ms. Gunasekara, her husband and Mr. Porter repurposed the nonprofit as the Satoshi Action Fund, focused on Bitcoin and mining operations in particular. (Satoshi is the pseudonym associated with the unknown inventor of Bitcoin.)
+			  
+			  One of the fund’s purposes, Ms. Gunasekara said during a [speech announcing the organization,](https://www.youtube.com/watch?v=6YHHpn22drU) is to tell the “very good stories” that Bitcoin mining has to offer, including the “role of rural revitalization.”
+			  
+			  The group has held events in multiple states and in Washington, including handing out books on Bitcoin to lawmakers, and recently started a second nonprofit to publish scientific papers about the benefits of Bitcoin mining.
+			  
+			  It has also tried to grow Bitcoin’s base of support beyond conservative Republicans like Senator Ted Cruz of Texas and Senator Cynthia Lummis of Wyoming, both of whom have publicly championed it.
+			  
+			  In November, at the North American Blockchain Summit in Fort Worth, Mr. Porter interviewed Senator Ron Wyden, Democrat of Oregon, about the benefits of blockchain technologies.
+			  
+			  Mr. Wyden spoke of the promise of a “digital dollar” and putting medical records on a blockchain, a digital ledger that records cryptocurrency transfers. But later, in an interview with The Times, Mr. Wyden said he opposed the state bills pushed by the Satoshi Fund, including the one in Arkansas, and the energy-intensive process required for Bitcoin mining.
+			  
+			  “It’s pretty clear that I’m not a big supporter,” he said. “Quite the opposite.”
+			  
+			  In Greenbrier, as the lawsuit wears on, Ms. Anderson said she and her neighbors have struggled to pay their lawyer. A fund-raiser in October brought the community together, but the proceeds barely put a dent in their debt. Still, she says, as long as they can afford it, they will fight the mine.
+			  
+			  “I don’t want to be run out of my home,” she said.
+			  
+			  David A. Fahrenthold contributed reporting from Washington and Michael Forsythe from New York.
+	- [Applications of Category Theory to Web Programming](https://omnivore.app/me/u-e-7-fd-5-f-38-c-1-b-2-11-ee-be-47-ffeef-2843-cdc-master-vilja--18d6949d824)
+	  collapsed:: true
+	  site:: [omnivore.app](https://omnivore.app/attachments/u/e7fd5f38-c1b2-11ee-be47-ffeef2843cdc/master_Vilja_Peter_2018copy.pdf)
+	  date-saved:: [[02/02/2024]]
+		- ### Content
+		  collapsed:: true
+			-
+	- [https://aaltodoc.aalto.fi/server/api/core/bitstreams/e0f5aefc-556f-4254-bf9d-03c22f930357/content](https://omnivore.app/me/https-aaltodoc-aalto-fi-server-api-core-bitstreams-e-0-f-5-aefc--18d69462845)
+	  collapsed:: true
+	  site:: [aaltodoc.aalto.fi](https://aaltodoc.aalto.fi/server/api/core/bitstreams/e0f5aefc-556f-4254-bf9d-03c22f930357/content)
+	  date-saved:: [[02/02/2024]]
+		- ### Content
+		  collapsed:: true
+			- Failed to fetch content
+	- [(9) X](https://omnivore.app/me/9-x-18d68dfedd3)
+	  collapsed:: true
+	  site:: [X (formerly Twitter)](https://twitter.com/kankodu/thread/1752581744803680680)
+	  date-saved:: [[02/02/2024]]
+		- ### Content
+		  collapsed:: true
+			- \#\# Thread
+			  
+			  A ![🧵](https://proxy-prod.omnivore-image-cache.app/0x0,sE-f4Z_wHe4DVfiSB-_nLZDelx3Gh2nYvtTxjkOHZBKU/https://abs-0.twimg.com/emoji/v2/svg/1f9f5.svg "Thread") on how yesterday's 
+			  
+			  attack worked. The protocol did everything right. They rounded in the protocol's favour whenever they should but one additional function, meant to only reduce the user's funds, ended up enabling the attack. How?
+			  
+			  [![Image](https://proxy-prod.omnivore-image-cache.app/0x0,sqhlbsrSfFT1gu-poPlYBYdk6rglXGjcdqsGF2x4zzrU/https://pbs.twimg.com/media/GFJrzsnbkAAaBMy?format=png&name=medium)](https://twitter.com/kankodu/status/1752581744803680680/photo/1)
+			  
+			  The protocol used shares mechanism to calculate the current debt of a user. Note: In the codebase, borrow shares are referred to as base/part and borrow assets amounts are referred to as elastic/amount.
+			  
+			  When a user borrows certain funds, they get minted borrow shares based on the current totalBorrowAssets and totalBorrowShares ratio. As interest is owed from the user, totalBorrowAssets increases without totalBorrowShares increasing and in turn it increases...
+			  
+			  ...the proportional amount that the user has to repay as well. The culprit function was the repayForAll function. This allowed anyone to repay everyone's debt. To accomplish this, the protocol reduced totalBorrowAssets without totalBorrowShares in repayForAll function.
+			  
+			  The attacker borrowed funds using a fllashloan and use the repayForAll function first.
+			  
+			  [![Image](https://proxy-prod.omnivore-image-cache.app/0x0,sbLiErWMRJQNcmwbFFDIGqk69E3hDLOjr_sIHKQRR76Y/https://pbs.twimg.com/media/GFJr0z3awAAAruT?format=jpg&name=large)](https://twitter.com/kankodu/status/1752581764021948430/photo/1)
+			  
+			  The attacker couldn't repay all of the amount as there was a check that totalBorrowAssets needed to be greater than 1000 ether. Regardless, the attacker repaid as much as they could, which reduced totalBorrowAssets such that totalBorrowAssets:totalBorrowShares was \~ 1:26.
+			  
+			  Now, the attacker repaid all the existing loans for all the borrowers. For the last remaining borrower, the user repaid all but 100 wei of shares. At that point, totalBorrowedAssets were 100, and totalBorrowShares were 3.
+			  
+			  [![Image](https://proxy-prod.omnivore-image-cache.app/0x0,svCZ3iVYOA1-5GvaT0IymUODm3EoxOMnd9JzPrePm7qQ/https://pbs.twimg.com/media/GFJr1kaasAEn6PL?format=jpg&name=medium)](https://twitter.com/kankodu/status/1752581778140012657/photo/1)
+			  
+			  The attacker repaid 1 wei of share 3 times, which meant totalAssets reduced to 0, and totalBorrowShares were 97\. Now the attacker started borrowing 1 wei from their account. At this point, TotalBorrowAssets is 1, and totalBorrowShares is 98.
+			  
+			  Attacker put up a very low amount of collateral (100 wei) and in a loop, started borrowing 1 wei of assets and repaying 1 wei of borrow shares.
+			  
+			  [![Image](https://proxy-prod.omnivore-image-cache.app/0x0,smkzT8O4qtmOJj3yAmO59iF2aI-49Xkz-IuZfDizq-38/https://pbs.twimg.com/media/GFJr2WAbMAA6JkN?format=jpg&name=medium)](https://twitter.com/kankodu/status/1752581791402373577/photo/1)
 	- [1.2 - Pulled Away from Blogs](https://omnivore.app/me/pulled-away-from-blogs-indie-microblogging-18d67ed194d)
 	  collapsed:: true
 	  site:: [book.micro.blog](https://book.micro.blog/pulled-away-from/)
