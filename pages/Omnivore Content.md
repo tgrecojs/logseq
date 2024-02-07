@@ -1,4 +1,478 @@
 ## All posts
+	- [Elite-Only Financial Markets - by Robin Hanson](https://omnivore.app/me/elite-only-financial-markets-by-robin-hanson-18d8327e902)
+	  collapsed:: true
+	  site:: [substack.com](https://substack.com/inbox/post/141238258)
+	  author:: Substack
+	  labels:: [[robin-hanson]] [[prediction-markets]]
+	  date-saved:: [[02/07/2024]]
+		- ### Content
+		  collapsed:: true
+			- Prediction markets are financial markets, but compared to typical financial markets they are intended more to aggregate info than to hedge risks. Thus we can use our general understanding of financial markets to understand prediction markets, and can also try to apply whatever we learn about prediction markets to financial markets more generally.
+			  
+			  With this in mind, consider the newly published paper _[Crowd prediction systems: Markets, polls, and elite forecasters](https://www.sciencedirect.com/science/article/abs/pii/S0169207023001413)_, by Atanasov, Witkowski, Mellers, and Tetlock.
+			  
+			  They use data from 1300 forecasters on 147 questions over four years from the Good Judgement Project’s entry in the IARPA ACE tournament, 2011-2015\. (I was part of another [team](https://www.overcomingbias.com/p/join-gmus-daggre-teamhtml) in that tournament.) They judge outcomes by averaging quadratic Brier-score accuracy over questions and time. 
+			  
+			  They find that:
+			  
+			  1. Participants who used my logarithmic market scoring rule (LMSR) mechanism did better than those using a continuous double auction market (mainly better when few traders), and did about as well as those using a complex poll aggregation mechanism, which did better than simpler polling aggregation methods.
+			  2. One element of the complex polling mechanism, an “extremization” power-law transformation of probabilities, also makes market prices more accurate.
+			  3. Participants who were put together into teams did better than those who were not.
+			  4. Accuracy is _much_ (\~14-18%) better if you take the 2% of participants most accurate in a year, and then using only these “elites” in future years. It didn’t matter which mechanism was used when selecting that 2% elite.
+			  
+			  The authors see this last result as their most important:
+			  
+			  > The practical question we set to address focused on a manager who seeks to maximize forecasting performance in a crowdsourcing environment through her choices about forecasting systems and crowds. Our investigation points to specific recommendations. …Our results offer a clear recommendation for improving accuracy: employ smaller, elite crowds. These findings are relevant to corporate forecasting tournaments as well as to the growing research literature on public forecasting tournaments. Whether the prediction system is an LMSR market or prediction polls, managers could improve performance by selecting a smaller, elite crowd based on prior performance in the competition. Small, elite forecaster crowds may yield benefits beyond accuracy. For example, when forecasts use proprietary data or relate to confidential outcomes, employing a smaller group of forecasters may help minimize information leakage. 
+			  
+			  This makes sense for a manager who plans to ask \~>1300 participants \~>150 questions over \~>4 years, and who trusts some subordinate to judge how exactly to select this elite, and how to set the complex polling parameters, if they use a polling mechanism. But I’ve been mainly interested in using prediction markets as public institutions for cases where there’s a lot of distrust re motives and rationality. Such as in law, governance, policy, academia, and science. And in such contexts, I worry a lot more about the discretionary powers required to implement an elite selection system.
+			  
+			  To see my concern, consider stock markets, whose main social function is to channel investment into the most valuable opportunities. More accurate stock prices better achieve this function, and the above results suggest that we’d get much more accurate stock prices by greatly limiting who can speculate in stock markets. Hold some contests where applicants compete with fake trades to grow small initial trading budgets, and only let the top, say, 2% of such such contestants make speculative price-influencing trades in real stock markets. Maybe also force them to join teams, instead of trading individually. (Forcing extremization seems unnecessary, as specialists can profit by making those price adjustments.) (Note: these are my suggestions; study authors didn’t discuss this.) 
+			  
+			  Yes, stock market speculators today are already far from randomly selected from the general population, and are thus already “elite” in that sense. Even so, while the 1300 forecasters in the above study were far random samples of the public, only letting the top 2% of them participate was a win in the above study. Thus only letting the top 2% of wannabe stock speculators trade in real stock markets is plausibly also a win for stock market price accuracy. (Note: the study authors admit they choose the 2% figure somewhat arbitrarily, so a wide range of selectivity, maybe 0.5% to 10%, might work about as well.)
+			  
+			  To prevent others from speculating, we might force hedging trades to be made via long-delay call markets, which [pushes](https://www.overcomingbias.com/p/are-financial-markets-too-short-term) out speculators with shorter-fuse info, or via regulators verifying their legit hedging needs (e.g, regular paycheck deposit, withdraw for retirement, or big medical expense). And we might insist that hedgers focus on general index funds unless they can show reasons to trade more specific assets. 
+			  
+			  One problem with this is that most of profits made by winning speculators today come from the losses of less elite speculators, not from hedge traders. And if we could better segregate hedge traders into call markets, elite speculator profits would be even smaller. Thus unless we could subsidize elite-only stock markets, perhaps via automated market makers, elite speculators would be fighting over a much smaller pool of profits than today, which would likely cut into price accuracy. 
+			  
+			  Another problem is that it would be hard to prevent speculator contestants from privately buying winning trades, turning this elite selection process into more of a monetary auction. Other professional credentialing processes today use schools and tests, where it is harder to just buy success.
+			  
+			  But even if we can prevent contest cheating, and subsidize elite stock market speculation, I fear corruption of elite speculator certification. That is, the official organization in charge of deciding who qualifies as elite speculators may succumb to pressures to favor some groups, and to be overly restrictive to favor insiders. And once you imagine official consensus on legal, policy, or science questions being set by financial markets prices, you can imagine all the more possible pressures to control who is allowed to influence such prices.
+			  
+			  For now, I recommend that robust public institutions built using financial markets let as many parties as possible trade in them, even foreigners. But yes, I remain open to the possibility that we could eventually learn well enough how to usefully constrain participation, and to prevent special interests from capturing selection powers. And if I were running a large set of markets for some private owner, I’d be more open to constraining participation to speculative elites.
+	- [Why web3 matters: Harnessing DePIN and ReFi as a Force for Good | by Mark C. Ballandies | WiHi — Weather | Feb, 2024 | Medium](https://omnivore.app/me/why-web-3-matters-harnessing-de-pin-and-re-fi-as-a-force-for-goo-18d82457b06)
+	  collapsed:: true
+	  site:: [WiHi — Weather](https://medium.com/wihi-weather/why-web3-matters-harnessing-depin-and-refi-as-a-force-for-good-e693be80fff3)
+	  author:: Mark C. Ballandies
+	  date-saved:: [[02/07/2024]]
+	  date-published:: [[02/02/2024]]
+		- ### Content
+		  collapsed:: true
+			- ![](https://proxy-prod.omnivore-image-cache.app/700x400,sh5jiuabk8tjpqd6Zfu9A8hNj5IPxHd3r28RoEO8qK1o/https://miro.medium.com/v2/resize:fit:700/1*WVE12HnT6VNSHlVdBeMMsA.png)
+			  
+			  web3 has an image problem. It is frequently perceived by the external world as an unproductive endeavor, steeped in unproven concepts and devoid of tangible, real-world advantages. This skepticism is multi-faceted: Investors question whether web3 projects can achieve product-market fit, regulators express concerns over the sustainability and utility of these systems, such as energy consumption, and their safety, including scam risks. And, the public, [despite evidence suggesting effectiveness](https://medium.com/coinmonks/complex-systems-part-2-managing-complexity-with-bottom-up-solutions-9d6fadd88cc4), increasingly doubts whether web3’s foundational values — decentralization, autonomy, and ownership — are truly efficacious in tackling humanity’s challenges, or if they simply contribute to greater disorder.
+			  
+			  However, the rise of new web3 sectors like Decentralized Physical Infrastructure Networks (DePIN) and Regenerative Finance (ReFi) are providing the crypto space for the first time with compelling narratives and products for the public. These innovations not only make revolutionary ideas such as co-ownership more accessible to a wider audience but also offer persuasive reasons to dispel prevailing doubts on cryptos positive impact. By leveraging web3 tools such as smart contracts, DAOs, NFTs, and token incentives, these verticals are at the forefront of a global movement for the betterment of human society and nature. They tackle critical issues like sustainability and enhance quality of life for everyone, demonstrating the potential of blockchain technology and its concepts for a positive, lasting real-world impact.
+			  
+			  This article explores this emerging potential of web3 as a powerful force for positive change and illustrates how it can establish a significant mainstream presence. It suggests initiating a cohesive, global movement by emphasizing the importance of leadership, the art of being a first follower, and collective action in driving transformative trends. Happy reading.
+			  
+			  \#\# DePIN & ReFi — Two promising web3 verticals
+			  
+			  \#\# Decentralized Physical Infrastructure Networks (DePIN)
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/700x394,sxQ0sEqesfewJXP4rW2Pr8fJEikPtNyRFrQCWsZ-VXp8/https://miro.medium.com/v2/resize:fit:700/1*Az_TjU8pWDk40cFbwaqWmA.jpeg)
+			  
+			  Source IoTeX: <https://iotex.io/blog/depin-landscape-map/>
+			  
+			  Decentralized physical infrastructure networks (DePINs) build different types of infrastructure serving markets ranging from energy over mobility to weather. They are a new vertical in the web3 that drive real-world demand by entering and extending established markets, hence solving one of the web3’s main problems and in this way enabling a new wave of crypto adoption.
+			  
+			  In particular, [DePINs are three sided markets](https://medium.com/wihi-weather/depins-are-three-sided-markets-an-evaluation-guide-for-investors-to-access-decentralized-8f82273c8d02) which enable them to construct customer-facing products (e.g. mobile plans ([Helium](https://www.helium.com/5G)), GPS positioning improvements ([onocoy](https://www.onocoy.com/)), or weather & climate intelligence ([WiHi](http://www.wihi.cc/))) using methodologies and approaches from traditional business modeling (e.g. problem-solution fit, product-market fit, etc.) and thus enabling web3 projects to demonstrate investors that they have utility (resp. enable investors to access their market/ make a valuation).   
+			  Also, regulators and governments are immediately getting the usefulness of having functioning and well-maintained public infrastructures such as in energy, GPS positioning, or [mapping](https://www.proto-geo.xyz/) ([proto](https://www.proto-geo.xyz/)) and explains their recent strategic investments in projects such as [srcful ](https://twitter.com/frahlg/status/1724846753105473761)or [onocoy](https://www.euspa.europa.eu/newsroom/news/eu-space-start-ups-claim-victory-myeuspace-competition). In addition, what increasingly convinces the general public of web3’s potential is seeing that its values such as co-ownership and decentralization can construct global infrastructures ([see Helium](https://explorer.helium.com/)). Finally, this realization is supported by research results that are slowly spreading in the public that such systems[ are actually the more resilient and efficient](https://medium.com/coinmonks/complex-systems-part-2-managing-complexity-with-bottom-up-solutions-9d6fadd88cc4) way to build global infrastructures compared to hierarchical top-down management..
+			  
+			  DePIN uses web3 concepts such as tokens to crowdsource investment cost in infrastructures and align diverse stakeholder behind a collective identity, and DAOs to coordinate the emerging complex and interdependent networks of action. This drives their capital and operational expenditures down when compared with traditional and hierarchical approaches (e.g. by governments or large corporations) and facilitates a much quicker infrastructure build out, and thus ultimately a better, cheaper and more resilient service to end-customers.
+			  
+			  \#\# **Regenerative Finance (ReFi)**
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/700x451,sIhOv1zgcK5ufNwGdKMJcOVhGPLSlsfRJtpXKcOdiT9Y/https://miro.medium.com/v2/resize:fit:700/0*YC086ZTapqodWP5y)
+			  
+			  Source: <https://mirror.xyz/%5Fnext/image?url=https%3A%2F%2Fimages.mirror-media.xyz%2Fpublication-images%2FwLsGIoGZtCu%5F2%5FNZtFpO4.png&w=3840&q=75>
+			  
+			  Regenerative finance is an umbrella term for web3 projects that have a positive impact on the environment and nature. In particular, they are addressing the sustainability crisis we are in.
+			  
+			  For instance, ReFi projects such as [sunrise stake](https://www.sunrisestake.com/) or [coral tribe](https://www.coraltribe.io/) use web3 to solve the [Climate Action Trilemma](https://akshay93aditya.substack.com/p/the-climate-action-trilemma-for-the) of low-income areas: In the past, using traditional non-web3 mechanisms, only two of the following three conditions could be fulfilled at the same time: i) Financing of a project, ii) Speed of (climate) Action, and iii) Socio-economic development of a region. Now with web3 we can provide the financing of e.g. climate-positive projects (via tokens), facilitate speed of action (via self-organization and collective intelligence, e.g. DAOs) and improve the socio-economic status of participating actors (via co-ownership). Moreover, by relying on the autonomy of its actors and the permissionless nature of these systems, web3 allows everyone to co-create and shape those systems, hence the approach is using local knowledge of environments and context to have a sustainable, lasting and efficient impact in a particular region, which is orchestrated on a global scale, ultimately resulting in a global movement towards a more holistic and sustainable life. This gives not only empowerment, autonomy and thus a sense of meaning and agency to people on the ground (e.g. web1 and non-digitals), [but is also increasingly recognized by governments and regulators as the way forward to address humanity’s global challenges](https://www.undp.org/blog/think-globally-act-locally).
+			  
+			  \#\# Building a movement with DePIN and ReFi
+			  
+			  So, DePIN and ReFi leverage web3 technologies (like token incentives and DAOs) to address real-world challenges, offering a ‘triple win’ for web3, individuals, and society by enhancing global living standards and aligning with sustainability goals.
+			  
+			  The task remaining is to educate the public about this beauty and improve web3’s image.
+			  
+			  For this, we think that we, web3, need to unite (again) under a single banner, focusing on _real-world impacts and products_, to transition from digital to real-world relevance. Historically, web3 has periodically converged into movements such as DAOs, DeFi, and NFTs, amplifying their mainstream appeal and diversifying participation. Each convergence sparking wider adoption and enriching the ecosystem.
+			  
+			  We think that DePIN and ReFi are poised to be the unifying themes for web3, promising to permeate all aspects of life, including non-digital communities, with sustainable solutions and robust infrastructures. This could lead to a significant and potentially final crypto bull run, fully integrating web3 into mainstream society, with future applications being more rational and problem-specific.
+			  
+			  > The challenge left is to initiate this final, transformative web3 movement.
+			  
+			  \#\# Leadership Lessons from the shirtless dancing guy
+			  
+			  There is a pivotal short video of the shirtless dancing guy (3 min) illustrating comprehensibly how to create a movement — please make sure to watch it (and re-watch it — its a classic! Kudos to [Sarah Rietze](https://www.linkedin.com/in/sarahrietze/) for showing us).
+			  
+			  Let’s summarize the creation of a movement.
+			  
+			  \#\# The starting point: A leader
+			  
+			  It needs a lone nut with a great idea/ vision who goes out and stands there for her or himself. In particular, the leader has to expose himself up to the extent that he or she can look ridiculous. The leader and the idea have to be public. Moreover, the leader has to perform simple and instructional things to manifest the idea, which is key— it has to be easy to follow. Finally, the leader has to nurture the first few followers as equals, encourage them to act! It is not about him, its about the idea.
+			  
+			  Applied to crypto, Satoshi has been this lone nut. In the beginning it might have looked ridiculous (hence maybe the anonymity), but the idea was public — [the whitepaper and software where released by Satoshi via SourceForge as open source](https://www.techtarget.com/whatis/feature/A-timeline-and-history-of-blockchain-technology). Bitcoin is now on GitHub..  
+			  Hence, it was easy to follow (for developers) — and they all automatically became equal, because the only thing which defines membership in Bitcoin is hashing power of a miner which anyone can deploy.   
+			  Finally, Satoshi stepped back in 2010 and let the first followers take over, demonstrating that the whole thing is not about him.
+			  
+			  \#\# The pivotal moment: The First Follower
+			  
+			  > If leader is the flint, the first follower is the spark that makes the fire
+			  
+			  The first follower plays a crucial role — it transforms the leader from being a lone nut into being one. In particular, they show publicly how to follow. For this, like the leader, they need to have the guts to be ridiculed.   
+			  In order to make the movement successful, those followers need to be empowered to call their friends in to join from their own capacity.
+			  
+			  First followers in Bitcoin where amongs others the guy who bought the pizza, or [Gavin Andresen](https://en.wikipedia.org/wiki/Gavin%5FAndresen) who was standing behind Bitcoin with his name.
+			  
+			  \#\# The turning point: Second Follower(s)
+			  
+			  The second follower(s) are the turning point — They prove that the first have done well, or in the words of the video “Its not a lone nut, and not two nuts, there is a crowd and a crowd is news”.
+			  
+			  This is the point where the movement needs to get public (in contrast to the idea getting public). In general, a movement must be public. It also has to be clear that the public sees more than just the leader. In particular, everyone needs to see the followers, _because followers create new followers_, not the leader.
+			  
+			  In terms of Bitcoin, there were many second followers, but the most important one probably is Ethereum. They brought blockchain into the public awareness with [THE DAO](https://en.wikipedia.org/wiki/The%5FDAO).
+			  
+			  \#\# Tipping point: The crowd is following
+			  
+			  When everything has been put in place, there comes the moment, where it is no longer risky to jump in — new joiners won’t stand out, they won’t be ridiculed and if they hurry, they might even be part of the in-crowed.  
+			  Eventually, the remaining people will need to join because otherwise they will start being ridiculed for not joining. This is the point where the movement turns into a collective action.
+			  
+			  The tipping point for web3 will be reached when non-crypto people join the space not because they want to speculate, but when they want to contribute to a better world, respectively they are simply receiving a better service and do not want to miss out.
+			  
+			  \#\# Don’t forget: The environment
+			  
+			  The most important thing that has not been mentioned in the previous video is that a movement actually requires the right milieu. The video takes clearly place in a festival, so people already have the basic prerequisites to join a dancing movement — namely the _intrinsic motivation_ to dance.
+			  
+			  In terms of Bitcoin, the right milieu has been the financial crisis and the previous work and discussion on creating digital money which created a group of IT-affine people among which the idea could spread in the early days.
+			  
+			  \#\# Collective action is now
+			  
+			  Our engagement in Decentralized Physical Infrastructure Networks (DePIN) and Regenerative Finance (ReFi) has proven us that crypto ideas and values are well-received by non-web3 audiences. From hardware enthusiasts maintaining stations over academics working on weather forecasting or AI research to governmental agencies and small and medium-sized companies — all of them are looking forward to greater co-operation, co-ownership and co-creation.
+			  
+			  This signals us that the time for real-world crypto utility and adoption is now. In particular,
+			  
+			  > The environment is ready to be pollinated by web3.
+			  
+			  Nevertheless, we need a strategic approach:
+			  
+			  1. The web3 community has to unite around DePIN and ReFi, either by adopting existing projects or initiating new ones.
+			  2. Then, web2 individuals have to be involved in these projects, particularly those interested in DePIN and ReFi-related fields like hardware or sustainable finance, is crucial. Their feedback so far as ‘second followers’ has been very positive and encouraging.
+			  3. Finally, the movement needs to become public for bridging the gap between web2 and web3, enhancing mainstream awareness and adoption.
+			  
+			  These steps will help transition web3 from a niche to a significant influence in addressing global challenges.
+			  
+			  > “The best way to make a movement, if you really care, is to courageously follow and show others how to follow”
+			  
+			  Be a first follower and join this movement as a force for good!
+			  
+			  No clue where to start? Check out this list of awesome projects bringing web3 to the real world:
+			  
+			  [DePIN and ReFi — Executive summaries on sustainable web3 projects with real world utility](https://medium.com/@bcmark/depin-and-refi-executive-summaries-on-sustainable-web3-projects-with-real-world-utility-d2c8bae7b88e)
+	- [How I take Notes: Putting Theory into Practice](https://omnivore.app/me/how-i-take-notes-putting-theory-into-practice-18d802025ec)
+	  collapsed:: true
+	  site:: [substack.com](https://substack.com/inbox/post/108663756)
+	  author:: Substack
+	  labels:: [[note-taking]]
+	  date-saved:: [[02/06/2024]]
+		- ### Content
+		  collapsed:: true
+			- In the [first part](https://hybridhacker.email/p/how-i-take-notes-mastering-the-basics) of the "**How I Take Notes**" series, we covered some basic theory and principles of note-taking. The goal wasn't to be comprehensive, but rather to introduce you to concepts that will help you understand the practical part I'll be sharing with you today.
+			  
+			  However, note-taking is a vast and constantly evolving field, with various methodologies. But remember, **there's no right or wrong way to take notes**. The most important thing is to **find a system that works best for you**, based on your personal needs, style, and habits.
+			  
+			  In this issue, I'll be sharing my own approach to note-taking, with the hope that it will provide you with some inspiration to enhance your own process. While my approach may not be the perfect fit for you, I believe that it's always useful to learn from others and discover new techniques that can improve our productivity and creativity. 
+			  
+			  So, without further ado, let's dive right in!
+			  
+			  We already talked about the importance of processing notes and how PARA and Zettelkasten methods can help with that. But what exactly is a note-taking workflow?
+			  
+			  A note-taking workflow is a structured process for capturing, organizing, processing, and reviewing information using a note-taking system. It involves multiple stages, such as:
+			  
+			  * 🎣 **Capturing notes**. This initial step involves using a specific tool like a notebook or a digital note-taking app to capture notes.
+			  * 🗂️ **Organizing notes**. In this step, notes are organized by topic, category, or other criteria, making them easy to find and retrieve later.
+			  * ⚙️ **Processing notes**. This step entails reviewing and analyzing the notes, extracting key information, and transforming them into a more permanent form, such as literature notes and evergreen/permanent notes.
+			  * 👀 **Reviewing notes**. This step involves regularly reviewing notes to reinforce learning and identify new connections and insights.
+			  * 🧹 **Clean notes**. This last step is crucial to be sure that you keep your system clean and efficient.
+			  
+			  A good note-taking workflow should be flexible, efficient, and effective, enabling the user to capture and retain important information, retrieve it easily, and use it to achieve their goals.
+			  
+			  \#\# 🗄️ Building a Note-taking System
+			  
+			  Good note-taking methodologies and efficient workflows are the most important parts of what is called a note-taking system. But there’s one last bit missing.
+			  
+			  While we've discussed effective methodologies and workflows for note-taking, **selecting the right tools is equally important** and part of the note-taking system itself. In theory, you can use pen and paper to implement what we've seen so far, but we are in 2023, and we of course want to take digital notes. 
+			  
+			  Several apps are available for note-taking, and while all of them are potentially suitable for handling complex processes, some make life more manageable. 
+			  
+			  Apple Notes, MS OneNote, Simple Notes, and others are all suitable for basic note-taking, but they don't offer tools to process, link, and review notes.
+			  
+			  Here's a list of tools that are much more suitable for our purpose:
+			  
+			  * [Obsidian](https://obsidian.md/) (my choice)
+			  * [LogSeq](https://logseq.com/)
+			  * [Notion](https://www.notion.so/)
+			  * [Roam Research](https://roamresearch.com/)
+			  * [Joplin](https://joplinapp.org/)
+			  * [Reflect](https://reflect.app/)
+			  
+			  All of these tools have their unique features, but **I recommend Obsidian** for its **simplicity**, **active community**, and **wide range of plugins** that extend its functionality. It's an excellent tool that can help you capture and organize information in a way that is both useful and accessible.
+			  
+			  So if you haven't already, please [download Obsidian](https://obsidian.md/) and start exploring it. 
+			  
+			  \#\# 🚶‍♂️First Steps with Obsidian
+			  
+			  At first, Obsidian might seem daunting due to its extensive range of options and functionalities. However, as you familiarize yourself with the app, you'll grow to appreciate its powerful capabilities.
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1456x793,s-W8kZgdDqDyo0EygrnVCBAGSloCkiX8-AJ35DmXmZk4/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb7d18f2d-63ad-4f6c-946a-9e139415bc51_1914x1043.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fb7d18f2d-63ad-4f6c-946a-9e139415bc51%5F1914x1043.png)
+			  
+			  Obsidian is a Markdown editor that enables you to perform basic tasks such as:
+			  
+			  * **📝 Creating documents in markdown format**
+			  * **📄 Utilizing templates to generate documents**
+			  * **👀 Previewing formatted documents**
+			  * **🗄️ Organizing documents within folders**
+			  * **🔗 Linking documents to one another**
+			  * **\#️⃣ Tagging documents**
+			  * **📅 Creating daily notes**
+			  
+			  These features alone provide a solid foundation for implementing an effective note-taking system and applying the methodologies we've discussed earlier. However, Obsidian also offers additional functionalities that elevate note-taking to new heights:
+			  
+			  * **🔙 Backlinks, which show you where notes are connected**
+			  * **📊 Graph view, providing a comprehensive, bird's-eye view of all your notes**
+			  * **🔁 Sync (paid), allowing you to back up your notes in the cloud**
+			  * **🎨 Themes, offering customization for the appearance of your interface**
+			  * **🧩 Plugins (core and community), which expand existing functionalities**
+			  
+			  Numerous tutorials, videos, and communities are dedicated to Obsidian, and while this article isn't intended as an Obsidian tutorial, I highly recommend exploring the app on your own. 
+			  
+			  Although this workflow can potentially work with any note-taking app, from this point on, all examples presented will refer specifically to Obsidian.
+			  
+			  \#\# 🚀 My Note-taking System
+			  
+			  While I love the note-taking methodologies I've described (PARA, Zettelkasten), taking them literally wouldn't be entirely compatible with my needs. For example, PARA is based on the **actionability of notes and folder structure**, while Zettelkasten counts on links, and ideally, **folders shouldn't be used**.
+			  
+			  That's why I use an hybrid approach, taking the best parts of different methods:
+			  
+			  * **PARA to manage actionable things and generic knowledge about my interests**
+			  * **Zettelkasten for complex and conceptual notes**
+			  * **Additional folders for journaling, personal stuff, people, and system things**
+			  * **Johnny Decimal system to glue everything together (more on that later)**
+			  
+			  So let's dive into my notes organization.
+			  
+			  \#\#\# 📅 Journaling
+			  
+			  This is where everything starts. Every morning, the first note that automatically opens in my Obsidian vault is the daily note in the Journal folder. For this daily note, I created a template to record recurring things like:
+			  
+			  * **🏃 Morning routine**
+			  * **📝 Notes of the day**
+			  * **⛏️ Discovered today**
+			  * **🔗 Interesting links**
+			  * **🤩 Mood**
+			  
+			  This note is my companion throughout the day. At the end of the day or week, I process it.
+			  
+			  \#\#\# 🗂️ PARA
+			  
+			  Together with the Journaling folder, I have the PARA structure with Projects, Areas, Resources, and Archive folders. This is where I store and keep the notes and notions that are more actionable.
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1456x443,s2uXZ1MnAkXlMCLGhZR8zOSQt6Q03ugfGmlvWMbuJayI/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F3e455e9a-316d-4534-9fc1-0a35cb10f4d9_1471x448.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F3e455e9a-316d-4534-9fc1-0a35cb10f4d9%5F1471x448.png)
+			  
+			  * In the **Projects** folder, I keep things related to specific projects, such as my newsletter, work projects, and side projects. Just one folder for each project, no nested folders.
+			  * In the **Areas** folder, I collect things that are still actionable but have no fixed deadlines. Subfolders for work and essays are examples.
+			  * In the **Resources** folder, I keep mainly notions about my interests, such as Technology, Cooking, and Outdoor folders.
+			  * Lastly, I have the **Archive** folder where I put completed elements from the above folders.
+			  
+			  \#\#\# 🧠 Neurons
+			  
+			  The Neurons folder is where I implement the Zettelkasten method. This method involves creating small, individual notes or "neurons" that can be linked together to form a network of knowledge. Within the Neuron folder, I have several subfolders to categorize my notes.
+			  
+			  * **Fleeting Notes**: These are quick, informal notes that capture a passing thought, idea, or observation. They are not necessarily meant to be kept long-term, but can be useful for sparking creativity or brainstorming.
+			  * **Literature Notes**: When reading a book, article, or a tweet, I take notes on important concepts, ideas, or quotes that I want to remember. These notes can be used to summarize the material, draw connections to other concepts, or provide support for future writing or research.
+			  * **Evergreen Notes**: These are more comprehensive notes that capture deeper insights, analyses, or ideas. They are meant to be more permanent and can be used as building blocks for future writing, essays, or thinking.
+			  
+			  Using the Zettelkasten method and these subfolders within the Neurons folder, I can easily link related notes together and create a network of knowledge that can be easily navigated and expanded upon.
+			  
+			  \#\#\# 👥 Humans
+			  
+			  The "Humans" folder is where I keep track of people and companies that I find interesting or relevant to my work and personal interests. Within this folder, I use templates to record information about:
+			  
+			  * **Contacts**: This includes people I know personally or have worked with, as well as people I've met at events or through online communities.
+			  * **Influencers**: I follow a number of thought leaders, bloggers, and other influencers in various fields. In this section, I keep notes on their work and ideas, as well as links to their websites, blogs, and social media profiles.
+			  * **Companies**: I'm always on the lookout for interesting startups and businesses that are doing innovative things. Here, I keep notes on companies I'm researching or following, including their mission, products or services, and any news or updates I come across.
+			  
+			  Using this system, I can quickly access information about the people and companies that are important to me, and stay up-to-date on their latest activities and ideas.
+			  
+			  \#\#\# ⚙️ System
+			  
+			  This section typically includes templates, attachments, drawings, and other system-level elements that support your note-taking workflow.
+			  
+			  Templates can be particularly useful in this section. You can use templates to standardize the structure and content of your notes, making it easier to find and retrieve information later. Templates can be as simple as a blank document with a consistent header or footer, or they can be more complex, with multiple sections and pre-filled information. For example, you could create a template for meeting notes that includes a section for attendees, agenda items, and action items.
+			  
+			  \#\#\# 👨‍💻 Johnny.Decimal
+			  
+			  While I agree with the "less folders, the better" approach, I find both PARA and Zettelkasten too strict. For this reason, I use [Johnny.Decimal](https://johnnydecimal.com/).
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/800x400,sPAZPkm0qlJUSJjN6zc_-TAchn8SRywKHyyJIBjzVJm4/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F695bed65-1061-4e80-93cd-7431659f4eef_800x400.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F695bed65-1061-4e80-93cd-7431659f4eef%5F800x400.png)
+			  
+			  Johnny.Decimal is a system for organizing digital files and information. It uses a decimal numbering system to create a hierarchy of categories and subcategories. Each level of the hierarchy is separated by a decimal point. For example, a category might be assigned the number 100, and subcategories within that category might be assigned numbers such as 110, 120, and so on.
+			  
+			  As you may see from the screenshot above, I use it in a bit different way, but the concept is pretty similar.
+			  
+			  This system makes it easy to find and organize information quickly and efficiently. 
+			  
+			  \#\# 👉 Conclusion
+			  
+			  Today we covered:
+			  
+			  * **Note-taking workflows**
+			  * **Note-taking systems**
+			  * **Obsidian** (the software I use to take notes)
+			  * **A quick look at how I process my daily notes**
+			  * **A quick look at how I organize all my notes** (folders and Johnny Decimal system)
+			  
+			  What's next? Here's my suggestion:
+			  
+			  * 👀 Carefully read both issues ([part 1](https://hybridhacker.email/p/how-i-take-notes-mastering-the-basics) and this one) of How I take notes and be comfortable with the basic concepts
+			  * 💾 [Download Obsidian](https://obsidian.md/) and become familiar with it
+			  * 🧭 Explore all the options Obsidian provides and become familiar with concepts like Core Plugins and Community Plugins
+			  * 💭 Think about the information that is relevant in your life and based on their actionability, decide where it could fit in
+			  * 🏗️ Start building your personal knowledge system!
+			  
+			  Be aware, I know it can initially seem daunting and like something that requires a lot of effort. But the more you get into note-taking, the more you will discover how it can make you more productive, organized, and effective in what you do. 
+			  
+			  Don’t be afraid to try it out and don’t aim to get everything done immediately. Building a note-taking system is something that can take months if not years, and it's a continuous process of evolution, so it's a never-ending effort. 
+			  
+			  🚀 **The important thing is to start!**
+			  
+			  \#\# 🎁 Download My Obsidian Base Vault
+			  
+			  As a Paid Subscriber, you can download my Obsidian Base Valut from [here](https://drive.google.com/file/d/1ZWBsuXrmbaYTXaw1%5FKEQMoZr9pH9zNGz/view?usp=drive%5Flink).
+			  
+			  \#\# That’s all folks
+			  
+			  That's all for today! As always, I would love to hear from my readers (and if you've read this far, you're definitely one of the good ones). Please don't hesitate to add me on [LinkedIn](https://www.linkedin.com/in/nicolaballotta) or [Twitter](https://twitter.com/nicolaballotta) and send me a message; I always respond to everyone.
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/80x0,saMWw-royHVUzsypndZKZsdJbmA_ktOhBYR1uySVC0hY/https://substackcdn.com/image/fetch/w_80,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2F54103c8e-f322-4beb-ae21-11a448db6190_400x400.jpeg)](https://substack.com/profile/189714-domitilla-ferrari?utm%5Fsource=post-reactions-face)
+	- [How I take Notes: Mastering the Basics - by Nicola Ballotta](https://omnivore.app/me/how-i-take-notes-mastering-the-basics-by-nicola-ballotta-18d801feb14)
+	  collapsed:: true
+	  site:: [substack.com](https://substack.com/inbox/post/106938195)
+	  author:: Substack
+	  date-saved:: [[02/06/2024]]
+		- ### Content
+		  collapsed:: true
+			- I'm honest, if I had to start this essay from a blank page, I'd probably spend hours looking at the blinking cursor without writing a single character. But luckily enough, I've been thinking about this post for weeks now, and guess what? I have all my notes about it, which made starting the piece much more straightforward.
+			  
+			  When I was younger, precisely in school, **I literally hated taking notes**. I know people who still love to show their school notebooks and diaries, full of notes, schemas, drawings, schedules, and writings. I also still have mine at my parents' house, and you could probably sell them as new.
+			  
+			  I was so arrogant as to pretend to record everything in my head. Well, I did that for a long time, and I was also good enough at it. But unfortunately, **our brain's capacity is limited** (approximately **2.5 Petabytes of storage** according [Scientific American](https://www.scientificamerican.com/article/what-is-the-memory-capacity/)), and so at one point, my brain started overflowing, losing information. This is when I started taking notes, and this is also where **my life changed**.
+			  
+			  Someone might think note-taking is just about recording informations, but it's not. I said note-taking literally changed my life, and it was not just a catchy phrase. If you ask yourself why you take notes, the first answers that will come to your mind would probably be "_**to not forget important things**_" or "_**to organize my knowledge**_". And for sure, **these are good reasons to take notes**, but there are also other aspects that probably are not so evident at first glance.
+			  
+			  Some of the benefits of note-taking, especially if done the right way, include:
+			  
+			  * 🧠 **Increased memory efficiency**. Writing is a very good way to impress things in your brain and exercise it.
+			  * ✍️ **Become better at writing**. Taking notes means writing more, and the more you write, the better you become at it.
+			  * 📖 **Become better at reading**. As for writing, reading is a huge part of note-taking.
+			  * 🤓 **Improved understanding**. Writing notes means processing information (we will see after how) and processing information helps better understand concepts.
+			  * 👮‍♂️ **Increased discipline**. As you may imagine, to be good at all the points I mentioned before, you need to be disciplined, and writing notes is a good way to become it!
+			  
+			  Another **common misconception is that** **taking structured notes is just for researchers or students**. Nothing could be further from the truth.
+			  
+			  Taking notes is simply for everyone. It's just a process, **a habit that you establish in your everyday routine** that helps process and keep track of any kind of information. It doesn't matter if you are tracking your research in neuroscience, your fitness progress, your mood, or your cooking recipes; it works the same way.
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1019x457,sDHjRo1Jy-zMfe6NryEmMkxpQiu5a441sU0nuQaQYknI/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F73d2d758-3490-40f8-a556-e5435efa4302_1019x457.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F73d2d758-3490-40f8-a556-e5435efa4302%5F1019x457.png)
+			  
+			  There's **an input**, you decide if this input **is relevant** for you, if it is **you process it** and then you store it in a note. Easy peasy.
+			  
+			  \#\# 📚 A Bit of Theory
+			  
+			  When you start delving deep into note-taking, **you will discover an entirely new world**.
+			  
+			  There are entire books about note-taking, methodologies to organize your notes, to grow them, and at one point, to make them yours. It would probably take many issues of this newsletter to go through them all. For the scope of this essay, which is **to share the way I take notes** and **introduce you to this world**, I will just go through some concepts that you will see used in the more practical part.
+			  
+			  \#\#\# PKM vs PKD
+			  
+			  Note-taking refers to the action of recording information in a place of your choice, such as a notebook, text file, dedicated software, database, etc. However, it is often put in relation to **Personal Knowledge Management** (PKM).
+			  
+			  Personal Knowledge Management refers to the **process of** **collecting, organizing, and managing one's own personal knowledge** and information in a way that is useful and accessible.
+			  
+			  Some people also make a further distinction between Personal Knowledge Management and **Personal Knowledge Development** (PKD). While the former involves collecting and organizing notes, the latter refers to the **process of acquiring, organizing, and integrating new information and experiences into one's existing knowledge base**. It involves actively seeking out new information, reflecting on one's experiences, and making connections between new and old knowledge.
+			  
+			  \#\#\# P.A.R.A.
+			  
+			  The P.A.R.A. method is a note-taking and personal knowledge management system created by [Tiago Forte](https://fortelabs.com/), a productivity and organization expert.
+			  
+			  P.A.R.A. stands for **Projects**, **Areas**, **Resources**, and **Archives**, and the main idea is to organize your notes **based on their actionability**.
+			  
+			  * 📂 **Projects** \- This section is designated for your ongoing projects. A project refers to a series of tasks that are linked to a specific objective and must be completed within a **defined timeframe**. These tasks represent the **tangible actions** you intend or must undertake.
+			  * 📍**Areas** \- This section contains **ongoing activities** that are **still actionable** but **do not have a fixed deadline**, such as work notes, writing, personal finance, and maintaining one's health. These are tasks that demand regular maintenance and attention. As these activities are consistently monitored, new projects may emerge from this section.
+			  * ⛏️ **Resources** \- This section serves as a r**epository for information on topics that pique your interest** or prove valuable to you. As the title implies, these are nuggets of knowledge that you wish to retain and consult at a later time.
+			  * 🗄️ **Archives** \- This section is designated for **storing items from the other three categories that have already been finished** or are no longer relevant. This includes items such as completed projects, inactive areas, or resources that you no longer wish to actively manage.
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1019x457,s2ypoZipZ0YGspNkXQD6U3Zvh4roiqo1_orv4pwksWRY/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F67fa7065-82f3-47ee-adfc-3de16d299332_1019x457.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F67fa7065-82f3-47ee-adfc-3de16d299332%5F1019x457.png)
+			  
+			  According to Tiago Forte, **these are the four folders you should have** to organize your knowledge and where to put your notes.
+			  
+			  As you may have noticed, while the Projects and Archives sections are pretty clear sections, the **Area and Resources sections are less defined and could overlap**. Don't worry too much about this; these are just guidelines and inspirations. You can decide how to manage your knowledge!
+			  
+			  Personally, I use the Area folder for work-related notes, essays, etc. - things that regularly change and are more actionable. While I put most of the things I'm interested in (e.g. Technology, Cooking, Outdoor) in the Resources folder. You will find people who choose where to put things based on how personal they are and others who put just files, schemes, drawings in the Resource folder. **Do whatever you feel is right for you**.
+			  
+			  \#\#\# Zettelkasten
+			  
+			  Zettelkasten is **something in between a knowledge management and development system** that was ideated by German sociologist [Niklas Luhmann](https://en.wikipedia.org/wiki/Niklas%5FLuhmann). The name "Zettelkasten" means "slip box" or "index card system" in German, and it refers to a physical or digital collection of notes that are stored and organized in a specific way to aid in idea generation and knowledge organization.
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/1019x457,s8SBE167FS-8exOGcVTi22tNLHeZwEmUOrXh8TdqPe4U/https://substackcdn.com/image/fetch/w_1456,c_limit,f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4e0dded0-9b30-4220-8f03-44f8f68ad820_1019x457.png)](https://substackcdn.com/image/fetch/f%5Fauto,q%5Fauto:good,fl%5Fprogressive:steep/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F4e0dded0-9b30-4220-8f03-44f8f68ad820%5F1019x457.png)
+			  
+			  In a Zettelkasten system, **each note is created on a separate card or digital file**, with a unique identifier, date, and title. The notes are then organized by topic or theme and **connected to other relevant notes through a system of links or tags**. The goal of this system is to allow for flexible and creative idea generation and organization, as well as to enable effective retrieval and synthesis of information.
+			  
+			  The Zettelkasten methodology has three fundamental concepts:
+			  
+			  * 📥 **Fleeting Notes** \- These are notes in their most primitive stage. Whenever something sparks your interest, an idea, or something you want to explore further, you should quickly take note of it. For example, "I see a relation between Availability and Accountability in remote working." This should be a **brief but meaningful note**. It's not important how you write it or if it contains typos. You can see it as a reminder that needs to be processed later.
+			  * 📚 **Literature Notes** \- These notes are useful when you want to reference something that already exists, such as a theory, idea, or notion. Ideally, even if it's coming from an external source, **you should write this note in your own words**. However, some notes can be copy-pasted.
+			  * 🍀 **Permanent Notes** \- This is one of the most important pieces of the Zettelkasten method. While Literature Notes are thoughts coming from third parties, **permanent notes** (also known as Evergreen Notes) **reflect your thoughts**. They could be influenced by Literature Notes, but they should always include your personal thoughts on a particular topic.
+			  
+			  For Zettelkasten, you should only have these three folders. However, finding notes could become difficult, so how can you find them effectively? In Zettelkasten, there are two more concepts that are crucial:
+			  
+			  * 🔗 **Links** \- As we saw before, the main idea is to take atomic notes that you can process and elaborate on. But these notes are not very useful alone. That's why linking is one of the core principles of Zettelkasten. Linking multiple notes together can make them much more powerful.
+			  * 🏷️ **Tags** \- All your ideas and notes, following the Zettelkasten approach, are scattered in these three folders. That's why you should always use tags. Tags make it easy to find things.
+			  
+			  I know these are a lot of concepts all together. Please consider that there are entire books discussing Zettelkasten (see the resources section), so it's challenging to condense everything in this article. But let me provide a real example to help you understand better.
+			  
+			  \#\#\#\# 🪚 A Practical Example
+			  
+			  Let's take the idea I mentioned earlier. Let’s pretend that while thinking or reading something, I came up with the idea that _Availability and Accountability are related when we talk about remote working_.
+			  
+			  This is what I would do (I actually did that before writing “[Balancing Availability and Accountability in Remote Working](https://hybridhacker.email/p/balancing-availability-and-accountability)”):
+			  
+			  * 📥 I take a quick fleeting note about my idea. It should **be meaningful** so I can come back to it later and understand what I was thinking about.
+			  * 📚 Meanwhile, I want to have a clearer idea of what Availability and Accountability are, so I start gathering information from the web (or reading a book, or watching videos), to better understand these concepts. When I have a better understanding, I **create a literature note for Accountability and one for Availability**, storing the information I got from third parties there. I also put meaningful tags so I can easily find these notes when needed.
+			  * 🍀 After thinking more about my idea, I decide it's time to transform it into something permanent. So I create a permanent/evergreen note. This note **is written in my own words and reflects my idea**, even though I can link the literature notes I created earlier to help contextualize. I also tag this note so it's easier to find when I need it.
+			  
+			  You see the power of this approach? I hope so, because we are just scratching the surface!
+			  
+			  \#\# Resources
+			  
+			  The concepts I explained earlier should be sufficient to understand the basics and approach the more practical guide that we will explore in the next part of this essay. If you wish to dive deeper, here are some interesting resources you can read.
+			  
+			  📚 **Books**
+			  
+			  * [How to Take Smart Notes](https://www.amazon.com/How-Take-Smart-Notes-Technique-dp-3982438802/dp/3982438802/) (Sönke Ahrens) - Probably the best and most famous book about Zettelkasten method
+			  * [Building a Second Brain](https://www.amazon.com/Building-Second-Brain-Organize-Potential/dp/1982167386) (Tiago Forte) - A must read for notes taking (includes the P.A.R.A method)
+			  
+			  🔗 **Links**
+			  
+			  * [Progressive Summarization](https://fortelabs.com/blog/progressive-summarization-a-practical-technique-for-designing-discoverable-notes/) \- How to write better and easily discoverable notes
+			  * [Writing Atomic Notes](https://zettelkasten.de/posts/create-zettel-from-reading-notes/) \- Good and practical examples on how to take atomic notes and process them
+			  
+			  \#\#\#\# 🗣️ Other
+			  
+			  * <https://www.reddit.com/r/NoteTaking/> \- Subreddit where to exchange informations on how to take notes
+			  * <https://www.reddit.com/r/Zettelkasten/> \- Subreddit dedicated to Zettelkasten methodology
+			  
+			  \#\# ⏩ What to Expect Next
+			  
+			  I know that all these concepts together, could seem intimidating, but they will be needed to understand the second and more practical part of my note-taking approach. In the next part of “How I take Notes” I will tell you:
+			  
+			  * How I process notes and transform them into meaningful knowledge
+			  * How my PKM workflow works
+			  * How I structured my PKM folders
+			  * How I use Obsidian to manage my PKM applying the principles I described
+			  
+			  \#\# ✌️ That’s all folks
+			  
+			  That's all for today! As always, I would love to hear from my readers (and if you've made it this far, you're definitely one of the bravest). Please don't hesitate to connect with me on [LinkedIn](https://www.linkedin.com/in/nicolaballotta) and send a message. I always respond to everyone!
 	- [Re: UMP / CORS: Implementor Interest from Mark S. Miller on 2010-04-22 (public-webapps@w3.org from April to June 2010)](https://omnivore.app/me/re-ump-cors-implementor-interest-from-mark-s-miller-on-2010-04-2-18d7afa5cb5)
 	  collapsed:: true
 	  site:: [lists.w3.org](https://lists.w3.org/Archives/Public/public-webapps/2010AprJun/0293.html)
