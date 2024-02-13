@@ -39,6 +39,7 @@
 	- The speaker uses a generator function to create a deck of cards without manually enumerating all the values, allowing for more complex or infinite sequences.
 	- Generators allow for lazy evaluation and infinite iteration without causing the program to run infinitely, as they pause until the next method is called.
 	- Lazy evaluation allows for the creation of potentially infinite sequences that can be manipulated and accessed as needed, making it possible to work with expensive computations and avoid crashing computers.
+- > Generators are both **iterators** and **iterables**.
 -
 - [15:03](https://www.youtube.com/watch?v=gu3FfmgkwUc&t=904) 🌟 Generators in JavaScript can create infinite animations and sequences, allowing for cool animations and easier manipulation of recursive data structures like trees.
 	- Generators in JavaScript can be used to create infinite animations, as demonstrated by the spinning text animation in the video.
