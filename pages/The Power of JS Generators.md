@@ -1,4 +1,6 @@
-## Key Insights
+-
+-
+- ## Key Insights
 	- 💭 Delving into the rabbit hole of generators can lead to some pretty mind-blowing discoveries and understanding of computer science concepts.
 	- 🔗 The symbol.iterator method in JavaScript allows for easy iteration over custom objects, providing a convenient way to create and manipulate iterators.
 	- 🔄 Generators allow for iteration over infinity and beyond, enabling lazy evaluation and infinite loops without breaking the computer.
