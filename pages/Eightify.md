@@ -1,2 +1,3 @@
 - [[Eventual Send: JS Support for Promise Pipelining]]
+- [[The Power of JS Generators]]
 -
