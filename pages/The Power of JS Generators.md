@@ -1,7 +1,7 @@
 - {{video https://youtu.be/gu3FfmgkwUc?si=2HXVY5x9SemQR8NH}}
 - Accompanying Write-up
 - [ObservableHQ - The Power of JS Generators](https://observablehq.com/@anjana/the-power-of-js-generators)
--
+- m
 - ## Key Insights
 	- 💭 Delving into the rabbit hole of generators can lead to some pretty mind-blowing discoveries and understanding of computer science concepts.
 	- 🔗 The symbol.iterator method in JavaScript allows for easy iteration over custom objects, providing a convenient way to create and manipulate iterators.
