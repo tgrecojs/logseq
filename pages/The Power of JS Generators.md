@@ -29,14 +29,17 @@
 		  // {
 		  ```
 	- The value property of objects returned by the next method in JavaScript generators allows for pausing and resuming code execution.
-	- `next()` advances a function until it hits a yield``.
+	- `next()` advances a function until it hits a `yield`.
+	-
 - [07:31](https://www.youtube.com/watch?v=gu3FfmgkwUc&t=451) 🔑 Generators in JavaScript are powerful because they are not only iterators, but also iterable objects, allowing for easy creation of custom iterable objects and lazy evaluation of potentially infinite sequences.
+  collapsed:: true
 	- Generators are not just iterators, but also iterables, as demonstrated by a simple generator function that yields letters in the alphabet.
 	- Generators in JavaScript are not only iterators, but also iterable objects that can be used in loops and with the spread operator, making it easy to create more complex iterable objects.
 	- Generators in JavaScript make it easy to create custom iterable objects by implementing the symbol.iterator method, allowing for easy iteration over objects.
 	- The speaker uses a generator function to create a deck of cards without manually enumerating all the values, allowing for more complex or infinite sequences.
 	- Generators allow for lazy evaluation and infinite iteration without causing the program to run infinitely, as they pause until the next method is called.
 	- Lazy evaluation allows for the creation of potentially infinite sequences that can be manipulated and accessed as needed, making it possible to work with expensive computations and avoid crashing computers.
+-
 - [15:03](https://www.youtube.com/watch?v=gu3FfmgkwUc&t=904) 🌟 Generators in JavaScript can create infinite animations and sequences, allowing for cool animations and easier manipulation of recursive data structures like trees.
 	- Generators in JavaScript can be used to create infinite animations, as demonstrated by the spinning text animation in the video.
 	- Generators in JavaScript allow for the creation of infinite sequences that can be used to perform cool animations and other tasks in a reactive style.
