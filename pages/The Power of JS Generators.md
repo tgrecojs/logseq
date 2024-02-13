@@ -1,23 +1,24 @@
 - {{video https://youtu.be/gu3FfmgkwUc?si=2HXVY5x9SemQR8NH}}
+	-
 - Accompanying Write-up
 - [ObservableHQ - The Power of JS Generators](https://observablehq.com/@anjana/the-power-of-js-generators)
-- m
-- ## Key Insights
-	- 💭 Delving into the rabbit hole of generators can lead to some pretty mind-blowing discoveries and understanding of computer science concepts.
-	- 🔗 The symbol.iterator method in JavaScript allows for easy iteration over custom objects, providing a convenient way to create and manipulate iterators.
-	- 🔄 Generators allow for iteration over infinity and beyond, enabling lazy evaluation and infinite loops without breaking the computer.
-	- 🧩 The power of generators lies in their ability to create and work with expensive computations as if they were arrays, thanks to lazy evaluation.
-	- 🌳 Symbol iterator and yield star can be used to create powerful and flexible data structures, such as a binary tree, in JavaScript generators.
-	- 🔄 The generator function enables depth-first tree traversal by recursively hitting the same generator on each of the child nodes, providing a simple and efficient way to traverse the tree structure.
-	- 📚 The actor model in programming consists of small entities that send messages back and forth to each other in order to execute the program, creating a unique paradigm of computing.
-- ### Practical Applications and Use Cases of Generators
-	- 🃏 The use of a generator function allows for the creation of a card deck object with all 52 values without the need to write them all out, making it a more efficient and concise approach.
-	- 💡 Generators in JavaScript can be used to create infinite sequences, allowing for the creation of really cool animations and effects in web development.
-	- 🔄 Generators can help implement custom iterable data structures, lazy evaluation, infinite data, and even recursive data structures, making them incredibly versatile for data processing and state management.
-	-
-- One-liner
-	- > Generators in JavaScript are powerful tools that can be used for tasks like working with sequences, async iteration, and implementing custom iterable objects, while also serving as a teaching tool for computer science concepts.
-- ### Detailed Notes
+- ## #Eightify Write-up
+	- ## Key Insights
+		- 💭 Delving into the rabbit hole of generators can lead to some pretty mind-blowing discoveries and understanding of computer science concepts.
+		- 🔗 The symbol.iterator method in JavaScript allows for easy iteration over custom objects, providing a convenient way to create and manipulate iterators.
+		- 🔄 Generators allow for iteration over infinity and beyond, enabling lazy evaluation and infinite loops without breaking the computer.
+		- 🧩 The power of generators lies in their ability to create and work with expensive computations as if they were arrays, thanks to lazy evaluation.
+		- 🌳 Symbol iterator and yield star can be used to create powerful and flexible data structures, such as a binary tree, in JavaScript generators.
+		- 🔄 The generator function enables depth-first tree traversal by recursively hitting the same generator on each of the child nodes, providing a simple and efficient way to traverse the tree structure.
+		- 📚 The actor model in programming consists of small entities that send messages back and forth to each other in order to execute the program, creating a unique paradigm of computing.
+	- ### Practical Applications and Use Cases of Generators
+		- 🃏 The use of a generator function allows for the creation of a card deck object with all 52 values without the need to write them all out, making it a more efficient and concise approach.
+		- 💡 Generators in JavaScript can be used to create infinite sequences, allowing for the creation of really cool animations and effects in web development.
+		- 🔄 Generators can help implement custom iterable data structures, lazy evaluation, infinite data, and even recursive data structures, making them incredibly versatile for data processing and state management.
+			-
+	- One-liner
+		- > Generators in JavaScript are powerful tools that can be used for tasks like working with sequences, async iteration, and implementing custom iterable objects, while also serving as a teaching tool for computer science concepts.
+		- ### Detailed Notes
 - [00:00](https://www.youtube.com/watch?v=gu3FfmgkwUc&t=0) 📚 Generators in JavaScript are powerful and underappreciated features that can be used for tasks like working with sequences and async iteration, and they also serve as great teachers for understanding computer science concepts.
 	- The speaker expresses excitement about being present with the audience in person.
 	- Generators and iterators are underappreciated features in JavaScript that have been around since ES6, and the speaker aims to highlight their cool capabilities and encourage their usage.
