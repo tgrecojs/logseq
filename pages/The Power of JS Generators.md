@@ -1,7 +1,12 @@
 - {{video https://youtu.be/gu3FfmgkwUc?si=2HXVY5x9SemQR8NH}}
 	-
-- Accompanying Write-up
-- [ObservableHQ - The Power of JS Generators](https://observablehq.com/@anjana/the-power-of-js-generators)
+- #### Accompanying Write-up
+	- [ObservableHQ - The Power of JS Generators](https://observablehq.com/@anjana/the-power-of-js-generators)
+- ### Notes
+	- ### Custom iterables with `@@iterator`
+		-
+-
+-
 - ## #Eightify Write-up
 	- ## Key Insights
 		- 💭 Delving into the rabbit hole of generators can lead to some pretty mind-blowing discoveries and understanding of computer science concepts.
@@ -18,7 +23,7 @@
 			-
 	- One-liner
 		- > Generators in JavaScript are powerful tools that can be used for tasks like working with sequences, async iteration, and implementing custom iterable objects, while also serving as a teaching tool for computer science concepts.
-		- ### Detailed Notes
+- ### Detailed Notes
 - [00:00](https://www.youtube.com/watch?v=gu3FfmgkwUc&t=0) 📚 Generators in JavaScript are powerful and underappreciated features that can be used for tasks like working with sequences and async iteration, and they also serve as great teachers for understanding computer science concepts.
 	- The speaker expresses excitement about being present with the audience in person.
 	- Generators and iterators are underappreciated features in JavaScript that have been around since ES6, and the speaker aims to highlight their cool capabilities and encourage their usage.
