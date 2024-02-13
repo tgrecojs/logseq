@@ -4,7 +4,8 @@
 	- [ObservableHQ - The Power of JS Generators](https://observablehq.com/@anjana/the-power-of-js-generators)
 - ### Notes
 	- ### Custom iterables with `@@iterator`
-	-
+		- Every time we try to iterate over an object JavaScript looks for `[Symbol.iterator]`
+		-
 -
 -
 - ## #Eightify Write-up
