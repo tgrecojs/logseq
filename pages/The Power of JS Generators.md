@@ -24,9 +24,12 @@
 		  function* generatorFn() {
 		      yield "hello world";
 		  }
-		  let gen
+		  let generatorObject = generatorFn();
+		  genObject.next();
+		  // {
 		  ```
 	- The value property of objects returned by the next method in JavaScript generators allows for pausing and resuming code execution.
+	- `next()` advances a function until it hits a yield``.
 - [07:31](https://www.youtube.com/watch?v=gu3FfmgkwUc&t=451) 🔑 Generators in JavaScript are powerful because they are not only iterators, but also iterable objects, allowing for easy creation of custom iterable objects and lazy evaluation of potentially infinite sequences.
 	- Generators are not just iterators, but also iterables, as demonstrated by a simple generator function that yields letters in the alphabet.
 	- Generators in JavaScript are not only iterators, but also iterable objects that can be used in loops and with the spread operator, making it easy to create more complex iterable objects.
