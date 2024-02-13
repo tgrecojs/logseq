@@ -1,4 +1,5 @@
 - {{video https://youtu.be/gu3FfmgkwUc?si=2HXVY5x9SemQR8NH}}
+- https://observablehq.com/@anjana/the-power-of-js-generators
 -
 -
 - ## Key Insights
