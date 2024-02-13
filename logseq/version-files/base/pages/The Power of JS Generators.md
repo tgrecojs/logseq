@@ -1,6 +1,6 @@
 - {{video https://youtu.be/gu3FfmgkwUc?si=2HXVY5x9SemQR8NH}}
-	-
--
+- Accompanying Write-up
+- [ObservableHQ - The Power of JS Generators](https://observablehq.com/@anjana/the-power-of-js-generators)
 -
 - ## Key Insights
 	- 💭 Delving into the rabbit hole of generators can lead to some pretty mind-blowing discoveries and understanding of computer science concepts.
