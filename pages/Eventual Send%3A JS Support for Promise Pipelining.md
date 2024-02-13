@@ -1,4 +1,7 @@
-## Key Insights
+### Video
+	- {{video https://youtu.be/UXR0O-CufTk?si=UjW2HTsvtS6MV08m}}
+-
+- ## Key Insights
 	- 🌐 The eventual send proposal aims to enable a distributed promise pipeline, building on the historical context of non-blocking promises and distributed object communication.
 	- ⚡ The Midori project showed significant performance speed ups of 10 to 100 on real cases with promise pipelining, proving its scalability and effectiveness.
 	- 🔄 The best you can do with JavaScript today is to plumb this kind of thing together using the weights or thens.
