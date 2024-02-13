@@ -1,0 +1,34 @@
+### The eventual send proposal aims to revolutionize the way messages are serialized and transmitted over a network by enabling a distributed promise pipeline.
+- [00:00](https://www.youtube.com/watch?v=UXR0O-CufTk&t=0) 🚀 The eventual send proposal introduces a new API for handling promises to enable distributed promise pipelining, building on the history of non-blocking promises and the cap TP protocol.
+	- The eventual send proposal introduces a new API for handling promises to enable a distributed promise pipeline, building on the history of non-blocking promises in the e language and the cap TP protocol.
+	- The widely adopted queue API led to the development of the promises proposal and systems designed to support distributed promise pipelining, with the queue connection extension allowing for promise pipelining over the network.
+	- The Midori project demonstrated significant performance improvements using promise pipelining, which inspired the async/await functions in JavaScript, while the twisted Python library also influenced JavaScript's promise design but did not implement promise pipelining effectively.
+	- The use of promise pipelining in JavaScript for distributed computing has been hindered by the lack of weak references, but now that weak references are becoming inevitable, it is time to revive the original dream.
+- [06:20](https://www.youtube.com/watch?v=UXR0O-CufTk&t=381) 🚀 JS proposal for promise pipelining introduces handled promises and a new constructor to extend modern promises for third-party library integration.
+	- The proposal is to provide an extension hook for promises that fits with modern promises and reworks the API to fit into modern promises.
+	- The speaker proposes a new abstraction called a handled promise and a new constructor named handle promise, which differ from regular promises in how new operations work, without changing the behaviors of existing promise APIs.
+	- The proposal aims to enable third-party libraries to create distributed JavaScript systems using extension points, with promise pipelining being a test case for adequacy.
+- [11:12](https://www.youtube.com/watch?v=UXR0O-CufTk&t=672) 🌐 Remote promises in JavaScript support efficient pipelining of messages, allowing for the plugging together of asynchronous calls using await and then, but still requiring the resolution of promises before sending subsequent messages.
+	- The wavy dot syntax is a syntactic sugar for sending a message to a remote object, representing a local variable that represents a remote object.
+	- Remote promises allow for efficient pipelining of messages by taking advantage of the nature of promises to reduce round-trips in conventional RPC.
+	- JavaScript support for promise pipelining allows for the plugging together of asynchronous calls using await and then, but there is still a need to wait for the resolution of promises before sending subsequent messages.
+- [15:56](https://www.youtube.com/watch?v=UXR0O-CufTk&t=956) 🌐 JavaScript now supports promise pipelining with the wavy dot syntax, handle promise API, and new internal methods/reflect API for serialization and eventual arrival on the receiving machine.
+	- The wavy dot syntax in JavaScript allows for method chaining on promises, with the method eventually being applied to the designated object.
+	- Using the new handle promise API, you can name the results of unresolved promises and send them out together, allowing for serialization onto the network and eventual arrival on the receiving machine.
+	- The speaker discusses the introduction of new internal methods and the reflect API for promises to enable promise pipelining.
+- [19:21](https://www.youtube.com/watch?v=UXR0O-CufTk&t=1162) 🚀 JavaScript now supports promise pipelining, allowing for the use of promises as arguments and introducing handler traps for when the result will be ignored.
+	- Static methods in the Promise API invoke corresponding internal methods, with the apply method being distinct from proxies and reflect, in order to facilitate a good distributed programming experience.
+	- Promises can be used as arguments, and the square bracket property lookup in JavaScript coerces the input to a string or symbol.
+	- Handler can decide instead of building in a decision up front, and corresponding internal methods are added for send only forms.
+	- JavaScript now has support for promise pipelining with the introduction of variants for when the result will be ignored and corresponding handler traps.
+- [24:48](https://www.youtube.com/watch?v=UXR0O-CufTk&t=1489) 📝 Adding optional parameters to JavaScript promises is hazardous due to the language's looseness with arity, and the unfulfilled handler is responsible for handling promises in an unfulfilled state.
+	- The promise constructor in JavaScript takes a function as an argument, which in turn takes a resolve and a reject parameter, and returns an unhandled promise.
+	- Resolve and reject change the state of a promise, the handled promise API adds two new optional parameters, and there is a question about introducing a new class.
+	- Adding optional parameters to promises in JavaScript is hazardous due to the language's looseness with arity, and the unfulfilled handler is responsible for handling promises in an unfulfilled state.
+- [28:58](https://www.youtube.com/watch?v=UXR0O-CufTk&t=1739) 📝 JS support for promise pipelining allows for the creation of a fresh empty object that can be mutated by the code, with the need for new platform features and special help for unsolvable cases.
+	- The speaker discusses the concept of "presence" in JS support for promise pipelining, which allows for the creation of a fresh empty object that can be mutated by the code.
+	- Using the shim in production raises the question of why new platform features are needed, but there is one unsolvable case that requires special help for the platform.
+	- Create a new promise, buffer the message, and handle the eventual send to forward the buffered messages to another promise.
+- [33:10](https://www.youtube.com/watch?v=UXR0O-CufTk&t=1990) 🔧 Monkey patch the resolve callback in the promise constructor to enable promise pipelining, but intercepting all resolves in the JavaScript spec is not feasible, leading to lost promise pipelining and counterintuitive message order.
+	- Override the promised constructor to monkey patch the resolve callback, but it's not feasible to intercept all resolves in the JavaScript spec.
+	- The promise constructor stores the resolver for the promise, but if the local promise is resolved in a way that cannot be intercepted, the message is not pipelined over the network, leading to lost promise pipelining and a counterintuitive message order.
