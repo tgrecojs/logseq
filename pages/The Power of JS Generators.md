@@ -11,8 +11,9 @@
 	- 💡 Generators in JavaScript can be used to create infinite sequences, allowing for the creation of really cool animations and effects in web development.
 	- 🔄 Generators can help implement custom iterable data structures, lazy evaluation, infinite data, and even recursive data structures, making them incredibly versatile for data processing and state management.
 	-
--
-- > Generators in JavaScript are powerful tools that can be used for tasks like working with sequences, async iteration, and implementing custom iterable objects, while also serving as a teaching tool for computer science concepts.
+- One-liner
+	- > Generators in JavaScript are powerful tools that can be used for tasks like working with sequences, async iteration, and implementing custom iterable objects, while also serving as a teaching tool for computer science concepts.
+- ### Detailed Notes
 - [00:00](https://www.youtube.com/watch?v=gu3FfmgkwUc&t=0) 📚 Generators in JavaScript are powerful and underappreciated features that can be used for tasks like working with sequences and async iteration, and they also serve as great teachers for understanding computer science concepts.
 	- The speaker expresses excitement about being present with the audience in person.
 	- Generators and iterators are underappreciated features in JavaScript that have been around since ES6, and the speaker aims to highlight their cool capabilities and encourage their usage.
