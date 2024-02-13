@@ -1,4 +1,13 @@
-### The eventual send proposal aims to revolutionize the way messages are serialized and transmitted over a network by enabling a distributed promise pipeline.
+## Key Insights
+	- 🌐 The eventual send proposal aims to enable a distributed promise pipeline, building on the historical context of non-blocking promises and distributed object communication.
+	- ⚡ The Midori project showed significant performance speed ups of 10 to 100 on real cases with promise pipelining, proving its scalability and effectiveness.
+	- 🔄 The best you can do with JavaScript today is to plumb this kind of thing together using the weights or thens.
+	- 🔄 The ability to name the results of unresolved promises and handle their eventual sending could revolutionize the way messages are serialized and transmitted over a network.
+	- 🔗 The promise constructor in JavaScript follows the notion that a method call is really a property get followed by a function call, creating a nice defaulting relationship.
+	- 🔄 The concept of buffering messages in promises and handling them with unfulfilled handlers could change the way promises are managed in JavaScript.
+-
+- ### One-liner
+- ### > The eventual send proposal aims to revolutionize the way messages are serialized and transmitted over a network by enabling a distributed promise pipeline.
 - [00:00](https://www.youtube.com/watch?v=UXR0O-CufTk&t=0) 🚀 The eventual send proposal introduces a new API for handling promises to enable distributed promise pipelining, building on the history of non-blocking promises and the cap TP protocol.
 	- The eventual send proposal introduces a new API for handling promises to enable a distributed promise pipeline, building on the history of non-blocking promises in the e language and the cap TP protocol.
 	- The widely adopted queue API led to the development of the promises proposal and systems designed to support distributed promise pipelining, with the queue connection extension allowing for promise pipelining over the network.
