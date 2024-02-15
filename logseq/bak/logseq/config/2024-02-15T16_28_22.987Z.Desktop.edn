@@ -248,8 +248,10 @@
  ;;  ["md" "Markdown"]
  ;;  ]
  
- :commands [          
-  ["python" [[:editor/input "```python\n\n```" {:backward-pos 4}]]]
+ :commands [
+  ["js", "JavaScript"]
+  ["javascript" [[:editor/input "```javascript\n\n```" {:backward-pos 4}]]]
+  ["ocaml" [[:editor/input "```ocaml\n\n```" {:backward-pos 4}]]]
 ]
 
  ;; Enable collapsing blocks with titles but no children.
@@ -295,7 +297,7 @@
  ;;  :journal?        false} ; Default value: false
 
  ;; Favorites to list on the left sidebar
- :favorites []
+ :favorites ["08/17/2023"]
 
  ;; Set flashcards interval.
  ;; Expected value:
@@ -415,4 +417,6 @@
  ;;      ;use triple underscore `___` for slash `/` in page title
  ;;      ;use Percent-encoding for other invalid characters
  :file/name-format :triple-lowbar
- :graph/settings {:journal? true}}
+ :graph/settings {:journal? true}
+ :journal/page-title-format "MM/dd/yyyy"
+ :editor/logical-outdenting? true}
