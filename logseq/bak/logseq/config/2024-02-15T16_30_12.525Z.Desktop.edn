@@ -46,7 +46,7 @@
 
  ;; Display all lines of a block when referencing ((block)).
  ;; Default value: false
- :ui/show-full-blocks? false
+ :ui/show-full-blocks? true
 
  ;; Automatically expand block references when zooming in.
  ;; Default value: true
@@ -248,8 +248,9 @@
  ;;  ["md" "Markdown"]
  ;;  ]
  
- :commands [          
-  ["javascript" [[:editor/input "```javascript\n\n```" {:backward-pos 4}]]],
+ :commands [
+  ["js", "JavaScript"]
+  ["javascript" [[:editor/input "```javascript\n\n```" {:backward-pos 4}]]]
   ["ocaml" [[:editor/input "```ocaml\n\n```" {:backward-pos 4}]]]
 ]
 
@@ -296,7 +297,7 @@
  ;;  :journal?        false} ; Default value: false
 
  ;; Favorites to list on the left sidebar
- :favorites []
+ :favorites ["08/17/2023"]
 
  ;; Set flashcards interval.
  ;; Expected value:
@@ -416,4 +417,6 @@
  ;;      ;use triple underscore `___` for slash `/` in page title
  ;;      ;use Percent-encoding for other invalid characters
  :file/name-format :triple-lowbar
- :graph/settings {:journal? true}}
+ :graph/settings {:journal? true}
+ :journal/page-title-format "MM/dd/yyyy"
+ :editor/logical-outdenting? true}
