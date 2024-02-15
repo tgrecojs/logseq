@@ -44,3 +44,4 @@
 - [33:10](https://www.youtube.com/watch?v=UXR0O-CufTk&t=1990) 🔧 Monkey patch the resolve callback in the promise constructor to enable promise pipelining, but intercepting all resolves in the JavaScript spec is not feasible, leading to lost promise pipelining and counterintuitive message order.
 	- Override the promised constructor to monkey patch the resolve callback, but it's not feasible to intercept all resolves in the JavaScript spec.
 	- The promise constructor stores the resolver for the promise, but if the local promise is resolved in a way that cannot be intercepted, the message is not pipelined over the network, leading to lost promise pipelining and a counterintuitive message order.
+-

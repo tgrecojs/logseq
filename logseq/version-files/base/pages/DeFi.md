@@ -2,7 +2,6 @@
 -
 - ## Financial Crisis
   id:: 64ddad1a-e9c2-41c0-b2c5-996284ad4710
-  collapsed:: true
 	- #### Financial Amplification
 		- ![Financial Amplification Mechanisms and the Federal Reserve’s Supply of Liquidity during the Crisis.pdf](../assets/Financial_Amplification_Mechanisms_and_the_Federal_Reserve’s_Supply_of_Liquidity_during_the_Crisis_1692249411698_0.pdf)
 		- Questions why MBS led to the down turn.
