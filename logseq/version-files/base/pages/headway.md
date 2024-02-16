@@ -22,5 +22,18 @@
 			  logseq.order-list-type:: number
 				- located in the back of the brain
 				  logseq.order-list-type:: number
-				- eye movement
+				- eye movement 
 				  logseq.order-list-type:: number
+			- brain stem
+			  logseq.order-list-type:: number
+				- controls out automatic functions
+				  logseq.order-list-type:: number
+			- Cerebrum 
+			  logseq.order-list-type:: number
+				- Center of reasoning
+				  logseq.order-list-type:: number
+				- Cerebral cortex
+				  logseq.order-list-type:: number
+					- outer layer of neural tissue
+					  logseq.order-list-type:: number
+				- logseq.order-list-type:: number

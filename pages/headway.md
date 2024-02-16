@@ -32,5 +32,8 @@
 			  logseq.order-list-type:: number
 				- Center of reasoning
 				  logseq.order-list-type:: number
-				- Hol
+				- Cerebral cortex
 				  logseq.order-list-type:: number
+					- outer layer of neural tissue
+					  logseq.order-list-type:: number
+				- logseq.order-list-type:: number
