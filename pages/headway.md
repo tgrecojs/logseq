@@ -36,4 +36,21 @@
 				  logseq.order-list-type:: number
 					- outer layer of neural tissue
 					  logseq.order-list-type:: number
-				- logseq.order-list-type:: number
+				- Prefrontal cortex
+				  logseq.order-list-type:: number
+				- Amygdala 
+				  logseq.order-list-type:: number
+				- thalamus
+				  logseq.order-list-type:: number
+				- cingulate jirus 
+				  logseq.order-list-type:: number
+					- learning, decision making, memory
+					  logseq.order-list-type:: number
+				- hippocampus 
+				  logseq.order-list-type:: number
+					- signifcant for memory
+					  logseq.order-list-type:: number
+				- hypothalamus 
+				  logseq.order-list-type:: number
+					- controls hormones
+					  logseq.order-list-type:: number
