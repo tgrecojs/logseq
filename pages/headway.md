@@ -54,3 +54,4 @@
 				  logseq.order-list-type:: number
 					- controls hormones
 					  logseq.order-list-type:: number
+					- logseq.order-list-type:: number
