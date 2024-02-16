@@ -18,5 +18,9 @@
 			  > Never underestimate your abilities: your brain has more neuron connections that stars in the milky way.
 		- Main parts of the brain
 		  logseq.order-list-type:: number
-			- Cerre
+			- Cerrebellum 
 			  logseq.order-list-type:: number
+				- located in the back of the brain
+				  logseq.order-list-type:: number
+				- eye movement
+				  logseq.order-list-type:: number

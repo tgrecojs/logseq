@@ -20,4 +20,17 @@
 		  logseq.order-list-type:: number
 			- Cerrebellum 
 			  logseq.order-list-type:: number
-				- logseq.order-list-type:: number
+				- located in the back of the brain
+				  logseq.order-list-type:: number
+				- eye movement 
+				  logseq.order-list-type:: number
+			- brain stem
+			  logseq.order-list-type:: number
+				- controls out automatic functions
+				  logseq.order-list-type:: number
+			- Cerebrum 
+			  logseq.order-list-type:: number
+				- Center of reasoning
+				  logseq.order-list-type:: number
+				- Hol
+				  logseq.order-list-type:: number
