@@ -54,3 +54,19 @@
 				  logseq.order-list-type:: number
 					- controls hormones
 					  logseq.order-list-type:: number
+			- Increasing the growth of new brain cells
+			  logseq.order-list-type:: number
+				- Execsise
+				  logseq.order-list-type:: number
+				- paying attention to posture
+				  logseq.order-list-type:: number
+				- writing with our right hand (something unusual)
+				  logseq.order-list-type:: number
+				- blueberries
+				  logseq.order-list-type:: number
+				- dark chocalate
+				  logseq.order-list-type:: number
+				- picking up a new word daily
+				  logseq.order-list-type:: number
+				- imagining ways to enhance our days
+				  logseq.order-list-type:: number

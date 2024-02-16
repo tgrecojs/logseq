@@ -68,4 +68,5 @@
 				  logseq.order-list-type:: number
 				- picking up a new word daily
 				  logseq.order-list-type:: number
-				- logseq.order-list-type:: number
+				- imagining ways to enhance our days
+				  logseq.order-list-type:: number
