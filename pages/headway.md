@@ -14,5 +14,10 @@
 			  logseq.order-list-type:: number
 				- nerve fibers, strong connections between neruons
 				  logseq.order-list-type:: number
-				- logseq.order-list-type:: number
 			- logseq.order-list-type:: number
+			  > Never underestimate your abilities: your brain has more neuron connections that stars in the milky way.
+		- Main parts of the brain
+		  logseq.order-list-type:: number
+			- Cerrebellum 
+			  logseq.order-list-type:: number
+				- logseq.order-list-type:: number
