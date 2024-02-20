@@ -1,7 +1,6 @@
 hypothesis-uri:: https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:concurrency
 hypothesis-title:: strawman:concurrency [ES Wiki]
 hypothesis-naming-scheme:: 0.2.0
-
 - *
   hid:: A0iDaMk3Ee64SPMoSQl0Vg
   updated:: 2024-02-11T23:41:01.019695+00:00
@@ -19,13 +18,9 @@ hypothesis-naming-scheme:: 0.2.0
           - a single fifo queue holding eventual-deliveries,
           - an internal object heap,
           - and incoming and outgoing remote references.
-  
       - `then` registers a callback to happen ina seperate turn once a promise is resolved, *providing the callback with the promise's resoluton.
-  
   - **Turn**
       - The name for each processing step that occurs within a vat.
-  
-  
   ## Why Communicating Event Loops
   - Free of conventional race condition or deadlock bugs.
   - State isolation
