@@ -1,4 +1,523 @@
 ## All posts
+	- [Fantas, Eel, and Specification 16: Extend · Tom Harding](https://omnivore.app/me/fantas-eel-and-specification-16-extend-tom-harding-18da59ced72)
+	  collapsed:: true
+	  site:: [tomharding.me](http://www.tomharding.me/2017/06/12/fantas-eel-and-specification-16/)
+	  date-saved:: [[02/13/2024]]
+	  date-published:: [[06/11/2017]]
+		- ### Content
+		  collapsed:: true
+			- You’re **still** here? That means you survived `Monad`! See? Told you it isn’t that scary. It’s nothing we haven’t **already seen**. Well, _today_, we’re going to revisit `Chain` with one _slight_ difference. As we know, `==Chain==` ==takes an== `==m a==` ==to an== `==m b==` ==with some help from an== `==a== ==-====&gt;== ==m b==` ==function.== It **sequences** our ideas. However, _what if I told you_… we could go **backwards**? Let’s `Extend` your horizons.
+			  
+			  Don’t get too excited; the disappointment of `Contravariant` will come flooding back! We’re certainly not saying that we have a magical `undo` for any `Chain`. What we _are_ saying, though, is that there are some types for which we can get from `m a` to `m b` via `m a -> b`. Instead of **finishing** in the context, we **start** in it!
+			  
+			  Two questions probably come to mind:
+			  
+			  * **How** is this useful?
+			  * … See question 1?
+			  
+			  Well, we’ll be answering **at least** one of those questions today! _Before_ that, though, let’s go back to our _old_ format and **start** with the **function**:
+			  
+			  ```livescript
+			  extend :: Extend w => w a ~> (w a -> b) -> w b
+			  
+			  ```
+			  
+			  > Notice we’re using `w` here. I kid you _not_, we use `w` because it looks like an upside-down `m`, and `m` was what we used for `Chain`. It’s literally there to make the whole thing look **back-to-front** and **upside-down**. I’m told that mathematicians call this a **joke**, so do _try_ to laugh!
+			  
+			  _As we said_, it’s `Chain` going backwards. It even has the same laws backwards! Say hello, once again, to our old friend **associativity**:
+			  
+			  ```jboss-cli
+			  // RHS: Apply to f THEN chain g
+			  m.chain(f).chain(g)
+			  === m.chain(x => f(x).chain(g))
+			  
+			  // RHS: extend f THEN apply to g
+			  w.extend(f).extend(g)
+			  === x.extend(w_ => g(w_.extend(f)))
+			  
+			  ```
+			  
+			  > Wait, so, if `extend` has **associativity**, and if it looks a bit like a `Semigroup`… (_all together now_) **where’s the `Monoid`**?!
+			  
+			  It’s just like `chain`, but backwards. **Everything is backwards**. It’s really the only thing you need to remember!
+			  
+			  ?thgir ,taen ytterP
+			  
+			  ---
+			  
+			  So, _aside_ from it being backwards, is there anything _useful_ about `Extend`? _Or_, are we just getting a bit tired at this point? **Both**! Hopefully more the former, though…
+			  
+			  Let’s start with an old friend, [the Pair (or Writer) type](http://www.tomharding.me/2017/04/27/pairs-as-functors/). When we `chain`, we have _total_ control over the **output** of our function: we say what we _append_ to the **left-hand side**, and what we want the right-hand value to be. There was, however, one thing we _can’t_ do: see what was already _in_ the left part!
+			  
+			  `Pair` really gave us a wonderful way to achieve **write-only** state, but we had no way of **reading** what we’d written! Wouldn’t it be **great** if we had a `map`\-like function that let us take a **sneaky peek** at the left-hand side? Something like this, perhaps:
+			  
+			  ```livescript
+			  map :: (m, a) ~> (a  -> b) -> (m, b)
+			  
+			  -- Just like map, but we get a sneaky peek!
+			  sneakyPeekMap :: (m, a)
+			              ~> ((m, a) -> b)
+			              -> (m, b)
+			  
+			  ```
+			  
+			  It’s really just like `map`, but we get some **context**! Now that we can, whenever we like, take a look at how the left-hand side is doing, we can feed our **hungry adventurer**:
+			  
+			  ```crmsh
+			  //- Sum represents "hunger"
+			  const Adventurer = Pair(Sum)
+			  
+			  //+ type User = { name :: String, isHungry :: Bool }
+			  const exampleUser = {
+			  name: 'Tom',
+			  isHungry: false
+			  }
+			  
+			  // You get the idea... WorkPair again!
+			  
+			  //+ slayDragon :: User -> Adventurer User
+			  const slayDragon = user =>
+			  Adventurer(Sum(100), user)
+			  
+			  //+ slayDragon :: User -> Adventurer User
+			  const runFromDragon = user =>
+			  Adventurer(Sum(50), user)
+			  
+			  //- Eat IF we're hungry
+			  //+ eat :: User -> Adventurer User
+			  const eat = user =>
+			  user.isHungry
+			  ? Adventurer(Sum(-100), {
+			      ... user,
+			      isHungry: false
+			    })
+			  
+			  : Adventurer(Sum(0),   user)
+			  
+			  //- How could we know when we're hungry?
+			  //- This function goes the other way...
+			  //+ areWeHungry :: Adventurer User -> User
+			  const areWeHungry =
+			  ({ _1: { value: hunger }, _2: user }) =>
+			    hunger > 200
+			      ? { ... user, isHungry: true }
+			      : user
+			  
+			  // Now, we do a thing, check our hunger,
+			  // and eat if we need to!
+			  
+			  // WE ARE SELF-AWARE.
+			  // SKYNET
+			  
+			  slayDragon(exampleUser)
+			  .sneakyPeekMap(areWeHungry).chain(eat)
+			  // Pair(Sum(100), not hungry)
+			  
+			  .chain(slayDragon)
+			  .sneakyPeekMap(areWeHungry).chain(eat)
+			  // Pair(Sum(200), not hungry)
+			  
+			  .chain(runFromDragon)
+			  .sneakyPeekMap(areWeHungry).chain(eat)
+			  // Pair(Sum(150), not hungry)!
+			  
+			  ```
+			  
+			  Just with this `sneakyPeekMap`, we can now inspect our character stats and feed that _back_ into our actions. This is _so_ neat: any time you want to update one piece of data depending on another, `sneakyPeekMap` is **exactly** what you need. Oh, and by the way, it has a much more common name: `extend`!
+			  
+			  ---
+			  
+			  _So, can I just think of `extend` as `sneakyPeekMap`?_ I mean, you basically can; that intuition will get you a **long** way. As an homage to [Hardy Jones’ functional pearl](https://joneshf.github.io/programming/2015/12/31/Comonads-Monoids-and-Trees.html), let’s build a [**Rose Tree**](https://en.wikipedia.org/wiki/Rose%5FTree):
+			  
+			  ```php
+			  //- A root and a list of children!
+			  //+ type RoseTree a = (a, [RoseTree a])
+			  const RoseTree = daggy.tagged(
+			  'RoseTree', ['root', 'forest']
+			  )
+			  
+			  ```
+			  
+			  _Maybe_, you looked at that type and a little voice in the back of your mind said `Functor`. If so, **kudos**:
+			  
+			  ```javascript
+			  RoseTree.prototype.map = function (f) {
+			  return RoseTree(
+			    f(this.root), // Transform the root...
+			    this.forest.map( // and other trees.
+			      rt => rt.map(f)))
+			  }
+			  
+			  ```
+			  
+			  **No problem**; transform the root node, and then _recursively_ map over all the child trees. **Bam**. _Now_, imagine if we wanted to _colour_ this tree’s nodes depending on how many **children** they each have. Sounds like we’d need to take… a **sneaky peek**!
+			  
+			  ```javascript
+			  //+ extend :: RoseTree a
+			  //+        ~> (RoseTree a -> b)
+			  //+        -> RoseTree b
+			  RoseTree.prototype.extend =
+			  function (f) {
+			    return RoseTree(
+			      f(this),
+			      this.forest.map(rt =>
+			        rt.extend(f))
+			    )
+			  }
+			  
+			  // Now, it's super easy to do this!
+			  MyTree.extend(({ root, forest }) =>
+			  forest.length < 1
+			    ? { ... root, colour: 'RED' }
+			    : forest.length < 5
+			      ? { ... root, colour: 'ORANGE' }
+			      : { ... root, colour: 'GREEN' })
+			  
+			  ```
+			  
+			  With our new-found **superpower**, each node gets to pretend to be the **one in charge**, and can watch over their own forests. The trees in those forests then do the same, and so on, until we `map`\-with-a-sneaky-peek **the entire forest**! Again, I linked to Hardy’s article above, which contains a much **deeper** dive into trees specifically; combining `RoseTree` with Hardy’s ideas is enough to make your own **billion-dollar React clone**!
+			  
+			  ---
+			  
+			  Let’s cast our minds _waaay_ back to [the Setoid post](http://www.tomharding.me/2017/03/09/fantas-eel-and-specification-3/), when we looked at `List`. List, it turns out, is a `Functor`:
+			  
+			  ```javascript
+			  //- Usually, if you can write something for
+			  //- Array, you can write it for List!
+			  List.prototype.map = function (f) {
+			  return this.cata({
+			    // Do nothing, we're done!
+			    Nil: () => Nil,
+			  
+			    // Transform head, recurse on tail
+			    Cons: (head, tail) =>
+			      Cons(f(head), tail.map(f))
+			  })
+			  }
+			  
+			  // e.g. Cons(1, Cons(2, Nil))
+			  //      .map(x => x + 1)
+			  // === Cons(2, Cons(3, Nil))
+			  
+			  ```
+			  
+			  Now, for this **convoluted example**, let’s imagine we have some weather data for the last few days:
+			  
+			  ```javascript
+			  const arrayToList = xs => {
+			  if (!xs.length) return Nil
+			  
+			  const [ head, ... tail ] = this
+			  return Cons(head, arrayToList(tail))
+			  }
+			  
+			  List.prototype.toArray = function () {
+			  return this.cata({
+			    Cons: (head, tail) => ([
+			      head, ... tail.toArray()
+			    ]),
+			  
+			    Nil: () => []
+			  })
+			  }
+			  
+			  // Starting from today... (in celsius!)
+			  const temperatures = arrayToList(
+			  [23, 19, 19, 18, 18, 20, 24])
+			  
+			  ```
+			  
+			  What we want to do is `map` over this list to determine whether the temperature has been warmer or cooler than the day before! To do that, we’ll probably need to do _something_ sneakily… any ideas?
+			  
+			  ```javascript
+			  //+ List a ~> (List a -> b) -> List b
+			  List.prototype.extend = function (f) {
+			  return this.cata({
+			    // Extend the list, repeat on tail.
+			    Cons: (head, tail) => Cons(
+			      f(this), tail.extend(f)
+			    ),
+			  
+			    Nil: () => Nil // We're done!
+			  })
+			  }
+			  
+			  // [YAY, YAY, YAY, YAY, BOO, BOO, ???]
+			  temperatures
+			  .extend(({ head, tail }) =>
+			  tail.length == 0 ? '???'
+			                   : head < tail.head
+			                     ? 'BOO' : 'YAY')
+			  .toArray()
+			  
+			  ```
+			  
+			  We only used the _head_ of the tail this time, but we could use the whole thing if we wanted! We have the entire thing available to peek sneakily.
+			  
+			  > For example, we could use this technique for lap times to record whether they’re **faster or slower** than the **average** so far! **Have a go!**
+			  
+			  As we said, we can mimic the same behaviour for `Array` to save us all the to-and-fro with `List`:
+			  
+			  ```javascript
+			  Array.prototype.extend = function (f) {
+			  if (this.length === 0) return []
+			  
+			  const [ _, ... tail ] = this
+			  return [ f(this), ... tail.extend(f) ]
+			  }
+			  
+			  // Now, we can use array-destructuring :)
+			  ;[23, 19, 19, 18, 18, 20, 24].extend(
+			  ([head, ... tail]) =>
+			    tail.length == 0
+			    ? '???'
+			    : head < tail[0]
+			      ? 'BOO' : 'YAY')
+			  
+			  ```
+			  
+			  ---
+			  
+			  I brought these examples up for a reason, Fantasists. _Often_, `extend` isn’t just `f => W.of(f(this))` for some `W` type; that’s what `of` is for! `extend` is about being able to `map` while being aware of the surrounding **construct**.
+			  
+			  Think of it like this: when we used `Chain`, we had total **write** access to the **output** _constructor_ and _values_. We could turn `Just` into `Nothing`, we could fail a `Task`, and we could even change the length of an `Array`. **Truly, we were powerful**.
+			  
+			  With `Extend`, we get full **read** access to the **input** _constructor_ and _values_. It’s the **opposite idea**.
+			  
+			  Whereas `Chain` lets us **inform the future** of the computation, `Extend` lets us **be informed by the past**. _This is the kind of sentence that ends up on a mug, you know!_
+			  
+			  ```xl
+			  -- chain: `map` with write-access to output
+			  -- extend: `map` with read-access to input
+			  
+			  map    :: f a -> (  a ->   b) -> f b
+			  chain  :: m a -> (  a -> m b) -> m b
+			  extend :: w a -> (w a ->   b) -> w b
+			  
+			  ```
+			  
+			  ---
+			  
+			  There are lots of cool examples of `Extend`, but they are often overlooked and generally considered a more “advanced” topic. After all, with `Monad`, we’re free to build **anything**; why bother continuing? Well, I hope this gives you an idea of how they work and where you can find them! After all, these are all just **design patterns**: just use them when they’re **appropriate**!
+			  
+			  _So, `Semigroup` is to `Monoid` as `Chain` is to `Monad` as `Extend` is to…?_ We’ll find out next time! Before we go, though, here’s a very tricky challenge to keep you busy:
+			  
+			  > With `Writer`, we needed a `Semigroup` on the left to make a `Chain` instance, but we didn’t for `Extend`. `Reader` has an `Extend` instance; can you think of how we might write that?
+			  
+			  Until then, take a look through [this article’s code](https://gist.github.com/richdouglasevans/61eae2a787bd616f04e63a642a0dca5d), and take care!
+			  
+			  ♥
+		- ### Highlights
+		  collapsed:: true
+			- > `Chain` takes an `m a` to an `m b` with some help from an `a -> m b` function. [⤴️](https://omnivore.app/me/fantas-eel-and-specification-16-extend-tom-harding-18da59ced72#16884eac-2eb6-4dd0-8e70-c264aaaeca65)
+	- [Fantas, Eel, and Specification 17: Comonad · Tom Harding](https://omnivore.app/me/fantas-eel-and-specification-17-comonad-tom-harding-18da59bd286)
+	  collapsed:: true
+	  site:: [tomharding.me](http://www.tomharding.me/2017/06/19/fantas-eel-and-specification-17/)
+	  date-saved:: [[02/13/2024]]
+	  date-published:: [[06/18/2017]]
+		- ### Content
+		  collapsed:: true
+			- **‘Ello ‘ello**! Remember that `Monad` thing we used to be afraid of, and how it just boiled down to a way for us to **sequence** our ideas? How `Extend` was really just `Chain` backwards? Well, today, we’ll answer the question that I’m sure has plagued you _all_ week: **what _is_ a backwards `Monad`**?
+			  
+			  First up, we should talk about the **name**. _No_, not the `monad` bit - the `co` bit. When we talk about structures like `Monad`, we sometimes talk about the idea of the **dual structure**. Now, for our purposes, we can just think of this as, “_The same, but with all the arrows backwards_”.
+			  
+			  > This is a _surprisingly_ good intuition for dual structures. Seriously.
+			  
+			  Hey, that was our **first hint**! `Comonad` is `Monad` with “the arrows backwards”. When we **boil it down**, there are really only two **interesting** things that a `Monad` can do:
+			  
+			  ```xl
+			  -- For any monad `m`:
+			  of :: a -> m a
+			  chain :: m a -> (a -> m b) -> m b
+			  
+			  ```
+			  
+			  From this, we can derive all the other fun stuff like `join`, `map`, `ap`, and whatnot. So, let’s write this all **backwards**, turning our entire types the **wrong way round**:
+			  
+			  ```elm
+			  -- Turn the arrows around...
+			  coOf :: a <- m a
+			  coChain :: m a <- (a <- m b) <- m b
+			  
+			  -- Or, more familiarly...
+			  -- For any Comonad `w`:
+			  coOf :: w a -> a
+			  coChain :: w a -> (w a -> b) -> w b
+			  
+			  ```
+			  
+			  Well, here’s the **good news**: we already know `coChain`, and we call it `extend`! That leaves us with that `coOf` function, which the [glorious Fantasy Land spec](https://github.com/fantasyland/fantasy-land) calls **`extract`**.
+			  
+			  When I first looked at `extract`, I got a bit confused. Couldn’t we do that with `Monad`? If not, what’s the _point_ in a `Monad` if we can’t get a value back _out_? What helped me was looking **a little closer** at `extract`:
+			  
+			  That function takes **any** `Comonad` and returns the value **inside**. We couldn’t do that for `Maybe`, because some of our values - `Nothing` \- don’t have a value to return! We couldn’t do it for `Array`; what if it’s **empty**? We couldn’t do it for `Promise`; we don’t know what the value _is_ yet! It turns out that, for a _lot_ of `Monad` types, this function **isn’t as easy** to write as we might think at first glance.
+			  
+			  Let’s think about `Maybe` for a second, though. Would it be a `Comonad` if we removed the `Nothing` option? Well, yes, but then it wouldn’t be a `Maybe` \- it would be `Identity` with a funny name!
+			  
+			  What about `Array`? What if we made a type like this:
+			  
+			  ```actionscript
+			  //- An array with AT LEAST ONE element.
+			  //+ data NonEmpty = NonEmpty a (Array a)
+			  const NonEmpty = daggy.tagged(
+			  'NonEmpty', ['head', 'tail']
+			  )
+			  
+			  // Extend would function the same way as it
+			  // did for Array in the last article...
+			  
+			  NonEmpty.prototype.extract = function () {
+			  return this.head
+			  }
+			  
+			  // e.g.
+			  NonEmpty(1, [2, 3, 4]).extract() // 1
+			  
+			  ```
+			  
+			  Now we have a **type** for non-empty lists, we can **guarantee** a value to extract! This type, it transpires, forms a beautiful `Comonad`.
+			  
+			  > A piece of good advice is to **make illegal states unrepresentable**. If we need an array somewhere in our code that **must** have at least one element, using the `NonEmpty` type gives us an API with that **guarantee**!
+			  
+			  So, `chain` gave us sequencing with **write** access to the **output**, and `of` let us **lift** a value into the computation whenever we liked. `extend` gives us sequencing with **read** access to the **input**, and `extract` lets us **extract** a value out of the computation whenever we like!
+			  
+			  > If you’ve followed the blog series up until now, [the Comonad laws](https://github.com/fantasyland/fantasy-land\#comonad) are going to be what you’ve come to expect. **No new ideas**!
+			  
+			  ---
+			  
+			  Now, before we start to assume that all `Comonad` types are just **bastardised `Monad` types**, let’s look at something **very** comonadic: `Store`.
+			  
+			  ```actionscript
+			  //+ data Store p s = Store (p -> s) p
+			  const Store = daggy.tagged(
+			  'Store', ['lookup', 'pointer']
+			  )
+			  
+			  ```
+			  
+			  The intuition here is that `lookup` represents a function to get things _out_ of a “store” of `s`\-values, indexed by `p`\-values. So, if we pass a `p` to the `lookup` function, we’ll get out its corresponding `s`. The `pointer` value represents the “current” value. Think of this like the **read head** on an old **hard disk**.
+			  
+			  Now, to make this type more useful, we can stick a couple of functions onto this:
+			  
+			  ```actionscript
+			  //- "Move" the current pointer.
+			  //+ seek :: Store p s ~> p -> Store p s
+			  Store.prototype.seek = function (p) {
+			  return Store(this.lookup, p)
+			  }
+			  
+			  //- Have a look at a particular cell.
+			  //+ peek :: Store p s ~> p -> s
+			  Store.prototype.peek = function (p) {
+			  return this.lookup(p)
+			  }
+			  
+			  ```
+			  
+			  And, wouldn’t you know it, we can also make this a functor by [mapping over the **function**](http://www.tomharding.me/2017/04/15/functions-as-functors/)!
+			  
+			  ```reasonml
+			  //- Compose the functions! Yay!
+			  Store.prototype.map = function (f) {
+			  const { lookup, pointer } = this
+			  
+			  return Store(lookup.map(f), pointer)
+			  // Store(p => f(lookup(p)), pointer)
+			  }
+			  
+			  ```
+			  
+			  Now, if we’re going to make a `Comonad` of our `Store`, we first need to make it an `Extend` instance. Remember: `extend` should behave like `map`, but with **read-access to the input**. Here’s where `Store` gets _really_ sneaky.
+			  
+			  ```javascript
+			  //+ extend :: Store p s ~> (Store p s -> t)
+			  //+                     -> Store p t
+			  Store.prototype.extend = function (f) {
+			  return Store(
+			    p => f(Store(this.lookup, p)),
+			    this.pointer)
+			  }
+			  
+			  ```
+			  
+			  Our `lookup` function now applies `f` to a `Store` **identical** to the original, but with the focus on the **given index**! Can you see the magic yet? Let’s **build something exciting**: [Conway’s **Game of Life**](https://en.wikipedia.org/wiki/Conway%27s%5FGame%5Fof%5FLife).
+			  
+			  ---
+			  
+			  For this, we’re going to use a “board” of `[[Bool]]` type to represent our “live” and “dead” cells. Something like this, perhaps:
+			  
+			  ```yaml
+			  let start = [
+			  [ true,  true,  false, false ],
+			  [ true,  false, true,  false ],
+			  [ true,  false, false, true  ],
+			  [ true,  false, true,  false ]
+			  ]
+			  
+			  ```
+			  
+			  If we want to look up a value in this store, we’re going to need an `x` and `y` coordinate. What better choice of structure to hold two numbers than a `Pair`?
+			  
+			  ```gml
+			  const Game = Store(
+			  ({ _1: x, _2: y }) =>
+			    // Return the cell OR false.
+			    y in start && x in start[y]
+			      ? start[y][x]
+			      : false,
+			  
+			  // We don't care about `pointer` yet.
+			  Pair(0, 0))
+			  
+			  ```
+			  
+			  Now, we need to write out some logic! The rule for the Game of Life is that, if a `false` cell has **exactly three** `true` neighbours, make it true. If a `true` cell has **two or three** `true` neighbours, keep it as true. If **neither** apply, make it `false`. We can work this out for any cell with eight sneaky `peek`s!
+			  
+			  ```gml
+			  // What will the current cell be next time?
+			  //+ isSurvivor :: Store (Pair Int Int) Bool
+			  //+            -> Bool
+			  const isSurvivor = store => {
+			  const { _1: x, _2: y } = store.pointer
+			  
+			  // The number of `true` neighbours.
+			  const neighbours =
+			    [ Pair(x - 1, y - 1) // NW
+			    , Pair(x, y - 1)     // N
+			    , Pair(x + 1, y - 1) // NE
+			  
+			    , Pair(x - 1, y)     // W
+			    , Pair(x + 1, y)     // E
+			  
+			    , Pair(x - 1, y + 1) // SW
+			    , Pair(x, y + 1)     // S
+			    , Pair(x + 1, y + 1) // SE
+			    ]
+			    .map(x => store.peek(x)) // Look up!
+			    .filter(x => x) // Ignore false cells
+			    .length
+			  
+			  // Exercise: simplify this.
+			  return store.extract() // Is it true?
+			    ? neighbours === 2 || neighbours === 3
+			    : neighbours === 2
+			  }
+			  
+			  ```
+			  
+			  Now, _why_ did we go to all this trouble? Well, we now have a `Store (Int, Int) Bool` to `Bool` function, which is the exact shape that `extend` needs… and `extend` will (lazily!) apply this function to **every cell on the board!** By using `extend`, we now get to see the **entire board** one step into **the future**. Isn’t that _magical_?
+			  
+			  > I _strongly_ recommend you look at [the Gist for this article](https://gist.github.com/richdouglasevans/0f9a57e5a52b13e93c0c03630165ecd8) and be sure that this makes sense. `Store` is an **unfamiliar beast**.
+			  
+			  ---
+			  
+			  Now, there are plenty of other `Comonad` types, but they’re not quite as popular as `Monad` types, probably because their use isn’t so **obvious**. After all, we can write our applications just using `Monad` types, so this (_unfairly_) ends up in the _advanced_ box. How **rude**!
+			  
+			  For now, however, we’ll stop here. I will come back to `Comonad` in other posts - they’re my latest **obsession** \- but `Store` gives a really clear idea about why these are useful. Incidentally, if you want to play the Game of Life, [the article’s Gist](https://gist.github.com/richdouglasevans/0f9a57e5a52b13e93c0c03630165ecd8) has a working demo!
+			  
+			  Next time, we’ll be looking at `Bifunctor` and `Profunctor`: so simple, we’re going to do both at the same time! I promise: these last two are going to be a bit of a **cool-down session**. Until then!
+			  
+			  ♥
 	- [strawman:concurrency [ES Wiki]](https://omnivore.app/me/strawman-concurrency-es-wiki-18d971e3b8d)
 	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman%253Aconcurrency)
