@@ -1,0 +1,41 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "capacitor://localhost",
+  "elements": [
+    {
+      "id": "JZZEUGPi0csnRLVyRRKdm",
+      "type": "diamond",
+      "x": 99,
+      "y": 99,
+      "width": 117,
+      "height": 91.00000000000001,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "hachure",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1180012998,
+      "version": 53,
+      "versionNonce": 1044438170,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1708544987199,
+      "link": null,
+      "locked": false
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#FFF"
+  },
+  "files": {}
+}
