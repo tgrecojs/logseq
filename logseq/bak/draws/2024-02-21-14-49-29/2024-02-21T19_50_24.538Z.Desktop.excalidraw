@@ -1,40 +1,40 @@
 {
   "type": "excalidraw",
   "version": 2,
-  "source": "file://",
+  "source": "capacitor://localhost",
   "elements": [
     {
-      "type": "rectangle",
-      "version": 9,
-      "versionNonce": 715370310,
-      "isDeleted": false,
       "id": "ZZ4FMcqh-_t9HxyYQ5T83",
+      "type": "rectangle",
+      "x": 160,
+      "y": 120,
+      "width": 140,
+      "height": 160,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
       "fillStyle": "hachure",
       "strokeWidth": 1,
       "strokeStyle": "solid",
       "roughness": 1,
       "opacity": 100,
-      "angle": 0,
-      "x": 160,
-      "y": 120,
-      "strokeColor": "#1e1e1e",
-      "backgroundColor": "transparent",
-      "width": 140,
-      "height": 160,
-      "seed": 1789085018,
       "groupIds": [],
       "frameId": null,
       "roundness": {
         "type": 3
       },
-      "boundElements": [],
+      "seed": 1789085018,
+      "version": 9,
+      "versionNonce": 715370310,
+      "isDeleted": false,
+      "boundElements": null,
       "updated": 1708545015014,
       "link": null,
       "locked": false
     }
   ],
   "appState": {
-    "gridSize": null,
+    "gridSize": 20,
     "viewBackgroundColor": "#FFF"
   },
   "files": {}
