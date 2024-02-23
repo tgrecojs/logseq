@@ -1,7 +1,11 @@
+## Notebook TOC
+	- ### Block Priorities
+		-
 -
 - ## Directory `~/akash-workgroups`  - February 23rd
 	- #### Sub-directories
 		- `/docs`
+		-
 		-
 - ## Docs Feedback - December 10th
 - Odd spacing
