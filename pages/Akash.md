@@ -1,6 +1,8 @@
 -
-- ## `~/akash-workgroups` - February 23rd
--
+- ## Directory `~/akash-workgroups`  - February 23rd
+	- #### Sub-directories
+		- `/docs`
+		-
 - ## Docs Feedback - December 10th
 - Odd spacing
   logseq.order-list-type:: number
