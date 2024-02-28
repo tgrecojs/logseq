@@ -1,4 +1,37 @@
 ## All posts
+	- [The Mystery of Order - by Robin Hanson - Overcoming Bias](https://omnivore.app/me/the-mystery-of-order-by-robin-hanson-overcoming-bias-18dc3aa93dc)
+	  collapsed:: true
+	  site:: [substack.com](https://substack.com/inbox/post/141774385)
+	  author:: Substack
+	  labels:: [[robin-hanson]] [[overcoming–bias]]
+	  date-saved:: [[02/19/2024]]
+		- ### Content
+		  collapsed:: true
+			- In the ancient world, people tended to see rival nations as ruled by illicit tyrants, while their nation was ruled justly by a king. 
+			  
+			  Two centuries ago when religion was first declining, many predicted that crime would greatly increase as a result. It was mainly fear of God, they said, that kept most from committing crime. But then crime came down.
+			  
+			  Centuries ago, there was widespread skepticism about joint stock companies, as it was presumed that firm managers would usually steal firm assets. It took centuries to convince skeptics. Many still presume that firms naturally enslave employees, unless prevented by good government. 
+			  
+			  Many in Europe predicted that the first U.S. president, George Washington, would not step down from office when voted out of office. Why give up such power? But step down he did. 
+			  
+			  Many say that nations naturally conquer their much weaker neighbors, at least if those do not have strong alliance partners. But all the nations near the U.S. are much weaker, none with protecting alliances, yet it has been a long time since the U.S. has even considered conquering them. 
+			  
+			  Disasters like the sinking of the Titanic are usually depicted as full of anarchy, violence, and every man for himself. But in fact, order usually prevails. 
+			  
+			  Many have long presumed that a king must be a better fighter than any who guard or advise him, as else such a guard would fight and kill him to replace him. 
+			  
+			  Many today presume that corrupt officials are endemic to most of the world, as it seems natural to them that police and regulators will usually demand bribes, that official treasurers will steal the money they oversee, and that militaries will take over governments via coups. 
+			  
+			  Yesterday in response to my [puzzling](https://www.overcomingbias.com/p/why-not-for-profit-govt) over the absence of for-profit governments, many said it was obvious that such regimes would enslave residents, and perhaps even eat them, and also refuse to pay off investors. 
+			  
+			  I guess their reasoning is like that in the above cases: in the usual human condition order only arises from selfish depravity, and our current world is a fragile rare exception, whose exceptionality would end with for-profit governments. But then why don’t for-profit firms today enslave their employees and customers? Good government stops them! 
+			  
+			  And why don’t government treasurers now steal our money, our militaries now take over our governments, or our elected leaders now refuse to step down at term end? Because they are good people, from our rare good people culture. And why wouldn’t those good people also be good under for-profit governments? Maybe because money is profane, and corrupts the sacred hearts of good sacred-government people. 
+			  
+			  And this is why we may need sacred money to enable for-sacred-profit governments. People seem to presume that order is naturally rare, only existing due to either ruthless power or rare good-sacred-hearted people like themselves. 
+			  
+			  **Added**: A related presumption of depravity is that AIs will exterminate humans, if given half a chance.
 	- [Fantas, Eel, and Specification 16: Extend · Tom Harding](https://omnivore.app/me/fantas-eel-and-specification-16-extend-tom-harding-18da59ced72)
 	  collapsed:: true
 	  site:: [tomharding.me](http://www.tomharding.me/2017/06/12/fantas-eel-and-specification-16/)
