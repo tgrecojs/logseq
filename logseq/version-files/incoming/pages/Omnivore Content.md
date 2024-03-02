@@ -1,4 +1,158 @@
 ## All posts
+	- [A Comprehensive Guide to the JavaScript Event Loop](https://omnivore.app/me/a-comprehensive-guide-to-the-java-script-event-loop-18dd432b2a3)
+	  collapsed:: true
+	  site:: [codedamn news](https://codedamn.com/news/programming/comprehensive-guide-javascript-event-loop)
+	  date-saved:: [[02/22/2024]]
+	  date-published:: [[03/20/2023]]
+		- ### Content
+		  collapsed:: true
+			- JavaScript is an essential language for web development, enabling developers to create interactive and dynamic web applications. One key concept every JavaScript developer should understand is the event loop, which plays a crucial role in JavaScript's asynchronous behavior. In this comprehensive guide, we will explore the JavaScript event loop, its inner workings, and how it affects the execution of your code. This guide is designed to be beginner-friendly, with clear explanations and code examples to illustrate the concepts.
+			  
+			  \#\# Understanding JavaScript Concurrency Model
+			  
+			  Before diving into the event loop, it's important to understand the JavaScript concurrency model. JavaScript is single-threaded, which means it can only execute one task at a time. However, it also has asynchronous capabilities that allow it to perform multiple tasks seemingly at once. This is achieved through the event loop, which helps manage the execution of tasks in a non-blocking manner.
+			  
+			  \#\#\# The Call Stack
+			  
+			  The call stack is a data structure that JavaScript uses to keep track of function calls and their execution context. Whenever a function is called, its context is pushed onto the call stack. When the function finishes executing, its context is popped off the stack, and the execution returns to the calling function.
+			  
+			  Consider the following code example:
+			  
+			  `function firstFunction() {
+			  console.log('First function executed');
+			  }
+			  
+			  function secondFunction() {
+			  firstFunction();
+			  console.log('Second function executed');
+			  }
+			  
+			  secondFunction();`
+			  
+			  The call stack's state changes as follows:
+			  
+			  1. Initially, the call stack is empty.
+			  2. The `secondFunction()` call is pushed onto the stack.
+			  3. The `firstFunction()` call is pushed onto the stack.
+			  4. The `firstFunction()` call is popped off the stack after it finishes executing.
+			  5. The `secondFunction()` call is popped off the stack after it finishes executing.
+			  
+			  \#\#\# Web APIs, Callback Queue, and Event Loop
+			  
+			  To handle asynchronous tasks, JavaScript relies on web APIs provided by the browser or the runtime environment (e.g., Node.js). Examples of such tasks include timers, XMLHttpRequests, and DOM events.
+			  
+			  When an asynchronous task is completed, its callback function is added to the callback queue (also known as the task queue or the message queue). The event loop constantly checks the call stack and the callback queue. If the call stack is empty and there's a callback in the queue, the event loop pushes the callback onto the call stack for execution.
+			  
+			  \#\# The Event Loop in Action
+			  
+			  Now that we have an understanding of the JavaScript concurrency model, let's see how the event loop works with a practical example.
+			  
+			  `console.log('Start');
+			  
+			  setTimeout(function timeoutCallback() {
+			  console.log('Timeout');
+			  }, 0);
+			  
+			  console.log('End');`
+			  
+			  Here's what happens in this example:
+			  
+			  1. The `console.log('Start')` call is pushed onto the call stack and executed, displaying "Start" in the console.
+			  2. The `setTimeout()` function is called, and its callback (`timeoutCallback`) is sent to the web API with a delay of 0 milliseconds.
+			  3. The `console.log('End')` call is pushed onto the call stack and executed, displaying "End" in the console.
+			  4. After the delay, the `timeoutCallback` is moved from the web API to the callback queue.
+			  5. The event loop checks the call stack and, finding it empty, pushes the `timeoutCallback` onto the call stack.
+			  6. The `timeoutCallback` is executed, displaying "Timeout" in the console.
+			  
+			  Even though the delay in `setTimeout()` was set to 0 milliseconds, the "Timeout" message appears after "End" due to the event loop's operation.
+			  
+			  \#\# Promises and Microtasks
+			  
+			  Promises, a feature introduced in ECMAScript 2015 (ES6), are another wayto handle asynchronous operations in JavaScript. They provide a cleaner syntax and better error handling compared to traditional callback-based approaches. With promises, the event loop introduces another queue called the microtask queue.
+			  
+			  \#\#\# Microtask Queue
+			  
+			  The microtask queue is similar to the callback queue but has a higher priority. When a promise is resolved or rejected, its `.then()` or `.catch()` callbacks are added to the microtask queue. The event loop prioritizes executing tasks from the microtask queue over those in the callback queue.
+			  
+			  Consider the following example:
+			  
+			  `console.log('Start');
+			  
+			  setTimeout(function timeoutCallback() {
+			  console.log('Timeout');
+			  }, 0);
+			  
+			  Promise.resolve().then(function promiseCallback() {
+			  console.log('Promise');
+			  });
+			  
+			  console.log('End');`
+			  
+			  The output will be:
+			  
+			  ```sql
+			  Start
+			  End
+			  Promise
+			  Timeout
+			  
+			  ```
+			  
+			  Here's the step-by-step breakdown:
+			  
+			  1. The `console.log('Start')` call is pushed onto the call stack and executed, displaying "Start" in the console.
+			  2. The `setTimeout()` function is called, and its callback (`timeoutCallback`) is sent to the web API with a delay of 0 milliseconds.
+			  3. The `Promise.resolve()` call is executed, and its callback (`promiseCallback`) is added to the microtask queue.
+			  4. The `console.log('End')` call is pushed onto the call stack and executed, displaying "End" in the console.
+			  5. The event loop checks the microtask queue and pushes the `promiseCallback` onto the call stack for execution, displaying "Promise" in the console.
+			  6. The `timeoutCallback` is moved from the web API to the callback queue after the delay.
+			  7. The event loop checks the call stack and, finding it empty, pushes the `timeoutCallback` onto the call stack.
+			  8. The `timeoutCallback` is executed, displaying "Timeout" in the console.
+			  
+			  \#\#\# async/await
+			  
+			  Another addition to ECMAScript 2017 (ES8) is the `async/await` syntax, which further simplifies asynchronous code. This syntax allows you to write asynchronous code in a synchronous manner using `async` functions and the `await` keyword. Internally, `async/await` relies on promises and the microtask queue.
+			  
+			  Here's an example using `async/await`:
+			  
+			  `console.log('Start');
+			  
+			  setTimeout(function timeoutCallback() {
+			  console.log('Timeout');
+			  }, 0);
+			  
+			  async function asyncFunction() {
+			  console.log('Before await');
+			  await Promise.resolve();
+			  console.log('After await');
+			  }
+			  
+			  asyncFunction();
+			  
+			  console.log('End');`
+			  
+			  The output will be:
+			  
+			  ```sql
+			  Start
+			  Before await
+			  End
+			  After await
+			  Timeout
+			  
+			  ```
+			  
+			  The `await` keyword causes the execution of the `asyncFunction()` to pause until the promise is resolved, allowing other synchronous code to continue executing. The callback after the `await` is added to the microtask queue and executed before the `timeoutCallback` from the callback queue.
+			  
+			  \#\# Conclusion
+			  
+			  Understanding the JavaScript event loop is essential for mastering asynchronous programming in JavaScript. By grasping the concepts of the call stack, callback queue, microtask queue, and event loop, you can write more efficient and maintainable code. Moreover, modern features like promises and `async/await` provide cleaner and more readable syntax for handling asynchronous tasks.
+			  
+			  \#\#\# Sharing is caring
+			  
+			  Did you like what Mehul Mohan wrote? Thank them for their work by sharing it on social media.
+			  
+			  \#\# No comments so far
 	- [The Mystery of Order - by Robin Hanson - Overcoming Bias](https://omnivore.app/me/the-mystery-of-order-by-robin-hanson-overcoming-bias-18dc3aa93dc)
 	  collapsed:: true
 	  site:: [substack.com](https://substack.com/inbox/post/141774385)

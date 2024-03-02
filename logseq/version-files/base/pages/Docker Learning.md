@@ -1,6 +1,5 @@
 # Educative Courses
 	- ## Working with Containers #Docker
-	  collapsed:: true
 		- #### Why Docker
 			- Isolation from the main system
 				- if you are testing asyncio support for one application that needs Python 3.7, and you decide not to use it, you might need to uninstall Python 3.7 and install the previous version. With Docker, you simply remove the container
@@ -16,7 +15,6 @@
 			- > Docker fixes the age-old scenario of “It works on my machine”
 			  **18:15** [[quick capture]]:  :4bfkpc8ox
 	- ## Docker Architecture
-	  collapsed:: true
 		- > “Docker provides the ability to package and run an application in a loosely isolated environment called a container. The isolation and security allow you to run many containers simultaneously on a given host. Containers are lightweight because they don’t need the extra load of a hypervisor, but run directly within the host machine’s kernel. This means you can run more containers on a given hardware combination than if you were using virtual machines”. - Docker’s Official Documentation
 		- ### Image
 			- The docker image is the **blueprint of the container that it creates**.
@@ -33,7 +31,6 @@
 				- > So, if you fetch a Python 3.5 image from Docker and run an instance of it, you can do whatever you were able to do in the host machine using a command line interface. If you make any mistake with that instance, you can delete the container and create a new one from the existing image. This way, your main environment remains intact in the form of an image and you can play around with the dependencies packaged in the image using containers.
 				-
 	- ## Docker Architecture (Continued)
-	  collapsed:: true
 		- #### Docker Ecosystem
 			- Docker Registry
 			  logseq.order-list-type:: number
@@ -82,7 +79,6 @@
 					- `-t` creates a pseudo terminal for us. #card
 				- #### `docker ps`
 					- Lists active (running) containers.
-					  collapsed:: true
 						- **Running this with the `-a` flag **show all containers, regardless of their current status.**
 					- Command showing **running
 						- *CONTAINER ID*: shows the unique ID of each container
