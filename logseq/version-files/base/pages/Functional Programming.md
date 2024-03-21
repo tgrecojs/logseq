@@ -23,7 +23,6 @@
 	- A function which deconstructs a structure into a single value. #card
 	- Examples:
 		- `reduceRight` is an example of a catamorphism for  the`Array` prototype.
-		- `reduceRight` is an example of a catamorphism for  the`Array` prototype.
 - ```js
   // sum is a catamorphism from [Number] -> Number
   const sum = xs => xs.reduceRight((acc, x) => acc + x, 0)
@@ -64,11 +63,11 @@
   to(from(() => ‘hi’)) // () => ‘hi’
   ```
 - https://medium.com/@drboolean/laziness-with-representable-functors-9bd506eae83f
+- ## Functor Types
+- ### Contravariant Functor
+- > The tl;dr is that we can take functions that are concrete in their output, combine them with *concat*, and *contramap* over their input. This allows us to do cool things like combine filter predicates and sort comparisons while providing flexibility on their arguments. I ran out of acceptable blog post space, but it also is wonderfully useful when transducing.
 -
 -
 - ## Posts
 	- [[Contravariant Functors]]
-	-
 	- [[Morphism in JS]]
--
--

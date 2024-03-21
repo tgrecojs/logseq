@@ -1,4 +1,1457 @@
 ## All posts
+	- [Smart Wallet Dapp Architecture | Agoric Documentation](https://omnivore.app/me/https-docs-agoric-com-guides-getting-started-contract-rpc-html-18e58ac3d09)
+	  collapsed:: true
+	  site:: [docs.agoric.com](https://docs.agoric.com/guides/getting-started/contract-rpc)
+	  labels:: [[agoric]]
+	  date-saved:: [[03/19/2024]]
+	  date-published:: [[03/18/2024]]
+		- ### Content
+		  collapsed:: true
+			- The [Agoric Platform](https://docs.agoric.com/guides/platform/) consists of smart contracts and services such as [Zoe](https://docs.agoric.com/guides/zoe/) running in a [Hardened JavaScript](https://docs.agoric.com/guides/js-programming/hardened-js.html) VM running on top of a Cosmos SDK consensus layer. Clients interact with the consensus layer by making queries and submitting messages in signed transactions. In the Smart Wallet Architecture, dapps consist of
+			  
+			  * Hardened JavaScript smart contracts
+			  * clients that can submit offers and query status via the consensus layer
+			  
+			  ![smart wallet dapp sequence diagram](https://proxy-prod.omnivore-image-cache.app/0x0,skEfV5hzXuxJxYAULHxTjYpnsytOu-KnxNsZHMBrZ3xc/https://docs.agoric.com/assets/sw-dapp-arch.fMM6JZGd.svg)
+			  
+			  1. A client formats an offer, signs it, and broadcasts it.
+			  2. The offer is routed to the `walletFactory` contract, which finds (or creates) the `smartWallet` object associated with the signer's address and uses it to execute the offer.
+			  3. The `smartWallet` calls `E(zoe).offer(...)` and monitors the status of the offer, emitting it for clients to query.
+			  4. Zoe escrows the payments and forwards the proposal to the contract indicated by the offer.
+			  5. The contract tells Zoe how to reallocate assets.
+			  6. Zoe ensures that the reallocations respect offer safety and then provides payouts accordingly.
+			  7. The client's query tells it that the payouts are available.
+			  
+			  \#\# Signing and Broadcasting Offers [​](\#signing-and-broadcasting-offers)
+			  
+			  One way to sign and broadcast offers is with the `agd tx ...` command. For example:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```routeros
+			  agd tx swingset wallet-action --allow-spend "$ACTION" \
+			  --chain-id=agoriclocal --from=acct1
+			  ```
+			  
+			  Another is using a wallet signing UI such as Keplr via the [Keplr API](https://docs.keplr.app/api/).
+			  
+			  Given sufficient care with key management, a [cosmjs SigningStargateClient](https://cosmos.github.io/cosmjs/latest/stargate/classes/SigningStargateClient.html) or any other client that can deliver a [agoric.swingset.MsgWalletSpendAction](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/golang/cosmos/proto/agoric/swingset/msgs.proto\#L70) to a [Cosmos SDK endpoint](https://docs.cosmos.network/main/core/grpc%5Frest) works.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)proto
+			  
+			  ```protobuf
+			  message MsgWalletSpendAction {
+			    bytes owner = 1;
+			    string spend_action = 2;
+			  }
+			  ```
+			  
+			  \#\# Querying VStorage [​](\#querying-vstorage)
+			  
+			  [VStorage](https://github.com/Agoric/agoric-sdk/tree/master/golang/cosmos/x/vstorage\#readme) (for "Virtual Storage") is a key-value store that is read-only for clients of the consensus layer. From within the JavaScript VM, it is accessed via a `chainStorage` API with a node at each key that is write-only; a bit like a `console`.
+			  
+			  ![vstorage query diagram](https://proxy-prod.omnivore-image-cache.app/0x0,sIqAE0XWp_PMqp_lvytreIJing2t19kAsBKdrcPZZjpQ/https://docs.agoric.com/assets/vstorage-brand-q.SCB_G9qx.svg)
+			  
+			  The protobuf definition is [agoric.vstorage.Query](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/golang/cosmos/proto/agoric/vstorage/query.proto\#L11):
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)proto
+			  
+			  ```protobuf
+			  service Query {
+			  // Return an arbitrary vstorage datum.
+			  rpc Data(QueryDataRequest) returns (QueryDataResponse) {
+			    option (google.api.http).get = "/agoric/vstorage/data/{path}";
+			  }
+			  
+			  // Return the children of a given vstorage path.
+			  rpc Children(QueryChildrenRequest)
+			    returns (QueryChildrenResponse) {
+			      option (google.api.http).get = "/agoric/vstorage/children/{path}";
+			  }
+			  }
+			  ```
+			  
+			  We can issue queries using, `agd query ...`:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```routeros
+			  $ agd query vstorage children 'published.agoricNames'
+			  
+			  children:
+			  - brand
+			  - installation
+			  - instance
+			  ...
+			  ```
+			  
+			  The [Agoric CLI](https://docs.agoric.com/guides/agoric-cli/) `follow` command supports vstorage query plus some of the marshalling conventions discussed below:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```prolog
+			  $ agoric follow -lF :published.agoricNames.brand
+			  [
+			  [
+			    "BLD",
+			    slotToVal("board0566","Alleged: BLD brand"),
+			  ],
+			  [
+			    "IST",
+			    slotToVal("board0257","Alleged: IST brand"),
+			  ],
+			  ...
+			  ]
+			  ```
+			  
+			  vstorage viewer by p2p
+			  
+			  The [vstorage-viewer](https://github.com/p2p-org/p2p-agoric-vstorage-viewer) contributed by p2p is often _very_ handy:
+			  
+			  [![vstorage viewer screenshot](https://proxy-prod.omnivore-image-cache.app/0x0,sGme0IEveRijb5RUHKEcxKvKJ9wmZrafFxNSL20MEE8s/https://user-images.githubusercontent.com/150986/259798595-40cd22f0-fa01-43a9-b92a-4f0f4813a4f6.png)](https://p2p-org.github.io/p2p-agoric-vstorage-viewer/\#https://devnet.rpc.agoric.net/%7Cpublished,published.agoricNames%7C)
+			  
+			  \#\# Specifying Offers [​](\#specifying-offers)
+			  
+			  Recall that for an agent within the JavaScript VM, [E(zoe).offer(...)](https://docs.agoric.com/reference/zoe-api/zoe.html\#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs) takes an `Invitation` and optionally a `Proposal` with `{ give, want, exit }`, a `PaymentPKeywordRecord`, and `offerArgs`; it returns a `UserSeat` from which we can [getPayouts()](https://docs.agoric.com/reference/zoe-api/user-seat.html\#e-userseat-getpayouts).
+			  
+			  ![Zoe API diagram, simplified](https://proxy-prod.omnivore-image-cache.app/0x0,sW1nJfLsMAsWaDsM8LnRkj5aTbmggbzlQhHdV53Jdvfg/https://docs.agoric.com/assets/zoe-simp.NTJeh880.svg)
+			  
+			  In the Smart Wallet architecture, a client uses an `OfferSpec` to tell its `SmartWallet` how to conduct an offer. It includes an `invitationSpec` to say what invitation to pass to Zoe. For example:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```php
+			  /** @type {import('@agoric/smart-wallet').InvitationSpec} */
+			  const invitationSpec = {
+			  source: 'contract',
+			  instance,
+			  publicInvitationMaker: 'makeBattleInvitation',
+			  invitationArgs: ['troll'],
+			  };
+			  ```
+			  
+			  Here the `SmartWallet` calls `E(zoe).getPublicFacet(instance)` and then uses the `publicInvitationMaker` and `invitationArgs` to call the contract's public facet.
+			  
+			  ![InvitationSpec sequence diagram](https://proxy-prod.omnivore-image-cache.app/0x0,skUHEvBvDb3zL4Mk3If4UPVjf_qtNeR6pU9E0PI43hxs/https://docs.agoric.com/assets/inv-spec.5-1ou8Wm.svg)
+			  
+			  InvitationSpec Usage
+			  
+			  Supposing `spec` is an `InvitationSpec`, its `.source` is one of:
+			  
+			  * `==purse==` ==- to make an offer with an invitation that is already in the Invitation purse of the smart wallet and agrees with== `==spec==` ==on== `==.instance==` ==and== `==.description==` ==properties.== For example, in [dapp-econ-gov](https://github.com/Agoric/dapp-econ-gov), committee members use invitations sent to them when the committee was created.
+			  * `contract` \- the smart wallet makes an invitation by calling a method on the public facet of a specified instance: `E(E(zoe).getPublicFacet(spec.instance)[spec.publicInvitationMaker](...spec.invitationArgs)`
+			  * `agoricContract` \- for example, from [dapp-inter](https://github.com/Agoric/dapp-inter):
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```prolog
+			  {
+			   source: 'agoricContract',
+			   instancePath: ['VaultFactory'],
+			   callPipe: [
+			     ['getCollateralManager', [toLock.brand]],
+			     ['makeVaultInvitation'],
+			   ],
+			  }
+			  ```
+			  
+			  The smart wallet finds the instance using `E(agoricNames).lookup('instance', ...spec.instancePath)` and makes a chain of calls specified by `spec.callPipe`. Each entry in the callPipe is a `[methodName, args?]` pair used to execute a call on the preceding result. The end of the pipe is expected to return an Invitation.
+			  
+			  * `continuing` \- For example, `dapp-inter` uses the following `InvitationSpec` to adjust a vault:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```css
+			  {
+			  source: 'continuing',
+			  previousOffer: vaultOfferId,
+			  invitationMakerName: 'AdjustBalances',
+			  }
+			  ```
+			  
+			  In this continuing offer, the smart wallet uses the `spec.previousOffer` id to look up the `.invitationMakers` property of the result of the previous offer. It uses `E(invitationMakers)[spec.invitationMakerName](...spec.invitationArgs)` to make an invitation.
+			  
+			  The client fills in the proposal, which instructs the `SmartWallet` to withdraw corresponding payments to send to Zoe.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```php
+			  /** @type {import('@agoric/smart-wallet').BridgeAction} */
+			  const action = harden({
+			  method: 'executeOffer',
+			  offer: {
+			    id: 'battle7651',
+			    invitationSpec,
+			    proposal: {
+			      give: { Gold: AmountMath.make(brands.gold, 100n) },
+			    },
+			  },
+			  });
+			  ```
+			  
+			  But recall the `spend_action` field in `MsgWalletSpendAction` is a string. In fact, the expected string in this case is of the form:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```capnproto
+			  t.regex(spendAction, /^{"body":"\#.*","slots":\["board123","board32342"\]}$/);
+			  const goldStuff =
+			  '\\"brand\\":\\"$1.Alleged: Gold Brand\\",\\"value\\":\\"+100\\"';
+			  t.true(spendAction.includes(goldStuff));
+			  ```
+			  
+			  We recognize `"method":"executeOffer"` and such, but `body:`, `slots:`, and `$1.Alleged: Gold Brand` need further explanation.
+			  
+			  \#\#\# Marshalling Amounts and Instances [​](\#marshalling-amounts-and-instances)
+			  
+			  To start with, amounts include `bigint`s. The `@endo/marshal` API handles those:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```reasonml
+			  const m = makeMarshal(undefined, undefined, smallCaps);
+			  
+			  const stuff = harden([1, 2, 3n, undefined, NaN]);
+			  const capData = m.toCapData(stuff);
+			  t.deepEqual(m.fromCapData(capData), stuff);
+			  ```
+			  
+			  To marshal brands and instances, recall from the discussion of [marshal in eventual send](https://docs.agoric.com/guides/js-programming/eventual-send.html\#e-and-marshal-a-closer-look) how remotables are marshalled with a translation table.
+			  
+			  The [Agoric Board](https://docs.agoric.com/reference/repl/board.html) is a well-known name service that issues plain string identifiers for object identities and other passable _keys_ (that is: passable values excluding promises and errors). Contracts and other services can use its table of identifiers as a marshal translation table:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```dart
+			  /** @type {Record<string, Brand>} */
+			  const brands = {
+			  gold: asset.gold.brand,
+			  victory: asset.victory.brand,
+			  };
+			  
+			  // explicitly register brand using the board API
+			  const victoryBrandBoardId = await E(theBoard).getId(brands.victory);
+			  t.is(victoryBrandBoardId, 'board0371');
+			  
+			  // When the publishing marshaler needs a reference marker for something
+			  // such as the gold brand, it issues a new board id.
+			  const pubm = E(theBoard).getPublishingMarshaller();
+			  const brandData = await E(pubm).toCapData(brands);
+			  t.deepEqual(brandData, {
+			  body: `\#${JSON.stringify({
+			    gold: '$0.Alleged: Gold Brand',
+			    victory: '$1.Alleged: Victory Brand',
+			  })}`,
+			  slots: ['board0592', 'board0371'],
+			  });
+			  ```
+			  
+			  To reverse the process, clients can mirror the on-chain board translation table by synthesizing a remotable for each reference marker received:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```javascript
+			  const makeBoardContext = () => {
+			  const synthesizeRemotable = (_slot, iface) =>
+			    Far(iface.replace(/^Alleged: /, ''), {});
+			  
+			  const { convertValToSlot, convertSlotToVal } = makeTranslationTable(
+			    slot => Fail`unknown id: ${slot}`,
+			    synthesizeRemotable,
+			  );
+			  const marshaller = makeMarshal(convertValToSlot, convertSlotToVal, smallCaps);
+			  
+			  /** Read-only board work-alike. */
+			  const board = harden({
+			    getId: convertValToSlot,
+			    getValue: convertSlotToVal,
+			  });
+			  
+			  return harden({
+			    board,
+			    marshaller,
+			    /**
+			     * Unmarshall capData, synthesizing a Remotable for each boardID slot.
+			     *
+			     * @type {(cd: import("@endo/marshal").CapData<string>) => unknown }
+			     */
+			    ingest: marshaller.fromCapData,
+			  });
+			  };
+			  ```
+			  
+			  Now we can take results of vstorage queries for `Data('published.agoricNames.brand')` and `Data('published.agoricNames.instance')` unmarshal ("ingest") them:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```routeros
+			  const clientContext = makeBoardContext();
+			  
+			  const brandQueryResult = {
+			  body: `\#${JSON.stringify({
+			    gold: '$1.Alleged: Gold Brand',
+			    victory: '$0.Alleged: Victory Brand',
+			  })}`,
+			  slots: ['board0371', 'board32342'],
+			  };
+			  const brands = clientContext.ingest(brandQueryResult);
+			  const { game1: instance } = clientContext.ingest(instanceQueryResult);
+			  ```
+			  
+			  And now we have all the pieces of the `BridgeAction` above. The marshalled form is:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```css
+			  t.deepEqual(clientContext.marshaller.toCapData(action), {
+			  body: `\#${JSON.stringify({
+			    method: 'executeOffer',
+			    offer: {
+			      id: 'battle7651',
+			      invitationSpec: {
+			        instance: '$0.Alleged: Instance',
+			        invitationArgs: ['troll'],
+			        publicInvitationMaker: 'makeBattleInvitation',
+			        source: 'contract',
+			      },
+			      proposal: {
+			        give: {
+			          Gold: { brand: '$1.Alleged: Gold Brand', value: '+100' },
+			        },
+			      },
+			    },
+			  })}`,
+			  slots: ['board123', 'board32342'],
+			  });
+			  ```
+			  
+			  We still don't quite have a single string for the `spend_action` field. We need to `stringify` the `CapData`:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```reasonml
+			  const spendAction = JSON.stringify(
+			  clientContext.marshaller.toCapData(action),
+			  );
+			  ```
+			  
+			  And now we have the `spend_action` in the expected form:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```capnproto
+			  t.regex(spendAction, /^{"body":"\#.*","slots":\["board123","board32342"\]}$/);
+			  const goldStuff =
+			  '\\"brand\\":\\"$1.Alleged: Gold Brand\\",\\"value\\":\\"+100\\"';
+			  t.true(spendAction.includes(goldStuff));
+			  ```
+			  
+			  The wallet factory can now `JSON.parse` this string into `CapData` and unmarshal it using a board marshaller to convert board ids back into brands, instances, etc.
+			  
+			  \#\# Smart Wallet VStorage Topics [​](\#smart-wallet-vstorage-topics)
+			  
+			  Each smart wallet has a node under `published.wallet`:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```gcode
+			  $ agd query vstorage children published.wallet
+			  children:
+			  - agoric1h4d3mdvyqhy2vnw2shq4pm5duz5u8wa33jy6cl
+			  - agoric1qx2kqqdk80fdasldzkqu86tg4rhtaufs00na3y
+			  - agoric1rhul0rxa2z829a6xkrvuq8m8wjwekyduv7dzfj
+			  ...
+			  ```
+			  
+			  Smart wallet clients should start by getting the **current** state at `published.${ADDRESS}.current` and then subscribe to **updates** at `published.${ADDRESS}`. For example, we can use `agoric follow -lF` to get the latest `.current` record:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```dts
+			  $ agoric follow -lF :published.wallet.agoric1h4d3mdvyqhy2vnw2shq4pm5duz5u8wa33jy6cl.current
+			  {
+			  liveOffers: [],
+			  offerToPublicSubscriberPaths: [
+			    [
+			      "openVault-1691526589332",
+			      {
+			        vault: "published.vaultFactory.managers.manager0.vaults.vault2",
+			      },
+			    ],
+			  ],
+			  offerToUsedInvitation: [
+			    [
+			      "openVault-1691526589332",
+			      {
+			        brand: slotToVal("board0074","Alleged: Zoe Invitation brand"),
+			        value: [
+			          {
+			            description: "manager0: MakeVault",
+			            handle: slotToVal(null,"Alleged: InvitationHandle"),
+			            installation: slotToVal("board05815","Alleged: BundleIDInstallation"),
+			            instance: slotToVal("board00360","Alleged: InstanceHandle"),
+			          },
+			        ],
+			      },
+			    ],
+			  ],
+			  purses: [
+			    {
+			      balance: {
+			        brand: slotToVal("board0074"),
+			        value: [],
+			      },
+			      brand: slotToVal("board0074"),
+			    },
+			  ],
+			  }
+			  ```
+			  
+			  Then we can use `agoric follow` without any options to get a stream of updates as they appear.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```css
+			  agoric follow :published.wallet.agoric1h4d3mdvyqhy2vnw2shq4pm5duz5u8wa33jy6cl
+			  ...
+			  {
+			  status: {
+			    id: "closeVault-1691526597848",
+			    invitationSpec: {
+			      invitationMakerName: "CloseVault",
+			      previousOffer: "openVault-1691526589332",
+			      source: "continuing",
+			    },
+			    numWantsSatisfied: 1,
+			    payouts: {
+			      Collateral: {
+			        brand: slotToVal("board05557","Alleged: ATOM brand"),
+			        value: 13000000n,
+			      },
+			      Minted: {
+			        brand: slotToVal("board0257","Alleged: IST brand"),
+			        value: 215000n,
+			      },
+			    },
+			    proposal: {
+			      give: {
+			        Minted: {
+			          brand: slotToVal("board0257"),
+			          value: 5750000n,
+			        },
+			      },
+			      want: {},
+			    },
+			    result: "your vault is closed, thank you for your business",
+			  },
+			  updated: "offerStatus",
+			  }
+			  ```
+			  
+			  Note that status updates are emitted at several points in the handling of each offer:
+			  
+			  * when the `getOfferResult()` promise settles
+			  * when the `numWantsSatisfied()` promise settles
+			  * when the payouts have been deposited.
+			  
+			  And we may get `balance` updates at any time.
+			  
+			  The data published via vstorage are available within the JavaScript VM via the [getPublicTopics](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/packages/smart-wallet/src/smartWallet.js\#L585) API.
+			  
+			  The [CurrentWalletRecord](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/packages/smart-wallet/src/smartWallet.js\#L71-L76) type is:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)ts
+			  
+			  ```qml
+			  {
+			   purses: Array<{brand: Brand, balance: Amount}>,
+			   offerToUsedInvitation: Array<[ offerId: string, usedInvitation: Amount ]>,
+			   offerToPublicSubscriberPaths: Array<[ offerId: string, publicTopics: { [subscriberName: string]: string } ]>,
+			   liveOffers: Array<[import('./offers.js').OfferId, import('./offers.js').OfferStatus]>,
+			  }
+			  ```
+			  
+			  And [UpdateRecord](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/packages/smart-wallet/src/smartWallet.js\#L80-L83) is:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)ts
+			  
+			  ```groovy
+			     { updated: 'offerStatus', status: import('./offers.js').OfferStatus }
+			   | { updated: 'balance'; currentAmount: Amount }
+			   | { updated: 'walletAction'; status: { error: string } }
+			  ```
+			  
+			  Both of those types include [OfferStatus](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/packages/smart-wallet/src/offers.js\#L21C14-L26C5) by reference:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)ts
+			  
+			  ```groovy
+			  import('./offers.js').OfferSpec & {
+			  error?: string,
+			  numWantsSatisfied?: number
+			  result?: unknown | typeof UNPUBLISHED_RESULT,
+			  payouts?: AmountKeywordRecord,
+			  }
+			  ```
+			  
+			  \#\# VBank Assets and Cosmos Bank Balances [​](\#vbank-assets-and-cosmos-bank-balances)
+			  
+			  Note that balances of assets such as **IST** and **BLD** are already available via consensus layer queries to the Cosmos SDK [bank module](https://docs.cosmos.network/main/modules/bank).
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```1c
+			  $ agd query bank balances agoric1h4d3mdvyqhy2vnw2shq4pm5duz5u8wa33jy6cl -o json | jq .balances
+			  [
+			  {
+			    "denom": "ibc/BA313C4A19DFBF943586C0387E6B11286F9E416B4DD27574E6909CABE0E342FA",
+			    "amount": "100000000"
+			  },
+			  {
+			    "denom": "ubld",
+			    "amount": "10000000"
+			  },
+			  {
+			    "denom": "uist",
+			    "amount": "215000"
+			  }
+			  ]
+			  ```
+			  
+			  They are not published redundantly in vstorage and nor does the smart wallet emit `balance` updates for them.
+			  
+			  To get the correspondence between certain cosmos denoms (chosen by governance) and their ERTP brands, issuers, and display info such as `decimalPlaces`, see `published.agoricNames.vbankAsset`:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```dts
+			  agoric follow -lF :published.agoricNames.vbankAsset
+			  [
+			  [
+			    "ibc/BA313C4A19DFBF943586C0387E6B11286F9E416B4DD27574E6909CABE0E342FA",
+			    {
+			      brand: slotToVal("board05557","Alleged: ATOM brand"),
+			      denom: "ibc/BA313C4A19DFBF943586C0387E6B11286F9E416B4DD27574E6909CABE0E342FA",
+			      displayInfo: {
+			        assetKind: "nat",
+			        decimalPlaces: 6,
+			      },
+			      issuer: slotToVal("board02656","Alleged: ATOM issuer"),
+			      issuerName: "ATOM",
+			      proposedName: "ATOM",
+			    },
+			  ],
+			  [
+			    "ubld",
+			    {
+			      brand: slotToVal("board0566","Alleged: BLD brand"),
+			      denom: "ubld",
+			      displayInfo: {
+			        assetKind: "nat",
+			        decimalPlaces: 6,
+			      },
+			      issuer: slotToVal("board0592","Alleged: BLD issuer"),
+			      issuerName: "BLD",
+			      proposedName: "Agoric staking token",
+			    },
+			  ],
+			  [
+			    "uist",
+			    {
+			      brand: slotToVal("board0257","Alleged: IST brand"),
+			      denom: "uist",
+			      displayInfo: {
+			        assetKind: "nat",
+			        decimalPlaces: 6,
+			      },
+			      issuer: slotToVal("board0223","Alleged: IST issuer"),
+			      issuerName: "IST",
+			      proposedName: "Agoric stable token",
+			    },
+			  ],
+			  ...
+			  ]
+			  ```
+		- ### Highlights
+		  collapsed:: true
+			- > `purse` \- to make an offer with an invitation that is already in the Invitation purse of the smart wallet and agrees with `spec` on `.instance` and `.description` properties. [⤴️](https://omnivore.app/me/https-docs-agoric-com-guides-getting-started-contract-rpc-html-18e58ac3d09#21856ba1-e523-4526-a184-3f053e6b0c91)
+	- [draft-toomim-httpbis-linked-json-00](https://omnivore.app/me/draft-toomim-httpbis-linked-json-00-18e49ca8a6e)
+	  collapsed:: true
+	  site:: [raw.githubusercontent.com](https://raw.githubusercontent.com/braid-org/braid-spec/master/draft-toomim-httpbis-linked-json-00.txt)
+	  labels:: [[CRDTs]] [[Braid Specification]] [[JSON]] [[JSON-LD]]
+	  date-saved:: [[03/16/2024]]
+		- ### Content
+		  collapsed:: true
+			- Internet-Draft                                                 M. Toomim
+			  Expires: Mar 8, 2020                                   Invisible College
+			  Intended status: Proposed Standard                            B. Bellomy
+			                                                       Invisible College
+			                                                             Aug 2, 2020
+			  
+			                                 Linked JSON
+			                     draft-toomim-httpbis-linked-json-00
+			  
+			  Abstract
+			  
+			   Linked JSON is an extension to JSON that defines a new datatype: a
+			   "Link".  A Link has a URI, and may have metadata.
+			  
+			   Links allow JSON objects to compose across websites, supporting
+			   transclusion.  Optional metadata on links can be used to specify a
+			   specific version or sub-slice of data to link to.
+			  
+			  
+			  Status of this Memo
+			  
+			   This Internet-Draft is submitted in full conformance with the
+			   provisions of BCP 78 and BCP 79.
+			  
+			   Internet-Drafts are working documents of the Internet Engineering
+			   Task Force (IETF), its areas, and its working groups.  Note that
+			   other groups may also distribute working documents as
+			   Internet-Drafts.  The list of current Internet-Drafts is at
+			   http://datatracker.ietf.org/drafts/current/.
+			  
+			   Internet-Drafts are draft documents valid for a maximum of six months
+			   and may be updated, replaced, or obsoleted by other documents at any
+			   time.  It is inappropriate to use Internet-Drafts as reference
+			   material or to cite them other than as "work in progress."
+			  
+			   The list of current Internet-Drafts can be accessed at
+			   https://www.ietf.org/1id-abstracts.html
+			  
+			   The list of Internet-Draft Shadow Directories can be accessed at
+			   https://www.ietf.org/shadow.html
+			  
+			  
+			  Table of Contents
+			  
+			   1. Introduction ....................................................4
+			   2. Related Work ....................................................4
+			   3. Resolution ..........................................,...........4
+			   4. Media Type ..........................................,...........5
+			   5. IANA Considerations .............................................5
+			   6. Security Considerations .........................................5
+			   7. Conventions .....................................................6
+			   8. Copyright Notice ................................................6
+			   9. References ......................................................6
+			      9.1. Normative References .......................................6
+			      9.2. Informative References .....................................6
+			  
+			  
+			  1.  Introduction
+			  
+			   JSON documents often include URIs, or references to other documents,
+			   as strings.  It is often useful to distinguish which strings actually
+			   represent URIs, for example, to fetch and include the contents of
+			   links, or to translate relative to absolute URIs.
+			  
+			   Linked JSON is an extension of JSON that adds a Link datatype, so that
+			   URIs can be distinguished from ordinary strings.
+			  
+			  1.1.  Syntax
+			  
+			   A Link is encoded as a JSON object with a field named "link":
+			  
+			     { "link": "/david-macaulay" }
+			  
+			   Any object with a field named "link" is interpreted as a Link.  The
+			   value of the link field MUST be a string containing a URI [RFC3986].
+			  
+			   Links MAY be embedded within arbitrary JSON:
+			  
+			     {
+			       "book-name": "The way things work",
+			       "image"      { "link": "/the-way-things-work.jpg" },
+			       "author":    { "link": "/david-macaulay" }
+			     }
+			  
+			  1.2.  Escaping
+			  
+			   To encode a field named "link" *without* creating a Link, prefix the
+			   field with an underscore:
+			  
+			     { "_link": "this is not a link" }
+			  
+			   To encode "_link", prefix it with two underscores: "__link".  To
+			   encode "__link", use "___link", and so on.
+			  
+			  1.3.  Metadata
+			  
+			   Links MAY specify metadata on other fields of the JSON object.
+			  
+			   For instance, a "version" field could be used to specify a specific
+			   version to link to:
+			  
+			     {
+			       "message": "Hey guys! I just published a new draft!",
+			       "attachment: {
+			         "link": "/books/the-way-things-work",
+			         "version": "4.0.5"
+			       }
+			     }
+			  
+			   The metadata in [RFC8288] could also be expressed.
+			  
+			   Or a GraphQL [GRAPHQL] query:
+			  
+			     { "link": "/foo", "range": "(bar:9)[3,4]" }
+			  
+			  
+			  2.  Related Work
+			  
+			   See [MNOT] for a survey of related work.  Linked JSON is most similar
+			   to [JSONREF], but has the following differences:
+	- [Finite Model Theory and Game Comonads: Part 1 | The n-Category Café](https://omnivore.app/me/finite-model-theory-and-game-comonads-part-1-the-n-category-cafe-18d32a7db59)
+	  collapsed:: true
+	  site:: [golem.ph.utexas.edu](https://golem.ph.utexas.edu/category/2023/09/finite_model_theory_and_game_c.html)
+	  date-saved:: [[01/22/2024]]
+	  date-published:: [[09/07/2023]]
+		- ### Content
+		  collapsed:: true
+			- \#\#\# Finite Model Theory and Game Comonads: Part 1
+			  
+			  \#\#\#\# Posted by Emily Riehl
+			  
+			  [![MathML-enabled post (click for more details).](https://proxy-prod.omnivore-image-cache.app/0x0,sSU_IkLson5g4653tePzSOpvq4vcmGk0czFf6ZfImxHk/https://golem.ph.utexas.edu/~distler/blog/images/MathML.png "MathML-enabled post (click for details).")](http://golem.ph.utexas.edu/~distler/blog/mathml.html)
+			  
+			  _guest post by [Elena Dimitriadis](https://www.math.univ-toulouse.fr/~edimitri/index%5Fen), [Richie Yeung](https://y-richie-y.github.io/), [Tyler Hanks](https://gataslab.org/), and [Zhixuan Yang](https://yangzhixuan.github.io/)_
+			  
+			  _Finite model theory_ ([Libkin 2004](https://doi.org/10.1007/978-3-662-07003-1)) studies finite models of logics. Its main motivation comes from computer science: a _finite relational structure_, i.e. a finite set AA with a finite set of relations on AA, is essentially a database in the sense of good old SQL tables, and a logic formula φ\\varphi with nn free variables is understood as a _query_ to the database that selects all nn\-tuples of AA that satisfy the formula φ\\varphi.
+			  
+			  [![MathML-enabled post (click for more details).](https://proxy-prod.omnivore-image-cache.app/0x0,sSU_IkLson5g4653tePzSOpvq4vcmGk0czFf6ZfImxHk/https://golem.ph.utexas.edu/~distler/blog/images/MathML.png "MathML-enabled post (click for details).")](http://golem.ph.utexas.edu/~distler/blog/mathml.html)
+			  
+			  Finite model theory is naturally related to _complexity theory_, as we may ask questions like what’s the time complexity to query a finite relational structure with a formula from some logic, and also the converse question—what kind of logic is needed to describe the algorithmic problems in a complexity class. For example, given a finite graph GG, we may ask if it is possible to write a first-order logic formula φ(u,v)\\varphi(u,v) using a relation symbol E(x,y)E(x,y) saying there is an edge from xx to yy, such that φ(u,v)\\varphi(u,v) is satisfied precisely by vertices u,v∈Gu, v \\in G that are connected by a path.
+			  
+			  From a logical point of view, what makes finite model theory interesting is that some prominent techniques in model theory fail for finite models. In particular, [compactness](https://en.wikipedia.org/wiki/Compactness%5Ftheorem) fails for finite model theory: a theory TT may not have a _finite_ model even if all its finite sub-theories S⊆TS \\subseteq T have finite models—consider e.g. T\={φ n∣n∈ℕ}T = \\left\\{ \\varphi\_n \\mid n \\in \\mathbb{N}\\right\\} where φ n\\varphi\_n asserts there are at least nn distinct elements.
+			  
+			  Fortunately there are model-theoretic techniques remaining valid in the finite context. One of them is _model-comparison games_, which characterise _logical equivalence_ of models, i.e. when two models satisfy exactly the same formulas of a logic.
+			  
+			  Such logical equivalences are very useful for showing _(in)expressivity_ of logics. For example, if we are able to show that two models 𝒜\\mathcal{A} and ℬ\\mathcal{B} of a theory satisfy exactly the same formulas from first-order logic, but there is a semantic property PP (in the meta-theory) which 𝒜\\mathcal{A} satisfies but ℬ\\mathcal{B} does not. Then we know the property PP necessarily cannot be expressed in first-order logic. This proof technique works for both finite and infinite models. In fact, using this technique one can show that connectivity of finite graphs cannot be expressed as a first-order logic formula with only the relation symbol E(x,y)E(x,y) for edges.
+			  
+			  Of course the logic equivalences for different logics need to be characterised by different games: first-order logic is characterised by _Ehrenfeucht-Fraïssé games_; the kk\-variable fragment of first-order logic is characterised by _pebble games_; modal logic is characterised by _bisimulation games_, and so on. 
+			  
+			  Despite being different, these games are structurally so similar that they almost begged to be unified. Their unification is eventually done by Abramsky and Shah ([2018](https://drops.dagstuhl.de/opus/volltexte/2018/9669), [2021](https://arxiv.org/abs/2010.06496)) in the categorical framework of _game comonads_. This two-part blog post aims to give a brief introduction to finite model theory and game comonads. This post will cover only a tiny part of this active research programme, but we will aim to exposit in a self-contained way the basics with some intuition that is hidden in the papers.
+			  
+			  \#\# Basics of First-Order Logic
+			  
+			  Let’s begin with a quick recap on classical _first-order logic_ (FOL). A _purely relational vocabulary_ σ\\sigma is a set of relation symbols {P 1,…,P i,…}\\left\\{P\_1,\\dots,P\_i,\\dots\\right\\} where each relation symbol P iP\_i has an associated arity n i∈ℕn\_i \\in \\mathbb{N}. In this post we do not consider vocabularies with function symbols or constants since they can be alternatively modelled as relations with axioms asserting their functionality, which slightly makes our life easier.
+			  
+			  The formulas φ\\varphi of FOL in a (purely relational) vocabulary σ\\sigma is inductively generated by the following grammar, where the meta-variable xx ranges over a countably infinite set of variables:
+			  
+			  φ ::\=x 1\=x 2|P i(x 1,…,x n i)|⊤|φ 1∧φ 2|⊥|φ 1∨φ 2|¬φ|∃x.φ|∀x.φ\\begin{array}{rl} \\varphi &::= x\_1 = x\_2 \\ |\\ P\_i(x\_1,\\dots,x\_{n\_i}) \\ |\\ \\top \\ |\\ \\varphi\_1 \\wedge \\varphi\_2 \\ |\\ \\bot \\ | \\ \\varphi\_1\\vee \\varphi\_2 \\ |\\ \\neg \\varphi \\ |\\ \\exists x. \\varphi \\ |\\ \\forall x. \\varphi \\end{array}
+			  
+			  A set TT of closed formulas (i.e. formulas with no free variables) is called a _theory_.
+			  
+			  We will only consider the classical semantics of FOL in the category of sets in this post. A _σ\\sigma\-relational structure_, or simply a _σ\\sigma\-structure_, 𝒜\=⟨A,⟨P i A⟩ P i∈σ⟩\\mathcal{A} = \\langle A, \\langle P\_i^A\\rangle\_{P\_i \\in \\sigma}\\rangle consists of a set AA and an n in\_i\-ary relation P i A⊆A n iP^A\_i \\subseteq A^{n\_i} on the set AA for each relation symbol P i∈σP\_i \\in \\sigma of arity n in\_i.
+			  
+			  A _homomorphism_ of σ\\sigma\-structures from 𝒜\\mathcal{A} to ℬ\\mathcal{B} is a function h:A→Bh\\colon A\\to B on the underlying sets such that for each relation symbol P iP\_i in σ\\sigma, we have P i A(a 1,…,a n i)P\_i^A(a\_1,\\dots,a\_{n\_i}) implies P i B(h(a 1),…,h(a n i))P\_i^B(h(a\_1),\\dots,h(a\_{n\_i})) for all a 1,…,a n i∈Aa\_1,\\dots,a\_{n\_i}\\in A. Each vocabulary σ\\sigma thus yields a category ℛ(σ)\\mathcal{R}(\\sigma) of σ\\sigma\-structures and homomorphisms.
+			  
+			  Let φ\\varphi be a FOL formula (in the vocabulary σ\\sigma) with nn free variables. The semantics of φ\\varphi in a σ\\sigma\-structure 𝒜\\mathcal{A} is an nn\-ary relation \[\[φ\]\]⊆A n\[\\!\[\\varphi\]\\!\] \\subseteq A^n on the set AA. We will write 𝒜⊧φ(a→)\\mathcal{A} \\models \\varphi (\\vec{a}) when some a→∈A n\\vec{a} \\in A^n is contained in \[\[φ\]\]\[\\!\[\\varphi\]\\!\] and also write 𝒜⊧φ\\mathcal{A} \\models \\varphi when φ\\varphi is a closed formula and ⟨⟩\\langle \\rangle is in \[\[φ\]\]⊆A 0\[\\!\[\\varphi\]\\!\] \\subseteq A^0. The relation \[\[φ\]\]\[\\!\[\\varphi\]\\!\] is inductively defined on φ\\varphi as follows (we implicity treats a→∈A n\\vec{a} \\in A^n as a function from the set of the nn free variables to the set AA):
+			  
+			  𝒜⊧(x i\=x j)(a→) ⇔ a→(x i)\=a→(x j) 𝒜⊧P i(x 1,…,x n i)(a→) ⇔ ⟨a→(x 1),…,a→(x n i)⟩∈P i A 𝒜⊧⊤ ⇔ true 𝒜⊧(φ 1∧φ 2)(a→) ⇔ 𝒜⊧φ 1(a→)and𝒜⊧φ 2(a→) 𝒜⊧⊥ ⇔ false 𝒜⊧(φ 1∨φ 2)(a→) ⇔ 𝒜⊧φ 1(a→)or𝒜⊧φ 2(a→) 𝒜⊧¬φ(a→) ⇔ 𝒜⊧φ(a→)does not hold 𝒜⊧(∃y.φ)(a→) ⇔ 𝒜⊧φ(a→\[y↦a′\])for some a′∈A 𝒜⊧(∀y.φ)(a→) ⇔ 𝒜⊧φ(a→\[y↦a′\])for all a′∈A\\begin{matrix} \\mathcal{A}\\models (x\_i = x\_j)(\\vec{a}) &\\iff& \\vec{a}(x\_i) = \\vec{a}(x\_j)\\\\ \\mathcal{A}\\models P\_i(x\_1,\\dots,x\_{n\_i})(\\vec{a}) &\\iff& \\langle \\vec{a}(x\_1),\\dots,\\vec{a}(x\_{n\_i})\\rangle \\in P\_i^A\\\\ \\mathcal{A}\\models \\top &\\iff& true\\\\ \\mathcal{A}\\models (\\varphi\_1 \\wedge \\varphi\_2)(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi\_1(\\vec{a}) \\ \\text{and}\\ \\mathcal{A}\\models\\varphi\_2(\\vec{a})\\\\ \\mathcal{A}\\models \\bot &\\iff& false\\\\ \\mathcal{A}\\models (\\varphi\_1 \\vee \\varphi\_2)(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi\_1(\\vec{a}) \\ \\text{or}\\ \\mathcal{A}\\models\\varphi\_2(\\vec{a})\\\\ \\mathcal{A}\\models \\neg\\varphi(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi(\\vec{a}) \\ \\text{does not hold}\\\\ \\mathcal{A}\\models (\\exists y. \\varphi)(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi(\\vec{a}\[y \\mapsto a'\])\\ \\text{for some }a'\\in A\\\\ \\mathcal{A}\\models (\\forall y. \\varphi)(\\vec{a}) &\\iff& \\mathcal{A}\\models \\varphi(\\vec{a}\[y \\mapsto a'\])\\ \\text{for all } a'\\in A \\end{matrix}
+			  
+			  where a→\[y↦a′\]\\vec{a}\[y \\mapsto a'\] is the function mapping yy to a′a' and anything else xx to a→(x)\\vec{a}(x).
+			  
+			  \#\# Logical Equivalences and Ehrenfeucht-Fraïssé Games
+			  
+			  As motivated earlier, we are interested in characterising when two models 𝒜\\mathcal{A} and ℬ\\mathcal{B} of a relational vocabulary σ\\sigma satisfy exactly the same formulas, more precisely, when 𝒜⊧ϕ⇔ℬ⊧ϕ\\mathcal{A} \\models \\phi \\iff \\mathcal{B} \\models \\phi for all closed FOL formulas ϕ\\phi in the vocabulary σ\\sigma. When it is the case, 𝒜\\mathcal{A} and ℬ\\mathcal{B} are sometimes called _elementarily equivalent_.
+			  
+			  \#\#\# An Example of Logical Equivalence
+			  
+			  Let’s build up our intuition with a concrete example. Let σ\\sigma be the vocabulary with just one binary relation symbol ≤\\leq, and let 𝒜\\mathcal{A} be the model {0,1,…,1000}\\left\\{0, 1, \\dots, 1000\\right\\} with ≤\\leq being the usual linear order of natural numbers and similarly ℬ\\mathcal{B} be the model {0,1,…,1001}\\left\\{0, 1, \\dots, 1001\\right\\} with the same order. These two models are clearly different, and indeed they can be differentiated by a first-order logic formula in the vocabulary σ\\sigma—the formula 
+			  
+			  φ\=∃x 0∃x 1⋯∃x 1001.¬(x 0\=x 1)∧…¬(x i\=x j)…¬(x 1000\=x 1001)\\varphi = \\exists x\_0\\exists x\_1\\cdots\\exists x\_{1001}.\\ \\neg (x\_0 = x\_1) \\wedge \\dots \\neg(x\_i = x\_j) \\dots \\neg (x\_{1000} = x\_{1001})
+			  
+			  saying that there exist different elements is satisfied by ℬ\\mathcal{B} but not by 𝒜\\mathcal{A}.
+			  
+			  However, the formula φ\\varphi is a pretty big formula—it has 1002 quantifiers and 501501 clauses, so it is possible that small enough formulas cannot differentiate 𝒜\\mathcal{A} and ℬ\\mathcal{B} since they are pretty similar (they are both linear orders). Let’s consider some formulas with just a few quantifiers:
+			  
+			  * The vocabulary σ\={≤}\\sigma = \\left\\{ \\leq \\right\\} doesn’t have a constant, so there are no closed terms and thus no closed formulas other than ⊥\\bot and ⊤\\top. Thus 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all formulas with 0 quantifiers.
+			  * Consider formulas of the form ∃x.φ(x)\\exists x.\\varphi(x) where φ\\varphi doesn’t have any quantifiers. We argue that 𝒜⊧∃x.φ(x)\\mathcal{A} \\models \\exists x.\\varphi(x) iff ℬ⊧∃x.φ(x)\\mathcal{B} \\models \\exists x.\\varphi(x) as follows: supposing 𝒜⊧∃x.φ(x)\\mathcal{A} \\models \\exists x.\\varphi(x) holds, this means that there is some a∈𝒜a \\in \\mathcal{A} such that 𝒜⊧φ(a)\\mathcal{A} \\models \\varphi(a), then we may choose any b∈ℬb \\in \\mathcal{B}, say b\=0∈ℬb = 0 \\in \\mathcal{B}, making ℬ⊧φ(b)\\mathcal{B} \\models \\varphi(b) because the formula φ\\varphi is inductively built from the variable xx, relations ≤\\leq, \=\=, and propositional connectives; both a≤aa \\leq a and b≤bb \\leq b are true, so we can inductively show that φ(a)\\varphi(a) and φ(b)\\varphi(b) agree for all φ\\varphi. Conversely, if ℬ⊧∃x.φ(x)\\mathcal{B} \\models \\exists x. \\varphi(x) is witnessed by some bb, we can always pick an arbitrary a∈𝒜a \\in \\mathcal{A} witnessing 𝒜⊧∃x.φ(x)\\mathcal{A} \\models \\exists x. \\varphi(x).  
+			  Moreover, since the semantics of propositional connectives are defined compositionally, we can inductively show that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all closed formulas built out of exactly one ∃\\exists and \=\=, ¬\\neg, ∧\\wedge, and ∨\\vee. Since we are considering classical logic, universal quantification ∀x.φ(x)\\forall x. \\varphi(x) can be reduced to ¬∃x.φ(x)\\neg \\exists x. \\varphi(x), so 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on it so we conclude that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all FOL formulas with exactly one quanfier.
+			  * This example gets interesting when we consider two nested quantifiers. Supposing ψ\=∃x.∃y.φ\\psi = \\exists x. \\exists y. \\varphi where φ\\varphi is quanfier-free, if 𝒜⊧ψ\\mathcal{A} \\models \\psi, there exist aa and a′∈𝒜a' \\in \\mathcal{A} such that 𝒜⊧φ(⟨a,a′⟩)\\mathcal{A} \\models \\varphi (\\langle a, a'\\rangle). Then we can also choose any two elements b,b′∈ℬb, b' \\in \\mathcal{B} such that, importantly, (i) b≤b′b \\leq b' iff a≤a′a \\leq a', and (ii) b\=b′b = b' iff a\=a′a = a'. This ensures ℬ⊧φ(⟨b,b′⟩)\\mathcal{B} \\models \\varphi(\\langle b, b'\\rangle) since the atomic formulas in φ\\varphi are built from ≤\\leq, \=\=, xx and yy, on which 𝒜\\mathcal{A} with the variable assignment ⟨x↦a,y↦a′⟩\\langle x\\mapsto a, y \\mapsto a'\\rangle and ℬ\\mathcal{B} with ⟨x↦b,y↦b′⟩\\langle x\\mapsto b, y \\mapsto b'\\rangle agree. Conversely, if ℬ⊧ψ\\mathcal{B} \\models \\psi witnessed by b,b′∈ℬb, b' \\in \\mathcal{B} we can also choose a matching pair a,a′∈𝒜a, a' \\in \\mathcal{A} making 𝒜⊧ψ\\mathcal{A} \\models \\psi.  
+			  Now suppose ψ\=∃x.∀y.φ\\psi = \\exists x. \\forall y. \\varphi. Whenever 𝒜⊧ψ\\mathcal{A} \\models \\psi, there is some aa such that 𝒜⊧∀y.φ⟨x↦a⟩\\mathcal{A} \\models \\forall y.\\varphi \\langle x \\mapsto a\\rangle. In this case we can also choose an element b∈ℬb \\in \\mathcal{B} that mimics a∈𝒜a \\in \\mathcal{A}: if aa is the bottom element 00 in the structure 𝒜\\mathcal{A}, we let b\=0b = 0 as well; if aa is the top 10001000 in 𝒜\\mathcal{A}, we let bb be the top in ℬ\\mathcal{B}; otherwise we can choose an arbitrary 0<b<10010 \\lt b \\lt 1001. We then claim ℬ⊧∀y.φ⟨x↦b⟩\\mathcal{B} \\models \\forall y. \\varphi \\langle x \\mapsto b\\rangle as well, because if there is some b′b' making ℬ⊧φ⟨x↦b,y↦b′⟩\\mathcal{B} \\models \\varphi \\langle x\\mapsto b, y \\mapsto b'\\rangle not hold, we can also find an a′a' that is to aa in 𝒜\\mathcal{A} as b′b' is to bb in ℬ\\mathcal{B}: precisely, if b′\=bb' = b, we let a′\=aa' = a; if b′<bb' \\lt b, we let a′a' be any element in 𝒜\\mathcal{A} such that a′<aa' \\lt a, and similarly for the case b′\>bb' \\gt b (such a choice is always possible because earlier aa and bb are chosen to be at the same relative position). This choice of a′a' entails 𝒜⊧φ⟨x↦a,y↦a′⟩\\mathcal{A} \\models \\varphi\\langle x \\mapsto a, y \\mapsto a'\\rangle not true, leading to a contradiction. Therefore ℬ⊧ψ\\mathcal{B} \\models \\psi.  
+			  By a symmetric argument, ℬ⊧∃x.∀y.φ\\mathcal{B} \\models \\exists x. \\forall y. \\varphi implies 𝒜⊧∃x.∀y.φ\\mathcal{A} \\models \\exists x. \\forall y. \\varphi as well. Moreover, by the compositionality of the semantics of propositional connectives, the two paragraphs above imply that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all FOL formulas with quantifiers are nested at most once.
+			  
+			  Hopefully working through the example above reveals the intuition behind logical equivalence for FOL: two σ\\sigma\-structures 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on a FOL formula φ\\varphi whenever a quantifier in φ\\varphi picks an element xx in AA or BB, there is always an element yy in the other structure that “simulates the behaviour” of xx in the model.
+			  
+			  \#\#\# The Ehrenfeucht-Fraïssé Game
+			  
+			  The intuition is precisely formulated as _Ehrenfeucht-Fraïssé (EF) games_. Given two σ\\sigma\-structures 𝒜\\mathcal{A} and ℬ\\mathcal{B} for any vocabulary σ\\sigma and a natural number kk, the kk\-round EF game for 𝒜\\mathcal{A} and ℬ\\mathcal{B} is a turn-based game between two players, called _the spoiler_ and _the duplicator_. Roughly speaking, the goal of the spoiler is to point out the difference between 𝒜\\mathcal{A} and ℬ\\mathcal{B} while the goal of the duplicator is to advocate that 𝒜\\mathcal{A} and ℬ\\mathcal{B} are the same. The rules are very simple: 
+			  
+			  1. **Movement**: at each round, the spoiler picks an element from one of the structures and the duplicator must respond with an element from the other structure. For example, if the spoiler picks an element from the structure 𝒜\\mathcal{A}, then the duplicator must pick an element b∈ℬb\\in\\mathcal{B}.
+			  2. **Winning Condition**: After kk rounds, the game state consists of a→\=(a 1,…,a k)\\vec{a} = (a\_1,\\dots,a\_k) and b→\=(b 1,…,b i)\\vec{b} = (b\_1,\\dots,b\_i) representing the elements chosen from each structure at each round. The duplicator wins this play if the mapping a i↦b ia\_i \\mapsto b\_i defines a partial isomorphism between 𝒜\\mathcal{A} and ℬ\\mathcal{B}, i.e., if the substructures of 𝒜\\mathcal{A} and ℬ\\mathcal{B} generated by a→\\vec{a} and b→\\vec{b} are isomorphic. Otherwise, the spoiler has succeeded in showing the structures are different and wins.
+			  
+			  If the duplicator can guarantee a win after kk rounds no matter how the spoiler plays, we say the duplicator has a kk\-round winning strategy.
+			  
+			  The _quantifier rank_ qr(φ)\\mathop{qr}(\\varphi) of a FOL formula φ\\varphi is the depth of nesting of the quantifiers in φ\\varphi:
+			  
+			  qr(φ) \= 0 for atomicφ qr(o(φ 1,…,φ n)) \= max(qr(φ 1),…,qr(φ n)) for propositional connectiveso qr(Qx.φ) \= 1+qr(φ) for quantifiersQ\=∀,∃\\begin{array}{rcll} \\mathop{qr}(\\varphi) &=& 0 &\\text{for atomic}\\ \\varphi\\\\ \\mathop{qr}(o(\\varphi\_1, \\dots, \\varphi\_n)) &=& \\max(\\mathop{qr}(\\varphi\_1), \\dots, \\mathop{qr}(\\varphi\_n)) &\\text{for propositional connectives}\\ o\\\\ \\mathop{qr}(Q x. \\varphi) &=& 1 + \\mathop{qr}(\\varphi) &\\text{for quantifiers}\\ Q = \\forall, \\exists \\end{array}
+			  
+			  **Theorem** (Ehrenfeucht-Fraïssé). _If the duplicator has a winning strategy for the kk\-round EF game for 𝒜\\mathcal{A} and ℬ\\mathcal{B}, 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all closed FOL formulas of quantifier-rank kk. When the vocabulary σ\\sigma is finite, the converse is also true._
+			  
+			  _Proof sketch_: Assuming a winning strategy for the duplicator, and let ψ\\psi be any formula of quantifier rank kk. Without loss of generality, we can assume ψ\=Q 1x 1.⋯Q kx k.φ\\psi = Q\_{1} x\_{1}.\\cdots Q\_k x\_k.\\varphi where Q i∈{∀,∃}Q\_i \\in \\left\\{\\forall, \\exists\\right\\} are quantifiers and φ\\varphi is quantifier-free. We need to show 𝒜⊧ψ⇔ℬ⊧ψ\\mathcal{A} \\models \\psi \\iff \\mathcal{B} \\models \\psi. As we demonstrated in the example above, we consider how −⊧ψ\- \\models \\psi is defined inductively: if a quantifier Q i\=∃Q\_i = \\exists and one of 𝒜\\mathcal{A} and ℬ\\mathcal{B} satisfies the formula, we use the winning strategy for the duplicator to pick a matching element in the other structure; if a quantifier Q i\=∀Q\_i = \\forall and one of 𝒜\\mathcal{A} and ℬ\\mathcal{B} satisfies the formula, every counter-witness in the other structure leads to a counter-witness in this structure by the winning strategy of the duplicator, thus a contradiction.
+			  
+			  The converse direction is also interesting and is not demonstrated in the example in the last section. We only give a rough sketch here and refer interested readers to [Libkin (2004, section 3)](https://doi.org/10.1007/978-3-662-07003-1) for details. 
+			  
+			  Assuming that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on all FOL formulas of rank kk, the duplicator’s strategy is that whenever the spoiler picks an element a i∈𝒜a\_i \\in \\mathcal{A} (or symmetrically b i∈ℬb\_i \\in \\mathcal{B}), the duplicator first constructs a FOL formula ϕ i\\phi\_{i} that “maximally describes the current board on 𝒜\\mathcal{A}”. Roughly speaking, ϕ i\\phi\_{i} is the conjunction of all formulas in the following set
+			  
+			  {ψ∣qr(ψ)\=i−1and𝒜⊧ψ⟨a 1,…,a i⟩}\\left\\{\\psi \\mid \\mathop{qr}(\\psi) = i - 1 \\ \\text{and}\\ \\mathcal{A} \\models \\psi\\, \\langle a\_1, \\dots, a\_i\\rangle\\right\\}
+			  
+			  A priori, this set may have infinitely many formulas, but since there are only finitely many atomic formulas when σ\\sigma is finite, ϕ i\\phi\_{i} can be reduced to a finite formula using the rules of propositional connectives. With the formula ϕ i\\phi\_{i} in hand, the duplicator can use the fact that 
+			  
+			  𝒜⊧∃x i.ϕ i⟨x 1↦a 1,…,x i−1⟩↦a i−1,\\mathcal{A} \\models \\exists x\_i. \\phi\_{i}\\langle x\_1 \\mapsto a\_1, \\dots, x\_{i-1}\\rangle \\mapsto a\_{i-1},
+			  
+			  witnessed by x i↦a ix\_i \\mapsto a\_i. Now using the assumption that 𝒜\\mathcal{A} and ℬ\\mathcal{B} agree on FOL up to rank kk and the fact that ∃x i.ϕ i\\exists x\_i.\\phi\_i is of rank ii, ℬ\\mathcal{B} has an element witnessing the truth of this formula as well, which is going to be the duplicator’s response. □\\square
+			  
+			  EF games are very useful for showing inexpressivity results of FOL. Suppose we are interested in a property PP (in the meta-theory) on a class MM of σ\\sigma\-structures. If for every natural number kk, we can find two models 𝒜 k,ℬ k∈M\\mathcal{A}\_k, \\mathcal{B}\_k \\in M such that 
+			  
+			  1. the duplicator has a winning strategy for the kk\-round EF game on 𝒜 k\\mathcal{A}\_k and ℬ k\\mathcal{B}\_k, but
+			  2. only one of 𝒜 k\\mathcal{A}\_k and ℬ k\\mathcal{B}\_k satisfy the property PP,
+			  
+			  Then by the EF theorem, the property PP cannot be expressed by a FOL formula, whatever the quantifier it has. 
+			  
+			  For example, using this technique, we can show that the evenness of finite linear orders is not expressible—there isn’t a FOL formula φ\\varphi in the vocabulary {≤}\\left\\{\\leq\\right\\} such that for every finite linear order 𝒜\=⟨A,≤ A⟩\\mathcal{A} = \\langle A, \\leq^A\\rangle, 𝒜⊧φ\\mathcal{A} \\models \\varphi exactly when aa has an even number of elements. (Hint: we pick 𝒜 k\\mathcal{A}\_k and ℬ k\\mathcal{B}\_k to be the linear order of 2 k2^k and 2 k+12^k + 1 elements respectively and play the EF games.)
+			  
+			  Posted at September 8, 2023 2:19 PM UTC 
+			  
+			  TrackBack URL for this Entry: https://golem.ph.utexas.edu/cgi-bin/MT-3.0/dxy-tb.fcgi/3498
+			  
+			  Read the post [Finite Model Theory and Game Comonads: Part 2](https://golem.ph.utexas.edu/category/2023/09/finite%5Fmodel%5Ftheory%5Fand%5Fgame%5Fc%5F1.html)  
+			  **Weblog:** The n-Category Café  
+			  **Excerpt:** In the Part 1 of this post, we saw how logical equivalences of first-order logic (FOL) can be characterised by a combinatory game. But there are still a few unsatisfactory aspects, which we'll clear up now.  
+			  **Tracked:** September 11, 2023 4:09 PM
+	- [History of Actors (eighty-twenty news)](https://omnivore.app/me/https-eighty-twenty-org-2016-10-18-actors-hopl-ref-blog-danfinla-18d02554ccc)
+	  collapsed:: true
+	  site:: [eighty-twenty.org](https://eighty-twenty.org/2016/10/18/actors-hopl?ref=blog.danfinlay.com)
+	  author:: Tony Garnock-Jones
+	  labels:: [[actors]] [[distributed systems]]
+	  date-saved:: [[01/13/2024]]
+	  date-published:: [[10/17/2016]]
+		- ### Content
+		  collapsed:: true
+			- Yesterday, I presented the history of actors to Christos Dimoulas’[History of Programming Languages](http://www.seas.harvard.edu/courses/cs252/2016fa/)class.
+			  
+			  Here are the written-out talk notes I prepared beforehand. There is an annotated bibliography at the end.
+			  
+			  ---
+			  
+			  \#\# Introduction
+			  
+			  Today I’m going to talk about the actor model. I’ll first put the model in context, and then show three different styles of actor language, including two that aim to be realistic programming systems.
+			  
+			  I’m going to draw on a few papers:
+			  
+			  * 2016 survey by Joeri De Koster, Tom Van Cutsem, and Wolfgang De Meuter, for taxonomy and common terminology (SPLASH AGERE 2016)
+			  * 1990 overview by Gul Agha, who has contributed hugely to the study of actors (Comm. ACM 1990)
+			  * 1997 operational semantics for actors by Gul Agha, Ian Mason, Scott Smith, and Carolyn Talcott.
+			  * brief mention of some of the content of the original 1973 paper by Carl Hewitt, Peter Bishop, and Richard Steiger. (IJCAI 1973)
+			  * Joe Armstrong’s 2003 dissertation on Erlang.
+			  * 2005 paper on the language E by Mark Miller, Dean Tribble, and Jonathan Shapiro. (TGC 2005)
+			  
+			  I’ve put an annotated bibliography at the end of this file.
+			  
+			  \#\# Actors in context: Approaches to concurrent programming
+			  
+			  One way of classifying approaches is along a spectrum of private vs. shared state.
+			  
+			  * Shared memory, threads, and locking: very limited private state, almost all shared
+			  * Tuple spaces and my own research, Syndicate: some shared, some private and isolated
+			  * Actors: almost all private and isolated, just enough shared to do routing
+			  
+			  Pure functional “data parallelism” doesn’t fit on this chart - it lacks shared mutable state entirely.
+			  
+			  \#\# The actor model
+			  
+			  The actor model, then is
+			  
+			  * asynchronous message passing between entities (actors)  
+			     * with guaranteed delivery  
+			     * addressing of messages by actor identity
+			  * a thing called the “ISOLATED TURN PRINCIPLE”  
+			     * no shared mutable state; strong encapsulation; no global mutable state  
+			     * no interleaving; process one message at a time; serializes state access  
+			     * liveness; no blocking
+			  
+			  In the model, each actor performs “turns” one after the other: a turn is taking a waiting message, interpreting it, and deciding on both a state update for the actor and a collection of actions to take in response, perhaps sending messages or creating new actors.
+			  
+			  A turn is a sequential, atomic block of computation that happens in response to an incoming message.
+			  
+			  What the actor model buys you:
+			  
+			  * modular reasoning about state in the overall system, and modular reasoning about local state change within an actor, because state is private, and access is serialized; only have to consider interleavings of messages
+			  * no “deadlocks” or data races (though you can get “datalock” and other global non-progress in some circumstances, from logical inconsistency and otherwise)
+			  * flexible, powerful capability-based security
+			  * failure isolation and fault tolerance
+			  
+			  It’s worth remarking that actor-like concepts have sprung up several times independently. Hewitt and many others invented and developed actors in the 1970s, but there are two occasions where actors seem to have been independently reinvented, as far as I know.
+			  
+			  One is work on a capability-based operating system, KeyKOS, in the 1980s which involved a design very much like Hewitt’s actors, feeding into research which led ultimately to the language E.
+			  
+			  The other is work on highly fault-tolerant designs for telephone switches, also in the 1980s, which culminated in the language Erlang.
+			  
+			  Both languages are clearly actor languages, and in both cases, apparently the people involved were unaware of Hewitt’s actor model at the time.
+			  
+			  \#\# Terminology
+			  
+			  There are two kinds of things in the actor model: _messages_, which are data sent across some medium of communication, and _actors_, which are stateful entities that can only affect each other by sending messages back and forth.
+			  
+			  Messages are completely immutable data, passed by copy, which may contain references to other actors.
+			  
+			  Each actor has
+			  
+			  * private state; analogous to instance variables
+			  * an interface; which messages it can respond to
+			  
+			  Together, the private state and the interface make up the actor’s_behaviour_, a key term in the actor literature.
+			  
+			  In addition, each actor has
+			  
+			  * a mailbox; inbox, message queue
+			  * an address; denotes the mailbox
+			  
+			  Within this framework, there has been quite a bit of variety in how the model appears as a concrete programming language.
+			  
+			  De Koster et al. classify actor languages into
+			  
+			  * The Classic Actor Model (create, send, become)
+			  * Active Objects (OO with a thread per object; copying of passive data between objects)
+			  * Processes (raw Erlang; receive, spawn, send)
+			  * Communicating Event-Loops (no passive data; E; near/far refs; eventual refs; batching)
+			  
+			  We see instances of the actor model all around us. The internet’s IP network is one example: hosts are the actors, and datagrams the messages. The web can be seen as another: a URL denotes an actor, and an HTTP request a message. Seen in a certain light, even Unix processes are actor-like (when they’re single threaded, if they only use fds and not shm). It can be used as a structuring principle for a system architecture even in languages like C or C++ that have no hope of enforcing any of the invariants of the model.
+			  
+			  \#\# Rest of the talk
+			  
+			  For the rest of the talk, I’m going to cover the classic actor model using Agha’s presentations as a guide; then I’ll compare it to E, a communicating event-loop actor language, and to Erlang, a process actor language.
+			  
+			  \#\# Classic Actor Model
+			  
+			  The original 1973 actor paper by Hewitt, Bishop and Steiger in the International Joint Conference on Artificial Intelligence, is incredibly far out!
+			  
+			  It’s a position paper that lays out a broad and colourful research vision. It’s packed with amazing ideas.
+			  
+			  The heart of it is that Actors are proposed as a universal programming language formalism ideally suited to building artificial intelligence.
+			  
+			  The goal really was A.I., and actors and programming languages were a means to that end.
+			  
+			  It makes these claims that actors bring great benefits in a huge range of areas:
+			  
+			  * foundations of semantics
+			  * logic
+			  * knowledge-based programming
+			  * intentions (software contracts)
+			  * study of expressiveness of programming languages
+			  * teaching of computation
+			  * extensible, modular programming
+			  * privacy and protection
+			  * synchronization constructs
+			  * resource management
+			  * structured programming
+			  * computer architecture
+			  
+			  (It’s amazingly “full-stack”: computer architecture!?)
+			  
+			  In each of these areas, you can see what they were going for. In some, actors have definitely been useful; in others, the results have been much more modest.
+			  
+			  In the mid-to-late 70s, Hewitt and his students Irene Greif, Henry Baker, and Will Clinger developed a lot of the basic theory of the actor model, inspired originally by SIMULA and Smalltalk-71\. Irene Greif developed the first operational semantics for it as her dissertation work and Will Clinger developed a denotational semantics for actors.
+			  
+			  In the late 70s through the 80s and beyond, Gul Agha made huge contributions to the actor theory. His dissertation was published as a book on actors in 1986 and has been very influential. He separated the actor model from its A.I. roots and started treating it as a more general programming model. In particular, in his 1990 Comm. ACM paper, he describes it as a foundation for CONCURRENT OBJECT-ORIENTED PROGRAMMING.
+			  
+			  Agha’s formulation is based around the three core operations of the classic actor model:
+			  
+			  * `create`: constructs a new actor from a template and some parameters
+			  * `send`: delivers a message, asynchronously, to a named actor
+			  * `become`: within an actor, replaces its behaviour (its state & interface)
+			  
+			  The classic actor model is a UNIFORM ACTOR MODEL, that is, everything is an actor. Compare to uniform object models, where everything is an object. By the mid-90s, that very strict uniformity had fallen out of favour and people often worked with _two-layer_ languages, where you might have a functional core language, or an object-oriented core language, or an imperative core language with the actor model part being added in to the base language.
+			  
+			  I’m going to give a simplified, somewhat informal semantics based on his 1997 work with Mason, Smith and Talcott. I’m going to drop a lot of details that aren’t relevant here so this really will be simplified.
+			  
+			  ```coq
+			  e  :=  λx.e  |  e e  |  x  | (e,e) | l | ... atoms, if, bool, primitive operations ...
+			      |  create e
+			      |  send e e
+			      |  become e
+			  
+			  l  labels, PIDs; we'll use them like symbols here
+			  
+			  ```
+			  
+			  and we imagine convenience syntax
+			  
+			  ```ocaml
+			  e1;e2              to stand for   (λdummy.e2) e1
+			  let x = e1 in e2   to stand for   (λx.e2) e1
+			  
+			  match e with p -> e, p -> e, ...
+			      to stand for matching implemented with if, predicates, etc.
+			  
+			  ```
+			  
+			  We forbid programs from containing literal process IDs.
+			  
+			  ```coq
+			  v  :=  λx.e  |  (v,v)  |  l
+			  
+			  R  :=  []  |  R e  |  v R  |  (R,e)  |  (v,R)
+			      |  create R
+			      |  send R e  |  send v R
+			      |  become R
+			  
+			  ```
+			  
+			  Configurations are a pair of a set of actors and a multiset of messages:
+			  
+			  ```makefile
+			  m  :=  l <-- v
+			  
+			  A  :=  (v)l  |  [e]l
+			  
+			  C  :=  < A ... | m ... >
+			  
+			  ```
+			  
+			  The normal lambda-calculus-like reductions apply, like beta:
+			  
+			  ```jboss-cli
+			      < ... [R[(λx.e) v]]l ... | ... >
+			  --> < ... [R[e{v/x}  ]]l ... | ... >
+			  
+			  ```
+			  
+			  Plus some new interesting ones that are actor specific:
+			  
+			  ```jboss-cli
+			      < ... (v)l ...    | ... l <-- v' ... >
+			  --> < ... [v v']l ... | ...          ... >
+			  
+			      < ... [R[create v]]l       ... | ... >
+			  --> < ... [R[l'      ]]l (v)l' ... | ... >   where l' fresh
+			  
+			      < ... [R[send l' v]]l ... | ... >
+			  --> < ... [R[l'       ]]l ... | ... l' <-- v >
+			  
+			      < ... [R[become v]]l       ... | ... >
+			  --> < ... [R[nil     ]]l' (v)l ... | ... >   where l' fresh
+			  
+			  ```
+			  
+			  Whole programs `e` are started with
+			  
+			  where `a` is an arbitrary label.
+			  
+			  Here’s an example - a mutable cell.
+			  
+			  ```xl
+			  Cell = λcontents . λmessage . match message with
+			                                  (get, k) --> become (Cell contents);
+			                                               send k contents
+			                                  (put, v) --> become (Cell v)
+			  
+			  ```
+			  
+			  Notice that when it gets a `get` message, it first performs a `become`in order to quickly return to `ready` state to handle more messages. The remainder of the code then runs alongside the ready actor. Actions after a `become` can’t directly affect the state of the actor anymore, so even though we have what looks like multiple concurrent executions of the actor, there’s no sharing, and so access to the state is still serialized, as needed for the isolated turn principle.
+			  
+			  ```livecodeserver
+			  < [let c = create (Cell 0) in
+			     send c (get, create (λv . send c (put, v + 1)))]a | >
+			  
+			  < [let c = l1 in
+			     send c (get, create (λv . send c (put, v + 1)))]a
+			    (Cell 0)l1 | >
+			  
+			  < [send l1 (get, create (λv . send l1 (put, v + 1)))]a
+			    (Cell 0)l1 | >
+			  
+			  < [send l1 (get, l2)]a
+			    (Cell 0)l1
+			    (λv . send l1 (put, v + 1))l2 | >
+			  
+			  < [l1]a
+			    (Cell 0)l1
+			    (λv . send l1 (put, v + 1))l2 | l1 <-- (get, l2) >
+			  
+			  < [l1]a
+			    [Cell 0 (get, l2)]l1
+			    (λv . send l1 (put, v + 1))l2 | >
+			  
+			  < [l1]a
+			    [become (Cell 0); send l2 0]l1
+			    (λv . send l1 (put, v + 1))l2 | >
+			  
+			  < [l1]a
+			    [send l2 0]l3
+			    (Cell 0)l1
+			    (λv . send l1 (put, v + 1))l2 | >
+			  
+			  < [l1]a
+			    [l2]l3
+			    (Cell 0)l1
+			    (λv . send l1 (put, v + 1))l2 | l2 <-- 0 >
+			  
+			  < [l1]a
+			    [l2]l3
+			    (Cell 0)l1
+			    [send l1 (put, 0 + 1)]l2 | >
+			  
+			  < [l1]a
+			    [l2]l3
+			    (Cell 0)l1
+			    [l1]l2 | l1 <-- (put, 1) >
+			  
+			  < [l1]a
+			    [l2]l3
+			    [Cell 0 (put, 1)]l1
+			    [l1]l2 | >
+			  
+			  < [l1]a
+			    [l2]l3
+			    [become (Cell 1)]l1
+			    [l1]l2 | >
+			  
+			  < [l1]a
+			    [l2]l3
+			    [nil]l4
+			    (Cell 1)l1
+			    [l1]l2 | >
+			  
+			  ```
+			  
+			  (You could consider adding a garbage collection rule like
+			  
+			  ```jboss-cli
+			      < ... [v]l ... | ... >
+			  --> < ...      ... | ... >
+			  
+			  ```
+			  
+			  to discard the final value at the end of an activation.)
+			  
+			  Because at this level all the continuations are explicit, you can encode patterns other than sequential control flow, such as fork-join.
+			  
+			  For example, to start two long-running computations in parallel, and collect the answers in either order, multiplying them and sending the result to some actor k’, you could write
+			  
+			  ```smali
+			  let k = create (λv1 . become (λv2 . send k' (v1 * v2))) in
+			  send task1 (req1, k);
+			  send task2 (req2, k)
+			  
+			  ```
+			  
+			  Practically speaking, both Hewitt’s original actor language, PLASMA, and the language Agha uses for his examples in the 1990 paper, Rosette, have special syntax for ordinary RPC so the programmer needn’t manipulate continuations themselves.
+			  
+			  So that covers the classic actor model. Create, send and become. Explicit use of actor addresses, and lots and lots of temporary actors for inter-actor RPC continuations.
+			  
+			  Before I move on to Erlang: remember right at the beginning I told you the actor model was
+			  
+			  * asynchronous message passing, and
+			  * the isolated turn principle
+			  
+			  ?
+			  
+			  The isolated turn principle requires _liveness_ \- you’re not allowed to block indefinitely while responding to a message!
+			  
+			  But here, we can:
+			  
+			  ```swift
+			  let d = create (λc . send c c) in
+			  send d d
+			  
+			  ```
+			  
+			  Compare this with
+			  
+			  ```armasm
+			  letrec beh = (λc . become beh; send c c) in
+			  let d = create beh in
+			  send d d
+			  
+			  ```
+			  
+			  These are both degenerate cases, but in different ways: the first becomes inert very quickly and the actor `d` is never returned to an idle/ready state, while the second spins uselessly forever.
+			  
+			  Other errors we could make would be to fail to send an expected reply to a continuation.
+			  
+			  One thing the semantics here rules out is interaction with other actors before doing a `become`; there’s no way to have a waiting continuation perform the `become`, because by that time you’re in a different actor. In this way, it sticks to the very letter of the Isolated Turn Principle, by forbidding “blocking”, but there are other kinds of things that can go wrong to destroy progress.
+			  
+			  Even if we require our behaviour functions to be total, we can still get _global_ nontermination.
+			  
+			  So saying that we “don’t have deadlock” with the actor model is very much oversimplified, even at the level of simple formal models, let alone when it comes to realistic programming systems.
+			  
+			  In practice, programmers often need “blocking” calls out to other actors before making a state update; with the classic actor model, this can be done, but it is done with a complicated encoding.
+			  
+			  \#\# Erlang: Actors for fault-tolerant systems
+			  
+			  Erlang is an example of what De Koster et al. call a Process-based actor language.
+			  
+			  It has its origins in telephony, where it has been used to build telephone switches with fabled “nine nines” of uptime. The research process that led to Erlang concentrated on high-availability, fault-tolerant software. The reasoning that led to such an actor-like system was, in a nutshell:
+			  
+			  * Programs have bugs. If part of the program crashes, it shouldn’t corrupt other parts. Hence strong isolation and shared-nothing message-passing.
+			  * If part of the program crashes, another part has to take up the slack, one way or another. So we need crash signalling so we can detect failures and take some action.
+			  * We can’t have all our eggs in one basket! If one machine fails at the hardware level, we need to have a nearby neighbour that can smoothly continue running. For that redundancy, we need distribution, which makes the shared-nothing message passing extra attractive as a unifying mechanism.
+			  
+			  Erlang is a two-level system, with a functional language core equipped with imperative actions for asynchronous message send and spawning new processes, like Agha’s system.
+			  
+			  The difference is that it lacks `become`, and instead has a construct called `receive`.
+			  
+			  Erlang actors, called processes, are ultra lightweight threads that run sequentially from beginning to end as little functional programs. As it runs, no explicit temporary continuation actors are created: any time it uses receive, it simply blocks until a matching message appears.
+			  
+			  After some initialization steps, these programs typically enter a message loop. For example, here’s a mutable cell:
+			  
+			  ```erlang
+			  mainloop(Contents) ->
+			    receive
+			      {get, K} -> K ! Contents,
+			                  mainloop(Contents);
+			      {put, V} -> mainloop(V)
+			    end.
+			  
+			  ```
+			  
+			  A client program might be
+			  
+			  ```crystal
+			  Cell = spawn(fun mainloop(0) end),
+			  Cell ! {get, self()},
+			  receive
+			    V -> ...
+			  end.
+			  
+			  ```
+			  
+			  Instead of using `become`, the program performs a tail call which returns to the `receive` statement as the last thing it does.
+			  
+			  Because `receive` is a statement like any other, Erlang processes can use it to enter substates:
+			  
+			  ```routeros
+			  mainloop(Service) ->
+			    receive
+			      {req, K} -> Service ! {subreq, self()},
+			                  receive
+			                    {subreply, Answer} -> K ! {reply, Answer},
+			                                          mainloop(Service)
+			                  end
+			    end.
+			  
+			  ```
+			  
+			  While the process is blocked on the inner `receive`, it only processes messages matching the patterns in that inner receive, and it isn’t until it does the tail call back to `mainloop` that it starts waiting for `req` messages again. In the meantime, non-matched messages queue up waiting to be `receive`d later.
+			  
+			  This is called “selective receive” and it is difficult to reason about. It doesn’t _quite_ violate the letter of the Isolated Turn Principle, but it comes close. (`become` can be used in a similar way.)
+			  
+			  The goal underlying “selective receive”, namely changing the set of messages one responds to and temporarily ignoring others, is important for the way people think about actor systems, and a lot of research has been done on different ways of selectively enabling message handlers. See Agha’s 1990 paper for pointers toward this research.
+			  
+			  One unique feature that Erlang brings to the table is crash signalling. The jargon is “links” and “monitors”. Processes can ask the system to make sure to send them a message if a monitored process exits. That way, they can perform RPC by
+			  
+			  * monitoring the server process
+			  * sending the request
+			  * if a reply message arrives, unmonitor the server process and continue
+			  * if an exit message arrives, the service has crashed; take some corrective action.
+			  
+			  This general idea of being able to monitor the status of some other process was one of the seeds of my own research and my language Syndicate.
+			  
+			  So while the classic actor model had create/send/become as primitives, Erlang has spawn/send/receive, and actors are processes rather than event-handler functions. The programmer still manipulates references to actors/processes directly, but there are far fewer explicit temporary actors created compared to the “classic model”; the ordinary continuations of Erlang’s functional fragment take on those duties.
+			  
+			  \#\# E: actors for secure cooperation
+			  
+			  The last language I want to show you, E, is an example of what De Koster et al. call a Communicating Event-Loop language.
+			  
+			  E looks and feels much more like a traditional object-oriented language to the programmer than either of the variations we’ve seen so far.
+			  
+			  ```applescript
+			  def makeCell (var contents) {
+			      def getter {
+			          to get() { return contents }
+			      }
+			      def setter {
+			          to set(newContents) {
+			              contents := newContents
+			          }
+			      }
+			      return [getter, setter]
+			  }
+			  
+			  ```
+			  
+			  The mutable cell in E is interestingly different: It yields _two_values. One specifically for setting the cell, and one for getting it. E focuses on security and securability, and encourages the programmer to hand out objects that have the minimum possible authority needed to get the job done. Here, we can safely pass around references to`getter` without risking unauthorized update of the cell.
+			  
+			  E uses the term “vat” to describe the concept closest to the traditional actor. A vat has not only a mailbox, like an actor, but also a call stack, and a heap of local objects. As we’ll see, E programmers don’t manipulate references to vats directly. Instead, they pass around references to objects in a vat’s heap.
+			  
+			  This is interesting because in the actor model messages are addressed to a particular actor, but here we’re seemingly handing out references to something finer grained: to individual objects _within_ an actor or vat.
+			  
+			  This is the first sign that E, while it uses the basic create/send/become-style model at its core, doesn’t expose that model directly to the programmer. It layers a special E-specific protocol on top, and only lets the programmer use the features of that upper layer protocol.
+			  
+			  There are two kinds of references available: near refs, which definitely point to objects in the local vat, and far refs, which may point to objects in a different vat, perhaps on another machine.
+			  
+			  To go with these two kinds of refs, there are two kinds of method calls: _immediate_ calls, and _eventual_ calls.
+			  
+			  receiver.method(arg, …)
+			  
+			  receiver <- method(arg, …)
+			  
+			  It is an error to use an immediate call on a ref to an object in a different vat, because it blocks during the current turn while the answer is computed. It’s OK to use eventual calls on any ref at all, though: it causes a message to be queued in the target vat (which might be our own), and a _promise_ is immediately returned to the caller.
+			  
+			  The promise starts off unresolved. Later, when the target vat has computed and sent a reply, the promise will become resolved. A nifty trick is that even an unresolved promise is useful: you can _pipeline_them. For example,
+			  
+			  ```ruby
+			  def r1 := x <- a()
+			  def r2 := y <- b()
+			  def r3 := r1 <- c(r2)
+			  
+			  ```
+			  
+			  would block and perform multiple network round trips in a traditional simple RPC system; in E, there is a protocol layered on top of raw message sending that discusses promise creation, resolution and use. This protocol allows the system to send messages like
+			  
+			  ```smalltalk
+			  "Send a() to x, and name the resulting promise r1"
+			  "Send b() to y, and name the resulting promise r2"
+			  "When r1 is known, send c(r2) to it"
+			  
+			  ```
+			  
+			  Crucial here is that the protocol, the language of discourse between actors, allows the expression of concepts including the notion of a send to happen at a future time, to a currently-unknown recipient.
+			  
+			  The protocol and the E vat runtimes work together to make sure that messages get to where they need to go efficiently, even in the face of multiple layers of forwarding.
+			  
+			  Each turn of an E vat involves taking one message off the message queue, and dispatching it to the local object it denotes. Immediate calls push stack frames on the stack as usual for object-oriented programming languages; eventual calls push messages onto the message queue. Execution continues until the stack is empty again, at which point the turn concludes and the next turn starts.
+			  
+			  One interesting problem with using promises to represent cross-vat interactions is how to do control flow. Say we had
+			  
+			  ```armasm
+			  def r3 := r1 <- c(r2)  // from earlier
+			  if (r3) {
+			    myvar := a();
+			  } else {
+			    myvar := b();
+			  }
+			  
+			  ```
+			  
+			  By the time we need to make a decision which way to go, the promise r3 may not yet be resolved. E handles this by making it an error to depend immediately on the value of a promise for control flow; instead, the programmer uses a `when` expression to install a handler for the event of the resolution of the promise:
+			  
+			  ```livescript
+			  when (r3) -> {
+			    if (r3) {
+			      myvar := a();
+			    } else {
+			      myvar := b();
+			    }
+			  }
+			  
+			  ```
+			  
+			  The test of r3 and the call to a() or b() and the update to myvar are_delayed_ until r3 has resolved to some value.
+			  
+			  This looks like it violates the Isolated Turn Principle! It seems like we now have some kind of interleaving. But what’s going on under the covers is that promise resolution is done with an incoming message, queued as usual, and when that message’s turn comes round, the when clause will run.
+			  
+			  Just like with classic actors and with Erlang, managing these multiple-stage, stateful interactions in response to some incoming message is generally difficult to do. It’s a question of finding a balance between the Isolated Turn Principle, and its commitment to availability, and encoding the necessary state transitions without risking inconsistency or deadlock.
+			  
+			  Turning to failure signalling, E’s vats are not just the units of concurrency but also the units of partial failure. An uncaught exception within a vat destroys the whole vat and invalidates all remote references to objects within it.
+			  
+			  While in Erlang, processes are directly notified of failures of other processes as a whole, E can be more fine-grained. In E, the programmer has a convenient value that represents the outcome of a transaction: the promise. When a vat fails, or a network problem arises, any promises depending on the vat or the network link are put into a special state: they become _broken promises_. Interacting with a broken promise causes the contained exception to be signalled; in this way, broken promises propagate failure along causal chains.
+			  
+			  If we look under the covers, E seems to have a “classic style” model using create/send/become to manage and communicate between whole vats, but these operations aren’t exposed to the programmer. The programmer instead manipulates two-part “far references” which denote a vat along with an object local to that vat. Local objects are created frequently, like in regular object-oriented languages, but vats are created much less frequently; and each vat’s stack takes on duties performed in “classic” actor models by temporary actors.
+			  
+			  \#\# Conclusion
+			  
+			  I’ve presented three different types of actor language: the classic actor model, roughly as formulated by Agha et al.; the process actor model, represented by Erlang; and the communicating event-loop model, represented by E.
+			  
+			  The three models take different approaches to reconciling the need to have structured local data within each actor in addition to the more coarse-grained structure relating actors to each other.
+			  
+			  The classic model makes everything an actor, with local data largely deemphasised; Erlang offers a traditional functional programming model for handling local data; and E offers a smooth integration between an imperative local OO model and an asynchronous, promise-based remote OO model.
+			  
+			  ---
+			  
+			  \#\# Annotated Bibliography
+			  
+			  \#\#\# Early work on actors
+			  
+			  * **1973\. Carl Hewitt, Peter Bishop, and Richard Steiger, “A universal modular ACTOR formalism for artificial intelligence,” in Proc. International Joint Conference on Artificial Intelligence**  
+			  This paper is a position paper from which we can understand the motivation and intentions of the research into actors; it lays out a very broad and colourful research vision that touches on a huge range of areas from computer architecture up through programming language design to teaching of computer science and approaches to artificial intelligence.  
+			  The paper presents a _uniform actor model_; compare and contrast with uniform object models offered by (some) OO languages. The original application of the model is given as PLANNER-like AI languages.  
+			  The paper claims benefits of using the actor model in a huge range of areas:  
+			     * foundations of semantics  
+			     * logic  
+			     * knowledge-based programming  
+			     * intentions (contracts)  
+			     * study of expressiveness  
+			     * teaching of computation  
+			     * extensible, modular programming  
+			     * privacy and protection  
+			     * synchronization constructs  
+			     * resource management  
+			     * structured programming  
+			     * computer architecture  
+			  The paper sketches the idea of a contract (called an “intention”) for ensuring that invariants of actors (such as protocol conformance) are maintained; there seems to be a connection to modern work on “monitors” and Session Types. The authors write:  
+			  > The intention is the CONTRACT that the actor has with the outside world.  
+			  Everything is super meta! Actors can have intentions! Intentions are actors! Intentions can have intentions! The paper presents the beginnings of a reflective metamodel for actors. Every actor has a scheduler and an “intention”, and may have monitors, a first-class environment, and a “banker”.  
+			  The paper draws an explicit connection to capabilities (in the security sense); Mark S. Miller at<http://erights.org/history/actors.html> says of the Actor work that it included “prescient” statements about Actor semantics being “a basis for confinement, years before Norm Hardy and the Key Logic guys”, and remarks that “the Key Logic guys were unaware of Actors and the locality laws at the time, \[but\] were working from the same intuitions.”  
+			  There are some great slogans scattered throughout, such as “Control flow and data flow are inseparable”, and “Global state considered harmful”.  
+			  The paper does eventually turn to a more nuts-and-bolts description of a predecessor language to PLASMA, which is more fully described in Hewitt 1976.  
+			  When it comes to formal reasoning about actor systems, the authors here define a partial order - PRECEDES - that captures some notion of causal connection. Later, the paper makes an excursion into epistemic modal reasoning.  
+			  Aside: the paper discusses continuations; Reynolds 1993 has the concept of continuations as firmly part of the discourse by 1973, having been rediscovered in a few different contexts in 1970-71 after van Wijngaarden’s 1964 initial description of the idea. See J. C. Reynolds, “The discoveries of continuations,” LISP Symb. Comput., vol. 6, no. 3–4, pp. 233–247, 1993.  
+			  In the “acknowledgements” section, we see:  
+			  > Alan Kay whose FLEX and SMALL TALK machines have influenced our work. Alan emphasized the crucial importance of using intentional definitions of data structures and of passing messages to them. This paper explores the consequences of generalizing the message mechanism of SMALL TALK and SIMULA-67; the port mechanism of Krutar, Balzer, and Mitchell; and the previous CALL statement of PLANNER-71 to a universal communications mechanism.
+			  * **1975\. Irene Greif. PhD dissertation, MIT EECS.**  
+			  Specification language for actors; per Baker an “operational semantics”. Discusses “continuations”.
+			  * **1976\. C. Hewitt, “Viewing Control Structures as Patterns of Passing Messages,” AIM-410**  
+			  AI focus; actors as “agents” in the AI sense; recursive decomposition: “each of the experts can be viewed as a society that can be further decomposed in the same way until the primitive actors of the system are reached.”  
+			  > We are investigating the nature of the _communication mechanisms_\[…\] and the conventions of discourse  
+			  More concretely, examines “how actor message passing can be used to understand control structures as patterns of passing messages”.  
+			  > \[…\] there is no way to decompose an actor into its parts. An actor is defined by its behavior; not by its physical representation!  
+			  Discusses PLASMA (“PLAnner-like System Modeled on Actors”), and gives a fairly detailed description of the language in the appendix. Develops “event diagrams”.  
+			  Presents very Schemely factorial implementations in recursive and iterative (tail-recursive accumulator-passing) styles. During discussion of the iterative factorial implementation, Hewitt remarks that `n` is not closed over by the `loop` actor; it is “not an acquaintance” of `loop`. Is this the beginning of the line of thinking that led to Clinger’s “safe-for-space” work?  
+			  Everything is an actor, but some of the actors are treated in an awfully structural way: the trees, for example, in section V.4 on Generators:  
+			  ```clojure  
+			  (non-terminal:  
+			    (non-terminal: (terminal: A) (terminal: B))  
+			    (terminal: C))  
+			  ```  
+			  Things written with this `keyword:` notation look like structures. Their _reflections_ are actors, but as structures, they are subject to pattern-matching; I am unsure how the duality here was thought of by the principals at the time, but see the remarks regarding “packages” in the appendix.
+			  * **1977\. C. Hewitt and H. Baker, “Actors and Continuous Functionals,” MIT A.I. Memo 436A**  
+			  Some “laws” for communicating processes; “plausible restrictions on the histories of computations that are physically realizable.” Inspired by physical intuition, discusses the history of a computation in terms of a partial order of events, rather than a sequence.  
+			  > The actor model is a formalization of these ideas \[of Simula/Smalltalk/CLU-like active data processing messages\] that is independent of any particular programming language.  
+			  > Instances of Simula and Smalltalk classes and CLU clusters are actors”, but they are _non-concurrent_. The actor model is broader, including concurrent message-passing behaviour.  
+			  Laws about (essentially) lexical scope. Laws about histories (finitude of activation chains; total ordering of messages inbound at an actor; etc.), including four different ordering relations. “Laws of locality” are what Miller was referring to on that erights.org page I mentioned above; very close to the capability laws governing confinement.  
+			  Steps toward denotational semantics of actors.
+			  * **1977\. Russell Atkinson and Carl Hewitt, “Synchronization in actor systems,” Proc. 4th ACM SIGACT-SIGPLAN Symp. Princ. Program. Lang., pp. 267–280.**  
+			  Introduces the concept of “serializers”, a “generalization and improvement of the monitor mechanism of Brinch-Hansen and Hoare”. Builds on Greif’s work.
+			  * **1981\. Will Clinger’s PhD dissertation. MIT**
+			  
+			  \#\#\# Actors as Concurrent Object-Oriented Programming
+			  
+			  * **1986\. Gul Agha’s book/dissertation.**
+			  * **1990\. G. Agha, “Concurrent Object-Oriented Programming,” Commun. ACM, vol. 33, no. 9, pp. 125–141**  
+			  Agha’s work recast the early “classic actor model” work in terms of_concurrent object-oriented programming_. Here, he defines actors as “self-contained, interactive, independent components of a computing system that communicate by asynchronous message passing”, and gives the basic actor primitives as `create`, `send to`, and `become`. Examples are given in the actor language Rosette.  
+			  This paper gives an overview and summary of many of the important facets of research on actors that had been done at the time, including brief discussion of: nondeterminism and fairness; patterns of coordination beyond simple request/reply such as transactions; visualization, monitoring and debugging; resource management in cases of extremely high levels of potential concurrency; and reflection.  
+			  > The customer-passing style supported by actors is the concurrent generalization of continuation-passing style supported in sequential languages such as Scheme. In case of sequential systems, the object must have completed processing a communication before it can process another communication. By contrast, in concurrent systems it is possible to process the next communication as soon as the replacement behavior for an object is known.  
+			  Note that the sequential-seeming portions of the language are defined in terms of asynchronous message passing and construction of explicit continuation actors.
+			  * **1997\. G. A. Agha, I. A. Mason, S. F. Smith, and C. L. Talcott, “A Foundation for Actor Computation,” J. Funct. Program., vol. 7, no. 1, pp. 1–72**  
+			  Long paper that carefully and fully develops an operational semantics for a concrete actor language based on lambda-calculus. Discusses various equivalences and laws. An excellent starting point if you’re looking to build on a modern approach to operational semantics for actors.
+			  
+			  \#\#\# Erlang: Actors from requirements for fault-tolerance / high-availability
+			  
+			  * **2003\. J. Armstrong, “Making reliable distributed systems in the presence of software errors,” Royal Institute of Technology, Stockholm**  
+			  A good overview of Erlang: the language, its design intent, and the underlying philosophy. Includes an evaluation of the language design.
+			  
+			  \#\#\# E: Actors from requirements for secure interaction
+			  
+			  * **2005\. M. S. Miller, E. D. Tribble, and J. Shapiro, “Concurrency Among Strangers,” in Proc. Int. Symp. on Trustworthy Global Computing, pp. 195–229.**  
+			  As I summarised this paper for a seminar class on distributed systems: “The authors present E, a language designed to help programmers manage_coordination_ of concurrent activities in a setting of distributed, mutually-suspicious objects. The design features of E allow programmers to take control over concerns relevant to distributed systems, without immediately losing the benefits of ordinary OO programming.”  
+			  E is a canonical example of the “communicating event loops” approach to Actor languages, per the taxonomy of the survey paper listed below. It combines message-passing and isolation in an interesting way with ordinary object-oriented programming, giving a two-level language structure that has an OO flavour.  
+			  The paper does a great job of explaining the difficulties that arise when writing concurrent programs in traditional models, thereby motivating the actor model in general and the features of E in particular as a way of making the programmer’s job easier.
+			  
+			  \#\#\# Taxonomy of actors
+			  
+			  * **2016\. J. De Koster, T. Van Cutsem, and W. De Meuter, “43 Years of Actors: A Taxonomy of Actor Models and Their Key Properties,” Software Languages Lab, Vrije Universiteit Brussel, VUB-SOFT-TR-16-11**  
+			  A very recent survey paper that offers a taxonomy for classifying actor-style languages. At its broadest, actor languages are placed in one of four groups:  
+			     * The Classic Actor Model (create, send, become)  
+			     * Active Objects (OO with a thread per object; copying of passive data between objects)  
+			     * Processes (raw Erlang; receive, spawn, send)  
+			     * Communicating Event-Loops (E; near and far references; eventual references; batching)  
+			  Different kinds of “futures” or “promises” also appear in many of these variations in order to integrate asynchronous message_reception_ with otherwise-sequential programming.
 	- [Scumbag pissed that his ex-wife stopped f**king him](https://omnivore.app/me/https-www-youtube-com-watch-v-c-4-wkn-3-n-cq-4-o-18e1a5037db)
 	  collapsed:: true
 	  site:: [YouTube](https://www.youtube.com/watch?v=c4WKN3NCq4o)
