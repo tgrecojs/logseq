@@ -1,4 +1,8 @@
-### Initial Info
+## April 6th
+	- - [[GitHub Clean]]
+	-
+-
+- ### Initial Info
 	- [[Starting info...]]
 - ## Tree Operations
 	- What does the term little-endian mean now in particular I'm curious about the meaning of little Indian when used when used when discussing encoding and decoding values

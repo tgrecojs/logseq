@@ -1,24 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;600;700&family=Inter&display=swap');
-@font-face {
-font-family: 'Fira Sans', sans-serif;
-}
-
-font-family: 'Fira Sans', sans-serif;
-font-family: 'Inter', sans-serif;
 
 :root {
   --oz-text-size: 16px;
   --oz-line-height: 1.6;
-  --ls-font-family: "Only Emoji", "Inter", "Noto Sans SC", sans-serif;
+  --ls-font-family: "Fira Sans", "Inter", sans-serif;
   --oz-page-title-font-family: var(--ls-font-family);
-  --oz-code-font-family: "Hack", monospace;
+  --oz-code-font-family: "Fira Sans", monospace;
 }
 
 html,
 body {
   font-size: var(--oz-text-size);
   font-family: var(--ls-font-family);
-  overscroll-behavior-y: none;
-  -webkit-font-smoothing: auto;
+  /*-webkit-font-smoothing: auto;*/
   line-height: var(--oz-line-height);
 }

@@ -1,4 +1,580 @@
 ## All posts
+	- [Smart Wallet Dapp Architecture | Agoric Documentation](https://omnivore.app/me/https-docs-agoric-com-guides-getting-started-contract-rpc-html-18e58ac3d09)
+	  collapsed:: true
+	  site:: [docs.agoric.com](https://docs.agoric.com/guides/getting-started/contract-rpc)
+	  labels:: [[agoric]]
+	  date-saved:: [[03/19/2024]]
+	  date-published:: [[03/18/2024]]
+		- ### Content
+		  collapsed:: true
+			- The [Agoric Platform](https://docs.agoric.com/guides/platform/) consists of smart contracts and services such as [Zoe](https://docs.agoric.com/guides/zoe/) running in a [Hardened JavaScript](https://docs.agoric.com/guides/js-programming/hardened-js.html) VM running on top of a Cosmos SDK consensus layer. Clients interact with the consensus layer by making queries and submitting messages in signed transactions. In the Smart Wallet Architecture, dapps consist of
+			  
+			  * Hardened JavaScript smart contracts
+			  * clients that can submit offers and query status via the consensus layer
+			  
+			  ![smart wallet dapp sequence diagram](https://proxy-prod.omnivore-image-cache.app/0x0,skEfV5hzXuxJxYAULHxTjYpnsytOu-KnxNsZHMBrZ3xc/https://docs.agoric.com/assets/sw-dapp-arch.fMM6JZGd.svg)
+			  
+			  1. A client formats an offer, signs it, and broadcasts it.
+			  2. The offer is routed to the `walletFactory` contract, which finds (or creates) the `smartWallet` object associated with the signer's address and uses it to execute the offer.
+			  3. The `smartWallet` calls `E(zoe).offer(...)` and monitors the status of the offer, emitting it for clients to query.
+			  4. Zoe escrows the payments and forwards the proposal to the contract indicated by the offer.
+			  5. The contract tells Zoe how to reallocate assets.
+			  6. Zoe ensures that the reallocations respect offer safety and then provides payouts accordingly.
+			  7. The client's query tells it that the payouts are available.
+			  
+			  \#\# Signing and Broadcasting Offers [​](\#signing-and-broadcasting-offers)
+			  
+			  One way to sign and broadcast offers is with the `agd tx ...` command. For example:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```routeros
+			  agd tx swingset wallet-action --allow-spend "$ACTION" \
+			  --chain-id=agoriclocal --from=acct1
+			  ```
+			  
+			  Another is using a wallet signing UI such as Keplr via the [Keplr API](https://docs.keplr.app/api/).
+			  
+			  Given sufficient care with key management, a [cosmjs SigningStargateClient](https://cosmos.github.io/cosmjs/latest/stargate/classes/SigningStargateClient.html) or any other client that can deliver a [agoric.swingset.MsgWalletSpendAction](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/golang/cosmos/proto/agoric/swingset/msgs.proto\#L70) to a [Cosmos SDK endpoint](https://docs.cosmos.network/main/core/grpc%5Frest) works.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)proto
+			  
+			  ```protobuf
+			  message MsgWalletSpendAction {
+			    bytes owner = 1;
+			    string spend_action = 2;
+			  }
+			  ```
+			  
+			  \#\# Querying VStorage [​](\#querying-vstorage)
+			  
+			  [VStorage](https://github.com/Agoric/agoric-sdk/tree/master/golang/cosmos/x/vstorage\#readme) (for "Virtual Storage") is a key-value store that is read-only for clients of the consensus layer. From within the JavaScript VM, it is accessed via a `chainStorage` API with a node at each key that is write-only; a bit like a `console`.
+			  
+			  ![vstorage query diagram](https://proxy-prod.omnivore-image-cache.app/0x0,sIqAE0XWp_PMqp_lvytreIJing2t19kAsBKdrcPZZjpQ/https://docs.agoric.com/assets/vstorage-brand-q.SCB_G9qx.svg)
+			  
+			  The protobuf definition is [agoric.vstorage.Query](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/golang/cosmos/proto/agoric/vstorage/query.proto\#L11):
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)proto
+			  
+			  ```protobuf
+			  service Query {
+			  // Return an arbitrary vstorage datum.
+			  rpc Data(QueryDataRequest) returns (QueryDataResponse) {
+			    option (google.api.http).get = "/agoric/vstorage/data/{path}";
+			  }
+			  
+			  // Return the children of a given vstorage path.
+			  rpc Children(QueryChildrenRequest)
+			    returns (QueryChildrenResponse) {
+			      option (google.api.http).get = "/agoric/vstorage/children/{path}";
+			  }
+			  }
+			  ```
+			  
+			  We can issue queries using, `agd query ...`:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```routeros
+			  $ agd query vstorage children 'published.agoricNames'
+			  
+			  children:
+			  - brand
+			  - installation
+			  - instance
+			  ...
+			  ```
+			  
+			  The [Agoric CLI](https://docs.agoric.com/guides/agoric-cli/) `follow` command supports vstorage query plus some of the marshalling conventions discussed below:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```prolog
+			  $ agoric follow -lF :published.agoricNames.brand
+			  [
+			  [
+			    "BLD",
+			    slotToVal("board0566","Alleged: BLD brand"),
+			  ],
+			  [
+			    "IST",
+			    slotToVal("board0257","Alleged: IST brand"),
+			  ],
+			  ...
+			  ]
+			  ```
+			  
+			  vstorage viewer by p2p
+			  
+			  The [vstorage-viewer](https://github.com/p2p-org/p2p-agoric-vstorage-viewer) contributed by p2p is often _very_ handy:
+			  
+			  [![vstorage viewer screenshot](https://proxy-prod.omnivore-image-cache.app/0x0,sGme0IEveRijb5RUHKEcxKvKJ9wmZrafFxNSL20MEE8s/https://user-images.githubusercontent.com/150986/259798595-40cd22f0-fa01-43a9-b92a-4f0f4813a4f6.png)](https://p2p-org.github.io/p2p-agoric-vstorage-viewer/\#https://devnet.rpc.agoric.net/%7Cpublished,published.agoricNames%7C)
+			  
+			  \#\# Specifying Offers [​](\#specifying-offers)
+			  
+			  Recall that for an agent within the JavaScript VM, [E(zoe).offer(...)](https://docs.agoric.com/reference/zoe-api/zoe.html\#e-zoe-offer-invitation-proposal-paymentpkeywordrecord-offerargs) takes an `Invitation` and optionally a `Proposal` with `{ give, want, exit }`, a `PaymentPKeywordRecord`, and `offerArgs`; it returns a `UserSeat` from which we can [getPayouts()](https://docs.agoric.com/reference/zoe-api/user-seat.html\#e-userseat-getpayouts).
+			  
+			  ![Zoe API diagram, simplified](https://proxy-prod.omnivore-image-cache.app/0x0,sW1nJfLsMAsWaDsM8LnRkj5aTbmggbzlQhHdV53Jdvfg/https://docs.agoric.com/assets/zoe-simp.NTJeh880.svg)
+			  
+			  In the Smart Wallet architecture, a client uses an `OfferSpec` to tell its `SmartWallet` how to conduct an offer. It includes an `invitationSpec` to say what invitation to pass to Zoe. For example:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```php
+			  /** @type {import('@agoric/smart-wallet').InvitationSpec} */
+			  const invitationSpec = {
+			  source: 'contract',
+			  instance,
+			  publicInvitationMaker: 'makeBattleInvitation',
+			  invitationArgs: ['troll'],
+			  };
+			  ```
+			  
+			  Here the `SmartWallet` calls `E(zoe).getPublicFacet(instance)` and then uses the `publicInvitationMaker` and `invitationArgs` to call the contract's public facet.
+			  
+			  ![InvitationSpec sequence diagram](https://proxy-prod.omnivore-image-cache.app/0x0,skUHEvBvDb3zL4Mk3If4UPVjf_qtNeR6pU9E0PI43hxs/https://docs.agoric.com/assets/inv-spec.5-1ou8Wm.svg)
+			  
+			  InvitationSpec Usage
+			  
+			  Supposing `spec` is an `InvitationSpec`, its `.source` is one of:
+			  
+			  * `==purse==` ==- to make an offer with an invitation that is already in the Invitation purse of the smart wallet and agrees with== `==spec==` ==on== `==.instance==` ==and== `==.description==` ==properties.== For example, in [dapp-econ-gov](https://github.com/Agoric/dapp-econ-gov), committee members use invitations sent to them when the committee was created.
+			  * `contract` \- the smart wallet makes an invitation by calling a method on the public facet of a specified instance: `E(E(zoe).getPublicFacet(spec.instance)[spec.publicInvitationMaker](...spec.invitationArgs)`
+			  * `agoricContract` \- for example, from [dapp-inter](https://github.com/Agoric/dapp-inter):
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```prolog
+			  {
+			   source: 'agoricContract',
+			   instancePath: ['VaultFactory'],
+			   callPipe: [
+			     ['getCollateralManager', [toLock.brand]],
+			     ['makeVaultInvitation'],
+			   ],
+			  }
+			  ```
+			  
+			  The smart wallet finds the instance using `E(agoricNames).lookup('instance', ...spec.instancePath)` and makes a chain of calls specified by `spec.callPipe`. Each entry in the callPipe is a `[methodName, args?]` pair used to execute a call on the preceding result. The end of the pipe is expected to return an Invitation.
+			  
+			  * `continuing` \- For example, `dapp-inter` uses the following `InvitationSpec` to adjust a vault:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```css
+			  {
+			  source: 'continuing',
+			  previousOffer: vaultOfferId,
+			  invitationMakerName: 'AdjustBalances',
+			  }
+			  ```
+			  
+			  In this continuing offer, the smart wallet uses the `spec.previousOffer` id to look up the `.invitationMakers` property of the result of the previous offer. It uses `E(invitationMakers)[spec.invitationMakerName](...spec.invitationArgs)` to make an invitation.
+			  
+			  The client fills in the proposal, which instructs the `SmartWallet` to withdraw corresponding payments to send to Zoe.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```php
+			  /** @type {import('@agoric/smart-wallet').BridgeAction} */
+			  const action = harden({
+			  method: 'executeOffer',
+			  offer: {
+			    id: 'battle7651',
+			    invitationSpec,
+			    proposal: {
+			      give: { Gold: AmountMath.make(brands.gold, 100n) },
+			    },
+			  },
+			  });
+			  ```
+			  
+			  But recall the `spend_action` field in `MsgWalletSpendAction` is a string. In fact, the expected string in this case is of the form:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```capnproto
+			  t.regex(spendAction, /^{"body":"\#.*","slots":\["board123","board32342"\]}$/);
+			  const goldStuff =
+			  '\\"brand\\":\\"$1.Alleged: Gold Brand\\",\\"value\\":\\"+100\\"';
+			  t.true(spendAction.includes(goldStuff));
+			  ```
+			  
+			  We recognize `"method":"executeOffer"` and such, but `body:`, `slots:`, and `$1.Alleged: Gold Brand` need further explanation.
+			  
+			  \#\#\# Marshalling Amounts and Instances [​](\#marshalling-amounts-and-instances)
+			  
+			  To start with, amounts include `bigint`s. The `@endo/marshal` API handles those:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```reasonml
+			  const m = makeMarshal(undefined, undefined, smallCaps);
+			  
+			  const stuff = harden([1, 2, 3n, undefined, NaN]);
+			  const capData = m.toCapData(stuff);
+			  t.deepEqual(m.fromCapData(capData), stuff);
+			  ```
+			  
+			  To marshal brands and instances, recall from the discussion of [marshal in eventual send](https://docs.agoric.com/guides/js-programming/eventual-send.html\#e-and-marshal-a-closer-look) how remotables are marshalled with a translation table.
+			  
+			  The [Agoric Board](https://docs.agoric.com/reference/repl/board.html) is a well-known name service that issues plain string identifiers for object identities and other passable _keys_ (that is: passable values excluding promises and errors). Contracts and other services can use its table of identifiers as a marshal translation table:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```dart
+			  /** @type {Record<string, Brand>} */
+			  const brands = {
+			  gold: asset.gold.brand,
+			  victory: asset.victory.brand,
+			  };
+			  
+			  // explicitly register brand using the board API
+			  const victoryBrandBoardId = await E(theBoard).getId(brands.victory);
+			  t.is(victoryBrandBoardId, 'board0371');
+			  
+			  // When the publishing marshaler needs a reference marker for something
+			  // such as the gold brand, it issues a new board id.
+			  const pubm = E(theBoard).getPublishingMarshaller();
+			  const brandData = await E(pubm).toCapData(brands);
+			  t.deepEqual(brandData, {
+			  body: `\#${JSON.stringify({
+			    gold: '$0.Alleged: Gold Brand',
+			    victory: '$1.Alleged: Victory Brand',
+			  })}`,
+			  slots: ['board0592', 'board0371'],
+			  });
+			  ```
+			  
+			  To reverse the process, clients can mirror the on-chain board translation table by synthesizing a remotable for each reference marker received:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```javascript
+			  const makeBoardContext = () => {
+			  const synthesizeRemotable = (_slot, iface) =>
+			    Far(iface.replace(/^Alleged: /, ''), {});
+			  
+			  const { convertValToSlot, convertSlotToVal } = makeTranslationTable(
+			    slot => Fail`unknown id: ${slot}`,
+			    synthesizeRemotable,
+			  );
+			  const marshaller = makeMarshal(convertValToSlot, convertSlotToVal, smallCaps);
+			  
+			  /** Read-only board work-alike. */
+			  const board = harden({
+			    getId: convertValToSlot,
+			    getValue: convertSlotToVal,
+			  });
+			  
+			  return harden({
+			    board,
+			    marshaller,
+			    /**
+			     * Unmarshall capData, synthesizing a Remotable for each boardID slot.
+			     *
+			     * @type {(cd: import("@endo/marshal").CapData<string>) => unknown }
+			     */
+			    ingest: marshaller.fromCapData,
+			  });
+			  };
+			  ```
+			  
+			  Now we can take results of vstorage queries for `Data('published.agoricNames.brand')` and `Data('published.agoricNames.instance')` unmarshal ("ingest") them:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```routeros
+			  const clientContext = makeBoardContext();
+			  
+			  const brandQueryResult = {
+			  body: `\#${JSON.stringify({
+			    gold: '$1.Alleged: Gold Brand',
+			    victory: '$0.Alleged: Victory Brand',
+			  })}`,
+			  slots: ['board0371', 'board32342'],
+			  };
+			  const brands = clientContext.ingest(brandQueryResult);
+			  const { game1: instance } = clientContext.ingest(instanceQueryResult);
+			  ```
+			  
+			  And now we have all the pieces of the `BridgeAction` above. The marshalled form is:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```css
+			  t.deepEqual(clientContext.marshaller.toCapData(action), {
+			  body: `\#${JSON.stringify({
+			    method: 'executeOffer',
+			    offer: {
+			      id: 'battle7651',
+			      invitationSpec: {
+			        instance: '$0.Alleged: Instance',
+			        invitationArgs: ['troll'],
+			        publicInvitationMaker: 'makeBattleInvitation',
+			        source: 'contract',
+			      },
+			      proposal: {
+			        give: {
+			          Gold: { brand: '$1.Alleged: Gold Brand', value: '+100' },
+			        },
+			      },
+			    },
+			  })}`,
+			  slots: ['board123', 'board32342'],
+			  });
+			  ```
+			  
+			  We still don't quite have a single string for the `spend_action` field. We need to `stringify` the `CapData`:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```reasonml
+			  const spendAction = JSON.stringify(
+			  clientContext.marshaller.toCapData(action),
+			  );
+			  ```
+			  
+			  And now we have the `spend_action` in the expected form:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)js
+			  
+			  ```capnproto
+			  t.regex(spendAction, /^{"body":"\#.*","slots":\["board123","board32342"\]}$/);
+			  const goldStuff =
+			  '\\"brand\\":\\"$1.Alleged: Gold Brand\\",\\"value\\":\\"+100\\"';
+			  t.true(spendAction.includes(goldStuff));
+			  ```
+			  
+			  The wallet factory can now `JSON.parse` this string into `CapData` and unmarshal it using a board marshaller to convert board ids back into brands, instances, etc.
+			  
+			  \#\# Smart Wallet VStorage Topics [​](\#smart-wallet-vstorage-topics)
+			  
+			  Each smart wallet has a node under `published.wallet`:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```gcode
+			  $ agd query vstorage children published.wallet
+			  children:
+			  - agoric1h4d3mdvyqhy2vnw2shq4pm5duz5u8wa33jy6cl
+			  - agoric1qx2kqqdk80fdasldzkqu86tg4rhtaufs00na3y
+			  - agoric1rhul0rxa2z829a6xkrvuq8m8wjwekyduv7dzfj
+			  ...
+			  ```
+			  
+			  Smart wallet clients should start by getting the **current** state at `published.${ADDRESS}.current` and then subscribe to **updates** at `published.${ADDRESS}`. For example, we can use `agoric follow -lF` to get the latest `.current` record:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```dts
+			  $ agoric follow -lF :published.wallet.agoric1h4d3mdvyqhy2vnw2shq4pm5duz5u8wa33jy6cl.current
+			  {
+			  liveOffers: [],
+			  offerToPublicSubscriberPaths: [
+			    [
+			      "openVault-1691526589332",
+			      {
+			        vault: "published.vaultFactory.managers.manager0.vaults.vault2",
+			      },
+			    ],
+			  ],
+			  offerToUsedInvitation: [
+			    [
+			      "openVault-1691526589332",
+			      {
+			        brand: slotToVal("board0074","Alleged: Zoe Invitation brand"),
+			        value: [
+			          {
+			            description: "manager0: MakeVault",
+			            handle: slotToVal(null,"Alleged: InvitationHandle"),
+			            installation: slotToVal("board05815","Alleged: BundleIDInstallation"),
+			            instance: slotToVal("board00360","Alleged: InstanceHandle"),
+			          },
+			        ],
+			      },
+			    ],
+			  ],
+			  purses: [
+			    {
+			      balance: {
+			        brand: slotToVal("board0074"),
+			        value: [],
+			      },
+			      brand: slotToVal("board0074"),
+			    },
+			  ],
+			  }
+			  ```
+			  
+			  Then we can use `agoric follow` without any options to get a stream of updates as they appear.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```css
+			  agoric follow :published.wallet.agoric1h4d3mdvyqhy2vnw2shq4pm5duz5u8wa33jy6cl
+			  ...
+			  {
+			  status: {
+			    id: "closeVault-1691526597848",
+			    invitationSpec: {
+			      invitationMakerName: "CloseVault",
+			      previousOffer: "openVault-1691526589332",
+			      source: "continuing",
+			    },
+			    numWantsSatisfied: 1,
+			    payouts: {
+			      Collateral: {
+			        brand: slotToVal("board05557","Alleged: ATOM brand"),
+			        value: 13000000n,
+			      },
+			      Minted: {
+			        brand: slotToVal("board0257","Alleged: IST brand"),
+			        value: 215000n,
+			      },
+			    },
+			    proposal: {
+			      give: {
+			        Minted: {
+			          brand: slotToVal("board0257"),
+			          value: 5750000n,
+			        },
+			      },
+			      want: {},
+			    },
+			    result: "your vault is closed, thank you for your business",
+			  },
+			  updated: "offerStatus",
+			  }
+			  ```
+			  
+			  Note that status updates are emitted at several points in the handling of each offer:
+			  
+			  * when the `getOfferResult()` promise settles
+			  * when the `numWantsSatisfied()` promise settles
+			  * when the payouts have been deposited.
+			  
+			  And we may get `balance` updates at any time.
+			  
+			  The data published via vstorage are available within the JavaScript VM via the [getPublicTopics](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/packages/smart-wallet/src/smartWallet.js\#L585) API.
+			  
+			  The [CurrentWalletRecord](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/packages/smart-wallet/src/smartWallet.js\#L71-L76) type is:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)ts
+			  
+			  ```qml
+			  {
+			   purses: Array<{brand: Brand, balance: Amount}>,
+			   offerToUsedInvitation: Array<[ offerId: string, usedInvitation: Amount ]>,
+			   offerToPublicSubscriberPaths: Array<[ offerId: string, publicTopics: { [subscriberName: string]: string } ]>,
+			   liveOffers: Array<[import('./offers.js').OfferId, import('./offers.js').OfferStatus]>,
+			  }
+			  ```
+			  
+			  And [UpdateRecord](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/packages/smart-wallet/src/smartWallet.js\#L80-L83) is:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)ts
+			  
+			  ```groovy
+			     { updated: 'offerStatus', status: import('./offers.js').OfferStatus }
+			   | { updated: 'balance'; currentAmount: Amount }
+			   | { updated: 'walletAction'; status: { error: string } }
+			  ```
+			  
+			  Both of those types include [OfferStatus](https://github.com/Agoric/agoric-sdk/blob/mainnet1B/packages/smart-wallet/src/offers.js\#L21C14-L26C5) by reference:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)ts
+			  
+			  ```groovy
+			  import('./offers.js').OfferSpec & {
+			  error?: string,
+			  numWantsSatisfied?: number
+			  result?: unknown | typeof UNPUBLISHED_RESULT,
+			  payouts?: AmountKeywordRecord,
+			  }
+			  ```
+			  
+			  \#\# VBank Assets and Cosmos Bank Balances [​](\#vbank-assets-and-cosmos-bank-balances)
+			  
+			  Note that balances of assets such as **IST** and **BLD** are already available via consensus layer queries to the Cosmos SDK [bank module](https://docs.cosmos.network/main/modules/bank).
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```1c
+			  $ agd query bank balances agoric1h4d3mdvyqhy2vnw2shq4pm5duz5u8wa33jy6cl -o json | jq .balances
+			  [
+			  {
+			    "denom": "ibc/BA313C4A19DFBF943586C0387E6B11286F9E416B4DD27574E6909CABE0E342FA",
+			    "amount": "100000000"
+			  },
+			  {
+			    "denom": "ubld",
+			    "amount": "10000000"
+			  },
+			  {
+			    "denom": "uist",
+			    "amount": "215000"
+			  }
+			  ]
+			  ```
+			  
+			  They are not published redundantly in vstorage and nor does the smart wallet emit `balance` updates for them.
+			  
+			  To get the correspondence between certain cosmos denoms (chosen by governance) and their ERTP brands, issuers, and display info such as `decimalPlaces`, see `published.agoricNames.vbankAsset`:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,sHXaFhfIMHoH6ID5HuubDsR6O8ANJZtIYcOUz63x2L40/data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' height='20' width='20' stroke='rgba(128,128,128,1)' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2'/%3E%3C/svg%3E)sh
+			  
+			  ```dts
+			  agoric follow -lF :published.agoricNames.vbankAsset
+			  [
+			  [
+			    "ibc/BA313C4A19DFBF943586C0387E6B11286F9E416B4DD27574E6909CABE0E342FA",
+			    {
+			      brand: slotToVal("board05557","Alleged: ATOM brand"),
+			      denom: "ibc/BA313C4A19DFBF943586C0387E6B11286F9E416B4DD27574E6909CABE0E342FA",
+			      displayInfo: {
+			        assetKind: "nat",
+			        decimalPlaces: 6,
+			      },
+			      issuer: slotToVal("board02656","Alleged: ATOM issuer"),
+			      issuerName: "ATOM",
+			      proposedName: "ATOM",
+			    },
+			  ],
+			  [
+			    "ubld",
+			    {
+			      brand: slotToVal("board0566","Alleged: BLD brand"),
+			      denom: "ubld",
+			      displayInfo: {
+			        assetKind: "nat",
+			        decimalPlaces: 6,
+			      },
+			      issuer: slotToVal("board0592","Alleged: BLD issuer"),
+			      issuerName: "BLD",
+			      proposedName: "Agoric staking token",
+			    },
+			  ],
+			  [
+			    "uist",
+			    {
+			      brand: slotToVal("board0257","Alleged: IST brand"),
+			      denom: "uist",
+			      displayInfo: {
+			        assetKind: "nat",
+			        decimalPlaces: 6,
+			      },
+			      issuer: slotToVal("board0223","Alleged: IST issuer"),
+			      issuerName: "IST",
+			      proposedName: "Agoric stable token",
+			    },
+			  ],
+			  ...
+			  ]
+			  ```
+		- ### Highlights
+		  collapsed:: true
+			- > `purse` \- to make an offer with an invitation that is already in the Invitation purse of the smart wallet and agrees with `spec` on `.instance` and `.description` properties. [⤴️](https://omnivore.app/me/https-docs-agoric-com-guides-getting-started-contract-rpc-html-18e58ac3d09#21856ba1-e523-4526-a184-3f053e6b0c91)
 	- [draft-toomim-httpbis-linked-json-00](https://omnivore.app/me/draft-toomim-httpbis-linked-json-00-18e49ca8a6e)
 	  collapsed:: true
 	  site:: [raw.githubusercontent.com](https://raw.githubusercontent.com/braid-org/braid-spec/master/draft-toomim-httpbis-linked-json-00.txt)
@@ -291,12 +867,12 @@
 			  The actor model, then is
 			  
 			  * asynchronous message passing between entities (actors)  
-			   * with guaranteed delivery  
-			   * addressing of messages by actor identity
+			     * with guaranteed delivery  
+			     * addressing of messages by actor identity
 			  * a thing called the “ISOLATED TURN PRINCIPLE”  
-			   * no shared mutable state; strong encapsulation; no global mutable state  
-			   * no interleaving; process one message at a time; serializes state access  
-			   * liveness; no blocking
+			     * no shared mutable state; strong encapsulation; no global mutable state  
+			     * no interleaving; process one message at a time; serializes state access  
+			     * liveness; no blocking
 			  
 			  In the model, each actor performs “turns” one after the other: a turn is taking a waiting message, interpreting it, and deciding on both a state update for the actor and a collection of actions to take in response, perhaps sending messages or creating new actors.
 			  
@@ -395,9 +971,9 @@
 			  
 			  ```coq
 			  e  :=  λx.e  |  e e  |  x  | (e,e) | l | ... atoms, if, bool, primitive operations ...
-			    |  create e
-			    |  send e e
-			    |  become e
+			      |  create e
+			      |  send e e
+			      |  become e
 			  
 			  l  labels, PIDs; we'll use them like symbols here
 			  
@@ -410,7 +986,7 @@
 			  let x = e1 in e2   to stand for   (λx.e2) e1
 			  
 			  match e with p -> e, p -> e, ...
-			    to stand for matching implemented with if, predicates, etc.
+			      to stand for matching implemented with if, predicates, etc.
 			  
 			  ```
 			  
@@ -420,9 +996,9 @@
 			  v  :=  λx.e  |  (v,v)  |  l
 			  
 			  R  :=  []  |  R e  |  v R  |  (R,e)  |  (v,R)
-			    |  create R
-			    |  send R e  |  send v R
-			    |  become R
+			      |  create R
+			      |  send R e  |  send v R
+			      |  become R
 			  
 			  ```
 			  
@@ -440,7 +1016,7 @@
 			  The normal lambda-calculus-like reductions apply, like beta:
 			  
 			  ```jboss-cli
-			    < ... [R[(λx.e) v]]l ... | ... >
+			      < ... [R[(λx.e) v]]l ... | ... >
 			  --> < ... [R[e{v/x}  ]]l ... | ... >
 			  
 			  ```
@@ -448,16 +1024,16 @@
 			  Plus some new interesting ones that are actor specific:
 			  
 			  ```jboss-cli
-			    < ... (v)l ...    | ... l <-- v' ... >
+			      < ... (v)l ...    | ... l <-- v' ... >
 			  --> < ... [v v']l ... | ...          ... >
 			  
-			    < ... [R[create v]]l       ... | ... >
+			      < ... [R[create v]]l       ... | ... >
 			  --> < ... [R[l'      ]]l (v)l' ... | ... >   where l' fresh
 			  
-			    < ... [R[send l' v]]l ... | ... >
+			      < ... [R[send l' v]]l ... | ... >
 			  --> < ... [R[l'       ]]l ... | ... l' <-- v >
 			  
-			    < ... [R[become v]]l       ... | ... >
+			      < ... [R[become v]]l       ... | ... >
 			  --> < ... [R[nil     ]]l' (v)l ... | ... >   where l' fresh
 			  
 			  ```
@@ -470,9 +1046,9 @@
 			  
 			  ```xl
 			  Cell = λcontents . λmessage . match message with
-			                                (get, k) --> become (Cell contents);
-			                                             send k contents
-			                                (put, v) --> become (Cell v)
+			                                  (get, k) --> become (Cell contents);
+			                                               send k contents
+			                                  (put, v) --> become (Cell v)
 			  
 			  ```
 			  
@@ -480,73 +1056,73 @@
 			  
 			  ```livecodeserver
 			  < [let c = create (Cell 0) in
-			   send c (get, create (λv . send c (put, v + 1)))]a | >
+			     send c (get, create (λv . send c (put, v + 1)))]a | >
 			  
 			  < [let c = l1 in
-			   send c (get, create (λv . send c (put, v + 1)))]a
-			  (Cell 0)l1 | >
+			     send c (get, create (λv . send c (put, v + 1)))]a
+			    (Cell 0)l1 | >
 			  
 			  < [send l1 (get, create (λv . send l1 (put, v + 1)))]a
-			  (Cell 0)l1 | >
+			    (Cell 0)l1 | >
 			  
 			  < [send l1 (get, l2)]a
-			  (Cell 0)l1
-			  (λv . send l1 (put, v + 1))l2 | >
+			    (Cell 0)l1
+			    (λv . send l1 (put, v + 1))l2 | >
 			  
 			  < [l1]a
-			  (Cell 0)l1
-			  (λv . send l1 (put, v + 1))l2 | l1 <-- (get, l2) >
+			    (Cell 0)l1
+			    (λv . send l1 (put, v + 1))l2 | l1 <-- (get, l2) >
 			  
 			  < [l1]a
-			  [Cell 0 (get, l2)]l1
-			  (λv . send l1 (put, v + 1))l2 | >
+			    [Cell 0 (get, l2)]l1
+			    (λv . send l1 (put, v + 1))l2 | >
 			  
 			  < [l1]a
-			  [become (Cell 0); send l2 0]l1
-			  (λv . send l1 (put, v + 1))l2 | >
+			    [become (Cell 0); send l2 0]l1
+			    (λv . send l1 (put, v + 1))l2 | >
 			  
 			  < [l1]a
-			  [send l2 0]l3
-			  (Cell 0)l1
-			  (λv . send l1 (put, v + 1))l2 | >
+			    [send l2 0]l3
+			    (Cell 0)l1
+			    (λv . send l1 (put, v + 1))l2 | >
 			  
 			  < [l1]a
-			  [l2]l3
-			  (Cell 0)l1
-			  (λv . send l1 (put, v + 1))l2 | l2 <-- 0 >
+			    [l2]l3
+			    (Cell 0)l1
+			    (λv . send l1 (put, v + 1))l2 | l2 <-- 0 >
 			  
 			  < [l1]a
-			  [l2]l3
-			  (Cell 0)l1
-			  [send l1 (put, 0 + 1)]l2 | >
+			    [l2]l3
+			    (Cell 0)l1
+			    [send l1 (put, 0 + 1)]l2 | >
 			  
 			  < [l1]a
-			  [l2]l3
-			  (Cell 0)l1
-			  [l1]l2 | l1 <-- (put, 1) >
+			    [l2]l3
+			    (Cell 0)l1
+			    [l1]l2 | l1 <-- (put, 1) >
 			  
 			  < [l1]a
-			  [l2]l3
-			  [Cell 0 (put, 1)]l1
-			  [l1]l2 | >
+			    [l2]l3
+			    [Cell 0 (put, 1)]l1
+			    [l1]l2 | >
 			  
 			  < [l1]a
-			  [l2]l3
-			  [become (Cell 1)]l1
-			  [l1]l2 | >
+			    [l2]l3
+			    [become (Cell 1)]l1
+			    [l1]l2 | >
 			  
 			  < [l1]a
-			  [l2]l3
-			  [nil]l4
-			  (Cell 1)l1
-			  [l1]l2 | >
+			    [l2]l3
+			    [nil]l4
+			    (Cell 1)l1
+			    [l1]l2 | >
 			  
 			  ```
 			  
 			  (You could consider adding a garbage collection rule like
 			  
 			  ```jboss-cli
-			    < ... [v]l ... | ... >
+			      < ... [v]l ... | ... >
 			  --> < ...      ... | ... >
 			  
 			  ```
@@ -626,11 +1202,11 @@
 			  
 			  ```erlang
 			  mainloop(Contents) ->
-			  receive
-			    {get, K} -> K ! Contents,
-			                mainloop(Contents);
-			    {put, V} -> mainloop(V)
-			  end.
+			    receive
+			      {get, K} -> K ! Contents,
+			                  mainloop(Contents);
+			      {put, V} -> mainloop(V)
+			    end.
 			  
 			  ```
 			  
@@ -640,7 +1216,7 @@
 			  Cell = spawn(fun mainloop(0) end),
 			  Cell ! {get, self()},
 			  receive
-			  V -> ...
+			    V -> ...
 			  end.
 			  
 			  ```
@@ -651,13 +1227,13 @@
 			  
 			  ```routeros
 			  mainloop(Service) ->
-			  receive
-			    {req, K} -> Service ! {subreq, self()},
-			                receive
-			                  {subreply, Answer} -> K ! {reply, Answer},
-			                                        mainloop(Service)
-			                end
-			  end.
+			    receive
+			      {req, K} -> Service ! {subreq, self()},
+			                  receive
+			                    {subreply, Answer} -> K ! {reply, Answer},
+			                                          mainloop(Service)
+			                  end
+			    end.
 			  
 			  ```
 			  
@@ -686,15 +1262,15 @@
 			  
 			  ```applescript
 			  def makeCell (var contents) {
-			    def getter {
-			        to get() { return contents }
-			    }
-			    def setter {
-			        to set(newContents) {
-			            contents := newContents
-			        }
-			    }
-			    return [getter, setter]
+			      def getter {
+			          to get() { return contents }
+			      }
+			      def setter {
+			          to set(newContents) {
+			              contents := newContents
+			          }
+			      }
+			      return [getter, setter]
 			  }
 			  
 			  ```
@@ -746,9 +1322,9 @@
 			  ```armasm
 			  def r3 := r1 <- c(r2)  // from earlier
 			  if (r3) {
-			  myvar := a();
+			    myvar := a();
 			  } else {
-			  myvar := b();
+			    myvar := b();
 			  }
 			  
 			  ```
@@ -757,11 +1333,11 @@
 			  
 			  ```livescript
 			  when (r3) -> {
-			  if (r3) {
-			    myvar := a();
-			  } else {
-			    myvar := b();
-			  }
+			    if (r3) {
+			      myvar := a();
+			    } else {
+			      myvar := b();
+			    }
 			  }
 			  
 			  ```
@@ -796,18 +1372,18 @@
 			  This paper is a position paper from which we can understand the motivation and intentions of the research into actors; it lays out a very broad and colourful research vision that touches on a huge range of areas from computer architecture up through programming language design to teaching of computer science and approaches to artificial intelligence.  
 			  The paper presents a _uniform actor model_; compare and contrast with uniform object models offered by (some) OO languages. The original application of the model is given as PLANNER-like AI languages.  
 			  The paper claims benefits of using the actor model in a huge range of areas:  
-			   * foundations of semantics  
-			   * logic  
-			   * knowledge-based programming  
-			   * intentions (contracts)  
-			   * study of expressiveness  
-			   * teaching of computation  
-			   * extensible, modular programming  
-			   * privacy and protection  
-			   * synchronization constructs  
-			   * resource management  
-			   * structured programming  
-			   * computer architecture  
+			     * foundations of semantics  
+			     * logic  
+			     * knowledge-based programming  
+			     * intentions (contracts)  
+			     * study of expressiveness  
+			     * teaching of computation  
+			     * extensible, modular programming  
+			     * privacy and protection  
+			     * synchronization constructs  
+			     * resource management  
+			     * structured programming  
+			     * computer architecture  
 			  The paper sketches the idea of a contract (called an “intention”) for ensuring that invariants of actors (such as protocol conformance) are maintained; there seems to be a connection to modern work on “monitors” and Session Types. The authors write:  
 			  > The intention is the CONTRACT that the actor has with the outside world.  
 			  Everything is super meta! Actors can have intentions! Intentions are actors! Intentions can have intentions! The paper presents the beginnings of a reflective metamodel for actors. Every actor has a scheduler and an “intention”, and may have monitors, a first-class environment, and a “banker”.  
@@ -830,8 +1406,8 @@
 			  Everything is an actor, but some of the actors are treated in an awfully structural way: the trees, for example, in section V.4 on Generators:  
 			  ```clojure  
 			  (non-terminal:  
-			  (non-terminal: (terminal: A) (terminal: B))  
-			  (terminal: C))  
+			    (non-terminal: (terminal: A) (terminal: B))  
+			    (terminal: C))  
 			  ```  
 			  Things written with this `keyword:` notation look like structures. Their _reflections_ are actors, but as structures, they are subject to pattern-matching; I am unsure how the duality here was thought of by the principals at the time, but see the remarks regarding “packages” in the appendix.
 			  * **1977\. C. Hewitt and H. Baker, “Actors and Continuous Functionals,” MIT A.I. Memo 436A**  
@@ -871,10 +1447,10 @@
 			  
 			  * **2016\. J. De Koster, T. Van Cutsem, and W. De Meuter, “43 Years of Actors: A Taxonomy of Actor Models and Their Key Properties,” Software Languages Lab, Vrije Universiteit Brussel, VUB-SOFT-TR-16-11**  
 			  A very recent survey paper that offers a taxonomy for classifying actor-style languages. At its broadest, actor languages are placed in one of four groups:  
-			   * The Classic Actor Model (create, send, become)  
-			   * Active Objects (OO with a thread per object; copying of passive data between objects)  
-			   * Processes (raw Erlang; receive, spawn, send)  
-			   * Communicating Event-Loops (E; near and far references; eventual references; batching)  
+			     * The Classic Actor Model (create, send, become)  
+			     * Active Objects (OO with a thread per object; copying of passive data between objects)  
+			     * Processes (raw Erlang; receive, spawn, send)  
+			     * Communicating Event-Loops (E; near and far references; eventual references; batching)  
 			  Different kinds of “futures” or “promises” also appear in many of these variations in order to integrate asynchronous message_reception_ with otherwise-sequential programming.
 	- [Scumbag pissed that his ex-wife stopped f**king him](https://omnivore.app/me/https-www-youtube-com-watch-v-c-4-wkn-3-n-cq-4-o-18e1a5037db)
 	  collapsed:: true

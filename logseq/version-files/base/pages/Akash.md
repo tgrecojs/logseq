@@ -1,5 +1,7 @@
 ## Notebook TOC
 	- ### Block Priorities
+	- ### Block Priorities
+	  collapsed:: true
 		- #notable - used to signal that a block contains valuable, applicable information
 		-
 -

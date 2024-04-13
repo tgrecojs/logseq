@@ -1,7 +1,6 @@
 hypothesis-uri:: https://www.tomharding.me/2017/04/27/pairs-as-functors/
 hypothesis-title:: Pairs as Functors · Tom Harding
 hypothesis-naming-scheme:: 0.2.0
-
 - 📌 Two-ish weeks ago, we talked about the wonderful flexibility of Function when you start treating it as a Functor 
   hid:: IsSPlB1lEe6SyOvxutTvLQ
   updated:: 2023-07-08T07:57:50.688659+00:00

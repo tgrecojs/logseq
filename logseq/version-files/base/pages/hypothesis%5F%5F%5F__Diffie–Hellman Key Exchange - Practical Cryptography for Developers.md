@@ -1,7 +1,6 @@
 hypothesis-uri:: https://cryptobook.nakov.com/key-exchange/diffie-hellman-key-exchange
 hypothesis-title:: Diffie–Hellman Key Exchange - Practical Cryptography for Developers
 hypothesis-naming-scheme:: 0.2.0
-
 - 📌 ​Diffie–Hellman Key Exchange (DHKE) is a cryptographic method to securely exchange cryptographic keys (key agreement protocol) over a public (insecure) channel in a way that overheard communication does not reveal the keys. 
   hid:: zGQUAhuUEe6WaRO0Nh7rwQ
   updated:: 2023-07-06T00:33:59.287272+00:00
