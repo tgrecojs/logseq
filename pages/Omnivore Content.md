@@ -1,4 +1,1696 @@
 ## All posts
+	- [strawman:concurrency [ES Wiki]](https://omnivore.app/me/strawman-concurrency-es-wiki-18eedf4b141)
+	  collapsed:: true
+	  site:: [web.archive.org](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman%25253Aconcurrency)
+	  date-saved:: [[04/17/2024]]
+	  date-published:: [[06/16/2013]]
+		- ### Content
+		  collapsed:: true
+			- The Wayback Machine - https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:concurrency
+			  
+			  * [Communicating Event-Loop Concurrency and Distribution](\#communicating%5Fevent-loop%5Fconcurrency%5Fand%5Fdistribution)  
+			   * [Concurrency Model and Promises](\#concurrency%5Fmodel%5Fand%5Fpromises)  
+			   * [Vats](\#vats)  
+			   * [Promises and Promise States](\#promises%5Fand%5Fpromise%5Fstates)  
+			   * [Eventual Operations](\#eventual%5Foperations)  
+			   * [Fundamental Static Q Methods](\#fundamental%5Fstatic%5Fq%5Fmethods)  
+			   * [Promise methods](\#promise%5Fmethods)  
+			   * [Syntactic Sugar](\#syntactic%5Fsugar)  
+			   * [Non-fundamental Static Q Conveniences](\#non-fundamental%5Fstatic%5Fq%5Fconveniences)  
+			         * [Q.delay](\#q.delay)  
+			         * [Q.race](\#q.race)  
+			         * [Q.all](\#q.all)  
+			         * [Q.join](\#q.join)  
+			         * [Q.memoize](\#q.memoize)  
+			         * [Q.async](\#q.async)  
+			         * [Q.defer()](\#q.defer)
+			  * [Examples](\#examples)  
+			   * [Infinite Queue](\#infinite%5Fqueue)  
+			   * [Spawn](\#spawn)  
+			   * [Vat.evalLater() as Async-PGAS](\#vat.evallater%5Fas%5Fasync-pgas)  
+			   * [Open Vat](\#open%5Fvat)  
+			   * [there](\#there)  
+			   * [Map-Reduce Lite](\#map-reduce%5Flite)  
+			   * [AMD Loader Lite](\#amd%5Floader%5Flite)
+			  * [See](\#see)
+			  
+			  \#\# Communicating Event-Loop Concurrency and Distribution
+			  
+			  On both the browser and the server, JavaScript’s de-facto concurrency model is increasingly “shared nothing” communicating event loops. JavaScript event loops within the browser (both frames and workers) send asynchronous messages to other JavaScript event loops via postMessage. JavaScript event loops in the browser send and receive asynchronous messages with servers using asynch XHR, and shortly, Server-Sent Events and WebSockets. And server-side JavaScript has a rapidly growing role as the counterparty of these protocols, and increasingly uses event loops to service them. 
+			  
+			  This strawman consists of several major parts, not all of which need be accepted together.
+			  
+			  1. **Reality:** Codifying and formalizing JavaScript’s de-facto concurrency model as a de-jure model.
+			  2. **Promises:** A way to  
+			   * (**Q(p).post(), Q(p).get()**) Make asynchronous requests of objects that may not be synchronously reachable, such as remote objects.  
+			   * (**Q(p).then()**) Ease the burden of local event loop programming, by reifying the ability to register a callback as a first class value.  
+			   * (**[Q.async, yield](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:async%5Ffunctions "strawman:async_functions"):**) for implicit registration of shallow continuations on promises.
+			  3. **Syntactic sugar**  
+			   * **The infix “`!`” operator:** An eventual analog of “`.`“, for making eventual requests look more like immediate requests.
+			  4. (**Q.makeFar()** and **Q.makeRemote()**) A promise extension mechanism, so that promise handlers can turn local promise operations into remote messages.  
+			   * **Transport independence:** Using remote object messaging as a symmetric abstraction layer, hiding the annoying differences among the various transports listed above as well as server-to-server TCP and UDP transports.
+			  5. (**Vat()**) An event-loop spawning mechanism for spawning new event loops that run concurrently with the event loop which spawned it.  
+			   * **Worker independence:** Using `Vat`  
+			   API  
+			    as an abstraction layer around worker spawning on the browser or process spawning on the server.
+			  6. (**Vat.evalLater(), there()**) Using JavaScript itself as mobile code, so event loops can safely inject new behavior into other event loops  
+			   * **Symmetric Mobile Code:** Generalizes from the current use of JavaScript as mobile code sent only from server and only to browsers.
+			  
+			  \#\# Concurrency Model and Promises
+			  
+			  Aggregate objects into process-like units called _vats_. Objects in one vat can only send asynchronous messages to objects in other vats. _Promises_ represent such references to potentially remote objects. _Eventual message sends_ queue _eventual-deliveries_ in the work queue of the vat hosting the target object. A vat’s thread processes each eventual-delivery to completion before proceeding to the next. Each such processing step is a _turn_. A _then expression_ registers a callback to happen in a separate turn once a promise is resolved, providing the callback with the promise’s _resolution_. The eventual send and then expressions immediately return a promise for the eventual outcome of the operation they register.
+			  
+			  This model is free of conventional race condition or deadlock bugs. While a turn is in progress, it has mutually exclusive access to all state to which it has synchronous access, i.e., all state within its vat, avoiding conventional race condition bugs without any explicit locking. The model presented here provides no locks or blocking constructs of any kind, although it does not forbid a host environment from providing blocking constructs (like `alert`). Without blocking, conventional deadlock is impossible. Of course, less conventional forms of race condition and deadlock bugs [remain](https://web.archive.org/web/20160404122250/http://www.hpl.hp.com/techreports/2009/HPL-2009-78.html "http://www.hpl.hp.com/techreports/2009/HPL-2009-78.html").
+			  
+			  \#\# Vats
+			  
+			  Partition the JavaScript reference graph into separate units, corresponding to prior concepts variously called vats, workers, processes, tanks, or grains. We adopt the “_vat_” terminology here for expository purposes. Vats are only asynchronously coupled to each other, and represent the minimal possible unit of concurrency, transparent distribution, orthogonal persistence, migration, partial failure, resource control, preemptive termination/deallocation, and defense from denial of service. Each vat consists of 
+			  
+			  * a single sequential thread of control,
+			  * a single call-return stack,
+			  * a single fifo queue holding _eventual-deliveries_,
+			  * an internal object heap,
+			  * and incoming and outgoing _remote references_.
+			  
+			  A vat’s thread of control dequeues the next eventual-delivery from the queue and processes it to completion before proceeding to the next. When the queue is empty, the vat is idle. 
+			  
+			  const vat = Vat(); //makes a new vat, as an object local to the creating vat.
+			  // A Vat has an ''evalLater'' method that evaluates a Program in a turn of that vat.
+			  // The ''evalLater'' method returns a promise for the evaluation's completion value.
+			  const funP = vat.evalLater('' + function fun(x, y) { return x + y; }); // see below
+			  const sumP = funP ! (3, 5); // sumP will eventually resolve to 8, unless...
+			  const doneP = vat.terminateAsap(new Error('die')); // that vat is terminated before ''sumP'' is resolved.
+			  // If the vat is terminated first, then ''sumP'' resolves to a //rejected// problem, with
+			  // (Error: die) as its alleged reason for rejection.
+			  // Once the vat is terminated, ''doneP'' will eventually resolve to ''true''.
+			  
+			  The vat object that represents a new vat is local to the creating vat, so that a vat may be terminated without waiting for that vat’s eventual-delivery queue to drain. 
+			  
+			  The vat abstraction differs from the WebWorker abstraction, even though both are based on communicating event loops, since inter-vat messages are always directed at objects within a vat, not a vat as a whole. We intend that WebWorkers can be implemented in terms of vats and vice versa. However, when vats are built on WebWorkers, in the absence of some kind of weak reference and gc notification mechanism, it is probably impossible to arrange for the collection of distributed garbage. Even with them, [much more](https://web.archive.org/web/20160404122250/http://erights.org/history/original-e/dgc/index.html "http://erights.org/history/original-e/dgc/index.html") is needed to enable collection of distributed cyclic garbage. On the other hand, when vats are provided more primitively, multiple vats within an address space can be jointly within the purview of a single concurrent garbage collector, enabling full gc among these co-resident vats. However, truly distributed vats would still be faced with these same distributed garbage collection worries.
+			  
+			  The “` '' + function... `” trick above depends on [function\_to\_string](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=harmony:function%5Fto%5Fstring "harmony:function_to_string") to actually pass a string which is the program source for the function, while nevertheless having the function itself appear in the spawning program as code rather than as a literal string. This helps IDEs, refactoring tools, etc. A vat’s `evalLater` method evaluates that string as a program in a safe scope – a scope containing only the standard global variables such as `Object`, `Array`, etc. Except for these, the source passed in should be _closed_ – should not contain free references to any other variables. If the function is closed but for these standard globals, and these standard globals are not shadowed or replaced in the spawning context, then an IDE’s scope analysis of the code remains accurate.
+			  
+			  \#\# Promises and Promise States
+			  
+			  We introduce a new opaque type of object, the _Promise_ to represent potentially remote references. A normal JavaScript direct reference may only designate an object within the same vat. Only promises may designate objects in other vats. A promise may be in one of several states:
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/0x0,s3MtXvPSlVBOuVroCwRCi7mcdELJGNC1uEMf9KMjOjhE/https://web.archive.org/web/20160404122250im_/http://wiki.ecmascript.org/lib/exe/fetch.php?w=&h=&cache=cache&media=strawman:refstates3.png)](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/lib/exe/detail.php?id=strawman%3Aconcurrency&cache=cache&media=strawman:refstates3.png "strawman:refstates3.png") (TODO: Revise diagram to replace “unresolved” with “pending” and “broken” with “rejected”.) 
+			  
+			  * _pending_ – when it is not yet determined what object the promise designates,  
+			   * _pending-local_ – when the right to determine what the promise designates resides in the same vat,  
+			   * _pending-remote_ – when that right is either in flight between vats or resides in a remote vat,
+			  * _fulfilled_ – resolved to successfully designate some object,  
+			   * _near_ – resolved to a direct reference to a local object,  
+			   * _far_ – resolved to designate a remote object,
+			  * _rejected_ – will never designate an object, for an alleged reason represented by an associated error.
+			  
+			  A promise may transition from _pending_ to any state. Additionally a promise can transition from _far_ to _rejected_. A _resolved_ promise can designate any non-promise value including primitives, `null`, and `undefined`. Primitives, `null`, `undefined`, and some objects are pass-by-copy. All other objects are pass-by-reference. A promise resolved to designate a pass-by-copy value is always near, i.e., it always designates a local copy of the value.
+			  
+			  If a function `foo` immediately returns either `X` or a promise which it later fulfills with `X`, we say that `foo` **_reveals_** `X`. Unless stated otherwise, we implicitly elide the error conditions from such statements. For the more explicit statement, append: _“or it throws, or it does not terminate, or it rejects the returned promise, or it never resolves the returned promise.”_ Put another way, such a function returns a **_reference_** to `X`, where by _reference_ we mean either `X` or a promise for `X`.
+			  
+			  \#\# Eventual Operations
+			  
+			  The existing JavaScript infix `.` (dot or _now_) operator enables synchronous interaction with the local object designated by a direct reference. We introduce a corresponding infix `!` (bang or _eventually_) operator for corresponding asynchronous interaction with objects eventually designated by either direct references or promises.
+			  
+			  Abstract Syntax: 
+			  
+			  Expression : ...
+			      Expression ! [ Expression ] Arguments    // eventual send
+			      Expression ! Arguments                   // eventual call
+			      Expression ! [ Expression ]              // eventual get
+			      Expression ! [ Expression ] = Expression // eventual put
+			      delete Expression ! [ Expression ]       // eventual delete
+			  
+			  The `...` means “and all the normal right hand sides of this production. By “abstract” here I mean the distinction that must be preserved by parsing, i.e., in an [ast](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:ast "strawman:ast"), but without explaining the precedence and associativity which explains how this is unambiguously parsed. In all cases, the eventual form of an expression queues a eventual-delivery recording the need to perform the corresponding immediate form in the vat hosting the (eventually) designated object. The eventual form immediately evaluates to a promise for the result of eventually performing this eventual-delivery.
+			  
+			  function add(x, y) { return x + y; }
+			  const sumP = add ! (3, 5); //sumP resolves in a later turn to 8.
+			  
+			  Attempted Concrete Syntax: 
+			  
+			  MemberExpression : ...
+			      MemberExpression [nlth] ! [ Expression ]
+			      MemberExpression [nlth] ! IdentifierName
+			  CallExpression : ...
+			      CallExpression [nlth] ! [ Expression ] Arguments
+			      CallExpression [nlth] ! IdentifierName Arguments
+			      MemberExpression [nlth] ! Arguments
+			      CallExpression [nlth] ! Arguments
+			      CallExpression [nlth] ! [ Expression ]
+			      CallExpression [nlth] ! IdentifierName
+			  UnaryExpression : ...
+			      delete CallExpression [nlth] ! [ Expression ]
+			      delete CallExpression [nlth] ! IdentifierName
+			  LeftHandSideExpression :
+			      Identifier
+			      CallExpression [ Expression ]
+			      CallExpression . IdentifierName
+			      CallExpression [nlth] ! [ Expression ]
+			      CallExpression [nlth] ! IdentifierName
+			  
+			  “`[nlth]`” above is short for “`[No LineTerminator here]`“, in order to unambiguously distinguish infix from prefix bang in the face of automatic semicolon insertion. 
+			  
+			  \#\# Fundamental Static Q Methods
+			  
+			  | Q(target) \-> targetP                         | Lifts the target argument into a promise designating the same object. If target is already a promise, then that promise is returned. (A promise for promise for T simplifies into a promise for T. Category theorists will be more pleased than Type theorists ;).)                                |
+			  | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+			  | Q.reject(reason) \-> rejectedP                | Makes and returns a fresh _rejected_ promise recording (a sanitized form of) reason as the alleged reason for rejection. reason should generally be an immutable pass-by-copy Error object.                                                                                                        |
+			  | Q.promise(f(resolve,reject)\->()) \-> promise | Makes a fresh promise, where the promise is initially _pending-local_, and the argument function f is called with resolve and reject functions for resolving this promise.                                                                                                                         |
+			  | Q.isPromise(target) \-> boolean               | Is target a promise? If not, then using target as a target in the various promise operations is still equivalent to using Q(target), i.e., the promise operations will automatically lift all values to promises.                                                                                  |
+			  | Q.makeFar(handler, nextSlotP) \-> promise     | Makes a resolved _far_ reference, which can only [further resolve](https://web.archive.org/web/20160404122250/http://wiki.erights.org/wiki/Proxy\#makeProxy "http://wiki.erights.org/wiki/Proxy\#makeProxy") to _rejected_.                                                                          |
+			  | Q.makeRemote(handler, nextSlotP) \-> promise  | Makes an _pending-remote_ promise, which can [further resolve](https://web.archive.org/web/20160404122250/http://wiki.erights.org/wiki/Proxy\#makeProxy "http://wiki.erights.org/wiki/Proxy\#makeProxy") to anything.                                                                                |
+			  | Q.ahorten(target1) \-> target2                | Returns the currently most resolved form of target1\. If target1 is a _fulfilled_ promise, return its resolution. If target1 is a promise that is following promise target2, then return target2. If target1 is a terminal _pending_ or _rejected_ promise, or a non-promise, then return target1. |
+			  
+			  Additional non-fundamental static Q convenience methods appear below.
+			  
+			  \#\# Promise methods
+			  
+			  Assuming `p` is a promise 
+			  
+			  | p.get(name) \-> valueP                    | Returns a promise for the result of eventually getting the value of the name property of target.                                                                                                                                               |
+			  | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+			  | p.post(opt\_name, args) \-> resultP       | Eventually invoke the named method of target with these args. Returns a promise for what the result will be.                                                                                                                                   |
+			  | p.send(opt\_name, ...args) \-> resultP    | p.send(m, a, b) is equivalent to p.post(m, \[a,b\])                                                                                                                                                                                            |
+			  | p.fcall(...args) \-> resultP              | p.fcall(a, b) is equivalent to p.post(void 0, \[a,b\])                                                                                                                                                                                         |
+			  | p.put(name, value) \-> voidP              | Eventually set the value of the name property of target to value. Return a promise-for-undefined, used for indicating completion.                                                                                                              |
+			  | p.delete(name) \-> trueP                  | Eventually delete the name property of target. Returns a promise for the boolean result.                                                                                                                                                       |
+			  | p.then(success, opt\_failure) \-> resultP | Registers functions success and opt\_failure to be called back in a later turn once target is _resolved_. If _fulfilled_, call success(resolution). Else if _rejected_, call opt\_failure(reason). Return a promise for the callback’s result. |
+			  | p.end()                                   | If p resolves to _rejected_, log the reason to wherever uncaught exceptions go on this platform, e.g., onerror(reason).                                                                                                                        |
+			  
+			  
+			  \#\# Syntactic Sugar
+			  
+			  | Abstract Syntax  | Expansion          | Simple Case  | Expansion            | JSON/RESTful equiv        |
+			  | ---------------- | ------------------ | ------------ | -------------------- | ------------------------- |
+			  | x ! \[i\](y, z)  | Q(x).send(i, y, z) | x ! p(y, z)  | Q(x).send(’p’, y, z) | POST https://...q=p {...} |
+			  | x ! (y, z)       | Q(x).fcall(y, z)   | \-           | \-                   | POST https://... {...}    |
+			  | x ! \[i\]        | Q(x).get(i)        | x ! p        | Q(x).get(’p’)        | GET https://...q=p        |
+			  | x ! \[i\] = v    | Q(x).put(i, v)     | x ! p = v    | Q(x).put(’p’, v)     | PUT https://...q=p {...}  |
+			  | delete x ! \[i\] | Q(x).delete(i)     | delete x ! p | Q(x).delete(’p’)     | DELETE https://...q=p     |
+			  
+			  
+			  \#\# Non-fundamental Static Q Conveniences
+			  
+			  \#\#\# Q.delay
+			  
+			  Reveal the `answer` sometime after `millis` milliseconds have elapsed.
+			  
+			  Q.delay = function(millis, answer = undefined) {
+			    return Q.promise(resolve => {
+			      setTimeout(() => resolve(answer), millis);
+			    });
+			  };
+			  
+			  \#\#\# Q.race
+			  
+			  Given a list of promises, returns a promise for the resolution of whichever promise we notice has completed first.
+			  
+			  Q.race = function(answerPs) {
+			    return Q.promise((resolve,reject) => {
+			      for (answerP of answerPs) {
+			        Q(answerP).then(resolve,reject);
+			      };
+			    });
+			  };
+			  
+			  We can compose `Q.race`, `Q.delay`, and `Q.reject` to timeout eventual requests.
+			  
+			  var answer = Q.race([bob ! foo(carol), 
+			                       Q.delay(5000, Q.reject(new Error("timeout")))]);
+			  
+			  \#\#\# Q.all
+			  
+			  Often it’s useful to collect several promised answers, in order to react either when _all_ the answers are ready or when _any_ of the promises becomes _rejected_.
+			  
+			  Q.all = function(answerPs) {
+			    let countDown = answerPs.length;
+			    const answers = [];
+			    if (countDown === 0) { return Q(answers); }
+			    return Q.promise((resolve,reject) => {
+			      answerPs.forEach((answerP, index) => {
+			        Q(answerP).then(answer => {
+			          answers[index] = answer;
+			          if (--countDown === 0) { resolve(answers); }
+			        }, reject);
+			      });
+			    });
+			  };
+			  
+			  We can compose `Q.all`, `then`, and [destructuring](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=harmony:destructuring "harmony:destructuring") to delay until several operands are revealed
+			  
+			  var sumP = Q.all([xP, yP]).then(([x, y]) => (x + y);
+			  
+			  \#\#\# Q.join
+			  
+			  Join is our eventual equality operation. Any messages sent on the join of `xP` and `yP` are only delivered if `xP` and `yP` both reveal the same target, in which case these messages are eventually delivered to that target and this joined promise itself eventually becomes fulfilled to designate that target. Otherwise, all these messages are discarded with the usual rejected promise contagion.
+			  
+			  Q.join = function(xP, yP) {
+			    return Q.all([xP, yP]).then(([x, y]) => {
+			      if (Object.is(x, y)) {
+			        return x;
+			      } else {
+			        throw new Error("not the same");
+			      }
+			    });
+			  };
+			  
+			  \#\#\# Q.memoize
+			  
+			  `Q.memoize` of a one argument function returns a new similar one argument function, except that it (eventually) calls the original function no more than once for each such argument. The memo function immediately returns a promise for what the original function will eventually return. Equivalence of arguments is determined by the optional memoMap passed in, which defaults to a new WeakMap() if absent. (Passing a memoMap in also allows the caller to seed the mapping with some prior associations.)
+			  
+			  The difference from a traditional synchronous memoizer is that the original function is called _eventually_ after a promise for its result is _already_ memoized, enabling cycles to work. For example, if memoF === memoize(f) and f(x) calls memoF(x), then an outer call to memoF(x) schedules an eventual call to f(x) which makes an inner call to memoF(x). Both outer and inner calls to memoF(x) returns a promise for what f(x) will eventually return.
+			  
+			   Q.memoize = function(oneArgFuncP, memoMap = WeakMap()) {
+			  
+			     return function oneArgMemo(arg) {
+			       if (memoMap.has(arg)) {
+			         return memoMap.get(arg);
+			       } else {
+			         const resultP = oneArgFuncP ! (arg);
+			         memoMap.set(arg, resultP);
+			         return resultP;
+			       }
+			     }
+			   };
+			  
+			  \#\#\# Q.async
+			  
+			  \#\#\# Q.defer()
+			  
+			  (Will likely be deprecated)
+			  
+			  Q.defer = function() {
+			    const deferred = {};
+			    deferred.promise = Q.promise((resolve,reject) => {
+			      deferred.resolve = resolve;
+			      deferred.reject = reject;
+			    });
+			    return deferred;
+			  };
+			  
+			  \#\# Examples
+			  
+			  \#\# Infinite Queue
+			  
+			  function makeQueue() {
+			    let rear;
+			    let front = Q.promise(r => { rear = r; });
+			    return Object.freeze({
+			      enqueue: function(elem) {
+			        let nextRear;
+			        const nextTail = Q.promise(r => { nextRear = r; });
+			        rear({head: elem, tail: nextTail});
+			        rear = nextRear;
+			      },
+			      dequeue: function() {
+			        const result = front ! head;
+			        front = front ! tail;
+			        return result;
+			      }
+			    });
+			  }
+			  
+			  Calling `queue.dequeue()` will return a promise for the next element that has or will be enqueued.
+			  
+			  \#\# Spawn
+			  
+			  The following `spawn` function is a simple abstraction built on `Vat` and `then` that captures a simple common case:
+			  
+			  function spawn(src) {
+			    const vat = Vat();
+			    const resultP = vat.evalLater(src);
+			    Q(resultP).then(function(_) {
+			      vat.terminateAsap(new Error('done')); 
+			    });
+			    return resultP;
+			  }
+			  
+			  const sumP = spawn('3+5'}); // sumP eventually resolves to 8.
+			  
+			  The argument string to `spawn` is evaluated in a new Vat spawned for that purpose. Spawn returns a promise for what that string will evaluate to. Once that promise resolves, the spawned vat is shut down.
+			  
+			  \#\# Vat.evalLater() as Async-PGAS
+			  
+			  In the Async-PGAS language X10, the “at” statement is defined as
+			  
+			  // x10 grammar, not javascript or proposed javascript
+			  Statement :
+			    at ( PlaceExpression ) Statement
+			  
+			  The “at” statement first evaluates the PlaceExpression to a place, which is analogous to a vat. It then evaluates the Statement at that place. The statement evaluates with the lexical scope containing the “at” statement, so the locality of the values bound to these identifiers is the locality they have at that place rather than at the location containing the “at” statement. Although the argument to `Vat.evalLater` must be a closed expression (modulo whitelisted globals), we can get the same effect, a bit more verbosely, by passing in these bindings as an explicit eventual call to a closed function.
+			  
+			  For example, the X10-ish program
+			  
+			  const x = 6;
+			  let ultimateP;
+			  at (place) { ultimateP = x*7; }
+			  
+			  can be expressed using `aVat.evalLater()` as
+			  
+			  const x = 6;
+			  let ultimateP = place.evalLater(x => x*7) ! (x);
+			  
+			  \#\# Open Vat
+			  
+			  The `makeOpenVat` function makes an `OpenVat` function. Each `OpenVat` function is like the `Vat` function, in that both make an return a new vat instance. Each `OpenVat` function additionally maintains a side table mapping from all incoming remote promises to the evaluation function of the open vat made by this `OpenVat` function. The reason we call such vats _open_ is that, given a remote promise into such a vat and the `OpenVat` function that made that vat, one can thereby inject new code into that vat.
+			  
+			  TODO: explain the membrane variation used below.
+			  
+			  function makeOpenVat() {
+			    const wm = WeakMap();
+			  
+			    function OpenVat() {
+			      const vat = Vat();
+			      const openVat = Object.freeze({
+			        evalLater: makeMembraneX(
+			          vat.evalLater,
+			          { registerRemote: function(remote) {
+			              wm.set(remote, openVat.evalLater); }}),
+			        terminateAsap: vat.terminateAsap
+			      });
+			      return openVat;
+			    }
+			    OpenVat.evalAt = function(p, src) {
+			      return wm.get(p)(src);
+			    };
+			    return OpenVat;
+			  }
+			  
+			  \#\# there
+			  
+			  The `there(p, ...)` function is analogous to `Q(p).then(...)`, except instead of merely relocating the execution of the callback in time till after `p` is resolved, it further relocates it in spacetime, to where and when p is near. Like `Q(p).then(...)`, `there` immediately returns a promise for the eventual outcome. We do not likewise relocate the errback, so that we can still notify it and it can still react on the requesting side to a partition between the requestor and `p`‘s host.
+			  
+			  function there(p, callback, opt_errback) {
+			    var callbackP = OpenVat.evalAt(p, '' + callback);
+			    return (callbackP ! (p)).then(
+			      v => v,
+			      opt_errback);
+			  }
+			  
+			  \#\# Map-Reduce Lite
+			  
+			  Given an initial result value, a list of potentially remote promises to elements, a closed mobile `mapper` function from elements to mapped result values, and an associative / commutative `reducer` function from pairs of references to result values to a new reference to a result value, `mapReduce` immediately returns a promise for the result of mapping all the elements where they live, and reducing all of these results together with the initial result value to a result.
+			  
+			  I call this “Map-Reduce Lite” because, unlike a production map-reduce infrastructure, the following `mapReduce` does all reductions on the spawning machine, which is therefore a scaling bottleneck, and has none of the fault-tolerance. Here, any failure causes the overall map-reduce to fail, i.e., the returned promise becomes a _rejected_ promise. The mapper and reduction functions are like the conventional functional programming variety, rather than the map-reduce variety which arranged for group-by keys.
+			  
+			  /**
+			   * Type/Guard syntax below is only a placeholder, not a serious proposal.
+			   * @param initValue ::T2
+			   * @param elemPs    ::Array[Ref[T1]]  // i.e., Array[T1 | Promise[T1]]
+			   * @param mapper    ::(T1 -> T2)      // closed mobile function
+			   * @param reducer   ::(T2 x T2 -> T2)
+			   * @reveals         ::T2              // i.e., @returns ::Ref[T2]
+			   */
+			  function mapReduce(initValue, elemPs, mapper, reducer) {
+			    let countDown = elemPs.length;
+			    if (countDown === 0) { return initValue; }
+			    let result = initValue;
+			  
+			    return Q.promise((resolve, reject) => {
+			      elemPs.forEach(elemP => {
+			        const mappedP = there(elemP, mapper);
+			        Q(mappedP).then(mapped => {
+			          result = reducer(result, mapped);
+			          if (--countDown === 0) { resolve(result); }
+			        }, reject);
+			      });
+			    });
+			  }
+			  
+			  \#\# AMD Loader Lite
+			  
+			  This is a minimal Asynchronous Module Definition (AMD) Loader for a subset of the [AMD API](https://web.archive.org/web/20160404122250/https://github.com/amdjs/amdjs-api/wiki/AMD "https://github.com/amdjs/amdjs-api/wiki/AMD") specification. In this subset, `define` is called with exactly two arguments, a `dependencies` list of module names, and a factory function with one parameter per dependency.
+			  
+			   function makeSimpleAMDLoader(fetch, moduleMap = Map()) {
+			     var loader;
+			  
+			     function rawLoad(id) {
+			       return Q(fetch(id)).then(src => {
+			         var result = Q.reject(new Error('"define" not called by: ' + id));
+			         function define(deps, factory) {
+			           result = Q.all(deps.map(loader)).then(imports => {
+			             return factory(...imports);
+			           });
+			         }
+			         define.amd = {lite: true};
+			  
+			         Function('define', src)(define);
+			         return result;
+			       });
+			     }
+			     return loader = Q.memoize(rawLoad, moduleMap);
+			   }
+			  
+			  If module “W” depends on modules “X”, “Y”, and “Z”, then only once the promises for the “X”, “Y”, and “Z” modules have all been fulfilled will the “W” factory function be called with these module instances. The result of calling this factory function will then become the “W” module instance.
+			  
+			  What it means to _be_ the source for the “W” module is that `fetch(”W”)` will eventually return that source string. For example, a given `fetch` function might fetch it from `https://example.com/prefix/W.js`.
+			  
+			  // At https://example.com/prefix/W.js
+			  define(['X', 'Y', 'Z'], function(X, Y, Z) {
+			    return X(Y, Z);
+			  })
+			  
+			  Since the memo mapping we need is from module names, which are strings rather than objects, we need to provide an explicit memoMap argument to `Q.memoize`, which should be a map that accepts strings as keys.
+			  
+			  Although the cycle tolerance of `Q.memoize` is generally useful, here it hurts. Because `define` won’t call the factory function until all (`Q.all`) of the dependencies are fulfilled, any cyclic AMD dependencies cause an undetected deadlock. Still, in the naive absence of this cycle tolerance, such cyclic dependencies would have instead caused an infinite regress which is even worse. Better would be cycle detection and rejection, which we leave as an exercise for the reader. 
+			  
+			  \#\# See
+	- [strawman:concurrency [ES Wiki]](https://omnivore.app/me/strawman-concurrency-es-wiki-18d971e3b8d)
+	  collapsed:: true
+	  site:: [web.archive.org](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman%253Aconcurrency)
+	  date-saved:: [[02/11/2024]]
+	  date-published:: [[06/16/2013]]
+		- ### Content
+		  collapsed:: true
+			- The Wayback Machine - https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:concurrency
+			  
+			  * [Communicating Event-Loop Concurrency and Distribution](\#communicating%5Fevent-loop%5Fconcurrency%5Fand%5Fdistribution)  
+			   * [Concurrency Model and Promises](\#concurrency%5Fmodel%5Fand%5Fpromises)  
+			   * [Vats](\#vats)  
+			   * [Promises and Promise States](\#promises%5Fand%5Fpromise%5Fstates)  
+			   * [Eventual Operations](\#eventual%5Foperations)  
+			   * [Fundamental Static Q Methods](\#fundamental%5Fstatic%5Fq%5Fmethods)  
+			   * [Promise methods](\#promise%5Fmethods)  
+			   * [Syntactic Sugar](\#syntactic%5Fsugar)  
+			   * [Non-fundamental Static Q Conveniences](\#non-fundamental%5Fstatic%5Fq%5Fconveniences)  
+			         * [Q.delay](\#q.delay)  
+			         * [Q.race](\#q.race)  
+			         * [Q.all](\#q.all)  
+			         * [Q.join](\#q.join)  
+			         * [Q.memoize](\#q.memoize)  
+			         * [Q.async](\#q.async)  
+			         * [Q.defer()](\#q.defer)
+			  * [Examples](\#examples)  
+			   * [Infinite Queue](\#infinite%5Fqueue)  
+			   * [Spawn](\#spawn)  
+			   * [Vat.evalLater() as Async-PGAS](\#vat.evallater%5Fas%5Fasync-pgas)  
+			   * [Open Vat](\#open%5Fvat)  
+			   * [there](\#there)  
+			   * [Map-Reduce Lite](\#map-reduce%5Flite)  
+			   * [AMD Loader Lite](\#amd%5Floader%5Flite)
+			  * [See](\#see)
+			  
+			  \#\# Communicating Event-Loop Concurrency and Distribution
+			  
+			  On both the browser and the server, JavaScript’s de-facto concurrency model is increasingly “shared nothing” communicating event loops. JavaScript event loops within the browser (both frames and workers) send asynchronous messages to other JavaScript event loops via postMessage. JavaScript event loops in the browser send and receive asynchronous messages with servers using asynch XHR, and shortly, Server-Sent Events and WebSockets. And server-side JavaScript has a rapidly growing role as the counterparty of these protocols, and increasingly uses event loops to service them. 
+			  
+			  This strawman consists of several major parts, not all of which need be accepted together.
+			  
+			  1. **Reality:** Codifying and formalizing JavaScript’s de-facto concurrency model as a de-jure model.
+			  2. **Promises:** A way to  
+			   * (**Q(p).post(), Q(p).get()**) Make asynchronous requests of objects that may not be synchronously reachable, such as remote objects.  
+			   * (**Q(p).then()**) Ease the burden of local event loop programming, by reifying the ability to register a callback as a first class value.  
+			   * (**[Q.async, yield](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:async%5Ffunctions "strawman:async_functions"):**) for implicit registration of shallow continuations on promises.
+			  3. **Syntactic sugar**  
+			   * **The infix “`!`” operator:** An eventual analog of “`.`“, for making eventual requests look more like immediate requests.
+			  4. (**Q.makeFar()** and **Q.makeRemote()**) A promise extension mechanism, so that promise handlers can turn local promise operations into remote messages.  
+			   * **Transport independence:** Using remote object messaging as a symmetric abstraction layer, hiding the annoying differences among the various transports listed above as well as server-to-server TCP and UDP transports.
+			  5. (**Vat()**) An event-loop spawning mechanism for spawning new event loops that run concurrently with the event loop which spawned it.  
+			   * **Worker independence:** Using `Vat`  
+			   API  
+			    as an abstraction layer around worker spawning on the browser or process spawning on the server.
+			  6. (**Vat.evalLater(), there()**) Using JavaScript itself as mobile code, so event loops can safely inject new behavior into other event loops  
+			   * **Symmetric Mobile Code:** Generalizes from the current use of JavaScript as mobile code sent only from server and only to browsers.
+			  
+			  \#\# Concurrency Model and Promises
+			  
+			  Aggregate objects into process-like units called _vats_. ==Objects in one vat can only send asynchronous messages to objects in other vats.== _==Promises==_ ==represent such references to potentially remote objects.== _==Eventual message sends==_ ==queue== _==eventual-deliveries==_ ==in the work queue of the vat hosting the target object.== A vat’s thread processes each eventual-delivery to completion before proceeding to the next. Each such processing step is a _turn_. A _then expression_ registers a callback to happen in a separate turn once a promise is resolved, providing the callback with the promise’s _resolution_. The eventual send and then expressions immediately return a promise for the eventual outcome of the operation they register.
+			  
+			  This model is free of conventional race condition or deadlock bugs. While a turn is in progress, it has mutually exclusive access to all state to which it has synchronous access, i.e., all state within its vat, avoiding conventional race condition bugs without any explicit locking. The model presented here provides no locks or blocking constructs of any kind, although it does not forbid a host environment from providing blocking constructs (like `alert`). Without blocking, conventional deadlock is impossible. Of course, less conventional forms of race condition and deadlock bugs [remain](https://web.archive.org/web/20160404122250/http://www.hpl.hp.com/techreports/2009/HPL-2009-78.html "http://www.hpl.hp.com/techreports/2009/HPL-2009-78.html").
+			  
+			  \#\# Vats
+			  
+			  Partition the JavaScript reference graph into separate units, corresponding to prior concepts variously called vats, workers, processes, tanks, or grains. We adopt the “_vat_” terminology here for expository purposes. Vats are only asynchronously coupled to each other, and represent the minimal possible unit of concurrency, transparent distribution, orthogonal persistence, migration, partial failure, resource control, preemptive termination/deallocation, and defense from denial of service. Each vat consists of 
+			  
+			  * a single sequential thread of control,
+			  * a single call-return stack,
+			  * a single fifo queue holding _eventual-deliveries_,
+			  * an internal object heap,
+			  * and incoming and outgoing _remote references_.
+			  
+			  A vat’s thread of control dequeues the next eventual-delivery from the queue and processes it to completion before proceeding to the next. When the queue is empty, the vat is idle. 
+			  
+			  const vat = Vat(); //makes a new vat, as an object local to the creating vat.
+			  // A Vat has an ''evalLater'' method that evaluates a Program in a turn of that vat.
+			  // The ''evalLater'' method returns a promise for the evaluation's completion value.
+			  const funP = vat.evalLater('' + function fun(x, y) { return x + y; }); // see below
+			  const sumP = funP ! (3, 5); // sumP will eventually resolve to 8, unless...
+			  const doneP = vat.terminateAsap(new Error('die')); // that vat is terminated before ''sumP'' is resolved.
+			  // If the vat is terminated first, then ''sumP'' resolves to a //rejected// problem, with
+			  // (Error: die) as its alleged reason for rejection.
+			  // Once the vat is terminated, ''doneP'' will eventually resolve to ''true''.
+			  
+			  The vat object that represents a new vat is local to the creating vat, so that a vat may be terminated without waiting for that vat’s eventual-delivery queue to drain. 
+			  
+			  The vat abstraction differs from the WebWorker abstraction, even though both are based on communicating event loops, since inter-vat messages are always directed at objects within a vat, not a vat as a whole. We intend that WebWorkers can be implemented in terms of vats and vice versa. However, when vats are built on WebWorkers, in the absence of some kind of weak reference and gc notification mechanism, it is probably impossible to arrange for the collection of distributed garbage. Even with them, [much more](https://web.archive.org/web/20160404122250/http://erights.org/history/original-e/dgc/index.html "http://erights.org/history/original-e/dgc/index.html") is needed to enable collection of distributed cyclic garbage. On the other hand, when vats are provided more primitively, multiple vats within an address space can be jointly within the purview of a single concurrent garbage collector, enabling full gc among these co-resident vats. However, truly distributed vats would still be faced with these same distributed garbage collection worries.
+			  
+			  The “` '' + function... `” trick above depends on [function\_to\_string](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=harmony:function%5Fto%5Fstring "harmony:function_to_string") to actually pass a string which is the program source for the function, while nevertheless having the function itself appear in the spawning program as code rather than as a literal string. This helps IDEs, refactoring tools, etc. A vat’s `evalLater` method evaluates that string as a program in a safe scope – a scope containing only the standard global variables such as `Object`, `Array`, etc. Except for these, the source passed in should be _closed_ – should not contain free references to any other variables. If the function is closed but for these standard globals, and these standard globals are not shadowed or replaced in the spawning context, then an IDE’s scope analysis of the code remains accurate.
+			  
+			  \#\# Promises and Promise States
+			  
+			  We introduce a new opaque type of object, the _Promise_ to represent potentially remote references. A normal JavaScript direct reference may only designate an object within the same vat. Only promises may designate objects in other vats. A promise may be in one of several states:
+			  
+			  [![](https://proxy-prod.omnivore-image-cache.app/0x0,s3MtXvPSlVBOuVroCwRCi7mcdELJGNC1uEMf9KMjOjhE/https://web.archive.org/web/20160404122250im_/http://wiki.ecmascript.org/lib/exe/fetch.php?w=&h=&cache=cache&media=strawman:refstates3.png)](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/lib/exe/detail.php?id=strawman%3Aconcurrency&cache=cache&media=strawman:refstates3.png "strawman:refstates3.png") (TODO: Revise diagram to replace “unresolved” with “pending” and “broken” with “rejected”.) 
+			  
+			  * _pending_ – when it is not yet determined what object the promise designates,  
+			   * _pending-local_ – when the right to determine what the promise designates resides in the same vat,  
+			   * _pending-remote_ – when that right is either in flight between vats or resides in a remote vat,
+			  * _fulfilled_ – resolved to successfully designate some object,  
+			   * _near_ – resolved to a direct reference to a local object,  
+			   * _far_ – resolved to designate a remote object,
+			  * _rejected_ – will never designate an object, for an alleged reason represented by an associated error.
+			  
+			  A promise may transition from _pending_ to any state. Additionally a promise can transition from _far_ to _rejected_. A _resolved_ promise can designate any non-promise value including primitives, `null`, and `undefined`. Primitives, `null`, `undefined`, and some objects are pass-by-copy. All other objects are pass-by-reference. A promise resolved to designate a pass-by-copy value is always near, i.e., it always designates a local copy of the value.
+			  
+			  If a function `foo` immediately returns either `X` or a promise which it later fulfills with `X`, we say that `foo` **_reveals_** `X`. Unless stated otherwise, we implicitly elide the error conditions from such statements. For the more explicit statement, append: _“or it throws, or it does not terminate, or it rejects the returned promise, or it never resolves the returned promise.”_ Put another way, such a function returns a **_reference_** to `X`, where by _reference_ we mean either `X` or a promise for `X`.
+			  
+			  \#\# Eventual Operations
+			  
+			  The existing JavaScript infix `.` (dot or _now_) operator enables synchronous interaction with the local object designated by a direct reference. We introduce a corresponding infix `!` (bang or _eventually_) operator for corresponding asynchronous interaction with objects eventually designated by either direct references or promises.
+			  
+			  Abstract Syntax: 
+			  
+			  Expression : ...
+			      Expression ! [ Expression ] Arguments    // eventual send
+			      Expression ! Arguments                   // eventual call
+			      Expression ! [ Expression ]              // eventual get
+			      Expression ! [ Expression ] = Expression // eventual put
+			      delete Expression ! [ Expression ]       // eventual delete
+			  
+			  The `...` means “and all the normal right hand sides of this production. By “abstract” here I mean the distinction that must be preserved by parsing, i.e., in an [ast](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman:ast "strawman:ast"), but without explaining the precedence and associativity which explains how this is unambiguously parsed. In all cases, the eventual form of an expression queues a eventual-delivery recording the need to perform the corresponding immediate form in the vat hosting the (eventually) designated object. The eventual form immediately evaluates to a promise for the result of eventually performing this eventual-delivery.
+			  
+			  function add(x, y) { return x + y; }
+			  const sumP = add ! (3, 5); //sumP resolves in a later turn to 8.
+			  
+			  Attempted Concrete Syntax: 
+			  
+			  MemberExpression : ...
+			      MemberExpression [nlth] ! [ Expression ]
+			      MemberExpression [nlth] ! IdentifierName
+			  CallExpression : ...
+			      CallExpression [nlth] ! [ Expression ] Arguments
+			      CallExpression [nlth] ! IdentifierName Arguments
+			      MemberExpression [nlth] ! Arguments
+			      CallExpression [nlth] ! Arguments
+			      CallExpression [nlth] ! [ Expression ]
+			      CallExpression [nlth] ! IdentifierName
+			  UnaryExpression : ...
+			      delete CallExpression [nlth] ! [ Expression ]
+			      delete CallExpression [nlth] ! IdentifierName
+			  LeftHandSideExpression :
+			      Identifier
+			      CallExpression [ Expression ]
+			      CallExpression . IdentifierName
+			      CallExpression [nlth] ! [ Expression ]
+			      CallExpression [nlth] ! IdentifierName
+			  
+			  “`[nlth]`” above is short for “`[No LineTerminator here]`“, in order to unambiguously distinguish infix from prefix bang in the face of automatic semicolon insertion. 
+			  
+			  \#\# Fundamental Static Q Methods
+			  
+			  | Q(target) \-> targetP                         | Lifts the target argument into a promise designating the same object. If target is already a promise, then that promise is returned. (A promise for promise for T simplifies into a promise for T. Category theorists will be more pleased than Type theorists ;).)                                |
+			  | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+			  | Q.reject(reason) \-> rejectedP                | Makes and returns a fresh _rejected_ promise recording (a sanitized form of) reason as the alleged reason for rejection. reason should generally be an immutable pass-by-copy Error object.                                                                                                        |
+			  | Q.promise(f(resolve,reject)\->()) \-> promise | Makes a fresh promise, where the promise is initially _pending-local_, and the argument function f is called with resolve and reject functions for resolving this promise.                                                                                                                         |
+			  | Q.isPromise(target) \-> boolean               | Is target a promise? If not, then using target as a target in the various promise operations is still equivalent to using Q(target), i.e., the promise operations will automatically lift all values to promises.                                                                                  |
+			  | Q.makeFar(handler, nextSlotP) \-> promise     | Makes a resolved _far_ reference, which can only [further resolve](https://web.archive.org/web/20160404122250/http://wiki.erights.org/wiki/Proxy\#makeProxy "http://wiki.erights.org/wiki/Proxy\#makeProxy") to _rejected_.                                                                          |
+			  | Q.makeRemote(handler, nextSlotP) \-> promise  | Makes an _pending-remote_ promise, which can [further resolve](https://web.archive.org/web/20160404122250/http://wiki.erights.org/wiki/Proxy\#makeProxy "http://wiki.erights.org/wiki/Proxy\#makeProxy") to anything.                                                                                |
+			  | Q.ahorten(target1) \-> target2                | Returns the currently most resolved form of target1\. If target1 is a _fulfilled_ promise, return its resolution. If target1 is a promise that is following promise target2, then return target2. If target1 is a terminal _pending_ or _rejected_ promise, or a non-promise, then return target1. |
+			  
+			  Additional non-fundamental static Q convenience methods appear below.
+			  
+			  \#\# Promise methods
+			  
+			  Assuming `p` is a promise 
+			  
+			  | p.get(name) \-> valueP                    | Returns a promise for the result of eventually getting the value of the name property of target.                                                                                                                                               |
+			  | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+			  | p.post(opt\_name, args) \-> resultP       | Eventually invoke the named method of target with these args. Returns a promise for what the result will be.                                                                                                                                   |
+			  | p.send(opt\_name, ...args) \-> resultP    | p.send(m, a, b) is equivalent to p.post(m, \[a,b\])                                                                                                                                                                                            |
+			  | p.fcall(...args) \-> resultP              | p.fcall(a, b) is equivalent to p.post(void 0, \[a,b\])                                                                                                                                                                                         |
+			  | p.put(name, value) \-> voidP              | Eventually set the value of the name property of target to value. Return a promise-for-undefined, used for indicating completion.                                                                                                              |
+			  | p.delete(name) \-> trueP                  | Eventually delete the name property of target. Returns a promise for the boolean result.                                                                                                                                                       |
+			  | p.then(success, opt\_failure) \-> resultP | Registers functions success and opt\_failure to be called back in a later turn once target is _resolved_. If _fulfilled_, call success(resolution). Else if _rejected_, call opt\_failure(reason). Return a promise for the callback’s result. |
+			  | p.end()                                   | If p resolves to _rejected_, log the reason to wherever uncaught exceptions go on this platform, e.g., onerror(reason).                                                                                                                        |
+			  
+			  
+			  \#\# Syntactic Sugar
+			  
+			  | Abstract Syntax  | Expansion          | Simple Case  | Expansion            | JSON/RESTful equiv        |
+			  | ---------------- | ------------------ | ------------ | -------------------- | ------------------------- |
+			  | x ! \[i\](y, z)  | Q(x).send(i, y, z) | x ! p(y, z)  | Q(x).send(’p’, y, z) | POST https://...q=p {...} |
+			  | x ! (y, z)       | Q(x).fcall(y, z)   | \-           | \-                   | POST https://... {...}    |
+			  | x ! \[i\]        | Q(x).get(i)        | x ! p        | Q(x).get(’p’)        | GET https://...q=p        |
+			  | x ! \[i\] = v    | Q(x).put(i, v)     | x ! p = v    | Q(x).put(’p’, v)     | PUT https://...q=p {...}  |
+			  | delete x ! \[i\] | Q(x).delete(i)     | delete x ! p | Q(x).delete(’p’)     | DELETE https://...q=p     |
+			  
+			  
+			  \#\# Non-fundamental Static Q Conveniences
+			  
+			  \#\#\# Q.delay
+			  
+			  Reveal the `answer` sometime after `millis` milliseconds have elapsed.
+			  
+			  Q.delay = function(millis, answer = undefined) {
+			    return Q.promise(resolve => {
+			      setTimeout(() => resolve(answer), millis);
+			    });
+			  };
+			  
+			  \#\#\# Q.race
+			  
+			  Given a list of promises, returns a promise for the resolution of whichever promise we notice has completed first.
+			  
+			  Q.race = function(answerPs) {
+			    return Q.promise((resolve,reject) => {
+			      for (answerP of answerPs) {
+			        Q(answerP).then(resolve,reject);
+			      };
+			    });
+			  };
+			  
+			  We can compose `Q.race`, `Q.delay`, and `Q.reject` to timeout eventual requests.
+			  
+			  var answer = Q.race([bob ! foo(carol), 
+			                       Q.delay(5000, Q.reject(new Error("timeout")))]);
+			  
+			  \#\#\# Q.all
+			  
+			  Often it’s useful to collect several promised answers, in order to react either when _all_ the answers are ready or when _any_ of the promises becomes _rejected_.
+			  
+			  Q.all = function(answerPs) {
+			    let countDown = answerPs.length;
+			    const answers = [];
+			    if (countDown === 0) { return Q(answers); }
+			    return Q.promise((resolve,reject) => {
+			      answerPs.forEach((answerP, index) => {
+			        Q(answerP).then(answer => {
+			          answers[index] = answer;
+			          if (--countDown === 0) { resolve(answers); }
+			        }, reject);
+			      });
+			    });
+			  };
+			  
+			  We can compose `Q.all`, `then`, and [destructuring](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=harmony:destructuring "harmony:destructuring") to delay until several operands are revealed
+			  
+			  var sumP = Q.all([xP, yP]).then(([x, y]) => (x + y);
+			  
+			  \#\#\# Q.join
+			  
+			  Join is our eventual equality operation. Any messages sent on the join of `xP` and `yP` are only delivered if `xP` and `yP` both reveal the same target, in which case these messages are eventually delivered to that target and this joined promise itself eventually becomes fulfilled to designate that target. Otherwise, all these messages are discarded with the usual rejected promise contagion.
+			  
+			  Q.join = function(xP, yP) {
+			    return Q.all([xP, yP]).then(([x, y]) => {
+			      if (Object.is(x, y)) {
+			        return x;
+			      } else {
+			        throw new Error("not the same");
+			      }
+			    });
+			  };
+			  
+			  \#\#\# Q.memoize
+			  
+			  `Q.memoize` of a one argument function returns a new similar one argument function, except that it (eventually) calls the original function no more than once for each such argument. The memo function immediately returns a promise for what the original function will eventually return. Equivalence of arguments is determined by the optional memoMap passed in, which defaults to a new WeakMap() if absent. (Passing a memoMap in also allows the caller to seed the mapping with some prior associations.)
+			  
+			  The difference from a traditional synchronous memoizer is that the original function is called _eventually_ after a promise for its result is _already_ memoized, enabling cycles to work. For example, if memoF === memoize(f) and f(x) calls memoF(x), then an outer call to memoF(x) schedules an eventual call to f(x) which makes an inner call to memoF(x). Both outer and inner calls to memoF(x) returns a promise for what f(x) will eventually return.
+			  
+			   Q.memoize = function(oneArgFuncP, memoMap = WeakMap()) {
+			  
+			     return function oneArgMemo(arg) {
+			       if (memoMap.has(arg)) {
+			         return memoMap.get(arg);
+			       } else {
+			         const resultP = oneArgFuncP ! (arg);
+			         memoMap.set(arg, resultP);
+			         return resultP;
+			       }
+			     }
+			   };
+			  
+			  \#\#\# Q.async
+			  
+			  \#\#\# Q.defer()
+			  
+			  (Will likely be deprecated)
+			  
+			  Q.defer = function() {
+			    const deferred = {};
+			    deferred.promise = Q.promise((resolve,reject) => {
+			      deferred.resolve = resolve;
+			      deferred.reject = reject;
+			    });
+			    return deferred;
+			  };
+			  
+			  \#\# Examples
+			  
+			  \#\# Infinite Queue
+			  
+			  function makeQueue() {
+			    let rear;
+			    let front = Q.promise(r => { rear = r; });
+			    return Object.freeze({
+			      enqueue: function(elem) {
+			        let nextRear;
+			        const nextTail = Q.promise(r => { nextRear = r; });
+			        rear({head: elem, tail: nextTail});
+			        rear = nextRear;
+			      },
+			      dequeue: function() {
+			        const result = front ! head;
+			        front = front ! tail;
+			        return result;
+			      }
+			    });
+			  }
+			  
+			  Calling `queue.dequeue()` will return a promise for the next element that has or will be enqueued.
+			  
+			  \#\# Spawn
+			  
+			  The following `spawn` function is a simple abstraction built on `Vat` and `then` that captures a simple common case:
+			  
+			  function spawn(src) {
+			    const vat = Vat();
+			    const resultP = vat.evalLater(src);
+			    Q(resultP).then(function(_) {
+			      vat.terminateAsap(new Error('done')); 
+			    });
+			    return resultP;
+			  }
+			  
+			  const sumP = spawn('3+5'}); // sumP eventually resolves to 8.
+			  
+			  The argument string to `spawn` is evaluated in a new Vat spawned for that purpose. Spawn returns a promise for what that string will evaluate to. Once that promise resolves, the spawned vat is shut down.
+			  
+			  \#\# Vat.evalLater() as Async-PGAS
+			  
+			  In the Async-PGAS language X10, the “at” statement is defined as
+			  
+			  // x10 grammar, not javascript or proposed javascript
+			  Statement :
+			    at ( PlaceExpression ) Statement
+			  
+			  The “at” statement first evaluates the PlaceExpression to a place, which is analogous to a vat. It then evaluates the Statement at that place. The statement evaluates with the lexical scope containing the “at” statement, so the locality of the values bound to these identifiers is the locality they have at that place rather than at the location containing the “at” statement. Although the argument to `Vat.evalLater` must be a closed expression (modulo whitelisted globals), we can get the same effect, a bit more verbosely, by passing in these bindings as an explicit eventual call to a closed function.
+			  
+			  For example, the X10-ish program
+			  
+			  const x = 6;
+			  let ultimateP;
+			  at (place) { ultimateP = x*7; }
+			  
+			  can be expressed using `aVat.evalLater()` as
+			  
+			  const x = 6;
+			  let ultimateP = place.evalLater(x => x*7) ! (x);
+			  
+			  \#\# Open Vat
+			  
+			  The `makeOpenVat` function makes an `OpenVat` function. Each `OpenVat` function is like the `Vat` function, in that both make an return a new vat instance. Each `OpenVat` function additionally maintains a side table mapping from all incoming remote promises to the evaluation function of the open vat made by this `OpenVat` function. The reason we call such vats _open_ is that, given a remote promise into such a vat and the `OpenVat` function that made that vat, one can thereby inject new code into that vat.
+			  
+			  TODO: explain the membrane variation used below.
+			  
+			  function makeOpenVat() {
+			    const wm = WeakMap();
+			  
+			    function OpenVat() {
+			      const vat = Vat();
+			      const openVat = Object.freeze({
+			        evalLater: makeMembraneX(
+			          vat.evalLater,
+			          { registerRemote: function(remote) {
+			              wm.set(remote, openVat.evalLater); }}),
+			        terminateAsap: vat.terminateAsap
+			      });
+			      return openVat;
+			    }
+			    OpenVat.evalAt = function(p, src) {
+			      return wm.get(p)(src);
+			    };
+			    return OpenVat;
+			  }
+			  
+			  \#\# there
+			  
+			  The `there(p, ...)` function is analogous to `Q(p).then(...)`, except instead of merely relocating the execution of the callback in time till after `p` is resolved, it further relocates it in spacetime, to where and when p is near. Like `Q(p).then(...)`, `there` immediately returns a promise for the eventual outcome. We do not likewise relocate the errback, so that we can still notify it and it can still react on the requesting side to a partition between the requestor and `p`‘s host.
+			  
+			  function there(p, callback, opt_errback) {
+			    var callbackP = OpenVat.evalAt(p, '' + callback);
+			    return (callbackP ! (p)).then(
+			      v => v,
+			      opt_errback);
+			  }
+			  
+			  \#\# Map-Reduce Lite
+			  
+			  Given an initial result value, a list of potentially remote promises to elements, a closed mobile `mapper` function from elements to mapped result values, and an associative / commutative `reducer` function from pairs of references to result values to a new reference to a result value, `mapReduce` immediately returns a promise for the result of mapping all the elements where they live, and reducing all of these results together with the initial result value to a result.
+			  
+			  I call this “Map-Reduce Lite” because, unlike a production map-reduce infrastructure, the following `mapReduce` does all reductions on the spawning machine, which is therefore a scaling bottleneck, and has none of the fault-tolerance. Here, any failure causes the overall map-reduce to fail, i.e., the returned promise becomes a _rejected_ promise. The mapper and reduction functions are like the conventional functional programming variety, rather than the map-reduce variety which arranged for group-by keys.
+			  
+			  /**
+			   * Type/Guard syntax below is only a placeholder, not a serious proposal.
+			   * @param initValue ::T2
+			   * @param elemPs    ::Array[Ref[T1]]  // i.e., Array[T1 | Promise[T1]]
+			   * @param mapper    ::(T1 -> T2)      // closed mobile function
+			   * @param reducer   ::(T2 x T2 -> T2)
+			   * @reveals         ::T2              // i.e., @returns ::Ref[T2]
+			   */
+			  function mapReduce(initValue, elemPs, mapper, reducer) {
+			    let countDown = elemPs.length;
+			    if (countDown === 0) { return initValue; }
+			    let result = initValue;
+			  
+			    return Q.promise((resolve, reject) => {
+			      elemPs.forEach(elemP => {
+			        const mappedP = there(elemP, mapper);
+			        Q(mappedP).then(mapped => {
+			          result = reducer(result, mapped);
+			          if (--countDown === 0) { resolve(result); }
+			        }, reject);
+			      });
+			    });
+			  }
+			  
+			  \#\# AMD Loader Lite
+			  
+			  This is a minimal Asynchronous Module Definition (AMD) Loader for a subset of the [AMD API](https://web.archive.org/web/20160404122250/https://github.com/amdjs/amdjs-api/wiki/AMD "https://github.com/amdjs/amdjs-api/wiki/AMD") specification. In this subset, `define` is called with exactly two arguments, a `dependencies` list of module names, and a factory function with one parameter per dependency.
+			  
+			   function makeSimpleAMDLoader(fetch, moduleMap = Map()) {
+			     var loader;
+			  
+			     function rawLoad(id) {
+			       return Q(fetch(id)).then(src => {
+			         var result = Q.reject(new Error('"define" not called by: ' + id));
+			         function define(deps, factory) {
+			           result = Q.all(deps.map(loader)).then(imports => {
+			             return factory(...imports);
+			           });
+			         }
+			         define.amd = {lite: true};
+			  
+			         Function('define', src)(define);
+			         return result;
+			       });
+			     }
+			     return loader = Q.memoize(rawLoad, moduleMap);
+			   }
+			  
+			  If module “W” depends on modules “X”, “Y”, and “Z”, then only once the promises for the “X”, “Y”, and “Z” modules have all been fulfilled will the “W” factory function be called with these module instances. The result of calling this factory function will then become the “W” module instance.
+			  
+			  What it means to _be_ the source for the “W” module is that `fetch(”W”)` will eventually return that source string. For example, a given `fetch` function might fetch it from `https://example.com/prefix/W.js`.
+			  
+			  // At https://example.com/prefix/W.js
+			  define(['X', 'Y', 'Z'], function(X, Y, Z) {
+			    return X(Y, Z);
+			  })
+			  
+			  Since the memo mapping we need is from module names, which are strings rather than objects, we need to provide an explicit memoMap argument to `Q.memoize`, which should be a map that accepts strings as keys.
+			  
+			  Although the cycle tolerance of `Q.memoize` is generally useful, here it hurts. Because `define` won’t call the factory function until all (`Q.all`) of the dependencies are fulfilled, any cyclic AMD dependencies cause an undetected deadlock. Still, in the naive absence of this cycle tolerance, such cyclic dependencies would have instead caused an infinite regress which is even worse. Better would be cycle detection and rejection, which we leave as an exercise for the reader. 
+			  
+			  \#\# See
+		- ### Highlights
+		  collapsed:: true
+			- > Objects in one vat can only send asynchronous messages to objects in other vats. [⤴️](https://omnivore.app/me/strawman-concurrency-es-wiki-18d971e3b8d#a7e7b673-aed5-4f4c-b423-b2592dfc6385)
+			- > _Promises_ represent such references to potentially remote objects. _Eventual message sends_ queue _eventual-deliveries_ in the work queue of the vat hosting the target object. [⤴️](https://omnivore.app/me/strawman-concurrency-es-wiki-18d971e3b8d#e472ac14-e40a-4977-bf32-89b2b23e2dae)
+	- [Notes on Functional Programming III: Functor, Applicative & Monad || Chrysanthium](https://omnivore.app/me/notes-on-functional-programming-iii-functor-applicative-monad-ch-18d38448346)
+	  collapsed:: true
+	  site:: [chrysanthium.com](https://chrysanthium.com/notes-on-functional-programming-iii)
+	  author:: akullpp
+	  labels:: [[functional programming]] [[fp]] [[javascript]]
+	  date-saved:: [[01/23/2024]]
+		- ### Content
+		  collapsed:: true
+			- \#\#\#\#\#\# 2017/03
+			  
+			  Preliminary: [The Fantasy Land](https://github.com/fantasyland/fantasy-land) algebra is a specification which many good functional libraries implement and covers additional laws of algebraic structures which I won't cover.
+			  
+			  \#\# Functor
+			  
+			  A **functor** is just a container for values with a `map` method that applies a function to the values while consistently returning the new values in the same container.
+			  
+			  According to this definition an array is a functor:
+			  
+			  ```angelscript
+			  const xs = [1, 2, 3]
+			  // Array.isArray(xs) === true
+			  const ys = xs.map((x) => x)
+			  // Array.isArray(ys) === true
+			  ```
+			  
+			  You have an array with values, apply a function via `map` to each of the values and get an array with values back.
+			  
+			  Unfortunately, not all data structures have a map function so you might need to write a wrapper which could be as simple as:
+			  
+			  ```pgsql
+			  class Wrapper {
+			  constructor(value) {
+			    this.value = value
+			  }
+			  
+			  map(f) {
+			    return new Wrapper(f(this.value))
+			  }
+			  }
+			  ```
+			  
+			  \#\#\# Advantages of a functor
+			  
+			  **A functor enables generalized behavior**
+			  
+			  It allows you to map over values without being tied to a specific structure.
+			  
+			  Furthermore, all advantages of `map` over `for` loops apply to which is mainly compactness and expressiveness.
+			  
+			  \#\# Applicative
+			  
+			  An **applicative** is an extension of a functor and is used to be able to apply functors to each other. In order to do this, it wraps a function around the value which is wrapped by the functor. The required `ap` method is used to automatically apply the already partially applied and wrapped function via `map` to the wrapped value of another functor:
+			  
+			  ```pgsql
+			  Wrapper.prototype.ap = function (wrapped) {
+			  return wrapped.map(this.value)
+			  }
+			  ```
+			  
+			  Additionally, an applicative must provide an `of` method which is used to create an instance with default minimal context:
+			  
+			  ```pgsql
+			  Wrapper.of = (x) => new Wrapper(x)
+			  ```
+			  
+			  > Functors which only have an `ap` method are called Apply. Functors which only have an `of` method are called Pointed Functors. If they have both they are called Applicatives.
+			  
+			  We will use `of` to write a new `map` method:
+			  
+			  ```pgsql
+			  Wrapper.prototype.map = function (f) {
+			  return Wrapper.of(f(this.value);
+			  };
+			  ```
+			  
+			  Let's assume we have the following setup:
+			  
+			  ```pgsql
+			  const add = (x) => (y) => x + y
+			  const wrapperOne = Wrapper.of(1)
+			  const wrapperTwo = Wrapper.of(2)
+			  const wrapperOneAdd = wrapperOne.map(add)
+			  ```
+			  
+			  where `add` is a curried function and `wrapperOneAdd` is an object of type `Wrapper` with the wrapped value of `y => 1 + y`.
+			  
+			  To be explicit: The first box contains the integer `1`. The second box the result, i.e. `y => 1 + y`, of the function `add` which was applied to the boxed `1`. So we are two levels deep now.
+			  
+			  Using the `ap` method would result in a new wrapped value:
+			  
+			  ```pgsql
+			  wrapperOneAdd.ap(wrapperTwo)
+			  // Wrapper {value: 3}
+			  ```
+			  
+			  The wrapped partial function `y => 1 + x` is applied to the unwrapped value of `2`, i.e. `y => 1 + 2` which is then returned as a wrapped value `3`.
+			  
+			  Keep in mind the box is always of the same type, the values not necessarily.
+			  
+			  \#\#\# Advantages of an Applicative
+			  
+			  An applicative is best used if you have several tasks which don't depend on each other, e.g. if you have several independent calls you could write the following interface:
+			  
+			  ```routeros
+			  Task.of(renderPage)
+			  .ap(Http.get('orders'))
+			  .ap(Http.get('billing'));
+			  .ap(Http.get('ads'));
+			  .ap(Http.get('tracking'));
+			  ```
+			  
+			  **An applicative promotes simplicity**
+			  
+			  Generally speaking it creates a simple interface for complex code. However the real advantages can only be grasped if a specific applicative is used. General applicatives like the one described above are rather rare. Further information will be provided in the monad section.
+			  
+			  \#\# Monads
+			  
+			  A **monad** applies a function which returns a wrapped value to a wrapped value. The main advantage over applicatives is that they run sequentially by providing the `chain` method. Here is an implementation of a general monad:
+			  
+			  ```cs
+			  class Monad {
+			  static of(value) {
+			    return new Monad(value)
+			  }
+			  
+			  constructor(value) {
+			    this.value = value
+			  }
+			  
+			  map(f) {
+			    return Monad.of(f(this.value))
+			  }
+			  
+			  ap(monad) {
+			    return monad.map(this.value)
+			  }
+			  
+			  chain(f) {
+			    return this.map(f).value
+			  }
+			  }
+			  ```
+			  
+			  Normally you would also implement the `join` method which is a straight forward helper method to return the value which helps us to flatten monads when chained:
+			  
+			  ```kotlin
+			  join() {
+			  return this.value;
+			  }
+			  
+			  chain(f) {
+			  return this.map(f).join();
+			  }
+			  ```
+			  
+			  However, just like general applicatives, a general implementation of a monad doesn't make much sense. One of the most common practical examples of a specific monad is the **Maybe monad**:
+			  
+			  ```scala
+			  class Maybe extends Monad {
+			  static of(value) {
+			    return new Maybe(value)
+			  }
+			  
+			  constructor(value) {
+			    super(value)
+			  }
+			  
+			  isNothing() {
+			    return this.value === null || this.value === undefined
+			  }
+			  
+			  map(f) {
+			    return this.isNothing() ? Maybe.of(null) : Maybe.of(f(this.value))
+			  }
+			  }
+			  ```
+			  
+			  It just checks whether the wrapped value is `null` or `undefined` and if it is, returns a wrapped `null`. Why is this interesting? Well, first of all it avoids pesky null checks. Additionally, it provides safety from runtime errors when chaining several methods where one may fail to return a value:
+			  
+			  ```javascript
+			  const prop = (p) => (o) => o[p]
+			  
+			  const getUsername = (account) =>
+			  Maybe.of(account).map(prop('personal')).map(prop('user')).map(prop('name'))
+			  
+			  // Might be retrieved async!
+			  const user = {
+			  personal: {
+			    user: {
+			      name: 'John Doe',
+			    },
+			  },
+			  }
+			  
+			  getUsername(user)
+			  // Maybe { value: 'John Doe' }
+			  ```
+			  
+			  If one property in the path wouldn't exist, we wouldn't get an error but a `Maybe` with value `null`.
+			  
+			  Right now you probably think you have a déjà vu and yes you are correct _Promise_ is a monad.
+			  
+			  \#\#\# Advantages of a monad
+			  
+			  In general monads are concise and expressive with the ability to encapsulate side-effects.
+			  
+			  The advantages of specific monads are as numerous as their implementations ranging from the simple forms of _State_ ensuring the correct state flow, _Sequence_ where `;` can be a monad for control flow, _Maybe_ handling null checks, _Promise_ handling asynchronicity up to the complex ones of _Probability Distribution_ or _Transaction_ for databases.
+			  
+			  \#\# Links
+			  
+			  * [Notes on Functional Programming I: First-class, Pure, Curried Functions](https://chrysanthium.com/notes-on-functional-programming-i)
+			  * [Notes on Functional Programming II: Composition & Point-free Style](https://chrysanthium.com/notes-on-functional-programming-ii)
+	- [How DAT discovers peers](https://omnivore.app/me/super-high-level-18c07ef66d7)
+	  collapsed:: true
+	  site:: [blog.mauve.moe](https://blog.mauve.moe/posts/how-dat-discovers-peers)
+	  labels:: [[DAT]] [[NAT Traversal]] [[DWeb]] [[P2P]]
+	  date-saved:: [[11/25/2023]]
+		- ### Content
+		  collapsed:: true
+			- There are a lot of guides and introductions to Dat that focus on using dat to transfer files, the replication protocol, and how the data is transferred between peers. However, that's just half of the story. ==A lot of the magic from the dat ecosystem comes from== ==[discovery-swarm](https://github.com/mafintosh/discovery-swarm)====, the module that's responsible for finding peers to replicate with in the dat network.==
+			  
+			  ==discovery-swarm provides an API to== **==join==** ==networks using a== **==discovery key==**==, and then invokes a callback when it finds a peer to connect to.==
+			  
+			  ```javascript
+			  // Taken from the discovery-swarm example
+			  var swarm = require('discovery-swarm')
+			  
+			  var sw = swarm()
+			  
+			  sw.listen(666)
+			  sw.join('cool stuff') // can be any id/name/hash
+			  
+			  sw.on('connection', function (connection) {
+			  console.log('found + connected to peer')
+			  })
+			  
+			  ```
+			  
+			  This seems easy enough, but it feels a little magical. Under the hood, it combines several high level modules to get the job done.
+			  
+			  \#\# [Peer discovery](\#peer-discovery)
+			  
+			  While ==dat-swarm provides a way to join multiple networks and automatically connect to peers,== ==[discovery-channel](https://github.com/maxogden/discovery-channel)== ==is the module responsible for actually finding peers for a given key.== It's what advertises the local ip/port to the network and searchs for peer identifiers.
+			  
+			  \#\# [Decentralized peer lookup - The DHT](\#decentralized-peer-lookup---the-dht)
+			  
+			  ==Dat isn't the only p2p protocol that relies on peer discovery. Back when applications like BitTorrent and eMule were being developed, they relied a lot on "tracker" servers for announcing peers and searching for them. This resulted in a form of centralization which meant that if a tracker server got taken down or otherwise compromised, the p2p network couldn't function.==
+			  
+			  ==The solution for this problem was to get rid of centralized trackers and replace them with a protocol that would split the discovery information amongst all the peers participating in the network.== The particular approach is called a Distributed Hash Table. It's a key-value store that automatically stores keys on nodes in the network. The most popular algorythm for determening which peers should store which data is called [Kademlia](https://en.wikipedia.org/wiki/Kademlia). I'm not going to go too far into it, but ==the idea is that each discovery key is sent to nodes whose id is== _=="close"==_ ==to the key, and peers maintain connections to others that are varying levels of== _=="closeness"==_ ==to themselves which makes it fast to find the nodes storing keys that you want.==
+			  
+			  This functionality is implemented in the [bittorrent-dht](https://github.com/webtorrent/bittorrent-dht) module which was originally made for the popular [webtorrent](https://webtorrent.io/) project.
+			  
+			  ==discovery-channel uses this module by publishing it's IP/Port combination to the discovery key onto the DHT. Since there is no central authority or single point of failure, publishing on the DHT is resistant to censorship and can survive sketchy networks.==
+			  
+			  One of the problems with the DHT, is that items in the DHT don't expire right away, and searching for peers can yield a lot of false-positives. Also, maintining the connection information necessary for staying in the DHT takes up more computational resources. As well, ==the DHT requires a set of== _=="bootstrap nodes"==_ ==which are used to find more nodes to start building up your network. These bootstrap nodes are a potential source of failure and DHT clients should attempt to save any nodes they find for later use in order to have a way to bootstrap should the bootstrap nodes go down.==
+			  
+			  \#\# [Faster than the DHT - DNS! (and MDNS)](\#faster-than-the-dht---dns-and-mdns)
+			  
+			  The next module, is a two-parter. As I mentioned before, ==the DHT can yield false positives and requires participating in a network. To make peer lookup faster, discovery-channel makes use of== ==[dns-discovery](https://github.com/mafintosh/dns-discovery)== ==to talk to a list of centralized DNS servers to find peers.==
+			  
+			  DNS is the technology used to resolve website hostnames like `www.example.com` to IP addresses. It works by having a network of DNS "servers" that talk to each other about which domains map to which IP addresses. Clients wanting to connect to a website will then issue DNS queries to the server by sending UDP packets asking for a _"query"_, and getting a result back over the same UDP socket. The query contains a _"type"_ of record, and the _"name"_ to search for.
+			  
+			  discovery-swarm makes use of the [txt](https://github.com/mafintosh/dns-discovery/blob/master/index.js\#L392) _"type"_ , and generates a fake name by using the discovery key as a subdomain on a configurable domain. `txt` records are used for encoding freeform data that applications can make use of. For example, you could tell dns-discovery to use the `example.local` domain, and when searching for the `foobar` discovery key, it will make DNS queries for `foobar.example.local`. It tells the DNS server to track it's own IP/Port by adding the [additionals](https://github.com/mafintosh/dns-discovery/blob/master/index.js\#L396) attribute to it's query with some custom data specifing whether it's announcing itself, looking up a peer, or un-announcing itself. The logic for how it encodes this information is [here](https://github.com/mafintosh/dns-discovery/blob/master/index.js\#L719).
+			  
+			  Using DNS is great for when you want speedy responses and to have a way to invalidate stored data (when you're leaving a network, for example). However, this introduces a point of centralization, and if the DNS servers get taken out, it prevents peers from being able to discover each other.
+			  
+			  \#\# [Working without internet!](\#working-without-internet)
+			  
+			  The internet is great for P2P applications, but sometimes you don't have the luxery of connecting to any computer in the world, or sometimes the computers you want to connect to are sitting right beside you and don't need any fancy distributed discovery. dns-discovery supports this scenario by making use of something called [Multicast DNS](https://en.wikipedia.org/wiki/Multicast%5FDNS) to find peers on the local network. It works by sending _"multicast UDP packets"_ to the local network containing what's essentially a DNS request, which might be picked up by any computers that are listening for it. The computers that are listening on the _"name"_ in the DNS query will then broadcast a DNS response with their local IP/Port which can be used to connect to them. This functionality is implemented in the [multicast-dns](https://github.com/mafintosh/multicast-dns) module. dns-discovery starts listening on MDNS requests, and has logic for responding to them [here](https://github.com/mafintosh/dns-discovery/blob/master/index.js\#L149).
+			  
+			  \#\# [How does discovery-swarm put this together?](\#how-does-discovery-swarm-put-this-together)
+			  
+			  When you initiate a discovery-swarm instance, you can specify the TCP port you want to listen to, the UDP port for DNS/MDNS queries, the DHT bootstrap nodes to use, the DNS server list, and the fake domain to use for DNS/MDNS discovery. Specifying or not specifying or not specifying these arguments enables and disables parts of the discovery features. Therese some other little knobs to toggle, but that's the main stuff that matters.
+			  
+			  After specifying the discovery options, you need to start joining networks. The `discovery key` is modified by being optionall [hashed](https://github.com/maxogden/discovery-channel/blob/master/index.js\#L104), and truncated to be only [20 hex characters](https://github.com/maxogden/discovery-channel/blob/master/index.js\#L105). The 20 character limit is there to make it fit the Kademlia discovery key limitations.
+			  
+			  It announces itself wherever needed, and starts periodically querying for peer information. Once it finds a peer, it will attempt to establish a connection to it. Peers will likewise attempt to establish connections to it once they discover it.
+			  
+			  At this point, discovery-swarm has a duplex node stream between the two peers. Here is where two things can happen. By default, discovery-swarm will attempt to do a "handshake" between the two peers by exchanging their "ids" that they generated upon initialization. This lets the peers know who they're connected to and prevents them from opening more than one connection to each other. This can be overrided by providing a custom `stream` handler in the initialization options which returns an `EventEmitter` that will emit a `handshake` event with the peer ID itself.
+			  
+			  From here it will happily run and establish new connections once existing ones close and optionally prevent new ones once it reaches a limit.
+			  
+			  The discovery-swarm instance can be used to join multiple networks, and is able to handle incoming connections from multiple peers.
+			  
+			  \#\# [How does Dat make use of it?](\#how-does-dat-make-use-of-it)
+			  
+			  discovery-swarm has a lot of options, and if they're not compatible, peers can't find each other. Luckily the dat project provides a module, [dat-swarm-defaults](https://github.com/datproject/dat-swarm-defaults), which allows different projects in the Dat ecosystem to easily configure discovery so that they can all connect to each other.
+			  
+			  Here's what it looks like
+			  
+			  ```1c
+			  var DAT_DOMAIN = 'dat.local'
+			  var DEFAULT_DISCOVERY = [
+			  'discovery1.datprotocol.com',
+			  'discovery2.datprotocol.com'
+			  ]
+			  var DEFAULT_BOOTSTRAP = [
+			  'bootstrap1.datprotocol.com:6881',
+			  'bootstrap2.datprotocol.com:6881',
+			  'bootstrap3.datprotocol.com:6881',
+			  'bootstrap4.datprotocol.com:6881'
+			  ]
+			  
+			  var DEFAULT_OPTS = {
+			  dns: {server: DEFAULT_DISCOVERY, domain: DAT_DOMAIN},
+			  dht: {bootstrap: DEFAULT_BOOTSTRAP}
+			  }
+			  
+			  ```
+			  
+			  Beaker takes these defaults, and ads some more [options](https://github.com/beakerbrowser/beaker-core/blob/master/dat/library.js\#L111)
+			  
+			  ```yaml
+			  discoverySwarm(swarmDefaults({
+			    id: networkId,
+			    hash: false,
+			    utp: true,
+			    tcp: true,
+			    dht: false,
+			    stream: createReplicationStream
+			  }))
+			  
+			  ```
+			  
+			  As you can see from the code snippit, beaker is disabling the hashing and the DHT! This means that when you're advertising discovery keys, you can just take the first 20 hex characters, and not worry about any of the rest of the processing. This also means that the DHT isn't being used for peer discovery, so the only source of peers is DNS and MDNS, which in most cases will mean only DNS is used to find peers over the internet.
+			  
+			  The `createReplicationStream` argument is creating a replication stream for [hyperdrive](https://github.com/mafintosh/hyperdrive) instances, which is the module used to replicate dat archives. The dat replication protocol contains a handshake, so the discovery swarm handshake isn't being used.
+			  
+			  \#\# [Steps for a MVP discovery swarm](\#steps-for-a-mvp-discovery-swarm)
+			  
+			  Hopefully, this article has shown you the main pieces of discovery-swarm and can help you create your own implementation in other environments.
+			  
+			  The minimal amount needed is to use the DNS discovery, and pipe connections into the hypercore protocol to replicate hyperdrives.
+			  
+			  I've started work on [a module](https://github.com/RangerMauve/discovery-swarm-stream) that will allow browsers to make use of a discovery-swarm proxy over a websocket. This will allow applications to find peers and connect to them (almost) directly and allow people to experiment with p2p features outside of beaker, and experiment with cutting edge stuff like hyperdb even within beaker.
+			  
+			  Hopefully this has been informative, feel free to hit me up [on fritter](dat://fritter.hashbase.io/user/dat://3df8868d5c3420d7acdf72d17129e4569cf83723092314ea6b260d112797d8c8), or [twitter](https://mobile.twitter.com/RangerMauve) if you have any questions or want to brainstorm more about bringing discovery to other platforms.
+			  
+			  * RangerMauve
+		- ### Highlights
+		  collapsed:: true
+			- > A lot of the magic from the dat ecosystem comes from [discovery-swarm](https://github.com/mafintosh/discovery-swarm), the module that's responsible for finding peers to replicate with in the dat network. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#1b5f7c6f-a174-4b1d-b33b-fdf2b3c1fe81)
+			- > discovery-swarm provides an API to **join** networks using a **discovery key**, and then invokes a callback when it finds a peer to connect to.
+			  > 
+			  ```javascript
+			  > 
+			  ``` [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#393bae75-892c-49bb-8eb5-5e6cda354b6a)
+			- > dat-swarm provides a way to join multiple networks and automatically connect to peers, [discovery-channel](https://github.com/maxogden/discovery-channel) is the module responsible for actually finding peers for a given key. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#90b639cb-6e79-4342-8f2e-9496c0d5c741)
+			- > Dat isn't the only p2p protocol that relies on peer discovery. Back when applications like BitTorrent and eMule were being developed, they relied a lot on "tracker" servers for announcing peers and searching for them. This resulted in a form of centralization which meant that if a tracker server got taken down or otherwise compromised, the p2p network couldn't function. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#6bb22760-03ff-45f0-a86f-9112c11db11e)
+			- > The solution for this problem was to get rid of centralized trackers and replace them with a protocol that would split the discovery information amongst all the peers participating in the network. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#6a1534d6-8937-4d6f-add5-7f3785b473c7)
+			- > the idea is that each discovery key is sent to nodes whose id is _"close"_ to the key, and peers maintain connections to others that are varying levels of _"closeness"_ to themselves which makes it fast to find the nodes storing keys that you want. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#01e4df3d-e28e-43f9-b4fc-5c7949bc6b23)
+			- > discovery-channel uses this module by publishing it's IP/Port combination to the discovery key onto the DHT. Since there is no central authority or single point of failure, publishing on the DHT is resistant to censorship and can survive sketchy networks. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#8788de8e-a0b9-45d3-a933-13cd8eff61bd)
+			- > One of the problems with the DHT, is that items in the DHT don't expire right away, and searching for peers can yield a lot of false-positives. Also, maintining the connection information necessary for staying in the DHT takes up more computational resources. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#6318228e-b9d2-453f-a209-0e7c0efbcdb5)
+			- > the DHT requires a set of _"bootstrap nodes"_ which are used to find more nodes to start building up your network. These bootstrap nodes are a potential source of failure and DHT clients should attempt to save any nodes they find for later use in order to have a way to bootstrap should the bootstrap nodes go down.
+			  > 
+			  ##  [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#32b8b315-c354-4919-aff6-6543a5ac9e9b)
+			- > the DHT can yield false positives and requires participating in a network. To make peer lookup faster, discovery-channel makes use of [dns-discovery](https://github.com/mafintosh/dns-discovery) to talk to a list of centralized DNS servers to find peers. [⤴️](https://omnivore.app/me/super-high-level-18c07ef66d7#a5819326-1e8f-4c83-93c5-443b700ead57)
+	- [Chainable monads in JavaScript – Marco Faustinelli's Muzietto Blog](https://omnivore.app/me/chainable-monads-in-java-script-marco-faustinelli-s-muzietto-blo-18eea36cd08)
+	  collapsed:: true
+	  site:: [Marco Faustinelli's Muzietto Blog](https://faustinelli.wordpress.com/2013/08/14/chainable-monads-in-javascript/)
+	  author:: Muzietto
+	  labels:: [[faustinelli]]
+	  date-saved:: [[04/17/2024]]
+	  date-published:: [[08/14/2013]]
+		- ### Content
+		  collapsed:: true
+			- _**Gist**: the chainable monads presented here are JavaScript functions that allow idiomatic expressions such as_
+			  
+			  _`monad1.bind(function1)` ———> `monad2`_
+			  
+			  _Since JavaScript is typeless, there’s not really any reason to talk about monad\[A\] rather than monad\[B\], but the raison d’être of monads remains. JavaScript monads are created and manipulated by running convenient functions. The first monad in the chain usually comes from the run of a ‘unit’ function. This article shows all this in the case of the clueless Maybe monad. For more professionally relevant talk, you may want to go asap to the next article._
+			  
+			  After acquiring some proficiency in functional programming using JavaScript, I’ve come back lately to an old interest of mine: monads. For those who happen to read here and to share my basic dilemma: “what the hell do we need monads for, as productive professional programmers?” I’d like to anticipate that yes! I have eventually found one single application very, very likely to solve a serious, tough problem of mine at work. But it is pretty complicated and involves the state monad. More details are given in the next article.
+			  
+			  This article is not meant as an introduction to monads. It is just a presentation of one possible way to express them using advanced JavaScript concepts. I will suppose that things like map, flatMap (aka bind) and unit are already known and clear to you. Otherwise, the best introduction to monads I can suggest is “Monads are Elephants”, part 1 and 2\. Understanding the relationship between flatMap and for-comprehensions and being able to juggle functions between those two representations is imho necessary to obtain anything useful from monads.
+			  
+			  Going back to JavaScript: even though monads are mostly seen as typed objects, they don’t have to be. Whilst in Scala we have to make sure we use a f : String -> Monad\[Boolean\] as argument for the bind method of a Monad\[String\], in JavaScript we may forget about this, accept the risks of typelessness and enjoy a much readable, expressive syntax.
+			  
+			  I found a pair of good, useful pages around showing examples of monads in JavaScript (\[1\]\[2\]). The basic criterion I have used to pick my favorite ones is that they present code which creates monads as result of the plain execution of named functions, avoiding “new”, prototypes and other pseudo class-like JS muck.
+			  
+			  Another thing the pages I’ve mentioned here have in common (but which instead I find a lesser idea) is that they express the various unit, map, flatMap/bind etc. as binary factory methods operating on pairs of monads and mapping functions which are given as parameters to the factory; for example:
+			  
+			  `bind(monad,flatmappingFunction);`
+			  
+			  Alas, this becomes pretty nested, convoluted and difficult to read as soon as you begin to bind more than a pair of monads to each other. That’s why I prefer to see monads as entities with own capabilities, so that I may write:
+			  
+			  `monad.bind(functionA).bind(functionB).bind(functionC)`
+			  
+			  knowing that `monad.bind(functionA)` will create a new monad instance with its own bind method, ready to accept functionB as its parameter and build a third monad instance, and so on.
+			  
+			  Let’s stress once more that in this schema monads are always the product of the execution of plain named functions. There is no “new” involved nor prototypes to inherit from; “this” is mostly the running function (and when not, it’s always under the strict supervision of apply :-)). The only objects in the game are JS literals returned at the end of the various runs.
+			  
+			  Also relevant to observe here is that my schema uses the module pattern(\[3\]). The named function returns an object, which I call Monad.maybe or Monad.state to avoid littering the global object (caveat: I haven’t checked whether Monad namespaces exist already in any browser and what are their attributes!), and exposes the whole palette of methods for the given monad. So there is indeed a factory, but you only need Monad.<xxxx>.unit to start the dances.
+			  
+			  All the code shown here is available at the Github repository named _geiesmonads_ (user Muzietto). The next part of this article is dedicated to the Maybe monad (aka Option), which I personally find unfit for any practical usage in our day jobs (ok, ok: no more “if null”, big deal!). I am presenting it here only to illustrate the concept of chained JavaScript monads with a truly simple example. The real thing I am pursuing is the State monad, with its I/O management facets. But that’s a harder nut to crack and comes only in the next article, where you may want to jump right now, if you are already acquainted with Maybes and are looking for something really professionally relevant.
+			  
+			  \#\#\# Chainable Maybe monad in JavaScript
+			  
+			  So, here is my instanceable/chainable Maybe monad. Again, the only producer of monads (here and in other types of monad that I will present later) is unit. Producing a monad means attaching the various map/flatMap/unit/flatten/bind methods to the result function/object/monad/youNameIt that will be returned by unit. I’ve managed to have bind delegate to unit the preparation of the monad result of its binding. So, the monad builder is always unit.
+			  
+			  You may want to compare this implementation to the Maybe monad from \[2\].
+			  
+			  `var myMaybeMonad = function() { var unit = function(value){ var result = function(optionalBindingFunction){if (optionalBindingFunction) { // synt sugarreturn bind.apply(result,[optionalBindingFunction]); }else {return value; } }; result.bind = bind; result.flatten = flatten; result.unit = unit; result.instanceOf = instanceOf; result.map = map;return result; };`
+			  
+			  var map = function(fab){return bind(lift(fab));};
+			  
+			  // to be used in the context of the monad  
+			  var flatten = function(){  
+			  if (this()) {return this();}  
+			  else { // a None is an empty function  
+			  return function(){};  
+			  }  
+			  };
+			  
+			  // famb(flatten(ma)) –> mb  
+			  var bind = function(famb){  
+			  // runs in the context of the monad…  
+			  return unit(famb(flatten.apply(this)))();  
+			  };
+			  
+			  var instanceOf = function(){  
+			  return ‘maybe’;  
+			  };
+			  
+			  // fab –> famb  
+			  var lift = function(fab){  
+			  return function(x) {  
+			  return unit(fab(x));  
+			  };  
+			  };
+			  
+			  return {  
+			  unit: unit,  
+			  lift: lift,  
+			  map: map,  
+			  flatten: flatten,  
+			  instanceOf: instanceOf,  
+			  bind: bind  
+			  };  
+			  }();
+			  
+			  Monad.maybe = myMaybeMonad;
+			  
+			  Monad.maybe.unit deserves a little explanation. It has here two roles:
+			  
+			  1. canonical: factory method for Maybes, given a value to wrap inside
+			  2. special: syntactic sugar to allow to remove all explicit invocations to bind
+			  
+			  The second role makes the two following instructions identical:
+			  
+			  `monad.bind(functionA).bind(functionA) ` and ` monad(functionA)(functionB)`
+			  
+			  Please note the sugary business is realized in the case of this Maybe monad, but not in the State monad presented in next article.
+			  
+			  The example usage is taken straight from \[2\]. We need a sample function that transforms values contained in the maybes, like
+			  
+			  `var more = function(value){return 'more ' + value;};`
+			  
+			  First we need to lift it and make it useable by bind/flatMap:
+			  
+			  `var mMore = Monad.maybe.lift(more);`
+			  
+			  As you can see in the code of lift, this wraps more into a:
+			  
+			  `function(x) {return unit(more(x));}`
+			  
+			  Given a Maybe named coffee and containing, surprisingly, the string “coffee”, we bind it with mMore writing:
+			  
+			  `coffee.bind(mMore)` or `coffee(mMore)`
+			  
+			  and we get a Maybe which, once flattened, returns “more coffee”.  
+			  [![mission_accomplished](https://proxy-prod.omnivore-image-cache.app/0x0,sTAS-L34JIDJMocsK0Fmh2qJxKaKdzElnmicSOMlEgcQ/https://faustinelli.wordpress.com/wp-content/uploads/2013/08/mission_accomplished.jpg?w=490)](https://faustinelli.wordpress.com/wp-content/uploads/2013/08/mission%5Faccomplished.jpg)
+			  
+			  \[1\] <http://igstan.ro/posts/2011-05-02-understanding-monads-with-javascript.html>  
+			  \[2\] <http://jabberwocky.eu/2012/11/02/monads-for-dummies/>  
+			  \[3\] <http://www.yuiblog.com/blog/2007/06/12/module-pattern/>
+			  
+			  \#\# Post navigation
+	- [#1 - lists, cons, car, cdr in JS](https://omnivore.app/me/functional-programming-in-java-script-playing-with-lists-cons-ca-18eea3570a0)
+	  collapsed:: true
+	  site:: [Marco Faustinelli's Muzietto Blog](https://faustinelli.wordpress.com/2013/08/14/functional-programming-in-javascript-playing-with-lists-cons-car-and-cdr/)
+	  author:: Muzietto
+	  labels:: [[faustinelli]]
+	  date-saved:: [[04/16/2024]]
+	  date-published:: [[08/14/2013]]
+		- ### Content
+		  collapsed:: true
+			- _**Gist**: JavaScript allows to describe lists as functions in a very natural way. By putting in place a few short albeit sophisticated functions called `cons`, `car `(aka `head`) and `cdr `(aka `tail`) a complete system for handling lists (`create`, `sort`, `filter`, etc.) as binary trees is shown here. Recursion of calls lies at the basis of all; any sizeable list in this system requires a huge call stack and, unfortunately, this seems to go against the way the various JavaScript engines are implemented. Therefore, this has to remain an exercise._
+			  
+			  In the last couple of years, my studies about functional programming have shifted focus, moved away from Java and gotten into JavaScript. This was caused firstly by me going to work for a web agency and having to become proficient in that pesky language (well, only in its good parts :-))
+			  
+			  Using JavaScript and its first-order functions, it is perfectly legitimate to stay away from classes, types and stuff. Being just you and the functions makes it just right to program …functionally.
+			  
+			  My most relevant products so far are all on [GitHub ](https://github.com/muzietto "Muzietto on GitHub")(user Muzietto):
+			  
+			  * _geieslists_: a complete (experimental !) library for managing lists built purely from primitive functions, starting from `cons`, `car`/`head`, `cdr`/`tail`, and ending up with high-level list operations like `splice `or `mergesort`
+			  * _littleFunkyJavaScripter_: a thorough rewrite of the Little Schemer in JavaScript, using geieslists as engine to build and manage the unavoidable lists. I still have to “do” chapter 10, but the rest of the book is all there, especially the supercool Y-combinator.
+			  * _seasonedFunkyJavaScripter_: still work in progress. Same as above with regards to the Seasoned Schemer. I just got till chapter 13 and got stuck over `call-with-current-continuation`. I hope I’ll be able to proceed further in the future: continuations are insanely interesting.
+			  * _geiesmonads_: maybe and state monad in JavaScript – examples of usage. In the case of the state monad you can find there the embryo for [a whole system of modular, chainable operations](https://faustinelli.wordpress.com/2013/08/14/handling-io-with-the-state-monad-in-javascript/ "Handling I/O with the state monad in Javascript").
+			  * _geiesfolds_: Fold right and then left in JavaScript. Lots of [examples ](https://faustinelli.wordpress.com/2010/04/22/foldleft-foldright/ "FoldLeft, FoldRight")of usages.
+			  
+			  (_geieslists_ reads _j-s-lists_ in Italian, how funny…)
+			  
+			  \#\#\# Example list computation in JavaScript
+			  
+			  I am presenting a simple example using geieslists. Let’s evaluate the head of a two-elements list.
+			  
+			  Inside geieslists any list (in the best LISP tradition) is the concatenation of an element `car `and another list `cdr`. This concatenation takes place through the application of a function named `cons `(they tell me that’s an abbreviation of _constructor_), which binds those two values. The resulting `cons `is obviously a list, just like `cdr `was. A list of two elements `'a'` and `'b'` is created recursively starting from a value `EMPTY_LIST` (we’ll see later what an `EMPTY_LIST` is) as:
+			  
+			  `list = cons('a',cons('b',EMPTY_LIST))`
+			  
+			  \#\#\#\# Off with her head!
+			  
+			  When we want to extract the head (aka `car`) of that list (aka `cons`), we apply over that `cons `a function named `head `(or `car`); `head `passes to `cons `a third function (in this case anonymous) which, given two arguments, simply returns the first one. Those two arguments happen to be the original two values given to cons in the previous paragraph. In detail, the expression of head is:
+			  
+			  ```actionscript
+			  head = function(cons){
+			    return cons(function(first,second){
+			      return first;
+			    });
+			  };
+			  ```
+			  
+			  In other words the head of a list comes from the application of function head to list; that’s the result of running:
+			  
+			  ```lisp
+			  head(list) = (function(cons){
+			    return cons(function(first,second){
+			      return first;
+			    });
+			  )(list)
+			  ```
+			  
+			  If we search instead the `tail`, we apply over the same `cons `a function named `tail `(or `cdr`); `tail `passes to `cons `a new anonymous binary function that receives the two original values of the `cons `and returns the second one. In short, the tail of a list is the result of running:
+			  
+			  ```lisp
+			  tail(list) = (function(cons){
+			    return cons(function(first,second){
+			      return second;
+			    });
+			  )(list)
+			  ```
+			  
+			  \#\#\#\# Happy the cons: he lives a simple life
+			  
+			  The missing piece is `cons`. `cons `is basically a binary function with a single simple goal in life: to allow other binary functions to access its two original arguments and use them as **their** own arguments. In a way, `cons `does nothing with its arguments; it just wraps them and keeps them warm and ready for other functions to use. In plain JavaScript:
+			  
+			  ```actionscript
+			  cons = function(first, second) {
+			    return function(anotherBinaryFunction){
+			      return anotherBinaryFunction(first, second);
+			    };
+			  };
+			  ```
+			  
+			  Technically `cons `is a function that receives two arguments, runs and returns as a result a function which in turn is ready to receive another function as its parameter. A bit dizzying, first time I saw it.
+			  
+			  This means that if we pass to the function `cons(first, second)` another function as parameter, the value `cons(first, second)(anotherBinaryFunction)` will be whatever returns from running `anotherBinaryFunctions `using `cons`‘ arguments as parameters. In detail:
+			  
+			  ```lisp
+			  cons(first, second)(anotherBinaryFunction) =
+			    anotherBinaryFunction(first, second);
+			  ```
+			  
+			  In the case of the two-elements list we’d have:
+			  
+			  ```lisp
+			  cons('a', cons('b', EMPTY_LIST))(anotherBinaryFunction) =
+			    anotherBinaryFunction('a', cons('b', EMPTY_LIST));
+			  ```
+			  
+			  If we want to extract the head of this two-elements list and we recall the definition of `head`, the substitution goes:
+			  
+			  ```lisp
+			  cons('a', cons('b', EMPTY_LIST))(head) =
+			    headInnerBinaryFunction('a', cons('b', EMPTY_LIST)) =
+			    (function(x, y) { return x; })('a', cons('b', EMPTY_LIST)) = 'a';
+			  ```
+			  
+			  This makes a lot of sense when told this way, but things ain’t that easy. In the code of our program we don’t write:
+			  
+			  `cons('a', cons('b', EMPTY_LIST))(head)`
+			  
+			  but we write instead:
+			  
+			  `head(cons('a', cons('b', EMPTY_LIST)))`
+			  
+			  What makes the magic happen, so that:
+			  
+			  `head(cons('a', cons(‘b’, EMPTY_LIST))) = 'a'`
+			  
+			  like if there was no `cons` in between ?
+			  
+			  \#\#\#\# Head’s Version
+			  
+			  Here is how the matter is seen from the point of view of head. I guess it is better to use here a simpler lambda notation (Scala, Java8) that allows to see clearly input parameters and returned values.
+			  
+			  In this notation `cons`, `head `and `tail `become respectively (please compare with the JavaScript implementations given previously):
+			  
+			  ```livescript
+			  cons = (x, y) -> w -> w(x, y)
+			  head = c -> c((x, y) -> x)
+			  tail = c -> c((x, y) -> y)
+			  ```
+			  
+			  Here `c` is a shortcut/reminder that the operand of `head `and `tail `is a `cons`. We saw that:
+			  
+			  ```lisp
+			  head(list) = (c -> c((x, y) -> x))(cons('a', cons('b', EMPTY_LIST)))
+			  ```
+			  
+			  NB: I am putting in **bold** the two brackets that delimit head.
+			  
+			  For the sake of clarity, let’s substitute:
+			  
+			  `cons('b', EMPTY_LIST) = TAIL`
+			  
+			  Substituting inside list the first usage of `cons `with its definition we obtain:
+			  
+			  ```lisp
+			  head(list) = (c -> c((x, y) -> x))(cons('a', TAIL)) =
+			  (c -> c((x, y) -> x))(w -> w('a', TAIL))
+			  ```
+			  
+			  At this point we see that technically `head `receives its `cons`, which is nothing else than a closure carrying the whole list. Because of the definition of `head`, parameter `c` (the `cons`) becomes `c(fun)`, where `fun `is that convenient inner binary function that always returns the first of its own parameters: that’s where `head `got its name from. The steps are (please follow carefully the various substitutions):
+			  
+			  ```livescript
+			  head(list) = (c -> c((x, y) -> x))(w -> w('a', TAIL)) =
+			  (w -> w('a', TAIL))((x, y) -> x)) =
+			  ((x, y) -> x))('a', TAIL) = 'a'
+			  ```
+			  
+			  So, in a way, `head `and `cons `pass each other the sherry…
+			  
+			  Basically, `cons `and `head `(or `tail`) plug into each other: `cons `takes a function and gives it its own context; `head `takes a function and gives it a visitor that operates in its context. In a way, `head `is more _refined_; `cons `is more _generic_. `head `is the specialist, and so is `tail`.
+			  
+			  There is lot to understand here, a lot more to dig and discover:
+			  
+			  * are there other possible list specialists besides `head `and `tail`?
+			  * what are the characteristics that make these functions pluggable in each other?
+			  * what are other problems (not necessarily involving lists) that may be solved by pairs of such crafted functions?
+			  
+			  The key must be in the signatures, but it’s the bodies that express the intent. Gotta play some more with these concepts.
+			  
+			  **UPDATE** All the playing resulted in [another post](https://faustinelli.wordpress.com/2014/02/07/an-fp-pattern-what-is-it-whats-its-name/ "An FP pattern? What is it? What’s its name?"), which investigates whether this may be a known FP pattern.
+			  
+			  \#\#\#\# Full of Emptiness
+			  
+			  The last bit is the definition of `EMPTY_LIST`.
+			  
+			  `EMPTY_LIST` is something that, whenever encountered, signals that it’s time to stop processing the list. It can be any value. But here we are used to have `cdr `as a function, so it’s nicer that `EMPTY_LIST` be a function (provided that we use always exactly the same instance!). We like the fixed-point function because it reminds us of the Y-combinator, so we say:
+			  
+			  `EMPTY_LIST = function(x) { return x; }`
+			  
+			  \#\#\# The problem with the stack of the function calls
+			  
+			  At the heart of this system we have recursive calls to the cons function. This creates very soon a huge call stack for each list you need. It comes out that javaScript engines are not optimized for recurring on closures \[1\] (why is that?).
+			  
+			  This impacts both the waste of memory created by each list and the running time of a mid-sized cons operation. It is interesting to measure the impact on execution speed by using the benchmark page \[1\]
+			  
+			  The pages I owe credit to for building geieslists are primarily three:
+			  
+			  * <http://matt.might.net/articles/js-church/>
+			  * <http://blairmitchelmore.com/javascript/cons-car-and-cdr>
+			  * <http://dankogai.typepad.com/blog/2006/03/lambda%5Fcalculus.html>
+			  
+			  \[1\] see <http://spencertipping.com/js-instabench/> – please compare:  
+			  – allocating small structures -> 1M (int, int) pairs as array literals  
+			  – allocating small structures -> 1M (int, int) pairs as binary CPS closures  
+			  – accessing small structures -> 1M (int, int) pairs as array literals  
+			  – accessing small structures -> 1M (int, int) pairs as binary CPS closures
+			  
+			  \#\# Post navigation
+	- [Persistence and Upgrade](https://omnivore.app/me/persistence-and-upgrade-18ee98ac81e)
+	  collapsed:: true
+	  site:: [erights.org](http://www.erights.org/data/serial/jhu-paper/upgrade.html)
+	  author:: Mark S. Miller
+	  date-saved:: [[04/16/2024]]
+		- ### Content
+		  collapsed:: true
+			- ---
+			  
+			  (\*\*\* To be written)
+			  
+			  \#\# In Praise of Manual Persistence
+			  
+			  Computers crash too often. We wish our applications, data, and activities to last much longer. ==To achieve this, traditionally, programmers had to
+			        encode their application's representations twice -- once as a live runtime
+			        data structure and once as schema: as a file or database format to be
+			        saved to disk. This was the pain of== _==manual persistence==_==.== Transparent orthogonal persistence was first conceived as a way to avoid this error-prone redundancy, essentially by masking the crash \[KeyKOS, EROS, PJama\]. A process running in such a system proceeds essentially as if no crash had happened. Such a process has an easy immortality, and the original persistence problem is solved.
+			  
+			  ==The== _==upgrade==_ ==problem occurs when we wish our application data
+			        to survive a different kind of trauma -- the upgrade of the code the application
+			        instantiates.== When using manual persistence, the upgrade problem is properly the _==schema evolution==_ ==problem -- to design, along with a new release
+			        of an application, means for converting its persistent schema from an
+			        old representation to the new one.== For example, later releases of an editor typically know how to read documents written by earlier releases.
+			  
+			  However, ==if one uses transparent orthogonal persistence== _==instead==_==of manual persistence, then the entire runtime representation becomes
+			        the schema that needs to evolve.== This amplifies the difficulty of the upgrade problem, often to a fatal extent. Manual persistence provides a source of great leverage for upgrade, and one that's easy to miss: By encoding their representation twice, programmers naturally bring to each encoding those concerns specific to the purpose of that encoding, often without thinking about this dichotomy explicitly.
+			  
+			  _Do you, Programmer,_ 
+			  _take this Object to be part of the persistent state of your application,_ 
+			  _to have and to hold,_ 
+			  _through maintenance and iterations,_ 
+			  _for past and future versions,_ 
+			  _as long as the application shall live?_
+			  
+			  \--Arturo Bejar \[ref StateBundles\]
+			  
+			  Normally, ==we view the design of the runtime representation of our application
+			        as the "real" one, and wish the persistent state to be derived from it.
+			        But as this quote from Arturo suggests, the kind of commitment one needs
+			        to invest in persistent state isn't appropriate for runtime data structures==, and shouldn't be. Runtime data structures are often delicate complex machines in motion, with many complex distributed consistency assumptions between the parts, designed to interact efficiently with an ongoing world of users or devices, and encoding meaning in ways that are largely undocumented. The complexity of this runtime world traditionally relies on the program itself staying constant while the process is executing. 
+			  
+			  By contrast, when programmers design schema for manual persistence, Arturo's question is properly uppermost on their mind. These schema are stable representations designed with little redundancy, few opportunities for distributed inconsistency, with little penalty for inefficient representations, encoding only the essential application state that needs to survive across time, and where this encoding is much more likely to be well documented. Runtime representations emphasize the operational, whereas schema emphasize the declarative.
+			  
+			  Once the customers of an application accumulate their own privately held persistent state from this application, such as their own private documents, then Arturo's question becomes unavoidable. To release a new version of an application without losing old customers, one must enable those customers to revive their old state into an instantiation of the new version of the application reliably -- with no per-instance programmer intervention.
+			  
+			  Smalltalk, with its easy support for live upgrade, is not a counter-example. This support cannot be made reliable, and is instead designed for programmers-as-customers who know how to recover from inconsistencies.
+			  
+			  If the programmers were using only transparent orthogonal persistence to give the application's data long life, then this upgrade problem resembles maintenance on an operational (though suspended) machine whose workings may be largely mysterious. Worse, since upgrades must happen in an automated way on customer data without programmers present, it more closely resembles building an upgrade-robot that will reliably perform this maintenance on any possible state such a machine may be in. With machines of great complexity, the feasible changes will usually only be minor tweaks and adjustments, not major design changes. The difficulty of upgrade will place a severe limit on the speed with which a vendor will be able to improve their program. This kind of persistence indeed provides a process with easy immortality, but only as a living fossil.
+			  
+			  If, on the other hand, the programmers were using manual persistence (whether through foresight, habit, or lack of an alternative), then, when they wish to release a new version, the total number of semantically significant cases in the schema should usually be small enough that they can each be thought about carefully, in order to see how to convert its meaning into the closest appropriate meaning in the application's new version. The upgrade-robot arrives with parameterized blueprints (the new version of the program) for building a new running machine (instantiating a new running process). The schema provides the arguments needed to complete the blueprint. The old machine is scrapped and a new machine is freshly built around these arguments. 
+			  
+			  As another analogy, if the runtime representation is the application instance's phenotype, then the schema is the instance's genotype. Biological evolution works partially because it operates only on the genotype, where a genotype unfolds into the vastly more complex phenotype via the indirect operational process of embryology. Like an ephemeral live process instantiating an application (ie, a vat incarnation), each phenotype operates only from a fixed snapshot of its genotype. Evolution only happens in the transition between generations. While we needn't take these analogies too seriously, they can significantly aid our intuitions.
+			  
+			  Having made the greater initial investment in engineering two representations, the programmers using manual-persistence will then be able to improve their application much faster without losing their customers, perhaps overtaking the head start of the harder-to-evolve but faster time-to-market singly represented alternative.
+			  
+			  The first step in dealing with the schema evolution problem is to mostly avoid the problem by saving vastly smaller schema.
+			  
+			  \*\*\* Basic _**E**_ orientation, including Vats, distributed objects, live refs and SturdyRefs, and object-capability security.
+			  
+			  \*\*\* Assumption of per-vat persistence by _**E**_ computational model.
+			  
+			  \#\#  Manual Revival as Zero-Delta Upgrade
+			  
+			  Note that none of the above discussion assumes that transparent orthogonal persistence and largely manual persistence are exclusive options. A system may well use both: transparent orthogonal persistence to mask crashes efficiently \[KeyKOS, EROS\], and largely manual persistence only when upgrading. A future _**E**_\-on-EROS may very well operate in this mode. In this scenario, performance need not be a goal of the largely manual system.
+			  
+			  In the absence of support for high speed transparent orthogonal persistence, a system may very well use largely manual persistence mechanism for both purposes. Each post-crash revival is then a degenerate zero-delta upgrade: Each revival runs through the upgrade-supporting logic each time, even when no upgrade is actually occurring. The current _**E**_, running on Java running on stock OSes, operates in this mode. Performance therefore should be a goal of _**E**_'s persistence mechanisms, but is not at this time.
+			  
+			  \#\#  Mechanism / Policy Separation
+			  
+			  Of course, by definition, anything a program does is automated, so what do we even mean by "manual" persistence? We are not arguing against automation, abstraction, and reuse. Rather the issue is whether to build a primitively provded inescapable comprehensive solution _vs._ a toolkit of reusable tools from which one can roll one's own solution, or several co-existing ones. When one can design a single solution adequate for the needed range of uses, often one should, as the uniformity of a single comprehensive solution can bring great benefits. When one size doesn't fit all, we should instead turn to the tradition of _mechanism / policy_ separation. A toolkit can serve as the mechanisms out of which one may build a variety of persistence systems embodying a (limited) range of policy choices.
+			  
+			  What we mean by "manual" persistence is that the _**E**_ kernel does not itself provide a primitive persistence system, but rather provides primitive tools out of which persistence systems may be fashioned. The _**E**_ system as a whole does provide a default persistence system built "manually" from these tools, but this has the status of library code rather than fundamental primitives. Multiple such libraries can coexist, and the default one is in no sense special.
+			  
+			  \*\*\* incoherent notes here to the end of this file. Do Not Read \*\*\*\* 
+			  
+			  The tool most central to such a toolkit is a serialization / unserialization system. _**E**_ currently uses Java's serialization streams, which has a rather flexible and mature set of customization hooks for building streams embodying a wide range of serialization policies. Most of the goals of our toolkit are already achieved by Java's serialization design, so this paper proceeds from there.
+			  
+			  Here, we wish to support a range of compromises between the explicitness and separation of concerns of manual persistence _vs._ the economy of expression provided by automating aspects of persistence. Why a range of compromises? Why not try to find one good compromise and just build that? Because there are too many kinds of persistence policies that plausibly need to be supported.
+			  
+			  * What to save/restore _vs._ what to reconstruct _vs._ what to reconnect. (More on this below.)
+			  * Where to save persistent state? Files? Databases?
+			  * When to revive saved state? On process (vat) revival, or faulting on-demand?
+			  * Fail-stop vs. best efforts. When problems are hit, either saving or restoring, should one give up or make due?
+			  * What is a consistent state, and how does one obtain access such a state? Does such a state include messages in flight?
+			  * Transactions: When is a saved state a basis for commitment? How does one abort and fall back to a previous state? As separate subsystems asynchronously snapshot, how is consistency recovered when they revive from different times?  
+			  Faced with such a variety, we use the traditional answer: mechanism / policy separation. We have built persistence support into _**E**_ in two layers:  
+			  A set of building blocks from which an application developer can (within limits) build a persistence system embodying those policies that serve their needs, including a fully manual system if desired. These mechanisms must not allow an unprivileged persistence subsystem from violating any of _**E**_'s security properties, while allowing for operation that's reasonable for a subsystem holding a given set of authorities.
+			  * One example persistence system, built only from these building blocks, embodying a set of policy choices that won't be suitable for all applications, but is nevertheless designed to be widely reused.  
+			  \#\#  7.6\. Persistence and Mutual Suspicion
+			  
+			  ---
+			  
+			  Unless stated otherwise, all text on this page which is either unattributed or by Mark S. Miller is hereby placed in the public domain.
+		- ### Highlights
+		  collapsed:: true
+			- > To achieve this, traditionally, programmers had to encode their application's representations twice -- once as a live runtime data structure and once as schema: as a file or database format to be saved to disk. This was the pain of _manual persistence_. [⤴️](https://omnivore.app/me/persistence-and-upgrade-18ee98ac81e#424acfd1-c2cb-434e-8e56-fed0779ce32d)
+			- > The _upgrade_ problem occurs when we wish our application data to survive a different kind of trauma -- the upgrade of the code the application instantiates. [⤴️](https://omnivore.app/me/persistence-and-upgrade-18ee98ac81e#cb11d24b-f63f-492d-ba8c-d27e374cc3b2)
+			- > When using manual persistence, the upgrade problem is properly the _schema evolution_ problem -- to design, along with a new release of an application, means for converting its persistent schema from an old representation to the new one. [⤴️](https://omnivore.app/me/persistence-and-upgrade-18ee98ac81e#ab321696-59bc-456e-9a7d-f24d474c3cdd)
+			- > For example, later releases of an editor typically know how to read documents written by earlier releases. [⤴️](https://omnivore.app/me/persistence-and-upgrade-18ee98ac81e#8c5dc357-2932-4dc4-898e-c0d557b33674)
+			- > if one uses transparent orthogonal persistence _instead_ of manual persistence, then the entire runtime representation becomes the schema that needs to evolve. [⤴️](https://omnivore.app/me/persistence-and-upgrade-18ee98ac81e#5ff7e3e7-ec94-465c-a917-d6cf877d7e06)
+			- > This amplifies the difficulty of the upgrade problem, often to a fatal extent. [⤴️](https://omnivore.app/me/persistence-and-upgrade-18ee98ac81e#c40813fa-e17a-4e03-94e0-14a6581e6eb2)
+			- > Manual persistence provides a source of great leverage for upgrade, and one that's easy to miss: By encoding their representation twice, programmers naturally bring to each encoding those concerns specific to the purpose of that encoding, often without thinking about this dichotomy explicitly. [⤴️](https://omnivore.app/me/persistence-and-upgrade-18ee98ac81e#ea405d00-3f3b-40f3-bacc-ff0b00f9e4e1)
+			- > we view the design of the runtime representation of our application as the "real" one, and wish the persistent state to be derived from it. But as this quote from Arturo suggests, the kind of commitment one needs to invest in persistent state isn't appropriate for runtime data structures [⤴️](https://omnivore.app/me/persistence-and-upgrade-18ee98ac81e#54fd14ba-997b-47f9-886e-db07396cbe20)
 	- [How to Choose the Right Parameters for Argon2 – Twelve 21](https://omnivore.app/me/how-to-choose-the-right-parameters-for-argon-2-twelve-21-18ec11c593e)
 	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20231019140616/https://www.twelve21.io/how-to-choose-the-right-parameters-for-argon2/)

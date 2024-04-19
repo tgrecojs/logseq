@@ -1,6 +1,16 @@
 ## April 6th
 	- - [[GitHub Clean]]
-	-
+- ### April 14th
+	- [[Dckc x tgrecojs chat]]
+- ### Contract Deployment
+- ### Airdrop Deployment
+	- #### Feedback
+		- The types still don't seem to be working.
+		- Noticed when trying to import `BootstrapPowers
+		- `
+		- See `prepare.js` (`Brand`, `Issuer`, etc. don't seem to be working)
+		-
+		-
 -
 - ### Initial Info
 	- [[Starting info...]]
