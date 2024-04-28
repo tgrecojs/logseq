@@ -1,8 +1,9 @@
 public:: true
+
 - ### Knowledge Base
 	- [[Endo Applications]]
 	- [[Daemon Videos]]
-	- [[Attenuator]]
+	- [[Attenuators]]
 	- [[EventEmitter]]
 	- [[Demo Notes**]]
 -

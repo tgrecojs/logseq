@@ -1,0 +1,11 @@
+- [[04/28/2024]]
+	- TODO Open up issues for FIXME
+		- checkout `dckc:dc-e2e-deployment`
+		- Go through [e2e deployment hacks and fixes by dckc · Pull Request #54 · lari-labs/dapp-ertp-airdrop · GitHub](https://github.com/lari-labs/dapp-ertp-airdrop/pull/54/files)
+	- TODO Akash hours
+		- Go through the issues from the week and use it as a reference for time spent.
+	- TODO Video Prep
+	- ### Week Ahead
+		- TODO Review past week work
+		- TODO success || need improvement
+- tags:: timeblock-calendar, weekly-review

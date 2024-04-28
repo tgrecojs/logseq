@@ -9,6 +9,7 @@
 -
 - ## Strategy
 	- **Deploy airdropCampagin and use an IST, Toy Atom, etc purse to mimic meme token.**
+	- Focus 1 hour towards getting things setup.
 	- Ask cooney for 30 mins to try and deploy this in AM.
 	-
 	- ### Two Contracts
@@ -25,9 +26,5 @@
 		- agoricNames
 		- board
 		- storage
-	- ``
-	-
-- ``
+- tags:: #[[Merkle Airdrop]]
 -
--
-- id:: 66219501-e768-45f4-b7de-4c24b7a552f7

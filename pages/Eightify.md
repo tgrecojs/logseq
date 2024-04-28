@@ -1,3 +1,5 @@
 - [[Eventual Send: JS Support for Promise Pipelining]]
 - [[The Power of JS Generators]]
--
+- [[04/24/2024]]
+	- [[Functional Lenses in JavaScript]]
+	-

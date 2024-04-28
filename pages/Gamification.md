@@ -1,0 +1,25 @@
+- Agoric Airdrop Campaign Thoughts
+	- An airdrop that acts as an invitation for a community of people in the Cosmos.
+	- 0L network was in my mind at the time so i initially was thinking something similar to that but with the inclusion of an entry token.
+	- Initial thoughts
+		- There can be tiers or it can just be one flat fee to enter.
+		- Pass is transferrable
+			- Can lead to secondary market for buying and selling passes.
+		- Initial ideas on possible features / perks
+			- Connecting with others, Networking
+			- Virtual arcade.
+				- airdrop tokens are used as arcade tokens, or can be used to purchase game tokens.
+				- free games with membership. user can pay for access to features (ex. eligible for high score list)
+				- in the spirit of an arcade, games can pay out tickets which can be used to redeem prizes, one of which may be buying back tokens
+			- Prediction markets surrounding development of tech in the ecosystem.
+				- Ex. "What will be the outcome of proposal XYZ"
+				- Tools for getting a temperature check on the community (proposals, project deadlines, etc.)
+		- Community decides the way forward and can use the tokens to vote on the way forward.
+		- Token distribution
+			- can place a larger weight ecosystem commits, or any activities that we might want the target recipient to partake in.
+			- Supply cap should be large enough to cultivate a solid group of people, but scare enough to make the tokens desirable.
+			- If things do work out, and people want to join the community, then the community can vote on an airdrop for a new token redeemable for membership
+				- Initial membership pass holds more weight (genesis members --> silver member --> bronze member)
+		- Write up expressing mission, core values, etc. - lay a foundation for a framework for moving forward as a community.
+		-
+	-

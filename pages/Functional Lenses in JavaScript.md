@@ -1,0 +1,40 @@
+## Videos
+	- {{video https://youtu.be/IoVaArsh6tM?si=_7f-fOZOj0T5DPDD}}
+- ## Summary
+	- ### The use of lenses in JavaScript allows for clean and efficient manipulation of object properties without mutating the original object.
+	- Functional lenses in JavaScript covers the topic of lenses - functional getters and setters from category theory that can bridge the gap between OCaml and JavaScript worlds.
+		- The speaker discusses functional lenses in JavaScript and introduces himself as Flavio Corpa, a Spanish individual.
+		- Front-end developer, lead engineer, and instructor on Egghead.io, not a native English speaker.
+		- The speaker discusses screencasts about JavaScript, React, and emerging technologies, and also mentions being a fan of functional programming and learning the new language Reason.
+		- JavaScript can be used as a bridge between the OCaml and JavaScript worlds, with lenses being functional getters and setters that come from category theory and can be implemented in JavaScript.
+	- Functional lenses in JavaScript provide control over side effects, laziness, and types, making it a natural fit for functional languages, and the speaker discusses implementing lenses and the usefulness of carrying functions in functional programming languages.
+		- Functional lenses in JavaScript allow for persistent data structures and control over side effects, laziness, and types, making it a natural fit for functional languages.
+		- The speaker discusses implementing lenses in JavaScript and the usefulness of carrying functions in functional programming languages.
+		- The carry function in JavaScript allows for easy currying of functions by checking the number of arguments and either calling the function or returning a unary function with a recursive call.
+	- Lenses in JavaScript allow for easy composition and extension of objects without mutation, using spread operator syntax and lambda functions.
+		- The speaker explains the implementation of lenses in JavaScript and provides examples for those unfamiliar with them.
+		- The spread operator syntax in JavaScript allows for easy composition and extension of objects without mutating them, and the use of lambda functions and curryfication further enhances the functionality.
+	- Functional lenses in JavaScript enable the reuse and composition of functions for data manipulation, using methods like view, set, and over, and the new import syntax allows for a more organized module system.
+		- Functional lenses in JavaScript allow for the reuse and composition of functions, with methods such as view, set, and over, enabling the manipulation of data within objects.
+		- The speaker discusses creating functional lenses in JavaScript using the lens prop and lens index methods, which work similarly due to the dynamic types of JavaScript.
+		- JavaScript's new import syntax allows for a more organized module system, although it may require some workarounds for browsers that do not natively support it.
+	- Use named exports in JavaScript to implement functions over an object, including creating prop names for reading and modifying object properties, and using mapping functions for strings and numbers.
+		- Import and use named exports in JavaScript to implement functions over an object with ID 1 and name foo.
+		- The speaker discusses functional lenses in JavaScript, including creating a prop name for reading and modifying object properties, using mapping functions for strings and numbers, and the improvements in JavaScript since 2015.
+	- Functional lenses in JavaScript allow for easy manipulation of nested objects without mutating the original object, embracing immutability and the open-closed principle.
+		- Functional lenses in JavaScript allow for reading, setting, and manipulating object properties without mutating the original object.
+		- Using TypeScript doesn't prevent you from writing ugly code with nested checks to manipulate deeply nested objects in JavaScript.
+		- Lenses in JavaScript can be used to manipulate and use slices of a large object without mutating the original object.
+		- Lenses in JavaScript allow for easy manipulation of nested objects, embracing immutability and the open-closed principle.
+		- Immutable data structures and lenses in JavaScript allow for dynamic and composable use cases, making them very useful.
+	- Compose and pipe functions in JavaScript allow for flexible data transformations, including the creation of generic lenses for accessing and modifying object properties.
+		- Compose function in JavaScript allows for the composition of unary functions, including lenses, using reduce or fold right.
+		- Creating generic lenses in JavaScript to compose different functions for accessing and modifying object properties.
+		- Compose and pipe functions in JavaScript allow for different ways of reading and applying transformations to data, with compose being more flexible for composing lenses.
+		- Using functional lenses in JavaScript, we can easily access and manipulate data within a JSON object, allowing us to use conditionals and compose parts of our program.
+		- Lenses in JavaScript can be composed and used for functional programming, but should not be used in production as they are meant for educational purposes only.
+	- Functional programming concepts and libraries like Ramda and Redux are gaining popularity in JavaScript, especially with React, and can be used with TypeScript for additional functionality, including ADTs and scatter lenses.
+		- Functional programming concepts and libraries, such as Ramda and Redux, are becoming increasingly popular in JavaScript, especially with the rise of React, and can be used with TypeScript for additional functionality.
+		- The speaker discusses using TypeScript and the Fpts library for ADTs, as well as the monocle TS library for scatter lenses.
+		- Functional programming specifications for JavaScript, including algebraic data types and various functional programming concepts, are implemented in libraries that are Fantasyland compliant.
+-

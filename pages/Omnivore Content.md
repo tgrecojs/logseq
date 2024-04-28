@@ -1,4 +1,1625 @@
 ## All posts
+	- [We've added JavaScript-native RPC to Cloudflare Workers](https://omnivore.app/me/we-ve-added-java-script-native-rpc-to-cloudflare-workers-18f219b5380)
+	  collapsed:: true
+	  site:: [The Cloudflare Blog](https://blog.cloudflare.com/javascript-native-rpc)
+	  author:: Kenton Varda
+	  date-saved:: [[04/27/2024]]
+	  date-published:: [[04/05/2024]]
+		- ### Content
+		  collapsed:: true
+			- 13 min read
+			  
+			  ![We've added JavaScript-native RPC to Cloudflare Workers](https://proxy-prod.omnivore-image-cache.app/1999x1125,s9aWBIkdx8omOjgL1Pzsh3pSI3LD6SQVt3KRa9dK5K70/https://blog.cloudflare.com/content/images/2024/04/image2-12.png)
+			  
+			  Cloudflare Workers now features a built-in RPC (Remote Procedure Call) system enabling seamless Worker-to-Worker and Worker-to-Durable Object communication, with almost no boilerplate. You just define a class:
+			  
+			  ```scala
+			  export class MyService extends WorkerEntrypoint {
+			  sum(a, b) {
+			    return a + b;
+			  }
+			  }
+			  
+			  ```
+			  
+			  And then you call it:
+			  
+			  ```reasonml
+			  let three = await env.MY_SERVICE.sum(1, 2);
+			  
+			  ```
+			  
+			  No schemas. No routers. Just define methods of a class. Then call them. That's it.
+			  
+			  \#\# But that's not it
+			  
+			  This isn't just any old RPC. We've designed an RPC system so expressive that calling a remote service can feel like using a library – without any need to actually import a library! This is important not just for ease of use, but also security: fewer dependencies means fewer critical security updates and less exposure to supply-chain attacks.
+			  
+			  To this end, here are some of the features of Workers RPC:
+			  
+			  * For starters, you can pass [**Structured Clonable**](https://developer.mozilla.org/en-US/docs/Web/API/Web%5FWorkers%5FAPI/Structured%5Fclone%5Falgorithm\#supported%5Ftypes) **types** as the params or return value of an RPC. (That means that, unlike JSON, Dates just work, and you can even have cycles.)
+			  * You can additionally pass **functions** in the params or return value of other functions. When the other side calls the function you passed to it, they make a new RPC back to you.
+			  * Similarly, you can pass **objects with methods**. Method calls become further RPCs.
+			  * RPC to another Worker (over a Service Binding) usually does not even cross a network. In fact, the other Worker usually runs in the very same thread as the caller, **reducing latency to zero**. Performance-wise, it’s almost as fast as an actual function call.
+			  * When RPC does cross a network (e.g. to a Durable Object), you can invoke a method and then speculatively invoke further methods on the result in a **single network round trip**.
+			  * You can send a **byte stream over RPC**, and the system will automatically stream the bytes with proper flow control.
+			  * All of this is _secure_, based on the **object-capability model**.
+			  * The [protocol](https://github.com/cloudflare/workerd/blob/03629a6553751d3614a8b91926e380213e100d94/src/workerd/io/worker-interface.capnp\#L302) and [implementation](https://github.com/cloudflare/workerd/blob/03629a6553751d3614a8b91926e380213e100d94/src/workerd/api/worker-rpc.c++) are fully open source as part of [workerd](https://github.com/cloudflare/workerd/).
+			  
+			  Workers RPC is a JavaScript-native RPC system. Under the hood, it is built on [Cap'n Proto](https://capnproto.org/rpc.html). However, unlike Cap'n Proto, Workers RPC does not require you to write a schema. (Of course, you can use TypeScript if you like, and we provide tools to help with this.)
+			  
+			  In general, Workers RPC is designed to "just work" using idiomatic JavaScript code, so you shouldn't have to spend too much time looking at docs. We'll give you an overview in this blog post. But if you want to understand the full feature set, [check out the documentation](https://developers.cloudflare.com/workers/runtime-apis/rpc/).
+			  
+			  \#\# Why RPC? (And what is RPC anyway?)
+			  
+			  Remote Procedure Calls (RPC) are a way of expressing communications between two programs over a network. Without RPC, you might communicate using a protocol like HTTP. With HTTP, though, you must format and parse your communications as an HTTP request and response, perhaps designed in [REST](https://en.wikipedia.org/wiki/REST) style. RPC systems try to make communications look like a regular function call instead, as if you were calling a library rather than a remote service. The RPC system provides a "stub" object on the client side which stands in for the real server-side object. When a method is called on the stub, the RPC system figures out how to serialize and transmit the parameters to the server, invoke the method on the server, and then transmit the return value back.
+			  
+			  The merits of RPC have been subject to a great deal of debate. RPC is often accused of committing many of the [fallacies of distributed computing](https://en.wikipedia.org/wiki/Fallacies%5Fof%5Fdistributed%5Fcomputing).
+			  
+			  But this reputation is outdated. When RPC was first invented some 40 years ago, async programming barely existed. We did not have Promises, much less async and await. Early RPC was synchronous: calls would block the calling thread waiting for a reply. At best, latency made the program slow. At worst, network failures would hang or crash the program. No wonder it was deemed "broken".
+			  
+			  Things are different today. We have Promise and async and await, and we can throw exceptions on network failures. We even understand how RPCs can be pipelined so that a chain of calls takes only one network round trip. Many large distributed systems you likely use every day are built on RPC. It works.
+			  
+			  The fact is, RPC fits the programming model we're used to. Every programmer is trained to think in terms of APIs composed of function calls, not in terms of byte stream protocols nor even REST. Using RPC frees you from the need to constantly translate between mental models, allowing you to move faster.
+			  
+			  \#\# Example: Authentication Service
+			  
+			  Here's a common scenario: You have one Worker that implements an application, and another Worker that is responsible for authenticating user credentials. The app Worker needs to call the auth Worker on each request to check the user's cookie.
+			  
+			  This example uses a **Service Binding**, which is a way of configuring one Worker with a private channel to talk to another, without going through a public URL. Here, we have an application Worker that has been configured with a service binding to the Auth worker.
+			  
+			  Before RPC, all communications between Workers needed to use HTTP. So, you might write code like this:
+			  
+			  ```javascript
+			  // OLD STYLE: HTTP-based service bindings.
+			  export default {
+			  async fetch(req, env, ctx) {
+			    // Call the auth service to authenticate the user's cookie.
+			    // We send it an HTTP request using a service binding.
+			  
+			    // Construct a JSON request to the auth service.
+			    let authRequest = {
+			      cookie: req.headers.get("Cookie")
+			    };
+			  
+			    // Send it to env.AUTH_SERVICE, which is our service binding
+			    // to the auth worker.
+			    let resp = await env.AUTH_SERVICE.fetch(
+			        "https://auth/check-cookie", {
+			      method: "POST",
+			      headers: {
+			        "Content-Type": "application/json; charset=utf-8",
+			      },
+			      body: JSON.stringify(authRequest)
+			    });
+			  
+			    if (!resp.ok) {
+			      return new Response("Internal Server Error", {status: 500});
+			    }
+			  
+			    // Parse the JSON result.
+			    let authResult = await resp.json();
+			  
+			    // Use the result.
+			    if (!authResult.authorized) {
+			      return new Response("Not authorized", {status: 403});
+			    }
+			    let username = authResult.username;
+			  
+			    return new Response(`Hello, ${username}!`);
+			  }
+			  }
+			  
+			  ```
+			  
+			  Meanwhile, your auth server might look like:
+			  
+			  ```reasonml
+			  // OLD STYLE: HTTP-based auth server.
+			  export default {
+			  async fetch(req, env, ctx) {
+			    // Parse URL to decide what endpoint is being called.
+			    let url = new URL(req.url);
+			    if (url.pathname == "/check-cookie") {
+			      // Parse the request.
+			      let authRequest = await req.json();
+			  
+			      // Look up cookie in Workers KV.
+			      let cookieInfo = await env.COOKIE_MAP.get(
+			          hash(authRequest.cookie), "json");
+			  
+			      // Construct the response.
+			      let result;
+			      if (cookieInfo) {
+			        result = {
+			          authorized: true,
+			          username: cookieInfo.username
+			        };
+			      } else {
+			        result = { authorized: false };
+			      }
+			  
+			      return Response.json(result);
+			    } else {
+			      return new Response("Not found", {status: 404});
+			    }
+			  }
+			  }
+			  
+			  ```
+			  
+			  This code has a lot of boilerplate involved in setting up an HTTP request to the auth service. With RPC, we can instead express this as a function call:
+			  
+			  ```javascript
+			  // NEW STYLE: RPC-based service bindings
+			  export default {
+			  async fetch(req, env, ctx) {
+			    // Call the auth service to authenticate the user's cookie.
+			    // We invoke it using a service binding.
+			    let authResult = await env.AUTH_SERVICE.checkCookie(
+			        req.headers.get("Cookie"));
+			  
+			    // Use the result.
+			    if (!authResult.authorized) {
+			      return new Response("Not authorized", {status: 403});
+			    }
+			    let username = authResult.username;
+			  
+			    return new Response(`Hello, ${username}!`);
+			  }
+			  }
+			  
+			  ```
+			  
+			  And the server side becomes:
+			  
+			  ```scala
+			  // NEW STYLE: RPC-based auth server.
+			  import { WorkerEntrypoint } from "cloudflare:workers";
+			  
+			  export class AuthService extends WorkerEntrypoint {
+			  async checkCookie(cookie) {
+			    // Look up cookie in Workers KV.
+			    let cookieInfo = await this.env.COOKIE_MAP.get(
+			        hash(cookie), "json");
+			  
+			    // Return result.
+			    if (cookieInfo) {
+			      return {
+			        authorized: true,
+			        username: cookieInfo.username
+			      };
+			    } else {
+			      return { authorized: false };
+			    }
+			  }
+			  }
+			  
+			  ```
+			  
+			  This is a pretty nice simplification… but we can do much more!
+			  
+			  \#\#\# Let's get fancy! Or should I say… classy?
+			  
+			  Let's say we want our auth service to do a little more. Instead of just checking cookies, it provides a whole API around user accounts. In particular, it should let you:
+			  
+			  * Get or update the user's profile info.
+			  * Send the user an email notification.
+			  * Append to the user's activity log.
+			  
+			  But, these operations should only be allowed after presenting the user's credentials.
+			  
+			  Here's what the server might look like:
+			  
+			  ```javascript
+			  import { WorkerEntrypoint, RpcTarget } from "cloudflare:workers";
+			  
+			  // `User` is an RPC interface to perform operations on a particular
+			  // user. This class is NOT exported as an entrypoint; it must be
+			  // received as the result of the checkCookie() RPC.
+			  class User extends RpcTarget {
+			  constructor(uid, env) {
+			    super();
+			  
+			    // Note: Instance members like these are NOT exposed over RPC.
+			    // Only class (prototype) methods and properties are exposed.
+			    this.uid = uid;
+			    this.env = env;
+			  }
+			  
+			  // Get/set user profile, backed by Worker KV.
+			  async getProfile() {
+			    return await this.env.PROFILES.get(this.uid, "json");
+			  }
+			  async setProfile(profile) {
+			    await this.env.PROFILES.put(this.uid, JSON.stringify(profile));
+			  }
+			  
+			  // Send the user a notification email.
+			  async sendNotification(message) {
+			    let addr = await this.env.EMAILS.get(this.uid);
+			    await this.env.EMAIL_SERVICE.send(addr, message);
+			  }
+			  
+			  // Append to the user's activity log.
+			  async logActivity(description) {
+			    // (Please excuse this somewhat problematic implementation,
+			    // this is just a dumb example.)
+			    let timestamp = new Date().toISOString();
+			    await this.env.ACTIVITY.put(
+			        `${this.uid}/${timestamp}`, description);
+			  }
+			  }
+			  
+			  // Now we define the entrypoint service, which can be used to
+			  // get User instances -- but only by presenting the cookie.
+			  export class AuthService extends WorkerEntrypoint {
+			  async checkCookie(cookie) {
+			    // Look up cookie in Workers KV.
+			    let cookieInfo = await this.env.COOKIE_MAP.get(
+			        hash(cookie), "json");
+			  
+			    if (cookieInfo) {
+			      return {
+			        authorized: true,
+			        user: new User(cookieInfo.uid, this.env),
+			      };
+			    } else {
+			      return { authorized: false };
+			    }
+			  }
+			  }
+			  
+			  ```
+			  
+			  Now we can write a Worker that uses this API while displaying a web page:
+			  
+			  ```javascript
+			  export default {
+			  async fetch(req, env, ctx) {
+			    // `using` is a new JavaScript feature. Check out the
+			    // docs for more on this:
+			    // https://developers.cloudflare.com/workers/runtime-apis/rpc/lifecycle/
+			    using authResult = await env.AUTH_SERVICE.checkCookie(
+			        req.headers.get("Cookie"));
+			    if (!authResult.authorized) {
+			      return new Response("Not authorized", {status: 403});
+			    }
+			  
+			    let user = authResult.user;
+			    let profile = await user.getProfile();
+			  
+			    await user.logActivity("You visited the site!");
+			    await user.sendNotification(
+			        `Thanks for visiting, ${profile.name}!`);
+			  
+			    return new Response(`Hello, ${profile.name}!`);
+			  }
+			  }
+			  
+			  ```
+			  
+			  Finally, this worker needs to be configured with a service binding pointing at the AuthService class. Its wrangler.toml may look like:
+			  
+			  ```ini
+			  name = "app-worker"
+			  main = "./src/app.js"
+			  
+			  \# Declare a service binding to the auth service.
+			  [[services]]
+			  binding = "AUTH_SERVICE"    \# name of the binding in `env`
+			  service = "auth-service"    \# name of the worker in the dashboard
+			  entrypoint = "AuthService"  \# name of the exported RPC class
+			  
+			  ```
+			  
+			  \#\#\# Wait, how?
+			  
+			  What exactly happened here? The Server created an instance of the class User and returned it to the client. It has methods that the client can then just call? Are we somehow transferring code over the wire?
+			  
+			  No, absolutely not! All code runs strictly in the [isolate](https://developers.cloudflare.com/workers/reference/how-workers-works/\#isolates) where it was originally loaded. What actually happens is, when the return value is passed over RPC, all class instances are replaced with RPC stubs. The stub, when called, makes a new RPC back to the server, where it calls the method on the original User object that was created there:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/1999x1000,s25325aO18hjGx0x9n3YcpA98EcFlv5i6ODEcsthtCbo/https://blog.cloudflare.com/content/images/2024/04/image1-8.png)
+			  
+			  But then you might ask: how does the RPC stub know what methods are available? Is a list of methods passed over the wire?
+			  
+			  In fact, no. The RPC stub is a special object called a "[Proxy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global%5FObjects/Proxy)". It implements a "wildcard method", that is, it appears to have an infinite number of methods of every possible name. When you try to call a method, the name you called is sent to the server. If the original object has no such method, an exception is thrown.
+			  
+			  \#\#\# Did you spot the security?
+			  
+			  In the above example, we see that RPC is easy to use. We made an object! We called it! It all just felt natural, like calling a local API! Hooray!
+			  
+			  But there's another extremely important property that the AuthService API has which you may have missed: **As designed, you cannot perform any operation on a user without first checking the cookie.** This is true despite the fact that the individual method calls do not require sending the cookie again, and the User object itself doesn't store the cookie.
+			  
+			  The trick is, the initial checkCookie() RPC is what returns a User object in the first place. The AuthService API does not provide any other way to obtain a User instance. The RPC client cannot create a User object out of thin air, and cannot call methods of an object without first explicitly receiving a reference to it.
+			  
+			  This is called capability-based security: we say that the User reference received by the client is a "capability", because receiving it grants the client the ability to perform operations on the user. The getProfile() method grants this capability only when the client has presented the correct cookie.
+			  
+			  Capability-based security is often like this: security can be woven naturally into your APIs, rather than feel like an additional concern bolted on top.
+			  
+			  \#\#\# More security: Named entrypoints
+			  
+			  Another subtle but important detail to call out: in the above example, the auth service's RPC API is exported as a named class:
+			  
+			  ```scala
+			  export class AuthService extends WorkerEntrypoint {
+			  
+			  ```
+			  
+			  And in our wrangler.toml for the calling worker, we had to specify an "entrypoint", matching the class name:
+			  
+			  ```dockerfile
+			  entrypoint = "AuthService"  \# name of the exported RPC class
+			  
+			  ```
+			  
+			  In the past, service bindings would bind to the "default" entrypoint, declared with export default {. But, the default entrypoint is also typically exposed to the Internet, e.g. automatically mapped to a hostname under workers.dev (unless you explicitly turn that off). It can be tricky to safely assume that requests arriving at this entrypoint are in any way trusted.
+			  
+			  With named entrypoints, this all changes. A named entrypoint is only accessible to Workers which have explicitly declared a binding to it. By default, only Workers on your own account can declare such bindings. Moreover, the binding must be declared at deploy time; a Worker cannot create new service bindings at runtime.
+			  
+			  Thus, you can trust that requests arriving at a named entrypoint can only have come from Workers on your account and for which you explicitly created a service binding. In the future, we plan to extend this pattern further with the ability to lock down entrypoints, audit which Workers have bindings to them, tell the callee information about who is calling at runtime, and so on. With these tools, there is no need to write code in your app itself to authenticate access to internal APIs; the system does it for you.
+			  
+			  \#\#\# What about type safety?
+			  
+			  Workers RPC works in an entirely dynamically-typed way, just as JavaScript itself does. But just as you can apply TypeScript on top of JavaScript in general, you can apply it to Workers RPC.
+			  
+			  The [@cloudflare/workers\-types package](https://www.npmjs.com/package/@cloudflare/workers-types) defines the type `Service<MyEntrypointType>`, which describes the type of a service binding. `MyEntrypointType` is the type of your server-side interface. `Service<MyEntrypointType>` applies all the necessary transformations to turn this into a client-side type, such as converting all methods to async, replacing functions and `RpcTargets` with (properly-typed) stubs, and so on.
+			  
+			  It is up to you to share the definition of `MyEntrypointType` between your server app and its clients. You might do this by defining the interface in a separate shared TypeScript file, or by extracting a `.d.ts` type declaration file from your server code using [tsc \--declaration](https://www.typescriptlang.org/tsconfig/\#declaration).
+			  
+			  With that done, you can apply types to your client:
+			  
+			  ```scala
+			  import { WorkerEntrypoint } from "cloudflare:workers";
+			  
+			  // The interface that your server-side entrypoint implements.
+			  // (This would probably be imported from a .d.ts file generated
+			  // from your server code.)
+			  declare class MyEntrypointType extends WorkerEntrypoint {
+			  sum(a: number, b: number): number;
+			  }
+			  
+			  // Define an interface Env specifying the bindings your client-side
+			  // worker expects.
+			  interface Env {
+			  MY_SERVICE: Service<MyEntrypointType>;
+			  }
+			  
+			  // Define the client worker's fetch handler with typed Env.
+			  export default <ExportedHandler<Env>> {
+			  async fetch(req, env, ctx) {
+			    // Now env.MY_SERVICE is properly typed!
+			    const result = await env.MY_SERVICE.sum(1, 2);
+			    return new Response(result.toString());
+			  }
+			  }
+			  
+			  ```
+			  
+			  \#\# RPC to Durable Objects
+			  
+			  [Durable Objects](https://developers.cloudflare.com/durable-objects/) allow you to create a "named" worker instance somewhere on the network that multiple other workers can then talk to, in order to coordinate between them. Each Durable Object also has its own private on-disk storage where it can store state long-term.
+			  
+			  Previously, communications with a Durable Object had to take the form of HTTP requests and responses. With RPC, you can now just declare methods on your Durable Object class, and call them on the stub. One catch: to opt into RPC, you must declare your Durable Object class with extends DurableObject, like so:
+			  
+			  ```scala
+			  import { DurableObject } from "cloudflare:workers";
+			  
+			  export class Counter extends DurableObject {
+			  async increment() {
+			    // Increment our stored value and return it.
+			    let value = await this.ctx.storage.get("value");
+			    value = (value || 0) + 1;
+			    this.ctx.storage.put("value", value);
+			    return value;
+			  }
+			  }
+			  
+			  ```
+			  
+			  Now we can call it like:
+			  
+			  ```cs
+			  let stub = env.COUNTER_NAMESPACE.get(id);
+			  let value = await stub.increment();
+			  
+			  ```
+			  
+			  `TypeScript` is supported here too, by defining your binding with type `DurableObjectNamespace<ServerType>`:
+			  
+			  ```css
+			  interface Env {
+			  COUNTER_NAMESPACE: DurableObjectNamespace<Counter>;
+			  }
+			  
+			  ```
+			  
+			  \#\#\# Eliding awaits with speculative calls
+			  
+			  When talking to a Durable Object, the object may be somewhere else in the world from the caller. RPCs must cross the network. This takes time: despite our best efforts, we still haven't figured out how to make information travel faster than the speed of light.
+			  
+			  When you have a complex RPC interface where one call returns an object on which you wish to make further method calls, it's easy to end up with slow code that makes too many round trips over the network.
+			  
+			  ```cs
+			  // Makes three round trips.
+			  let foo = await stub.foo();
+			  let baz = await foo.bar.baz();
+			  let corge = await baz.qux[3].corge();
+			  
+			  ```
+			  
+			  Workers RPC features a way to avoid this: If you know that a call will return a value containing a stub, and all you want to do with it is invoke a method on that stub, you can _skip awaiting it_:
+			  
+			  ```nix
+			  // Same thing, only one round trip.
+			  let foo = stub.foo();
+			  let baz = foo.bar.baz();
+			  let corge = await baz.qux[3].corge();
+			  
+			  ```
+			  
+			  Whoa! How does this work?
+			  
+			  RPC methods do not return normal promises. Instead, they return special RPC promises. These objects are "[custom thenables](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global%5FObjects/Promise\#thenables)", which means you can use them in all the ways you'd use a regular Promise, like awaiting it or calling .then() on it.
+			  
+			  But an RPC promise is more than just a thenable. It is also a proxy. Like an RPC stub, it has a wildcard property. You can use this to express speculative RPC calls on the eventual result, before it has actually resolved. These speculative calls will be sent to the server immediately, so that they can begin executing as soon as the first RPC has finished there, before the result has actually made its way back over the network to the client.
+			  
+			  This feature is also known as "Promise Pipelining". Although it isn't explicitly a security feature, it is commonly provided by object-capability RPC systems like Cap'n Proto.
+			  
+			  \#\# The future: Custom Bindings Marketplace?
+			  
+			  For now, Service Bindings and Durable Objects only allow communication between Workers running on the same account. So, RPC can only be used to talk between your own Workers.
+			  
+			  But we'd like to take it further.
+			  
+			  We have previously explained [why Workers environments contain live objects](https://blog.cloudflare.com/workers-environment-live-object-bindings), also known as "bindings". But today, only Cloudflare can add new binding types to the Workers platform – like Queues, KV, or D1\. But what if _anyone_ could invent their own binding type, and give it to other people?
+			  
+			  Previously, we thought this would require creating a way to automatically load client libraries into the calling Workers. That seemed scary: it meant using someone's binding would require trusting their code to run inside your isolate. With RPC, there's no such trust. The binding only sees exactly what you explicitly pass to it. It cannot compromise the rest of your Worker.
+			  
+			  Could Workers RPC provide the basis for a "bindings marketplace", where people can offer rich JavaScript APIs to each other in an easy and secure way? We're excited to explore and find out.
+			  
+			  \#\# Try it now
+			  
+			  Workers RPC is available today for all Workers users. To get started, [check out the docs](https://developers.cloudflare.com/workers/runtime-apis/rpc/).
+			  
+			  We protect [entire corporate networks](https://www.cloudflare.com/network-services/), help customers build [Internet-scale applications efficiently](https://workers.cloudflare.com/), accelerate any [website or Internet application](https://www.cloudflare.com/performance/accelerate-internet-applications/), [ward off DDoS attacks](https://www.cloudflare.com/ddos/), keep [hackers at bay](https://www.cloudflare.com/application-security/), and can help you on [your journey to Zero Trust](https://www.cloudflare.com/products/zero-trust/).
+			  
+			  Visit [1.1.1.1](https://one.one.one.one/) from any device to get started with our free app that makes your Internet faster and safer.
+			  
+			  To learn more about our mission to help build a better Internet, [start here](https://www.cloudflare.com/learning/what-is-cloudflare/). If you're looking for a new career direction, check out [our open positions](http://www.cloudflare.com/careers).
+			  
+			  [Developer Week](https://blog.cloudflare.com/tag/developer-week)[Developers](https://blog.cloudflare.com/tag/developers)[Cloudflare Workers](https://blog.cloudflare.com/tag/workers)
+	- [Prediction Markets Need Trial & Error - by Robin Hanson](https://omnivore.app/me/prediction-markets-need-trial-error-by-robin-hanson-18f098fee0a)
+	  collapsed:: true
+	  site:: [Overcoming Bias](https://www.overcomingbias.com/p/prediction-markets-need-experimentationhtml)
+	  author:: Robin Hanson
+	  date-saved:: [[04/23/2024]]
+	  date-published:: [[05/15/2022]]
+		- ### Content
+		  collapsed:: true
+			- \#\#\#\# Discover more from Overcoming Bias
+			  
+			  This is a blog on why we believe and do what we do, why we pretend otherwise, how we might do better, and what our descendants might do, if they don't all die.
+			  
+			  Over 17,000 subscribers
+			  
+			  We economists have a pretty strong consensus on a few key points: 1) innovation is the main cause of long-term economic growth, 2) social institutions are a key changeable determinant of social outcomes, and 3) inducing the collection and aggregation of info is one of the key functions of social institutions. In addition, better institutional-methods for collecting and aggregating info (ICAI) could help with the key meta-problems of making all other important choices, including the choice of our other institutions, especially institutions to promote innovation. Together all these points suggest that one of the best ways that we today could help the future is to innovate better ICAI.
+			  
+			  After decades pondering the topic, I’ve concluded that prediction markets (and closely related techs) are our most promising candidate for a better ICAI; they are relatively simple and robust with a huge range of potential high-value applications. But, alas, they still need more tests and development before wider audiences can be convinced to adopt them.
+			  
+			  The usual (good) advice to innovators is to develop a new tech first in the application areas where it can attract the highest total customer revenue, and also where customer value can pay for the highest unit costs. As the main direct value of ICAI is to advise decisions, we should thus seek the body of customers most willing to pay money for better decisions, and then focus, when possible, on their highest-value versions.
+			  
+			  Compared to charities, governments, and individuals, for-profit firms are more used to paying money for things that they value, including decision advice. And the decisions of such firms encompass a large fraction, perhaps most, of the decision value in our society. This suggests that we should seek to develop and test prediction markets first in the context of typical decisions of ordinary business, slanted when possible toward their highest value decisions.
+			  
+			  The customer who would plausibly pay the most here is the decision maker seeing related info, not those who want to lobby for particular decisions, nor those who want to brag about how accurate is their info. And they will usually prefer ways to elicit advice from their associates, instead of from distant curated panels of advisors.
+			  
+			  We have so far seen dozens of efforts to use prediction markets to advise decisions inside ordinary firms. Typically, users are satisfied and feel included, costs are modest, and market estimates are similarly or substantially more accurate than other available estimates. Even so, experiments typically end within a few years, often due to political disruption. For example, market estimates can undermine manager excuses (e.g., “we missed the deadline due to a rare unexpected last-minute problem”), and managers dislike seeing their public estimates beaten by market estimates.
+			  
+			  Here’s how to understand this: “Innovation matches elegant ideas to messy details.” While general thinkers can identify and hone the elegant ideas, the messy details must usually come from context-dependent trial and error. So for prediction markets, we must search in the space of detailed context-dependent ways to structure and deploy them, to find variations that cut their disruptions. First find variations that work in smaller contexts, then move up to larger trials. This seems feasible, as we’ve already done so for other potentially-politically-disruptive ICAI, such as cost-accounting, AB-tests, and focus groups.
+			  
+			  Note that, being atheoretical and context-dependent, this needed experimentation poorly supports academic publications, making academics less interested. Nor can these experiments be enabled merely with money; they crucially need one or more organizations willing to be disrupted by many often-disruptive trials.
+			  
+			  Ideally those who oversee this process would be flexible, willing and able as needed to change timescales, topics, participants, incentives, and who-can-see-what structures. An d such trials should be done where those in the org feel sufficiently free to express their aversion to political disruption, to allow the search process to learn to avoid it. Alas, I have so far failed to persuade any organizations to host or fund such experimentation.
+			  
+			  This is my best guess for the most socially valuable way to spend \~<$1M. Prediction markets offer enormous promise to realize vast social value, but it seems that promise will remain only potential until someone undertakes the small-scale experiments needed to find the messy details to match its elegant ideas. Will that be you?
+	- [Perpetual Futures: What They Are and How They Work](https://omnivore.app/me/perpetual-futures-what-they-are-and-how-they-work-18efd35a0e3)
+	  collapsed:: true
+	  site:: [Investopedia](https://www.investopedia.com/what-are-perpetual-futures-7494870)
+	  author:: Adam Hayes
+	  date-saved:: [[04/20/2024]]
+	  date-published:: [[10/25/2023]]
+		- ### Content
+		  collapsed:: true
+			- These Contracts Allow Traders to Hold Positions Indefinitely
+			  
+			  Perpetual futures, also known as perpetual swaps or “perpetuals,” are a type of [derivative contract](https://www.investopedia.com/terms/d/derivative.asp) that allows traders to speculate on the future price of an asset without an [expiration date](https://www.investopedia.com/terms/e/expirationdate.asp). Unlike traditional [futures contracts](https://www.investopedia.com/terms/f/futurescontract.asp), which have a set expiry date, perpetual futures can be held indefinitely.
+			  
+			  ==Perpetual futures are an increasingly popular financial instrument, especially in the world of== ==[cryptocurrency](https://www.investopedia.com/terms/c/cryptocurrency.asp)== ==trading to speculate on cryptocurrencies like== ==[Bitcoin](https://www.investopedia.com/terms/b/bitcoin.asp)== ==and== ==[Ethereum](https://www.investopedia.com/terms/e/ethereum.asp)====, but can also be applied to other assets like commodities and indices. They are popular because they allow a greater degree of leverage, and may be more== ==[liquid](https://www.investopedia.com/terms/l/liquidity.asp)====, than the== ==[spot](https://www.investopedia.com/terms/s/spotmarket.asp)== ==cryptocurrency market.==
+			  
+			  Perpetual futures can be compared with [perpetual options (XPOs)](https://www.investopedia.com/terms/p/perpetual-option.asp), which also lack an expiry date.
+			  
+			  \#\#\# Key Takeaways
+			  
+			  * Perpetual futures are derivative contracts without an expiration date, allowing traders to speculate on asset prices indefinitely.
+			  * Perpetual futures are particularly popular among traders in the cryptocurrency market.
+			  * The funding rate mechanism helps keep perpetual futures prices close to the spot price of the underlying asset.
+			  * Leverage is a key feature of perpetual futures, allowing traders to control larger positions with less capital, but it also comes with increased risk.
+			  
+			  \#\#  Understanding Perpetual Futures 
+			  
+			  Perpetual futures are ==a type of derivative contract that allows traders to speculate on the price movements of an== ==[underlying asset](https://www.investopedia.com/terms/u/underlying-asset.asp)====, without having to own or deliver the asset.== Unlike traditional futures contracts, which have a fixed expiration date and settlement price, perpetual futures have no expiry and are constantly adjusted by a mechanism called the funding rate.1
+			  
+			  Perpetual futures are one of the most popular and liquid instruments in the cryptocurrency market, with more than $100 billion traded daily as of the end of 2022.2 They offer traders several advantages, such as leverage, hedging, and arbitrage opportunities. However, they also involve some risks and challenges, such as over-leveraging, liquidation, and volatility.
+			  
+			  The funding rate mechanism helps to keep the perpetual futures price aligned with the [spot price](https://www.investopedia.com/terms/s/spotprice.asp), as it incentivizes traders to take positions that would bring the two prices closer together. When the perpetual futures price is significantly higher or lower than the spot price, the funding rate can become more substantial, encouraging traders to take the opposite side of the market and reduce the price discrepancy.1  
+			  
+			  \#\#\#  Perpetual Futures and the Funding Rate 
+			  
+			  The funding rate is a mechanism that ensures that the price of the perpetual futures contract stays close to the spot price of the underlying asset. It is a periodic payment exchanged between the buyers (longs) and sellers (shorts) of the contract, based on the difference between the contract price and the spot price, similar in some ways to a [swap contract](https://www.investopedia.com/articles/investing/052915/different-types-swaps.asp).
+			  
+			  The funding rate can be positive or negative, depending on market conditions. When the funding rate is positive, it means that the contract price is higher than the spot price, also known as [contango](https://www.investopedia.com/terms/c/contango.asp). In this case, the longs pay the shorts the funding amount. When the funding rate is negative, it means that the contract price is lower than the spot price, known as [backwardation](https://www.investopedia.com/terms/b/backwardation.asp). In this case, the shorts pay the longs the funding amount.31 
+			  
+			  The funding rate is usually calculated based on a combination of the perpetual contract’s price, the spot price, and an interest rate component. The [interest rate](https://www.investopedia.com/terms/i/interestrate.asp) reflects the cost of borrowing or lending the underlying asset, while the premium index reflects the difference between the contract price and the spot price.
+			  
+			  The formula may also include a cap and a floor to limit the maximum and minimum funding rate possible. It is important to note that the exact formula can vary depending on the specific exchange or platform you are using.
+			  
+			  The funding rate is usually applied every eight hours on most exchanges, but some exchanges may have different intervals. The funding rate is not charged by the exchange, but by the traders themselves. Therefore, it does not affect the profitability of the exchange, but only of the traders.1 
+			  
+			  The funding rate is an important factor to consider when trading perpetual futures, as it can affect your returns and risks. A high positive funding rate can erode your profits if you are [long](https://www.investopedia.com/terms/l/long.asp), while a high negative funding rate can erode your profits if you are [short](https://www.investopedia.com/terms/s/short.asp). Conversely, a low positive funding rate can boost your profits if you are short, while a low negative funding rate can boost your profits if you are long.
+			  
+			  \#\#\#  Main Features of Perpetual Futures 
+			  
+			  1. **No expiration date**: As mentioned earlier, one of the primary features of perpetual futures is the lack of an expiration date. This allows traders to keep their positions open indefinitely, without the need to close or roll over the contract.
+			  2. **Funding rate**: To keep the price of perpetual futures close to the underlying asset’s spot price, a mechanism called the funding rate is used. This rate is paid by one side of the contract to the other, depending on the difference between the perpetual futures price and the spot price.
+			  3. **Leverage**: Perpetual futures enable traders to use [leverage](https://www.investopedia.com/articles/forex/07/forex%5Fleverage.asp), allowing them to control a larger position with a smaller amount of capital. Leverage can amplify both profits and losses, so it’s crucial to [manage risk](https://www.investopedia.com/terms/r/riskmanagement.asp) appropriately.
+			  4. **Margin requirements**: Traders need to maintain a minimum [margin balance](https://www.investopedia.com/terms/m/margin.asp) to keep their positions open. If the balance falls below the maintenance margin requirement, the trader may face liquidation, where their position is closed automatically to prevent further loss.41
+			  
+			  \#\#  Strategies for Trading Perpetual Futures 
+			  
+			  \#\#\#  Speculation 
+			  
+			  This involves taking a long or short position in a perpetual futures contract based on your expectation of the future price direction of the underlying asset.
+			  
+			  For example, if you think that Bitcoin will rise in value, you can buy a Bitcoin perpetual futures contract and profit from the price increase. Conversely, if you think that Bitcoin will fall in value, you can sell a Bitcoin perpetual futures contract and profit from the price decrease.
+			  
+			  [Speculation](https://www.investopedia.com/terms/s/speculation.asp) is a high-risk, potentially high-reward strategy that requires careful analysis and risk management.
+			  
+			  \#\#\#  Trend Following 
+			  
+			  Traders can use [technical analysis](https://www.investopedia.com/terms/t/technicalanalysis.asp) to identify trends in the market and open long or short positions accordingly. This strategy involves following the market’s momentum, entering a position in the direction of the trend, and exiting when the trend reverses.
+			  
+			  \#\#\#  Hedging 
+			  
+			  Perpetual futures can be used to [hedge](https://www.investopedia.com/terms/h/hedge.asp) an existing position in the underlying asset. For example, a trader holding Bitcoin could sell perpetual futures to protect against a potential price drop.
+			  
+			  \#\#\#  Arbitrage 
+			  
+			  Traders can exploit price discrepancies between the perpetual futures market and the spot market to make a profit using a strategy known as [arbitrage](https://www.investopedia.com/terms/a/arbitrage.asp). This involves buying the asset in one market and simultaneously selling it in the other, taking advantage of the price difference.
+			  
+			  Perpetual futures are [settled in cash](https://www.investopedia.com/terms/c/cashsettlement.asp), meaning that no physical delivery of the underlying asset is required.
+			  
+			  \#\#\# Pros and Cons of Perpetual Futures
+			  
+			  Pros
+			  
+			  * They have no expiration date, allowing traders to maintain positions indefinitely.
+			  * They can have greater liquidity compared to the spot market in some cases.
+			  * Leverage allows traders to control larger positions with less capital.
+			  
+			  Cons
+			  
+			  * Leverage can amplify losses as well as profits, increasing the risk.
+			  * Margin requirements and liquidation risks require careful risk management.
+			  * Funding rates can be costly, depending on market conditions.
+			  
+			  \#\# When Did Perpetual Futures First Appear?
+			  
+			  The idea of perpetual futures was first introduced by Robert Shiller in a 1993 paper. The goal was to set up a perpetual claim on the cash flows of an illiquid asset, such as real estate.5
+			  
+			  Perpetual futures first appeared in the cryptocurrency market around 2016\. BitMEX, a cryptocurrency derivatives trading platform, is widely credited with introducing the first perpetual swap contract for Bitcoin.2
+			  
+			  \#\# How Does the Funding Rate on a Perpetual Future Work in Practice?
+			  
+			  The funding rate is applied to the [notional value](https://www.investopedia.com/terms/n/notionalvalue.asp) of a trader’s open position. For example, if a trader has a long position worth $10,000 and the funding rate is +0.01%, they would pay $1 to the short position holders. Similarly, if a trader has a short position worth $10,000 and the funding rate is -0.01%, they would receive $1 from the long position holders.
+			  
+			  In many cases, the funding rate is applied and payments are exchanged every eight hours. In this example, the $1 payment would be made every eight hours (or three times a day) as long as the funding rate and the notional value of the open position remain the same.1
+			  
+			  \#\# Are Perpetual Futures Regulated?
+			  
+			  Regulation for perpetual futures varies depending on the jurisdiction and the exchange offering the product. In some countries, such as the United States, perpetual futures fall under the purview of regulatory authorities like the [Commodity Futures Trading Commission (CFTC)](https://www.investopedia.com/terms/c/cftc.asp).6 However, many cryptocurrency exchanges offering perpetual futures are located in other jurisdictions with more lenient regulations. As a trader, it’s essential to understand the regulatory landscape of the platform you’re using and ensure compliance with local laws.
+			  
+			  \#\#  The Bottom Line 
+			  
+			  Perpetual futures offer a unique opportunity for traders interested in speculating on the future price of assets without the constraints of an expiration date. With features like leverage and no expiry, perpetual futures can be an attractive option for those looking to capitalize on market trends or hedge existing positions.
+			  
+			  However, it’s essential to understand the [risks](https://www.investopedia.com/terms/r/risk.asp) associated with trading perpetual futures, such as leverage and margin requirements, and to employ effective risk management strategies. For traders who are comfortable with these risks and have a good understanding of the mechanics of perpetual futures, this financial instrument can be a valuable addition to their trading arsenal.
+			  
+			  As with any investment, it’s crucial to conduct thorough research and gain a solid understanding of the market before diving into perpetual futures trading.
+			  
+			  Investopedia requires writers to use primary sources to support their work. These include white papers, government data, original reporting, and interviews with industry experts. We also reference original research from other reputable publishers where appropriate. You can learn more about the standards we follow in producing accurate, unbiased content in our[editorial policy.](https://www.investopedia.com/legal-4768893\#EditorialPolicy)
+		- ### Highlights
+		  collapsed:: true
+			- > Perpetual futures, also known as perpetual swaps or “perpetuals,” are a type of [derivative contract](https://www.investopedia.com/terms/d/derivative.asp) that allows traders to speculate on the future price of an asset without an [expiration date](https://www.investopedia.com/terms/e/expirationdate.asp). Unlike traditional [futures contracts](https://www.investopedia.com/terms/f/futurescontract.asp), which have a set expiry date, perpetual futures can be held indefinitely. [⤴️](https://omnivore.app/me/perpetual-futures-what-they-are-and-how-they-work-18efd35a0e3#81c96107-46ce-4e18-80bd-c5b557b8656b)
+			- > a type of derivative contract that allows traders to speculate on the price movements of an [underlying asset](https://www.investopedia.com/terms/u/underlying-asset.asp), without having to own or deliver the asset. [⤴️](https://omnivore.app/me/perpetual-futures-what-they-are-and-how-they-work-18efd35a0e3#11ec0c9d-13a8-4c25-a657-df09addc5b3b)
+	- [Why Foreigners Want U.S. Securities - But Not All the Dollar Exposure - Knowledge at Wharton](https://omnivore.app/me/why-foreigners-want-u-s-securities-but-not-all-the-dollar-exposu-18efa4724c2)
+	  collapsed:: true
+	  site:: [Knowledge@Wharton](https://knowledge.wharton.upenn.edu/article/why-foreigners-want-u-s-securities-but-not-all-the-dollar-exposure/)
+	  author:: Shankar Parameshwaran
+	  date-saved:: [[04/20/2024]]
+	  date-published:: [[01/22/2024]]
+		- ### Content
+		  collapsed:: true
+			- \#\#\#\#\#\#  January 23, 2024 • 8 min read 
+			  
+			  Foreign investors are allocating ever-higher shares of their portfolios to U.S. dollar-denominated securities, but not necessarily because they want to hold U.S. dollars.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/900x612,sOmEhbwCg7P4iRIr2qw6iRYAcL0sunqAtZ4QyQ18-nAo/https://knowledge.wharton.upenn.edu/wp-content/uploads/2024/01/1.24.24-amy-wang-huber-foreign-investors-dollar-GettyImages-1319060327-900x612.jpg)
+			  
+			  The U.S. dollar is the world’s most widely used currency. Yet after analyzing two decades worth of data, experts from Wharton and Columbia find that, while foreign investors want securities denominated in dollars, they do not necessarily want the dollar itself.
+			  
+			  The role that the greenback plays in international portfolios is studied in a paper titled “[Dollar Asset Holding and Hedging Around the Globe](https://papers.ssrn.com/sol3/papers.cfm?abstract%5Fid=4478513),” by Wharton finance professor [Amy Wang Huber](https://knowledge.wharton.upenn.edu/faculty/amy-wang-huber/) and [Wenxin Du](https://business.columbia.edu/faculty/people/wenxin-du), professor of financial institutions at Columbia Business School. (Du was finance professor at Chicago University’s Booth School of Business when she wrote the paper.) The study scores a first in that it sheds light on the composition of dollar asset holdings and hedging patterns.
+			  
+			  “There are various reasons why investors want to hold dollar assets. Our framework in this paper is that of a very rational investor,” said Huber. “When a foreign investor buys a U.S. security, that investor gets two returns: one on the security itself, and one from holding U.S. dollars instead of his local currency. A smart international investor who cares about the overall return as well as the overall risk in a portfolio would hold increasingly more dollar-denominated assets but would also hedge quite a bit of the exchange rate fluctuation.” The study focused on institutional investors, who as “rational investors” would want their portfolios to have the lowest risk and highest return.
+			  
+			  \#\# Trends in Dollar Asset Holdings
+			  
+			  The paper identified three trends in foreign investors’ ownership of dollar assets. First, foreign investors increased their holdings of U.S. dollar (USD) bonds and equities by six-fold from $5.5 billion in 2002 to about $33.4 billion in 2021\. Significantly, a big driver of those increased holdings was a higher portfolio allocation for dollar assets, in addition to growth in the overall size of those portfolios.
+			  
+			  Second, after the financial crisis of 2007–2009, foreign investors increased their USD hedge ratio by 15 percentage points on average, despite higher hedging costs. (The USD hedge ratio is the share of USD assets whose returns are guaranteed to convert to foreign investors’ local currency at pre-determined exchange rates.) The hedge ratios for insurance companies, pension funds, and mutual funds were 44%, 35%, and 21%, respectively, as of 2020, the paper stated. The total hedging demand from those three sectors was nearly $2 trillion annually.
+			  
+			  > “A smart international investor who cares about the overall return as well as the overall risk in a portfolio would hold increasingly more dollar-denominated assets but would also hedge quite a bit of the exchange rate fluctuation.”— Amy Wang Huber
+			  
+			  The study’s third finding is the existence of “considerable heterogeneity,” or wide variations, in the hedging practices across countries and sectors, or in the costs for investors in managing those holdings. That heterogeneity is seen across geographies and between security types. Significantly, foreign investors tend to hedge USD bonds at higher ratios than they hedge their USD equity holdings, the paper noted.
+			  
+			  \#\# Why Foreign Investors Want Dollar Assets, but Not Necessarily the Dollar
+			  
+			  Huber offered an overarching reason why investors like dollar assets: “Dollar assets have been performing really well.” She noted that “realized returns” for U.S. equity over a five-year rolling basis after the 2007 Global Financial Crisis (GFC) have been “very attractive.”
+			  
+			  As to why investors may want to hedge away some of the dollar exposure in their dollar asset holdings, Huber says that “it’s all about the risk-return trade-off.” The return of having dollar exposure is that the dollar tends to appreciate in value, but the risk is that fluctuations in exchange rates can increase the overall risk of the portfolio.
+			  
+			  In their study, Huber and Du analyzed “the empirical covariance,” or correlation, between the return from holding the dollar as currency, and the return that a foreign investor would get by holding their domestic asset, such as local bonds or equity in their specific country. They found that often, the covariance in returns is positive between holding dollars as currency and holding local bonds, such as a German bund. “That is why a European investor will like investing in dollar assets, but they hedge a significant fraction of their dollar exposure,” Huber said.
+			  
+			  \#\# Why Covariance in Returns Matters
+			  
+			  Huber explained how their covariance analysis supported investors’ preference for holding dollar assets. “You don’t like assets that have positive covariance because when one asset does badly, the other asset also does badly. Similarly, when one asset does well, the other asset also does well,” Huber said. “You want negative covariance. When investors construct their portfolio, they like assets that are negatively correlated with each other.”
+			  
+			  In fact, it is not always critical to have negative covariance; it is sufficient to have less positive correlation. “When investors have three types of assets, it doesn’t even matter if they are negatively correlated, as long as two of those assets are less positively correlated than the other. That is because relative to the third asset, the first two are a natural hedge in some sense; they have lower correlation.”
+			  
+			  The covariance trends were mostly consistent over the two decades that the study covered. “Typically, this correlation structure tends to be slow moving; we academics tend to think of it as a stable property,” Huber said. The correlation structure was estimated over the sample period that also included the Great Financial Crisis as well as COVID. “It survived all of those periods,” Huber noted. Her guess is that trend was true also of the years before 2000.
+			  
+			  As for how international investors would be affected by Fitch’s downgrading the U.S. from AAA to AA+ last year, “very little” was Huber’s answer. “Investors react to information. Fitch’s downgrade did not give investors much _new_ information.” She added: “Although foreign demand for U.S. Treasury securities has flatlined in recent years, when looking across other assets, including corporate bonds, dollar-bonds issued abroad, and U.S. equity, international demand for dollar-denominated securities as a whole is robust and growing.”
+			  
+			  > “You don’t like assets that have positive covariance because when one asset does badly, the other asset also does badly…. You want negative covariance.”— Amy Wang Huber
+			  
+			  \#\# Scope of the Study
+			  
+			  The paper cited 2022 data from the U.S. Flow of Funds, which showed that the “Rest of the World” category accounts for about 30% of U.S. Treasury securities and 25% of U.S. corporate bonds. At last count on June 30, 2022, the value of foreign portfolio holdings of U.S. securities was $24,893 billion, according to a [press release](https://home.treasury.gov/news/press-releases/jy1451) from the U.S. Treasury Department; the next survey, covering holdings as of June 2023, will be released in February 2024.
+			  
+			  The authors analyzed data for foreign holdings of USD assets across seven major sectors: the official sector (comprising central banks, sovereign wealth funds, and other public financial agencies), banks, insurance companies, pension funds, mutual funds, the non-financial sector, and hedge funds. In the absence of standardized data sources on investors’ dollar holding and hedging, the authors relied on company filings and industry statistics. The combined foreign holdings across those seven sectors amounted to 75% of [foreign holdings of U.S. assets](https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/shlhistdat.html), and about 60% of total foreign holdings of USD securities.
+			  
+			  The study does not include real estate and infrastructure funds since it is sharply focused on foreign holdings of USD securities. It also does not specifically include Chinese investors in its data set “because it is hard to get data on their holdings,” Huber said. But it does cover Chinese state-owned enterprises and state-owned sovereign wealth funds. “If you believe that most of the Chinese holdings are part of their official sector, they are in our data; we just can’t see that separately,” she continued. The reason for that is the data source that the study used for the official sector does not provide disaggregation. Other investments that fly below the radar are separately managed accounts of ultra-high net-worth individuals, she added.
+			  
+			  \#\# Main Takeaways of the Study
+			  
+			  According to Huber, the paper offered two main takeaways: First, between the pre-GFC and post-GFC periods, on average, the active investors in the sample (mutual funds, pension funds, and insurance companies) increased their portfolio allocation to dollar holding by seven percentage points.
+			  
+			  Second, foreign investors have been hedging “quite a bit” of their dollar exposure. At first sight, that “could be intriguing,” especially since the dollar appreciates during times of crisis. But “what they’re doing \[with their hedging\] is actually right,” Huber said. The hedge ratio would increase along with the increase of USD assets in investor portfolios, she explained. “Investors don’t want to either leave their hedge ratio to be same as before, nor would they hedge completely. What they’re doing is directionally consistent with a focus on risk and growth.”
+			  
+			  One “hedging puzzle” persisted, which is the hedging by investors in countries with low interest-rate currencies, such as Japan or Taiwan. Considering that their expected return from holding dollars as currency would be higher compared to those from high interest-rate countries, “these countries should not hedge too much, but they actually hedge a lot,” Huber said. “That is a puzzle we raise. \[But\] there might be many other considerations that investors have in mind when they decide whether or not they should hedge.”
+			  
+			  \#\#\#\# More From Knowledge at Wharton
+	- [Faster async functions and promises · V8](https://omnivore.app/me/faster-async-functions-and-promises-v-8-18efa045a88)
+	  site:: [v8.dev](https://v8.dev/blog/fast-async)
+	  date-saved:: [[04/20/2024]]
+	  date-published:: [[11/11/2018]]
+	  id:: 662359e1-acb1-45c8-9ebd-5385d667ecaa
+		- ### Content
+			- Published · Tagged with [ECMAScript](https://v8.dev/blog/tags/ecmascript) [benchmarks](https://v8.dev/blog/tags/benchmarks) [presentations](https://v8.dev/blog/tags/presentations)
+			  
+			  Asynchronous processing in JavaScript traditionally had a reputation for not being particularly fast. To make matters worse, debugging live JavaScript applications — in particular Node.js servers — is no easy task, _especially_ when it comes to async programming. Luckily the times, they are a-changin’. This article explores how we optimized async functions and promises in V8 (and to some extent in other JavaScript engines as well), and describes how we improved the debugging experience for async code.
+			  
+			  **Note:** If you prefer watching a presentation over reading articles, then enjoy the video below! If not, skip the video and read on.
+			  
+			  \#\# A new approach to async programming [\#](\#a-new-approach-to-async-programming)
+			  
+			  \#\#\# From callbacks to promises to async functions [\#](\#from-callbacks-to-promises-to-async-functions)
+			  
+			  Before promises were part of the JavaScript language, callback-based APIs were commonly used for asynchronous code, especially in Node.js. Here’s an example:
+			  
+			  ```moonscript
+			  function handler(done) {
+			  validateParams((error) => {
+			    if (error) return done(error);
+			    dbQuery((error, dbResults) => {
+			      if (error) return done(error);
+			      serviceCall(dbResults, (error, serviceResults) => {
+			        console.log(result);
+			        done(error, serviceResults);
+			      });
+			    });
+			  });
+			  }
+			  ```
+			  
+			  The specific pattern of using deeply-nested callbacks in this manner is commonly referred to as _“callback hell”_, because it makes the code less readable and hard to maintain.
+			  
+			  Luckily, now that promises are part of the JavaScript language, the same code could be written in a more elegant and maintainable manner:
+			  
+			  ```javascript
+			  function handler() {
+			  return validateParams()
+			    .then(dbQuery)
+			    .then(serviceCall)
+			    .then(result => {
+			      console.log(result);
+			      return result;
+			    });
+			  }
+			  ```
+			  
+			  Even more recently, JavaScript gained support for [async functions](https://developers.google.com/web/fundamentals/primers/async-functions). The above asynchronous code can now be written in a way that looks very similar to synchronous code:
+			  
+			  ```javascript
+			  async function handler() {
+			  await validateParams();
+			  const dbResults = await dbQuery();
+			  const results = await serviceCall(dbResults);
+			  console.log(results);
+			  return results;
+			  }
+			  ```
+			  
+			  With async functions, the code becomes more succinct, and the control and data flow are a lot easier to follow, despite the fact that the execution is still asynchronous. (Note that the JavaScript execution still happens in a single thread, meaning async functions don’t end up creating physical threads themselves.)
+			  
+			  \#\#\# From event listener callbacks to async iteration [\#](\#from-event-listener-callbacks-to-async-iteration)
+			  
+			  Another asynchronous paradigm that’s especially common in Node.js is that of [ReadableStreams](https://nodejs.org/api/stream.html\#stream%5Freadable%5Fstreams). Here’s an example:
+			  
+			  ```coffeescript
+			  const http = require('http');
+			  http.createServer((req, res) => {
+			  let body = '';
+			  req.setEncoding('utf8');
+			  req.on('data', (chunk) => {
+			    body += chunk;
+			  });
+			  req.on('end', () => {
+			    res.write(body);
+			    res.end();
+			  });
+			  }).listen(1337);
+			  
+			  ```
+			  
+			  This code can be a little hard to follow: the incoming data is processed in chunks that are only accessible within callbacks, and the end-of-stream signaling happens inside a callback too. It’s easy to introduce bugs here when you don’t realize that the function terminates immediately and that the actual processing has to happen in the callbacks.
+			  
+			  Fortunately, a cool new ES2018 feature called [async iteration](http://2ality.com/2016/10/asynchronous-iteration.html) can simplify this code:
+			  
+			  ```javascript
+			  const http = require('http');
+			  http.createServer(async (req, res) => {
+			  try {
+			    let body = '';
+			    req.setEncoding('utf8');
+			    for await (const chunk of req) {
+			      body += chunk;
+			    }
+			    res.write(body);
+			    res.end();
+			  } catch {
+			    res.statusCode = 500;
+			    res.end();
+			  }
+			  }).listen(1337);
+			  
+			  ```
+			  
+			  Instead of putting the logic that deals with the actual request processing into two different callbacks — the `'data'` and the `'end'` callback — we can now put everything into a single async function instead, and use the new `for await…of` loop to iterate over the chunks asynchronously. We also added a `try-catch` block to avoid the `unhandledRejection` problem[\[1\]](\#fn1).
+			  
+			  You can already use these new features in production today! Async functions are **fully supported starting with Node.js 8 (V8 v6.2 / Chrome 62)**, and async iterators and generators are **fully supported starting with Node.js 10 (V8 v6.8 / Chrome 68)**!
+			  
+			  \#\# Async performance improvements [\#](\#async-performance-improvements)
+			  
+			  We’ve managed to improve the performance of asynchronous code significantly between V8 v5.5 (Chrome 55 & Node.js 7) and V8 v6.8 (Chrome 68 & Node.js 10). We reached a level of performance where developers can safely use these new programming paradigms without having to worry about speed.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/600x371,scjbrUsZZZ-V8wTrWYGGligcVsUyx-EjkpqOMG9UCFWU/https://v8.dev/_img/fast-async/doxbee-benchmark.svg)
+			  
+			  The above chart shows the [doxbee benchmark](https://github.com/v8/promise-performance-tests/blob/master/lib/doxbee-async.js), which measures performance of promise-heavy code. Note that the charts visualize execution time, meaning lower is better.
+			  
+			  The results on the [parallel benchmark](https://github.com/v8/promise-performance-tests/blob/master/lib/parallel-async.js), which specifically stresses the performance of [Promise.all()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global%5FObjects/Promise/all), are even more exciting:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/600x371,sqST2H23KA5wSbP9KaGaMA2JKPoTlQnvvss1Aag4oGLQ/https://v8.dev/_img/fast-async/parallel-benchmark.svg)
+			  
+			  We’ve managed to improve `Promise.all` performance by a factor of **8×**.
+			  
+			  However, the above benchmarks are synthetic micro-benchmarks. The V8 team is more interested in how our optimizations affect [real-world performance of actual user code](https://v8.dev/blog/real-world-performance).
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/600x371,s18y0PuT9nAffkQ1FewAnLVlCILaPVYUS4BQZ469odXE/https://v8.dev/_img/fast-async/http-benchmarks.svg)
+			  
+			  The above chart visualizes the performance of some popular HTTP middleware frameworks that make heavy use of promises and `async` functions. Note that this graph shows the number of requests/second, so unlike the previous charts, higher is better. The performance of these frameworks improved significantly between Node.js 7 (V8 v5.5) and Node.js 10 (V8 v6.8).
+			  
+			  These performance improvements are the result of three key achievements:
+			  
+			  * [TurboFan](https://v8.dev/docs/turbofan), the new optimizing compiler 🎉
+			  * [Orinoco](https://v8.dev/blog/orinoco), the new garbage collector 🚛
+			  * a Node.js 8 bug causing `await` to skip microticks 🐛
+			  
+			  When we [launched TurboFan](https://v8.dev/blog/launching-ignition-and-turbofan) in [Node.js 8](https://medium.com/the-node-js-collection/node-js-8-3-0-is-now-available-shipping-with-the-ignition-turbofan-execution-pipeline-aa5875ad3367), that gave a huge performance boost across the board.
+			  
+			  We’ve also been working on a new garbage collector, called Orinoco, which moves garbage collection work off the main thread, and thus improves request processing significantly as well.
+			  
+			  And last but not least, there was a handy bug in Node.js 8 that caused `await` to skip microticks in some cases, resulting in better performance. The bug started out as an unintended spec violation, but it later gave us the idea for an optimization. Let’s start by explaining the buggy behavior:
+			  
+			  **Note:** The following behavior was correct according to the JavaScript spec at the time of writing. Since then, our spec proposal was accepted, and the following "buggy" behavior is now correct.
+			  
+			  ```typescript
+			  const p = Promise.resolve();
+			  (async () => {
+			  await p; console.log('after:await');
+			  })();
+			  
+			  p.then(() => console.log('tick:a'))
+			  .then(() => console.log('tick:b'));
+			  
+			  ```
+			  
+			  ==The above program creates a fulfilled promise== `==p==`==, and== `==await==`==s its result, but also chains two handlers onto it.== In which order would you expect the `console.log` calls to execute?
+			  
+			  ==Since== `==p==` ==is fulfilled, you might expect it to print== `=='after====:====await===='==` ==first and then the== `=='tick===='==`==s.== In fact, that’s the behavior you’d get in Node.js 8:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/960x446,sg4Yb4z0ft6c6MYW9h0rzkD_--mDvXwXSv1sfW7zxLFQ/https://v8.dev/_img/fast-async/await-bug-node-8.svg)
+			  
+			  The `await` bug in Node.js 8
+			  
+			  Although ==this behavior seems intuitive, it’s not correct according to the specification.== Node.js 10 implements the correct behavior, which is to first execute the chained handlers, and only afterwards continue with the async function.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/960x446,snKJMsNL80MdvKJOiHXmmMW4GKIWEvVJW5I3XNgrEgNw/https://v8.dev/_img/fast-async/await-bug-node-10.svg)
+			  
+			  Node.js 10 no longer has the `await` bug
+			  
+			  This _“correct behavior”_ is arguably not immediately obvious, and was actually surprising to JavaScript developers, so it deserves some explanation. Before we dive into the magical world of promises and async functions, let’s start with some of the foundations.
+			  
+			  \#\#\# Tasks vs. microtasks [\#](\#tasks-vs.-microtasks)
+			  
+			  On a high level there are _tasks_ and _microtasks_ in JavaScript. ==Tasks handle events like I/O and timers, and execute one at a time. Microtasks implement deferred execution for== `==async==`==/==`==await==` ==and promises, and execute at the end of each task. The microtask queue is always emptied before execution returns to the event loop.==
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/833x286,sCtdKLezkHV4xCAUCFMwg5kMJDr02yWu9b4HqTWUCU4Q/https://v8.dev/_img/fast-async/microtasks-vs-tasks.svg)
+			  
+			  The difference between microtasks and tasks
+			  
+			  For more details, check out Jake Archibald’s explanation of [tasks, microtasks, queues, and schedules in the browser](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/). The task model in Node.js is very similar.
+			  
+			  According to MDN, ==an async function is a function which operates asynchronously using an implicit promise to return its result.== Async functions are intended to make asynchronous code look like synchronous code, hiding some of the complexity of the asynchronous processing from the developer.
+			  
+			  The simplest possible async function looks like this:
+			  
+			  ```ada
+			  async function computeAnswer() {
+			  return 42;
+			  }
+			  ```
+			  
+			  When called it returns a promise, and you can get to its value like with any other promise.
+			  
+			  ```cpp
+			  const p = computeAnswer();
+			  // → Promise
+			  p.then(console.log);
+			  // prints 42 on the next turn
+			  
+			  ```
+			  
+			  You only get to the value of this promise `p` the next time microtasks are run. In other words, the above program is semantically equivalent to using `Promise.resolve` with the value:
+			  
+			  ```ada
+			  function computeAnswer() {
+			  return Promise.resolve(42);
+			  }
+			  ```
+			  
+			  The real power of async functions comes from `await` expressions, which cause the function execution to pause until a promise is resolved, and resume after fulfillment. The value of `await` is that of the fulfilled promise. Here’s an example showing what that means:
+			  
+			  ```qml
+			  async function fetchStatus(url) {
+			  const response = await fetch(url);
+			  return response.status;
+			  }
+			  ```
+			  
+			  The execution of `fetchStatus` gets suspended on the `await`, and is later resumed when the `fetch` promise fulfills. This is more or less equivalent to chaining a handler onto the promise returned from `fetch`.
+			  
+			  ```arcade
+			  function fetchStatus(url) {
+			  return fetch(url).then(response => response.status);
+			  }
+			  ```
+			  
+			  That handler contains the code following the `await` in the async function.
+			  
+			  Normally you’d pass a `Promise` to `await`, but you can actually wait on any arbitrary JavaScript value. If the value of the expression following the `await` is not a promise, it’s converted to a promise. That means you can `await 42` if you feel like doing that:
+			  
+			  ```javascript
+			  async function foo() {
+			  const v = await 42;
+			  return v;
+			  }
+			  const p = foo();
+			  // → Promise
+			  
+			  p.then(console.log);
+			  // prints `42` eventually
+			  
+			  ```
+			  
+			  More interestingly, `await` works with any [“thenable”](https://promisesaplus.com/), i.e. any object with a `then` method, even if it’s not a real promise. So you can implement funny things like an asynchronous sleep that measures the actual time spent sleeping:
+			  
+			  ```javascript
+			  class Sleep {
+			  constructor(timeout) {
+			    this.timeout = timeout;
+			  }
+			  then(resolve, reject) {
+			    const startTime = Date.now();
+			    setTimeout(() => resolve(Date.now() - startTime),
+			               this.timeout);
+			  }
+			  }
+			  (async () => {
+			  const actualTime = await new Sleep(1000);
+			  console.log(actualTime);
+			  })();
+			  
+			  ```
+			  
+			  Let’s see what V8 does for `await` under the hood, following the [specification](https://tc39.es/ecma262/\#await). Here’s a simple async function `foo`:
+			  
+			  ```javascript
+			  async function foo(v) {
+			  const w = await v;
+			  return w;
+			  }
+			  ```
+			  
+			  When called, it wraps the parameter `v` into a promise and suspends execution of the async function until that promise is resolved. Once that happens, execution of the function resumes and `w` gets assigned the value of the fulfilled promise. This value is then returned from the async function.
+			  
+			  \#\#\# `await` under the hood [\#](\#await-under-the-hood)
+			  
+			  First of all, V8 marks this function as _resumable_, which means that execution can be suspended and later resumed (at `await` points). Then it creates the so-called `implicit_promise`, which is the promise that is returned when you invoke the async function, and that eventually resolves to the value produced by the async function.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/960x470,sndmOuuwLN9OMBRxeF4ASbIhJs7lkJkuWjEBMM9iU_ro/https://v8.dev/_img/fast-async/await-under-the-hood.svg)
+			  
+			  Comparison between a simple async function and what the engine turns it into
+			  
+			  Then comes the interesting bit: the actual `await`. First the value passed to `await` is wrapped into a promise. Then, handlers are attached to this wrapped promise to resume the function once the promise is fulfilled, and execution of the async function is suspended, returning the `implicit_promise` to the caller. Once the `promise` is fulfilled, execution of the async function is resumed with the value `w` from the `promise`, and the `implicit_promise` is resolved with `w`.
+			  
+			  In a nutshell, the initial steps for `await v` are:
+			  
+			  1. Wrap `v` — the value passed to `await` — into a promise.
+			  2. Attach handlers for resuming the async function later.
+			  3. Suspend the async function and return the `implicit_promise` to the caller.
+			  
+			  Let’s go through the individual operations step by step. Assume that the thing that is being `await`ed is already a promise, which was fulfilled with the value `42`. Then the engine creates a new `promise` and resolves that with whatever’s being `await`ed. This does deferred chaining of these promises on the next turn, expressed via what the specification calls a [PromiseResolveThenableJob](https://tc39.es/ecma262/\#sec-promiseresolvethenablejob).
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/814x543,sSFxtdkRi9TGgRpreNBDIuPeV9PlhvD8k5nv20HMs9Lg/https://v8.dev/_img/fast-async/await-step-1.svg)
+			  
+			  Then the engine creates another so-called `throwaway` promise. It’s called _throwaway_ because nothing is ever chained to it — it’s completely internal to the engine. This `throwaway` promise is then chained onto the `promise`, with appropriate handlers to resume the async function. This `performPromiseThen` operation is essentially what [Promise.prototype.then()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global%5FObjects/Promise/then) does, behind the scenes. Finally, execution of the async function is suspended, and control returns to the caller.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/814x543,sAQVNKOvn-Tv-2w1MsCBGRxHI7shUhRrq7FdACtw4aYc/https://v8.dev/_img/fast-async/await-step-2.svg)
+			  
+			  Execution continues in the caller, and eventually the call stack becomes empty. Then the JavaScript engine starts running the microtasks: it runs the previously scheduled [PromiseResolveThenableJob](https://tc39.es/ecma262/\#sec-promiseresolvethenablejob), which schedules a new [PromiseReactionJob](https://tc39.es/ecma262/\#sec-promisereactionjob) to chain the `promise` onto the value passed to `await`. Then, the engine returns to processing the microtask queue, since the microtask queue must be emptied before continuing with the main event loop.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/814x543,sjLDc8ljRa8FtwwurHpKpJpjtG86NYkUqPDxKv-qrFRc/https://v8.dev/_img/fast-async/await-step-3.svg)
+			  
+			  Next up is the [PromiseReactionJob](https://tc39.es/ecma262/\#sec-promisereactionjob), which fulfills the `promise` with the value from the promise we’re `await`ing — `42` in this case — and schedules the reaction onto the `throwaway` promise. The engine then returns to the microtask loop again, which contains a final microtask to be processed.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/814x543,sz1TvYu6y1WsxRyjKyWCGcSTawr5LrCfGiPW8h2JDZDA/https://v8.dev/_img/fast-async/await-step-4-final.svg)
+			  
+			  Now this second [PromiseReactionJob](https://tc39.es/ecma262/\#sec-promisereactionjob) propagates the resolution to the `throwaway` promise, and resumes the suspended execution of the async function, returning the value `42` from the `await`.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/958x465,sE2DjEGKn-Ny8LgcXV6F_0pOBmCAfVFerOA8i4LD2Rn4/https://v8.dev/_img/fast-async/await-overhead.svg)
+			  
+			  Summary of the overhead of `await`
+			  
+			  Summarizing what we’ve learned, for each `await` the engine has to create **two additional** promises (even if the right hand side is already a promise) and it needs **at least three** microtask queue ticks. Who knew that a single `await` expression resulted in _that much overhead_?!
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/451x215,swSGgaqMxyf1MjfIBdcOfsJATQg_7lT8UaGo0gEdIuB0/https://v8.dev/_img/fast-async/await-code-before.svg)
+			  
+			  Let’s have a look at where this overhead comes from. The first line is responsible for creating the wrapper promise. The second line immediately resolves that wrapper promise with the `await`ed value `v`. These two lines are responsible for one additional promise plus two out of the three microticks. That’s quite expensive if `v` is already a promise (which is the common case, since applications normally `await` on promises). In the unlikely case that a developer `await`s on e.g. `42`, the engine still needs to wrap it into a promise.
+			  
+			  As it turns out, there’s already a [promiseResolve](https://tc39.es/ecma262/\#sec-promise-resolve) operation in the specification that only performs the wrapping when needed:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/950x376,spkJW4BzRx_Aij8iLmGLKCmz8iE3VDNtgxeNPXWXa3vM/https://v8.dev/_img/fast-async/await-code-comparison.svg)
+			  
+			  This operation returns promises unchanged, and only wraps other values into promises as necessary. This way you save one of the additional promises, plus two ticks on the microtask queue, for the common case that the value passed to `await` is already a promise. This new behavior is already [enabled by default in V8 v7.2](https://v8.dev/blog/v8-release-72\#async%2Fawait). For V8 v7.1, the new behavior can be enabled using the `--harmony-await-optimization` flag. We’ve [proposed this change to the ECMAScript specification](https://github.com/tc39/ecma262/pull/1250) as well.
+			  
+			  Here’s how the new and improved `await` works behind the scenes, step by step:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/792x545,sPmuR6h_2tKMfi8m2nYZgv1_hCWwB8Ve8naKUPTIZmko/https://v8.dev/_img/fast-async/await-new-step-1.svg)
+			  
+			  Let’s assume again that we `await` a promise that was fulfilled with `42`. Thanks to the magic of [promiseResolve](https://tc39.es/ecma262/\#sec-promise-resolve) the `promise` now just refers to the same promise `v`, so there’s nothing to do in this step. Afterwards the engine continues exactly like before, creating the `throwaway` promise, scheduling a [PromiseReactionJob](https://tc39.es/ecma262/\#sec-promisereactionjob) to resume the async function on the next tick on the microtask queue, suspending execution of the function, and returning to the caller.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/648x548,sL8xY6Rt3-hLPDFWMoPNnFVM5ANs4l47WDu0saH9v6Os/https://v8.dev/_img/fast-async/await-new-step-2.svg)
+			  
+			  Then eventually when all JavaScript execution finishes, the engine starts running the microtasks, so it executes the [PromiseReactionJob](https://tc39.es/ecma262/\#sec-promisereactionjob). This job propagates the resolution of `promise` to `throwaway`, and resumes the execution of the async function, yielding `42` from the `await`.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/956x383,sP0u3uIK3cUSRQiYw-jgcUal1sdwH_RHbFw9zaQsJa1w/https://v8.dev/_img/fast-async/await-overhead-removed.svg)
+			  
+			  Summary of the reduction in `await` overhead
+			  
+			  This optimization avoids the need to create a wrapper promise if the value passed to `await` is already a promise, and in that case we go from a minimum of **three** microticks to just **one** microtick. This behavior is similar to what Node.js 8 does, except that now it’s no longer a bug — it’s now an optimization that is being standardized!
+			  
+			  It still feels wrong that the engine has to create this `throwaway` promise, despite being completely internal to the engine. As it turns out, the `throwaway` promise was only there to satisfy the API constraints of the internal `performPromiseThen` operation in the spec.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/937x198,s0tKybKI3-ADKUg-LO0e3MAuBMSmcnsQ_mqDBs2w750I/https://v8.dev/_img/fast-async/await-optimized.svg)
+			  
+			  This was recently addressed in an [editorial change](https://github.com/tc39/ecma262/issues/694) to the ECMAScript specification. Engines no longer need to create the `throwaway` promise for `await` — most of the time[\[2\]](\#fn2).
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/940x356,sqQRV5c3DMpVic6x572DTqJXF-toti5I13Zya9ywLg-s/https://v8.dev/_img/fast-async/node-10-vs-node-12.svg)
+			  
+			  Comparison of `await` code before and after the optimizations
+			  
+			  Comparing `await` in Node.js 10 to the optimized `await` that’s likely going to be in Node.js 12 shows the performance impact of this change:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/600x371,shooN8URgg3DQDUYf3qzMLQsC66B3zDD55AKtSb01Pwo/https://v8.dev/_img/fast-async/benchmark-optimization.svg)
+			  
+			  **`async`/`await` outperforms hand-written promise code now**. The key takeaway here is that we significantly reduced the overhead of async functions — not just in V8, but across all JavaScript engines, by patching the spec.
+			  
+			  **Update:** As of V8 v7.2 and Chrome 72, `--harmony-await-optimization` is enabled by default. [The patch](https://github.com/tc39/ecma262/pull/1250) to the ECMAScript specification was merged.
+			  
+			  \#\# Improved developer experience [\#](\#improved-developer-experience)
+			  
+			  In addition to performance, JavaScript developers also care about the ability to diagnose and fix problems, which is not always easy when dealing with asynchronous code. [Chrome DevTools](https://developers.google.com/web/tools/chrome-devtools) supports _async stack traces_, i.e. stack traces that not only include the current synchronous part of the stack, but also the asynchronous part:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/877x369,s-Vx14wcO0nM9wpQLgY_9YBMCTOeEP1ELG_7-w3LcRP4/https://v8.dev/_img/fast-async/devtools.png)
+			  
+			  This is an incredibly useful feature during local development. However, this approach doesn’t really help you once the application is deployed. During post-mortem debugging, you’ll only see the `Error\#stack` output in your log files, and that doesn’t tell you anything about the asynchronous parts.
+			  
+			  We’ve recently been working on [_zero-cost async stack traces_](https://bit.ly/v8-zero-cost-async-stack-traces) which enrich the `Error\#stack` property with async function calls. “Zero-cost” sounds exciting, doesn’t it? How can it be zero-cost, when the Chrome DevTools feature comes with major overhead? Consider this example where `foo` calls `bar` asynchronously, and `bar` throws an exception after `await`ing a promise:
+			  
+			  ```javascript
+			  async function foo() {
+			  await bar();
+			  return 42;
+			  }
+			  async function bar() {
+			  await Promise.resolve();
+			  throw new Error('BEEP BEEP');
+			  }
+			  
+			  foo().catch(error => console.log(error.stack));
+			  
+			  ```
+			  
+			  Running this code in Node.js 8 or Node.js 10 results in the following output:
+			  
+			  ```angelscript
+			  $ node index.js
+			  Error: BEEP BEEP
+			    at bar (index.js:8:9)
+			    at process._tickCallback (internal/process/next_tick.js:68:7)
+			    at Function.Module.runMain (internal/modules/cjs/loader.js:745:11)
+			    at startup (internal/bootstrap/node.js:266:19)
+			    at bootstrapNodeJSCore (internal/bootstrap/node.js:595:3)
+			  ```
+			  
+			  Note that although the call to `foo()` causes the error, `foo` is not part of the stack trace at all. This makes it tricky for JavaScript developers to perform post-mortem debugging, independent of whether your code is deployed in a web application or inside of some cloud container.
+			  
+			  The interesting bit here is that the engine knows where it has to continue when `bar` is done: right after the `await` in function `foo`. Coincidentally, that’s also the place where the function `foo` was suspended. The engine can use this information to reconstruct parts of the asynchronous stack trace, namely the `await` sites. With this change, the output becomes:
+			  
+			  ```angelscript
+			  $ node --async-stack-traces index.js
+			  Error: BEEP BEEP
+			    at bar (index.js:8:9)
+			    at process._tickCallback (internal/process/next_tick.js:68:7)
+			    at Function.Module.runMain (internal/modules/cjs/loader.js:745:11)
+			    at startup (internal/bootstrap/node.js:266:19)
+			    at bootstrapNodeJSCore (internal/bootstrap/node.js:595:3)
+			    at async foo (index.js:2:3)
+			  ```
+			  
+			  In the stack trace, the topmost function comes first, followed by the rest of the synchronous stack trace, followed by the asynchronous call to `bar` in function `foo`. This change is implemented in V8 behind the new `--async-stack-traces` flag. **Update**: As of V8 v7.3, `--async-stack-traces` is enabled by default.
+			  
+			  However, if you compare this to the async stack trace in Chrome DevTools above, you’ll notice that the actual call site to `foo` is missing from the asynchronous part of the stack trace. As mentioned before, this approach utilizes the fact that for `await` the resume and suspend locations are the same — but for regular [Promise\#then()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global%5FObjects/Promise/then) or [Promise\#catch()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global%5FObjects/Promise/catch) calls, this is not the case. For more background, see Mathias Bynens’s explanation on [why await beats Promise\#then()](https://mathiasbynens.be/notes/async-stack-traces).
+			  
+			  \#\# Conclusion [\#](\#conclusion)
+			  
+			  We made async functions faster thanks to two significant optimizations:
+			  
+			  * the removal of two extra microticks, and
+			  * the removal of the `throwaway` promise.
+			  
+			  On top of that, we’ve improved the developer experience via [_zero-cost async stack traces_](https://bit.ly/v8-zero-cost-async-stack-traces), which work with `await` in async functions and `Promise.all()`.
+			  
+			  And we also have some nice performance advice for JavaScript developers:
+			  
+			  * favor `async` functions and `await` over hand-written promise code, and
+			  * stick to the native promise implementation offered by the JavaScript engine to benefit from the shortcuts, i.e. avoiding two microticks for `await`.
+			  
+			  ---
+			  
+			  1. Thanks to [Matteo Collina](https://twitter.com/matteocollina) for pointing us to [this issue](https://github.com/mcollina/make-promises-safe/blob/master/README.md\#the-unhandledrejection-problem). [↩︎](\#fnref1)
+			  2. V8 still needs to create the `throwaway` promise if [async\_hooks](https://nodejs.org/api/async%5Fhooks.html) are being used in Node.js, since the `before` and `after` hooks are run within the _context_ of the `throwaway` promise. [↩︎](\#fnref2)
+		- ### Highlights
+		  id:: 662359e1-b250-4c93-bcad-8183782b1153
+			- > The above program creates a fulfilled promise `p`, and `await`s its result, but also chains two handlers onto it. [⤴️](https://omnivore.app/me/faster-async-functions-and-promises-v-8-18efa045a88#2d6adec7-89ae-4585-a407-49bab57b6820)
+			- > Since `p` is fulfilled, you might expect it to print `'after:await'` first and then the `'tick'`s. [⤴️](https://omnivore.app/me/faster-async-functions-and-promises-v-8-18efa045a88#827c4371-4dfe-4fec-947e-e19d98990135)
+			- > this behavior seems intuitive, it’s not correct according to the specification. [⤴️](https://omnivore.app/me/faster-async-functions-and-promises-v-8-18efa045a88#991ffafd-8440-4c5f-9cbf-b66327b1dca1)
+			- > the correct behavior, which is to first execute the chained handlers, and only afterwards continue with the async function. [⤴️](https://omnivore.app/me/faster-async-functions-and-promises-v-8-18efa045a88#89e65f7d-da21-4d44-bdec-2f946f4c89e5)
+			- > Tasks handle events like I/O and timers, and execute one at a time. Microtasks implement deferred execution for `async`/`await` and promises, and execute at the end of each task. The microtask queue is always emptied before execution returns to the event loop. [⤴️](https://omnivore.app/me/faster-async-functions-and-promises-v-8-18efa045a88#6e92b315-a28b-4c4b-a6f6-a97b8894ebfc)
+			- > an async function is a function which operates asynchronously using an implicit promise to return its result. [⤴️](https://omnivore.app/me/faster-async-functions-and-promises-v-8-18efa045a88#11ebb6eb-841e-40ee-b18c-4802b401c0c8)
+	- [Web screenshots as digital assets | Pacific Lane](https://omnivore.app/me/web-screenshots-as-digital-assets-pacific-lane-18ef9e976e9)
+	  collapsed:: true
+	  site:: [Pacific Lane](https://pacific-lane.com/posts/web-screenshots-as-digital-assets/)
+	  date-saved:: [[04/20/2024]]
+		- ### Content
+		  collapsed:: true
+			- Let's imagine that every business today could easily download a free [digital wallet](https://en.wikipedia.org/wiki/Digital%5Fwallet) that instead of storing [cryptocurrency](https://ethereum.org/wallets), stores irrefutable proof of financial facts like:
+			  
+			  1. This transaction is approved by the counterparty
+			  2. This transaction will occur on a specific date
+			  3. This transaction has already occurred & the funds have moved
+			  
+			  What could a business possibly do with such an app?
+			  
+			  A lot, as it turns out.
+			  
+			  Due to the invasive nature of many [invoice factoring](https://en.wikipedia.org/wiki/Factoring%5F%28finance%29), [invoice financing](https://en.wikipedia.org/wiki/Debtor%5Ffinance), and [line of credit](https://en.wikipedia.org/wiki/Line%5Fof%5Fcredit) business relationships; ==when it comes time for a business to apply for funding via one, some, or all of these methods; that business must often "give away the keys to the kingdom" as part of the deal.==
+			  
+			  [NerdWallet](https://www.nerdwallet.com/article/small-business/invoice-factoring) gives some indication of what we are talking about when we describe these relationships as "invasive" and "giving away the keys":
+			  
+			  > Loss of direct control. With invoice factoring, your factoring company works directly with your customers. This means you must trust your factoring company to deal with your customers in a responsible and fair manner, and hope they don’t affect your relationships in a negative way.
+			  
+			  And in [this NerdWallet piece](https://www.nerdwallet.com/article/small-business/invoice-financing), too:
+			  
+			  > To qualify for invoice financing, you should have creditworthy customers who have a history of paying on time. In general, the creditworthiness and reputation of your customers will play a larger role in the underwriting process, making it easier to qualify for invoice financing over other business loan options.
+			  
+			  What those descriptions boil down to in practice today is that businesses applying for funds often create adjunct financial web site login credentials for their funders, or even more common, just let their funders "borrow" their own primary web site login credentials so these benefactors can monitor the stability of things like recurring revenues or the veracity of things like [UCC-1 claims](https://www.wolterskluwer.com/en/expert-insights/the-courts-are-clear-ucc-1s-must-be-authorized-to-be-effective).
+			  
+			  Funders are manually logging into web sites like this _all the time_, so they can see that certain money claimed to be owed really is owed or that certain obligations are likely to be paid. They are doing this for the simple reason that they must satisfy themselves that the transactions attested by the applying business (their prospect or customer) are in fact real.
+			  
+			  These activities of credential borrowing and logging in are usually manual in nature (humans typing at keyboards), often against the terms of service of the web sites themselves, and these days, generally likely to present a seriously interruptive pain in the neck for everyone involved since facilities like [MFA](https://en.wikipedia.org/wiki/Multi-factor%5Fauthentication) are now commonplace and things like [passkeys](https://www.passkeys.com/) (aka _WebAuthn_) are gaining prevalence.
+			  
+			  As for the use of adjunct logins, most [vendor portals](https://en.wikipedia.org/wiki/Enterprise%5Fportal) do not support them and only some banks support them. When it comes to portals, Amazon's [Vendor Central](https://boostontime.com/blog/create-multiple-user-on-amazon-vendor-central/) is one notable exception, since as you can see at the page linked, Amazon has for some time supported multiple users for the same Vendor Central business account. This feature allows a business user's account and their funders' snooping accounts to be kept separate.
+			  
+			  But for the bulk of funder login management, imagine the example of your funder needing to directly access, e.g., your [Target supplier portal](https://target.suppliergateway.com/MyAccount/Login) accounts receivable confirmations or your [Capital One Buiness Banking](https://www.capitalone.com/small-business/bank/) account details every few days or even every day, and pestering you for your latest MFA code every time they trigger one. Such practices are, in fact, commonplace in the world of small and medium-sized business finance.
+			  
+			  And even if funders are given adjunct logins, their prospects and customers then have to self-manage access to the attendant user accounts, e.g., when a funder denies their application or they add or change funding entities. Over time these businesses seeking funds are likely to encounter a host of other headaches ancillary to the straightforward need of the funders simply to verify incoming revenue and other financial facts from customers of their customers.
+			  
+			  It's worth noting at this point that there's a simple reason why businesses can't simply send to funders their own financial [screenshots](https://en.wikipedia.org/wiki/Screenshot) that they snap themselves: **fraud**. There is far too much risk of fabricated or adulterated screenshots showing up within the funders' own customer bases.
+			  
+			  Not only are there [several](https://www.seattletimes.com/business/no-oversight-inside-a-boom-time-startup-fraud-and-its-unraveling/) [recent](https://kildare-nationalist.ie/2024/01/12/two-kildare-men-receive-suspended-sentence-for-invoice-fraud-of-e120k/) [examples](https://bossip.com/1313737/bossip-exclusive-music-producer-teddy-riley-wins-1-9-mill-fraud-suit/) of this happening, it only stands to reason after a little thought. Eventually bad actors spoil the integrity of any well-meaning verification process based on a [circle of trust](http://www.sergiohicke.com/blog/the-circle-of-trust-how-do-you-give-trust) and common decency. Like Al Pacino said in that mediocre 2002 movie [S1m0ne](https://en.wikipedia.org/wiki/Simone%5F%282002%5Ffilm%29), _our ability to manufacture fraud now exceeds our ability to detect it._
+			  
+			  But must it always?
+			  
+			  Let's take a step back and be prepared to breathe a sigh of relief. It looks like, thank goodness, a promising new tool is coming online that holds the potential to provide a fundamentally better way for small and medium-sized businesses to prove what's true without having to engage in one giant [kludge](https://en.wikipedia.org/wiki/Kludge) made up of myriad manual web site logins.
+			  
+			  Ironically, but perhaps unsurprisingly, this tool is being underwritten by the fraud-ridden cryptocurrency sector. We should definitely look past that fact though, and leverage just the new technical capabilities coming down the pike. As we'll see, doing so will let us in theory serve [all the businesses that need reliable funding](https://www.finder.com/business-loans/business-loan-statistics), and in [scalable](https://en.wikipedia.org/wiki/Scalability) ways.
+			  
+			  Let's take look at [TLSNotary](https://tlsnotary.org/).
+			  
+			  ---
+			  
+			  \#\#\# TLSNotary - What is it?
+			  
+			  **TLSNotary** is an open source project that describes itself this way:
+			  
+			  > Export data from any web application and prove facts about it without compromising on privacy...proofs of authenticity for any data on the web...Using our protocol you can securely prove...You received a money transfer...
+			  
+			  et cetera.
+			  
+			  In truth, TLSNotary picks up where the now deprecated [PageSigner](https://github.com/tlsnotary/PageSigner) Chrome extensions and Firefox addons left off. We're going to start this section by looking at the older PageSigner, because its functionality was very similar to today's TLSNotary such that both projects share an espirit de corps. PageSigner (brought online [c. 2014](https://web.archive.org/web/20141001000000%2A/tlsnotary.org)) described itself like this:
+			  
+			  > PageSigner allows you to "notarize" web pages. Think of it as a cryptographically secure webpage screenshot - it's different from an ordinary screenshot in that it can't be edited in Photoshop; it really proves that you received that data from the server. You can then share that proof with anyone you like.
+			  
+			  That sounds a lot like the TLSNotary description we just referenced above, doesn't it?
+			  
+			  Below is a [demo video from 2015](https://yt.cdaut.de/watch?v=zQXF0iXEBSM) that shows the PageSigner Firefox addon in action. Before you watch it, it's worth noting that back when PageSigner was an active project, it relied on an older protocol _also_ called "TLSNotary." That's why you'll hear reference to TLSNotary in the video, but that act of mentioning is not referring to the same [Rust](https://www.rust-lang.org/)\-based project we'll be discussing further down in this post. Take a look:
+			  
+			  To emphasize the point, _PageSigner_ in its currently archived state is not likely to work very well or work at all today. You probably shouldn't bother with it. The associated browser extensions and addons probably would not even load in any recent version of Chrome or Firefox, and if they did, you would likely encounter a host of blocking issues.
+			  
+			  Instead, let yourself imagine—nay, embrace— what the modern, working version of TLSNotary could do for business financing, once it's ready, with the client either implemented in something like [Tauri](https://tauri.app/) or [Electron](https://www.electronjs.org/), or perhaps as a completely [headless browser](https://en.wikipedia.org/wiki/Headless%5Fbrowser) client that periodically reaches out to those same myriad web sites to grab data, but without requiring the funder to be manually in the mix as an intermediary.
+			  
+			  The resulting "screenshots" (this is an oversimplification, but good enough for the purposes of this post) would be effectively cryptographically signed by the [TLS certificates](https://en.wikipedia.org/wiki/Public%5Fkey%5Fcertificate\#TLS/SSL%5Fserver%5Fcertificate) of the visited web sites themselves, so to the degree funders trust Amazon's TLS certificates (which they most likely do), they should equivalently trust that the screenshots their customers are sending to them are unadulterated, i.e., no one added a nine or a bunch of zeros to the result before sending it along.
+			  
+			  The analogy of a digital [promissory note](https://en.wikipedia.org/wiki/Promissory%5Fnote) is by no means a perfect one, but TLSNotary arguably enables a new strain of cryptographically secure proof that would share some similarities:
+			  
+			  > The term note payable is commonly used in accounting (as distinguished from accounts payable) or commonly as just a "note", it is internationally defined by the Convention providing a uniform law for bills of exchange and promissory notes, but regional variations exist. A banknote is frequently referred to as a promissory note, as it is made by a bank and payable to bearer on demand. Mortgage notes are another prominent example...If the promissory note is unconditional and readily saleable, it is called a negotiable instrument.
+			  
+			  Perhaps it is better to just contend that TLSNotary may soon be enabling a new kind of [digital asset](https://en.wikipedia.org/wiki/Digital%5Fasset) that has nothing to do with cryptocurrency or blockchains, further distinguished from those things by having tangible value, since this asset irrevocably proves some money is on the way from, e.g. Amazon, or that a business really did pay off its previous loan. These digital artifacts, whatever the best name is, should logically be stored in a digital wallet, and then "pulled out" and shown to any funder who wants to see them.
+			  
+			  Hopefully someone will bring a verison of the above into reality, soon after TLSNotary is ready for production.
+		- ### Highlights
+		  collapsed:: true
+			- > when it comes time for a business to apply for funding via one, some, or all of these methods; that business must often "give away the keys to the kingdom" as part of the deal. [⤴️](https://omnivore.app/me/web-screenshots-as-digital-assets-pacific-lane-18ef9e976e9#b9f25eda-913e-43f2-8628-695cd89a0966)
+	- [TLS Oracles: Liberating Private Web Data with Cryptography | by Bastian Wetzel | Apr, 2024 | Medium](https://omnivore.app/me/tls-oracles-liberating-private-web-data-with-cryptography-by-bas-18ef9c7b821)
+	  site:: [Medium](https://bwetzel.medium.com/tls-oracles-liberating-private-web-data-with-cryptography-e66e5fad7c34)
+	  author:: Bastian Wetzel
+	  date-saved:: [[04/20/2024]]
+	  date-published:: [[04/16/2024]]
+	  id:: 662359e1-3b69-43f1-bf61-2e600c194c8b
+	  collapsed:: true
+		- ### Content
+		  collapsed:: true
+			- \#\# TL;DR
+			  
+			  Communications over the Internet are secured by Transport Layer Security (TLS), a widely used security protocol. ==TLS enables privacy protection and data integrity between a client and a server, but it does not allow the client to prove the authenticity of the data to a third party.== This problem could be addressed by having the client authenticate a particular website to pass data directly to a third party website (e.g., Bob could allow his company’s payroll record, which stores verified birth dates, to share data with a third party). However, this would force the client to share more data than necessary (providing the exact birth date instead of the fact that a certain age limit is met), and such a solution would require the addition of new web infrastructures.
+			  
+			  ==Recent work introduces TLS oracles that address this challenge by cryptographically validating the data.== Acting as a bridge between Web2 and Web3, TLS oracles could liberate private web data and facilitate their integration into Web3 smart contracts.
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/700x661,soTcrH_yAv5uWITL_BBryApBcR7Ie9n3RtFgjbaoyAwU/https://miro.medium.com/v2/resize:fit:1400/1*TkMlAxJh3BynvfhxbTpJ2g.png)
+			  
+			  Projects working on TLS Oracles (not comprehensive; as of April 16, 2024)
+			  
+			  The illustration above provides a non-exhaustive overview of projects exploring TLS oracles and complementary services. As the space is still young and rapidly evolving, it’s likely that this illustration could change considerably in just a few months.
+			  
+			  This blog post begins with a brief introduction to TLS, followed by an explanation of TLS oracles and their use cases. Subsequently, it will offer an overview of ongoing research efforts and projects in this field.
+			  
+			  \#\# **Transport Layer Security (TLS)**
+			  
+			  \#\# What is TLS?
+			  
+			  As outlined by [Cloudflare](https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/), ==Transport Layer Security is a widely adopted security protocol designed to ensure privacy and data security in Internet communications.== Its predominant application involves encrypting communication between web applications and servers, such as web browsers accessing websites. ==At the core of TLS there is a process called== ==[TLS handshake](https://www.cloudflare.com/learning/ssl/what-happens-in-a-tls-handshake/)====, in which the server and the client cryptographically secure their communication channel (i.e., when a user accesses a website using TLS, the TLS handshake begins between the user’s device and the web server)==.
+			  
+			  The latest iteration, [TLS 1.3](https://www.cloudflare.com/learning/ssl/why-use-tls-1.3/), was published in 2018.
+			  
+			  \#\# **Why is TLS important?**
+			  
+			  In the past, data was often transmitted unencrypted over the internet. Without TLS, sensitive data such as logins, credit card details and personal information are vulnerable to interception. This vulnerability extends to various online activities, including browsing habits, email exchanges, chats and conference calls. Implementing TLS in client and server applications guarantees the encryption of transmitted data with robust algorithms, protecting it from unauthorized access by third parties.
+			  
+			  \#\# **TLS Oracles**
+			  
+			  As previously mentioned, TLS doesn’t allow a client to prove to a third party that certain data authentically came from a particular website. As a result, data use is often restricted to its point of origin.
+			  
+			  Recent advancements have introduced TLS oracles as a solution to this problem by cryptographically confirming the origin of digital content. As also described by [Ernstberger et al](https://eprint.iacr.org/2024/447.pdf), ==these oracles extend a standard TLS connection with a third party (through a three-party handshake) and ensure that the third party remains unaware of the content exchanged between a client and a server.== The third party acts solely as a verifier, validating the exchanged data. This allows the client to prove that certain data authentically came from a particular website. Using Zero-Knowledge Proofs (ZKPs), the client can optionally prove statements about such data without revealing the data itself. Using the example described in the introduction, Bob could use the company’s payroll account to prove that a certain age requirement is met without revealing the actual date of birth.
+			  
+			  \#\# **Use cases of TLS Oracles**
+			  
+			  TLS oracles enable Web3 dApps to take advantage of data analytics and model intelligence from the traditional Internet economy and enable new use cases such as the following, as also outlined by [PADO Labs](https://docs.padolabs.org/category/use-cases) and [zkPass](https://zkpass.gitbook.io/zkpass/introduction/use-cases):
+			  
+			  * **Identity Verification**: Lightweight and reusable identity verification
+			  * **Social Networking**: Interoperable and composable social graphs
+			  * **Provable Assets**: Privacy-preserving attestation of crypto asset holdings
+			  * **Crypto On & Off Ramps**: Reliable on-ramp and off-ramp with off-chain payment attestations
+			  * **Undercollateralized DeFi Lending Protocol**: DeFi lending protocol combining on-chain and off-chain credit for lower collateralized borrowing opportunities, enhancing capital efficiency
+			  * **Medical and Healthcare**: Facilitating secure and efficient sharing of medical records and health information between patients, healthcare providers, and other stakeholders
+			  * **Insurance Claims**: ZKPs from private data during web sessions for insurance policy eligibility verification, enabling automatic claim settlement without manual review
+			  
+			  \#\# **Projects working on TLS Oracles**
+			  
+			  \#\# **Initial approaches with known limitations**
+			  
+			  ==Initial approaches to TLS oracles have known limitations==, as also mentioned by [Zhang et al](https://dl.acm.org/doi/pdf/10.1145/3372297.3417239). These methods either only work with outdated versions of TLS that do not provide privacy from the oracle (e.g., initial versions of [TLSNotary](https://tlsnotary.org/)), or depend on trusted hardware (e.g., [Town Crier](https://dl.acm.org/doi/pdf/10.1145/2976749.2978326); [zkPortal](https://zkportal.io/)). Other oracles rely on the cooperation of servers and require the installation of TLS extensions (e.g., [TLS-N](https://eprint.iacr.org/2017/578.pdf); [ROSEN](https://dl.acm.org/doi/pdf/10.1145/3474123.3486763)) or changes in the application layer logic (e.g. [draft-cavage-http-signatures-11](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-11); [draft-yasskin-http-origin-signed-responses-05](https://datatracker.ietf.org/doc/html/draft-yasskin-http-origin-signed-responses-05)). Server-supported oracle methods have two main problems. First, they compromise compatibility with the legacy system, which is a major hurdle to widespread adoption. Second, such solutions offer only limited exportability, as web servers retain sole discretion over what data can be exported and can censor export attempts at their own will.
+			  
+			  \#\# **Recent projects where the verifier acts as an external entity**
+			  
+			  One of the earliest contributors to TLS Oracles is [TLSNotary](https://tlsnotary.org/). The TLSNotary protocol consists of 3 steps: ==First, the prover (i.e. client) requests data from a server over TLS while cooperating with the verifier in secure and privacy-preserving Multi-Party Computation (MPC). Second, the prover selectively discloses the data to the verifier. Third, the verifier verifies the data. In 2022, TLSNotary was rebuilt from the ground up.== This renewed version of the TLSNotary protocol offers enhanced security, privacy, and performance. It currently supports TLS 1.2\. TLS 1.3 support will be added in 2024\. [Shinkai Protocol](https://download.shinkai.com/Shinkai%5FProtocol%5FWhitepaper.pdf) is another protocol that takes great inspiration from the TLSNotary protocol, while adding several advancements on top specific to their AI network use case.
+			  
+			  [DECO](https://www.deco.works/) introduced the first TLS oracle for TLS version 1.2 without server-side adaptation (back then, TLSNotary did not support TLS 1.2). In DECO, most of client’s computation is emulated using a maliciously secure Two-Party Computation (2PC) protocol.They use an implementation of the authenticated garbling, a state-of-the-art malicious 2PC framework.
+			  
+			  [PADO Labs](https://padolabs.org/)introduced the garble-then-prove technique to achieve the same security requirement as DECO without using any heavy mechanism like generic malicious 2PC. Their end-to-end implementation shows 14× improvement in communication and an order of magnitude improvement in computation compared to DECO.
+			  
+			  Whilst PADO Labs’ protocol can be extended to TLS 1.3, the above protocols do not provide explicit security support for TLS 1.3\. Therefore, [DIDO](https://eprint.iacr.org/2023/1056.pdf) and [DiStefano](https://eprint.iacr.org/2023/1063.pdf) propose an optimized solution for TLS 1.3 websites. While DIDO uses semi-honest 2PC, DiStefano relies on maliciously secure 2PC, similar to DECO. The authors of DiStefano note that the use of semi-honest 2PC must be applied carefully to prevent loss of security.
+			  
+			  Other projects, such as [zkPass](https://zkpass.org/) and [Crunch](https://github.com/MarcusWentz/ethdenver2024), whose whitepapers do not mention the research outlined above, are also noteworthy.zkPass enables users to selectively and privately validate their private web data to the Web3 world. Crunch is an ETHDenver hackathon winner that focuses on reducing the cost of the MPC (to allow for more participants and thus greater security) by shifting as much of the security burden as possible from the MPC component to zero-knowledge Risc0 proofs. They support TLS 1.3.
+			  
+			  \#\# **Recent projects where the verifier acts as a proxy in between the client and the server**
+			  
+			  The proxy model, as also outlined by [Zhang et al](https://dl.acm.org/doi/pdf/10.1145/3372297.3417239), offers an alternative approach where the verifier serves as a proxy between the prover and the server (as opposed to an external entity). In this setup, the prover sends/receives messages to/from the server through the verifier. This alternative protocol presents a distinct trade-off between performance and security. It boasts high efficiency as it minimizes cryptographic operations post-handshake. However, it necessitates additional network assumptions (e.g., reliable connectivity between the proxy and the server throughout the session) and thus only withstands weaker network adversaries. For instance, the client could potentially execute a man-in-the-middle (MiTM) attack between itself and the server.
+			  
+			  The authors of DECO note that their model is efficient for small requests, but can be expensive for large records. Therefore, they describe an extension to their protocol where the verifier acts as a proxy between the server and the client to make it more efficient.
+			  
+			  [ORIGO](https://eprint.iacr.org/2024/447.pdf) provides a proposal similar to the proxy mode of DECO. They facilitate a TLS oracle that does not demand for any communication intensive 2PC. Therefore, they achieve constant communication, independent of the size of the data requested from an application server. They leverage that in TLS 1.3.
+			  
+			  [Janus](https://eprint.iacr.org/2023/1377.pdf) is also a TLS oracle designed specifically for TLS 1.3 within the proxy framework. Janus utilizes handshake and record layer 2PC, ensuring security against MiTM attacks in the proxy mode (as opposed to ORIGO which works under the assumption of a weaker network adversary and thus offers no MiTM security). Yet, the utilization of 2PC requires communication in size linear to the number of gates in the garbled circuit and is therefore not as scalable.
+			  
+			  [Reclaim Protocol](https://www.reclaimprotocol.org/) introduces an HTTP proxy to oversee the handshake and data transmission process. Every webpage accessed is routed through a randomly selected HTTP proxy witness. Notably, the HTTP proxy witness is not a MiTM attack. However, there are several trust assumptions involved, as users must install a mobile app to generate proofs using the HTTP proxy witness.
+			  
+			  \#\# **Limitations of TLS Oracles**
+			  
+			  As with most emerging technologies, TLS oracles have limitations in terms of scalability. As a result, TLS oracles are very effective at selectively verifying small amounts of private data, but are limited in their applicability to larger sensitive data sets. The proxy model is an alternative approach that allows for better scalability, but relies on more network assumptions to withstand a MiTM attack.
+			  
+			  \#\# **Complementary Services to TLS Oracles**
+			  
+			  To realize the vision of integrating Internet data into Web3 smart contracts and enhance their capabilities, TLS oracle providers are collaborating with other service providers as described below.
+			  
+			  \#\# **Attestation registries**
+			  
+			  Attestations are shared with attestation registries like [Verax](https://www.ver.ax/), [EAS](https://attest.sh/), [BAS](https://doc.bascan.io/) or [Sign Protocol](https://sign.global/). These registries serve as infrastructures, enabling the creation of diverse attestation schemas and assisting users in generating and distributing attestations (both on-chain or off-chain) to other on-chain entities.
+			  
+			  Taking the example of Sign protocol, it facilitates partners like PADO Labs or zkPass to:
+			  
+			  * Seamlessly integrate validation results onto any chain and bridge these results to other chains subsequent to the initial attestation
+			  * Encrypt and permanently store the captured TLS session and zero-knowledge proof for archival purposes and future retrieval
+			  * Enable any smart contract to access, correctly decode, and utilize validation results
+			  
+			  \#\# **ZK Coprocessors**
+			  
+			  TLS Oracles focus on harnessing the value of off-chain user data. In numerous scenarios, users’ off-chain data can be combined with on-chain data to meet business requirements, a common practice in on-chain scenarios. For instance, to engage with a permissioned DeFi protocol, Bob may need to establish a comprehensive profile comprising both off-chain identity records (e.g., the fulfillment of a certain age requirement) and on-chain data (e.g., historic trading volume).
+			  
+			  Furthermore, potential collaborations with other off-chain verification services, such as [KryptonZK](https://www.kryptonzk.com/https:/www.kryptonzk.com/), which offers zero-knowledge based verifiable analytics on private big data, would also be possible. Let’s take an example of a DeFi lending protocol where Bob needs to show that his average savings over the last months have been enough to access a P2P loan. Bob can attest the source of his financial data with a TLS oracle, and that the computed statistic (analytics), the average of his savings, has been computed correctly with an off-chain verification service like KryptonZK.
+			  
+			  \#\# **Closing Words**
+			  
+			  While TLS ensures secure access to web data, its limitation in validating data authenticity to a third party restricts the utilization of that data. TLS oracles, however, bridge this gap by cryptographically affirming the origin of digital content, liberating private data from the confines of centralized servers and expanding its integration into Web3 smart contracts.
+			  
+			  Projects like TLSNotary, DECO, and others have pioneered innovative approaches to TLS oracles, employing techniques such as three-party handshake, secure multi-party computation (MPC) and zero-knowledge proofs (ZKPs) to enhance security and privacy. These advancements open doors to diverse applications across various sectors, including identity verification, social networking, DeFi lending, or insurance claims settlement.
+			  
+			  Despite the progress made, TLS oracles still encounter limitations in validating larger data sets. However, ongoing research and development efforts continue to address these challenges and expand the possibilities of TLS oracles in the Web3 ecosystem.
+			  
+			  _Acknowledgements: This article expands upon the content presented in prior writings, such as_ [_Cloudflare_](https://www.cloudflare.com/learning/ssl/transport-layer-security-tls/)_,_ [_Ernstberger et al_](https://eprint.iacr.org/2024/447.pdf)_, and_ [_Zhang et al_](https://dl.acm.org/doi/pdf/10.1145/3372297.3417239)_._
+			  
+			  _Many thanks to_ [_Emanuele Ragnoli_](https://www.linkedin.com/in/emanuele-ragnoli-a33b57/) _for conversations around this topic._
+			  
+			  _If you have a project working on TLS oracles, or if you are using TLS oracles, please reach out!_
+			  
+			  _You could follow me on_ [_Twitter_](https://twitter.com/bastian%5Fwetzel) _and_ [_LinkedIn_](https://www.linkedin.com/in/bastian-wetzel/)_._
+		- ### Highlights
+		  collapsed:: true
+			- > TLS enables privacy protection and data integrity between a client and a server, but it does not allow the client to prove the authenticity of the data to a third party. [⤴️](https://omnivore.app/me/tls-oracles-liberating-private-web-data-with-cryptography-by-bas-18ef9c7b821#41dfffe7-b0c4-44ae-9f01-43ecef5d8117)
+			- > Recent work introduces TLS oracles that address this challenge by cryptographically validating the data. [⤴️](https://omnivore.app/me/tls-oracles-liberating-private-web-data-with-cryptography-by-bas-18ef9c7b821#16a2f814-2c08-4c0f-b393-a1dc3a4dbdde)
+			- > Transport Layer Security is a widely adopted security protocol designed to ensure privacy and data security in Internet communications. [⤴️](https://omnivore.app/me/tls-oracles-liberating-private-web-data-with-cryptography-by-bas-18ef9c7b821#a18c4ef8-fbc6-4806-8bda-e922b7bdc7e5)
+			- >  At the core of TLS there is a process called TLS handshake, in which the server and the client cryptographically secure their communication channel (i.e., when a user accesses a website using TLS, the TLS handshake begins between the user’s device and the web server) [⤴️](https://omnivore.app/me/tls-oracles-liberating-private-web-data-with-cryptography-by-bas-18ef9c7b821#424f51ad-b811-402d-baf8-917794a7fe9e)
+			- > these oracles extend a standard TLS connection with a third party (through a three-party handshake) and ensure that the third party remains unaware of the content exchanged between a client and a server. [⤴️](https://omnivore.app/me/tls-oracles-liberating-private-web-data-with-cryptography-by-bas-18ef9c7b821#4165f554-d959-49e1-9486-f5410493cb20)
+			- > Initial approaches to TLS oracles have known limitations [⤴️](https://omnivore.app/me/tls-oracles-liberating-private-web-data-with-cryptography-by-bas-18ef9c7b821#4669a01f-c2e6-471f-a93c-fd4b0b95f295)
+			- > First, the prover (i.e. client) requests data from a server over TLS while cooperating with the verifier in secure and privacy-preserving Multi-Party Computation (MPC). Second, the prover selectively discloses the data to the verifier. Third, the verifier verifies the data. In 2022, TLSNotary was rebuilt from the ground up. [⤴️](https://omnivore.app/me/tls-oracles-liberating-private-web-data-with-cryptography-by-bas-18ef9c7b821#e6b0c83b-8348-4a64-a265-b22a64bc6b25)
+		-
+		-
+		- tags::: #TLS, #TLSNotary
+	- [What is Hindley-Milner? (and why is it cool?) - Code Commit](https://omnivore.app/me/what-is-hindley-milner-and-why-is-it-cool-code-commit-18ef3cb7dba)
+	  collapsed:: true
+	  site:: [web.archive.org](https://web.archive.org/web/20120630042941/http://www.codecommit.com/blog/scala/what-is-hindley-milner-and-why-is-it-cool)
+	  date-saved:: [[04/18/2024]]
+	  date-published:: [[12/28/2008]]
+		- ### Content
+		  collapsed:: true
+			- \#\# [What is Hindley-Milner? (and why is it cool?)](https://web.archive.org/web/20120630042941/http://www.codecommit.com/blog/scala/what-is-hindley-milner-and-why-is-it-cool)
+			  
+			  Anyone who has taken even a cursory glance at the vast menagerie of programming languages should have at least heard the phrase “Hindley-Milner”. F\#, one of the most promising languages ever to emerge from the forbidding depths of Microsoft Research, makes use of this mysterious algorithm, as do Haskell, OCaml and ML before it. There is even some research being undertaken to find a way to apply the power of HM to optimize dynamic languages like Ruby, JavaScript and Clojure.
+			  
+			  However, despite widespread application of the idea, I have yet to see a decent layman’s-explanation for what the heck everyone is talking about. How does the magic actually work? Can you always trust the algorithm to infer the right types? Further, why is Hindley-Milner is better than (say) Java? So, while those of you who actually know what HM is are busy recovering from your recent aneurysm, the rest of us are going to try to figure this out.
+			  
+			  \#\#\# Ground Zero
+			  
+			  Functionally speaking, Hindley-Milner (or “Damas-Milner”) is an algorithm for inferring value types based on use. It literally formalizes the intuition that a type can be deduced by the functionality it supports. Consider the following bit of _psuedo_\-Scala (not a flying toy):
+			  
+			  | def foo(s: String) \= s.length   // note: no explicit types def bar(x, y) \= foo(x) \+ y |
+			  | ---------------------------------------------------------------------------------------- |
+			  
+			  Just looking at the definition of `bar`, we can easily see that its type _must_ be `(String, Int)=>Int`. As humans, this is an easy thing for us to intuit. We simply look at the body of the function and see the two uses of the `x` and `y` parameters. `x` is being passed to `foo`, which expects a `String`. Therefore, `x` must be of type `String` for this code to compile. Furthermore, `foo` will return a value of type `Int`. The `+` method on class `Int` expects an `Int` parameter; thus, `y` must be of type `Int`. Finally, we know that `+` returns a new value of type `Int`, so there we have the return type of `bar`.
+			  
+			  This process is almost exactly what Hindley-Milner does: it looks through the body of a function and computes a _constraint set_ based on how each value is used. This is what we were doing when we observed that `foo` expects a parameter of type `String`. Once it has the constraint set, the algorithm completes the type reconstruction by unifying the constraints. If the expression is well-typed, the constraints will yield an unambiguous type at the end of the line. If the expression is not well-typed, then one (or more) constraints will be contradictory or merely unsatisfiable given the available types.
+			  
+			  \#\#\# Informal Algorithm
+			  
+			  The easiest way to see how this process works is to walk it through ourselves. The first phase is to derive the constraint set. We start by assigning each value (`x` and `y`) a _fresh_ type (meaning “non-existent”). If we were to annotate `bar` with these type variables, it would look something like this:
+			  
+			  | def bar(x: X, y: Y) \= foo(x) \+ y |
+			  | ---------------------------------- |
+			  
+			  The type names are not significant, the important restriction is that they do not collide with any “real” type. Their purpose is to allow the algorithm to unambiguously reference the yet-unknown type of each value. Without this, the constraint set cannot be constructed.
+			  
+			  Next, we drill down into the body of the function, looking specifically for operations which impose some sort of type constraint. This is a depth-first traversal of the AST, which means that we look at operations with higher-precedence first. Technically, it doesn’t matter what order we look; I just find it easier to think about the process in this way. The first operation we come across is the dispatch to the `foo` method. We know that `foo` is of type `String=>Int`, and this allows us to add the following constraint to our set:
+			  
+			  _X_ ![\mapsto](https://proxy-prod.omnivore-image-cache.app/0x0,s93ddAFGyjj8oGfFvocovu7WfaWU-wu8MCsrvffkQlbA/https://web.archive.org/web/20120630042941im_/http://alt1.artofproblemsolving.com/Forum/latexrender/pictures/2/2/3/22341972d49b9a3a22a4ef9220996604cf49ad12.gif) `String`
+			  
+			  The next operation we see is `+`, involving the `y` value. Scala treats all operators as method dispatch, so this expression actually means “`foo(x).+(y)`. We already know that `foo(x)` is an expression of type `Int` (from the type of `foo`), so we know that `+` is defined as a method on class `Int` with type `Int=>Int` (I’m actually being a bit hand-wavy here with regards to what we do and do not know, but that’s an unfortunate consequence of Scala’s object-oriented nature). This allows us to add another constraint to our set, resulting in the following:
+			  
+			  _X_ ![\mapsto](https://proxy-prod.omnivore-image-cache.app/0x0,s93ddAFGyjj8oGfFvocovu7WfaWU-wu8MCsrvffkQlbA/https://web.archive.org/web/20120630042941im_/http://alt1.artofproblemsolving.com/Forum/latexrender/pictures/2/2/3/22341972d49b9a3a22a4ef9220996604cf49ad12.gif) `String`
+			  
+			  _Y_ ![\mapsto](https://proxy-prod.omnivore-image-cache.app/0x0,s93ddAFGyjj8oGfFvocovu7WfaWU-wu8MCsrvffkQlbA/https://web.archive.org/web/20120630042941im_/http://alt1.artofproblemsolving.com/Forum/latexrender/pictures/2/2/3/22341972d49b9a3a22a4ef9220996604cf49ad12.gif) `Int`
+			  
+			  The final phase of the type reconstruction is to _unify_ all of these constraints to come up with real types to substitute for the _X_ and _Y_ type variables. Unification is literally the process of looking at each of the constraints and trying to find a single type which satisfies them all. Imagine I gave you the following facts:
+			  
+			  * Daniel is tall
+			  * Chris is tall
+			  * Daniel is red
+			  * Chris is blue
+			  
+			  Now, consider the following constraints:
+			  
+			  _Person1_ is tall
+			  
+			  _Person1_ is red
+			  
+			  Hmm, who do you suppose _Person1_ might be? This process of combining a constraint set with some given facts can be mathematically formalized in the guise of unification. In the case of type reconstruction, just substitute “types” for “facts” and you’re golden.
+			  
+			  In our case, the unification of our set of type constraints is fairly trivial. We have exactly one constraint per value (`x` and `y`), and both of these constraints map to concrete types. All we have to do is substitute “`String`” for “_X_” and “`Int`” for “_Y_” and we’re done.
+			  
+			  To really see the power of unification, we need to look at a slightly more complex example. Consider the following function:
+			  
+			  | def baz(a, b) \= a(b) :: b |
+			  | -------------------------- |
+			  
+			  This snippet defines a function, `baz`, which takes a function and some other parameter, invoking this function passing the second parameter and then “cons-ing” the result onto the second parameter itself. We can easily derive a constraint set for this function. As before, we start by coming up with type variables for each value. Note that in this case, we not only annotate the parameters but also the return type. I sort of skipped over this part in the earlier example since it only sufficed to make things more verbose. Technically, this type is always inferred in this way.
+			  
+			  | def baz(a: X, b: Y): Z = a(b) :: b |
+			  | ---------------------------------- |
+			  
+			  The first constraint we should derive is that `a` must be a function which takes a value of type _Y_ and returns some fresh type _Y’_ (pronounced like “_why prime_“). Further, we know that `::` is a function on class `List[A]` which takes a new element `A` and produces a new `List[A]`. Thus, we know that _Y_ and _Z_ must both be `List[Y']`. Formalized in a constraint set, the result is as follows:
+			  
+			  
+			  _X_ ![\mapsto](https://proxy-prod.omnivore-image-cache.app/0x0,s93ddAFGyjj8oGfFvocovu7WfaWU-wu8MCsrvffkQlbA/https://web.archive.org/web/20120630042941im_/http://alt1.artofproblemsolving.com/Forum/latexrender/pictures/2/2/3/22341972d49b9a3a22a4ef9220996604cf49ad12.gif) (_Y_`=>`_Y’_ )
+			  
+			  _Y_ ![\mapsto](https://proxy-prod.omnivore-image-cache.app/0x0,s93ddAFGyjj8oGfFvocovu7WfaWU-wu8MCsrvffkQlbA/https://web.archive.org/web/20120630042941im_/http://alt1.artofproblemsolving.com/Forum/latexrender/pictures/2/2/3/22341972d49b9a3a22a4ef9220996604cf49ad12.gif) `List[`_Y'_ `]`  
+			  
+			  _Z_ ![\mapsto](https://proxy-prod.omnivore-image-cache.app/0x0,s93ddAFGyjj8oGfFvocovu7WfaWU-wu8MCsrvffkQlbA/https://web.archive.org/web/20120630042941im_/http://alt1.artofproblemsolving.com/Forum/latexrender/pictures/2/2/3/22341972d49b9a3a22a4ef9220996604cf49ad12.gif) `List[`_Y'_ `]`
+			  
+			  Now the unification is not so trivial. Critically, the _X_ variable depends upon _Y_, which means that our unification will require at least one step:
+			  
+			  
+			  _X_ ![\mapsto](https://proxy-prod.omnivore-image-cache.app/0x0,s93ddAFGyjj8oGfFvocovu7WfaWU-wu8MCsrvffkQlbA/https://web.archive.org/web/20120630042941im_/http://alt1.artofproblemsolving.com/Forum/latexrender/pictures/2/2/3/22341972d49b9a3a22a4ef9220996604cf49ad12.gif) ( `List[`_Y'_ `]` `=>`_Y’_ )
+			  
+			  _Y_ ![\mapsto](https://proxy-prod.omnivore-image-cache.app/0x0,s93ddAFGyjj8oGfFvocovu7WfaWU-wu8MCsrvffkQlbA/https://web.archive.org/web/20120630042941im_/http://alt1.artofproblemsolving.com/Forum/latexrender/pictures/2/2/3/22341972d49b9a3a22a4ef9220996604cf49ad12.gif) `List[`_Y'_ `]`  
+			  
+			  _Z_ ![\mapsto](https://proxy-prod.omnivore-image-cache.app/0x0,s93ddAFGyjj8oGfFvocovu7WfaWU-wu8MCsrvffkQlbA/https://web.archive.org/web/20120630042941im_/http://alt1.artofproblemsolving.com/Forum/latexrender/pictures/2/2/3/22341972d49b9a3a22a4ef9220996604cf49ad12.gif) `List[`_Y'_ `]`
+			  
+			  This is the same constraint set as before, except that we have substituted the known mapping for _Y_ into the mapping for _X_. This substitution allows us to eliminate _X_, _Y_ and _Z_ from our inferred types, resulting in the following typing for the `baz` function:
+			  
+			  | def baz(a: List\[Y'\]\=>Y', b: List\[Y'\]): List\[Y'\] \= a(b) :: b |
+			  | ------------------------------------------------------------------- |
+			  
+			  Of course, this still isn’t valid. Even assuming that `Y'` were valid Scala syntax, the type checker would complain that no such type can be found. This situation actually arises surprisingly often when working with Hindley-Milner type reconstruction. Somehow, at the end of all the constraint inference and unification, we have a type variable “left over” for which there are no known constraints.
+			  
+			  The solution is to treat this unconstrained variable as a type parameter. After all, if the parameter has no constraints, then we can just as easily substitute any type, including a generic. Thus, the final revision of the `baz` function adds an unconstrained type parameter “`A`” and substitutes it for all instances of _Y’_ in the inferred types:
+			  
+			  | def baz\[A\](a: List\[A\]\=>A, b: List\[A\]): List\[A\] \= a(b) :: b |
+			  | -------------------------------------------------------------------- |
+			  
+			  \#\#\# Conclusion
+			  
+			  …and that’s all there is to it! Hindley-Milner is really no more complicated than all of that. One can easily imagine how such an algorithm could be used to perform far more complicated reconstructions than the trivial examples that we have shown.
+			  
+			  Hopefully this article has given you a little more insight into how Hindley-Milner type reconstruction works under the surface. This variety of type inference can be of immense benefit, reducing the amount of syntax required for type safety down to the barest minimum. Our “`bar`” example actually started with (coincidentally) Ruby syntax and showed that it still had all the information we needed to verify type-safety. Just a bit of information you might want to keep around for the next time someone suggests that all statically typed languages are overly-verbose.
+	- [So You Still Don't Understand Hindley-Milner? Part 2 - Amit's Blog](https://omnivore.app/me/so-you-still-don-t-understand-hindley-milner-part-2-amit-s-blog-18ef3ca1e6a)
+	  collapsed:: true
+	  site:: [Amit's (old) blog](https://legacy-blog.akgupta.ca/blog/2013/06/07/so-you-still-dont-understand-hindley-milner-part-2/)
+	  author:: Amit Kumar Gupta
+	  labels:: [[fp]] [[functional programming]] [[hindley-milner]]
+	  date-saved:: [[04/18/2024]]
+	  date-published:: [[06/06/2013]]
+		- ### Content
+		  collapsed:: true
+			- In [Part 1](https://legacy-blog.akgupta.ca/blog/2013/05/14/so-you-still-dont-understand-hindley-milner/), we said what the building blocks of the Hindley-Milner formalization would be, and in this post we'll thoroughly define them, and actually formulate the formalization:
+			  
+			  \#\# Formalizing the concept of an expression
+			  
+			  We'll give a [recursive definition](https://en.wikipedia.org/wiki/Recursive%5Fdefinition) of what an expression is; in other words, we'll ==state what the most basic kind of expression is, we'll say how to create new, more complex expressions out of existing expressions, and we'll say that only things made in this way are valid expressions.==  
+			  
+			  1. ==Variables are valid expressions.==
+			  2. ==If== _==e==_ ==is any expression, and== _==x==_ ==is any variable, then== _==λ==_ _==x==_==.==_==e==_ ==is an expression.== Here it helps to think of e as typically (thought not necessarily) a more complex expression involving _x_, ==e.g.== _==x==_==2====+ 2====, and then== _==λ==_ _==x==_==.==_==e==_ ==as the anonymous function that takes an input== _==x==_ ==and returns the result of evaluating the expression== _==e==_ ==with the given value of== _==x==_==.== In other words, think of it like this:  
+			  | 1 | function(x) { return x^2 \+ 2; } |  
+			  | - | -------------------------------- |
+			  3. ==If== _==f==_ ==and== _==e==_ ==are valid expressions, then== _==f==_==(==_==e==_==)== ==is a valid expression.== This is called Application, for obvious reasons.
+			  4. If _x_ is a variable, and _e_1 and _e_0 are valid expressions, then substituting every occurrence of _x_ in _e_0 for _e_1 yields a valid expression. So, for example, if _e_1 is the expression _x_2 \+ 2, and _e_0 is the expression _y_ / 3, then if we let _x_ \= _e_0 in _e_1, we get the expression (_y_ / 3)2 \+ 2.  
+			  \[NB: This last clause is redundant and not officially a part of the Lambda Calculus definition of an expression, as substituting _e_0 for _x_ in _e_1 is equivalent to applying the abstraction _λ_ _x_. _e_1 to _e_0. It's added to support something called [let-polymorphism](https://en.wikipedia.org/wiki/Hindley%E2%80%93Milner\#Let-polymorphism).\]
+			  
+			  And nothing else is a valid expression.
+			  
+			  Aside: anyone paying close attention will wonder, wait, how can I make any useful expressions out of this? How do I even get _x_2 \+ 2, or in fact 2 for that matter, out of the above? Heck, what about 0? There is nothing in the rules above which _obviously_ yield the expression 0. The solution is to create expressions in the Lambda Calculus which behave like 0, 1, …, + , × , − , /  when interpreted correctly. In other words, we have to encode numbers, numerical operations, strings, etc. into patterns we can create with the Lambda syntax. [This blog post](https://palmstroem.blogspot.com/2012/05/lambda-calculus-for-absolute-dummies.html) has a nice little section on numbers and numerical operations. This is a great feature of the Lambda Calculus: we have a simple syntax which we can define recursively in 4 simple clauses, and this therefore allows us to prove many things about it inductively in 4 main steps, yet the language itself has the expressive power to capture numbers, strings, and all the types and operations we could ever care about.
+			  
+			  \#\# Formalizing statements about types
+			  
+			  Let _e_ be any expression, that is, "_e_" is a variable in our meta-language which stands for any expression in our base language, like any of the following:
+			  
+			  | 1 2 3 | x Math.pow(x,2) \[1,2\].forEach ( function(x) { print(x); } ) |
+			  | ----- | ------------------------------------------------------------- |
+			  
+			  Then if _t_ is any type, we can express "_e_ is of type _t_" by
+			  
+			  
+			  _e_: _t_  
+			  
+			  Just like _e_, _t_ is a variable in our meta-language, and it can stand for any type in the base language, like Int, String, etc. And just like _e_, _t_ doesn't necessarily need to stand for any one type in particular.
+			  
+			  One can give a formal definition for what counts as a type, just as we did for expressions above. However the abstraction gets fairly twisted, so we'll leave it at that. I should just point out a few two key things to keep in mind:
+			  
+			  1. If _s_ and _t_ are types, then so is _t_ → _s_; it's the type of a function with _t_ inputs and _s_ outputs.
+			  2. If _r_ is a type, possibly made up of other types (just as _t_ → _s_ is made up of _t_ and _s_, which could each potentially have been made up of other types), and _α_ is a variable for a type, then ∀ _α_. _r_ is a type. That makes no sense without an example:
+			  
+			  | 1 | function (x) { return x; } |
+			  | - | -------------------------- |
+			  
+			  This function is type String → String. But it's also Int → Int. In fact, for any type _t_, it's type _t_ → _t_. We're gonna say that it has type ∀ _t_. _t_ → _t_. Each of the types String → String, _t_ → _t_, are "monotypes". ∀ _t_. _t_ → _t_ is a "polytype". The identity function above has the abstract polytype ∀ _t_. _t_ → _t_ which, in practice, means that for every real type _t_, it has type _t_ → _t_. If all of this has been sinking in, then we can compactly express this as:
+			  
+			  
+			  _λ_ _x_. _x_: ∀ _α_. _α_ → _α_  
+			  
+			  \#\# Formalizing statements about statements about types
+			  
+			  Now we're going to want to formalize a bunch of rules for how we can go from some knowledge of expressions and their types to inferring types of more expressions. Remember how propositional calculus formalized Modus Ponens? We're going to do something similar. For instance, say we want to formalize the following piece of reasoning:
+			  
+			  > Suppose I've already been able to infer that a variable `duck` has type `Animal`.  
+			  > Suppose furthermore that I've inferred that `speak` is a method of type `Animal -> String`.  
+			  > Then I can infer that `speak(duck)` has type String.
+			  > 
+			  > And any reasoning of this form is valid type inference.
+			  
+			  We'll formalize that as follows:
+			  
+			  Γ⊢e0:τ→τ′ Γ⊢e1:τ\_
+			  
+			  Γ ⊢ _e_0(_e_1): _τ_ʹ
+			  
+			  That rule has the name \[App\] (for application), and it's one of the ones pictured in [that StackOverflow question](https://stackoverflow.com/questions/12532552/what-part-of-milner-hindley-do-you-not-understand). We'll talk about it and the rest of the rules in the next post. For now, let's first get a handle on all the symbols you see above:
+			  
+			  * Γ , this will stand for the collection of statements we already know, or perhaps, the statements we're assuming. More generally, Γ  should just be thought of as some collection of statements (about expressions and their types). And of course, there's nothing special about the letter Γ ; capital greek letters are commonly used for sets of statements however.
+			  * ⊢ , the "turnstile", denotes that something can be inferred. For instance, Γ ⊢ _x_: _t_ says that if we take the statements in Γ  as our assumptions/axioms/current knowledge, then we can infer that _x_ has type _t_.
+			  * ∈ , "epsilon", denotes membership. _x_: _t_ ∈ Γ  says that the statement _x_: _t_ is a member of Γ .
+			  * That long horizontal bar; this line tells us that we can make the conclusion below the line if the things above the line are taken as premises in the argument. It lets us express things like, "if we can infer such and such, then we can infer such and such", e.g.
+			  
+			  If we can infer that _y_ has type _σ_ from Γ , then we can infer _x_ has type _τ_ from Γ .
+			  
+			  Next up:
+			  
+			  * [Part 3](https://legacy-blog.akgupta.ca/blog/2013/06/07/so-you-still-dont-understand-hindley-milner-part-3/), where we put this all together and make sense of the inference rules used by the HM algorithm.
+			  
+			  \#\# Comments
+		- ### Highlights
+		  collapsed:: true
+			- > state what the most basic kind of expression is, we'll say how to create new, more complex expressions out of existing expressions, and we'll say that only things made in this way are valid expressions. [⤴️](https://omnivore.app/me/so-you-still-don-t-understand-hindley-milner-part-2-amit-s-blog-18ef3ca1e6a#ee8d68de-0d5d-4343-af51-e6eee871c768)
+			- > Variables are valid expressions. [⤴️](https://omnivore.app/me/so-you-still-don-t-understand-hindley-milner-part-2-amit-s-blog-18ef3ca1e6a#4bd9ee86-6d54-4f99-819c-841f41e9639e)
+			- > If _e_ is any expression, and _x_ is any variable, then _λ_ _x_. _e_ is an expression. [⤴️](https://omnivore.app/me/so-you-still-don-t-understand-hindley-milner-part-2-amit-s-blog-18ef3ca1e6a#5debf092-5f90-4869-9ec1-50ed0f50bb93)
+			- > e.g. _x_2 \+ 2, and then _λ_ _x_. _e_ as the anonymous function that takes an input _x_ and returns the result of evaluating the expression _e_ with the given value of _x_. [⤴️](https://omnivore.app/me/so-you-still-don-t-understand-hindley-milner-part-2-amit-s-blog-18ef3ca1e6a#488df998-f754-4f53-8aa5-fe2d9519c992)
+			- > If _f_ and _e_ are valid expressions, then _f_(_e_) is a valid expression. [⤴️](https://omnivore.app/me/so-you-still-don-t-understand-hindley-milner-part-2-amit-s-blog-18ef3ca1e6a#412835d4-2f0d-450b-ac2f-c7680547642a)
+	- [So you still don't understand Hindley-Milner? Part 1 - Amit's Blog](https://omnivore.app/me/so-you-still-don-t-understand-hindley-milner-part-1-amit-s-blog-18ef3c9c5a5)
+	  collapsed:: true
+	  site:: [Amit's (old) blog](https://legacy-blog.akgupta.ca/blog/2013/05/14/so-you-still-dont-understand-hindley-milner/)
+	  author:: Amit Kumar Gupta
+	  labels:: [[fp]] [[functional programming]] [[hindley-milner]]
+	  date-saved:: [[04/18/2024]]
+	  date-published:: [[05/13/2013]]
+		- ### Content
+		  collapsed:: true
+			- I was out for drinks with [Josh Long](https://twitter.com/starbuxman) and some other friends from work, when he found out I "speak math." He had come across [this StackOverflow question](https://stackoverflow.com/questions/12532552/what-part-of-milner-hindley-do-you-not-understand) and asked me what it meant:
+			  
+			  ![](https://proxy-prod.omnivore-image-cache.app/0x0,s4Nf4IR2I_UpMtc2FJk6U9CRUSl6GQZE-kNT2mCuSHnk/https://i.stack.imgur.com/hZhjl.png)
+			  
+			  Before we figure out what it means, let's get an idea for why we care in the first place. Daniel Spiewak's blog post (link broken) gives a really nice explanation of the purpose of the HM algorithm, in addition to an in-depth example of its application:
+			  
+			  > Functionally speaking, Hindley-Milner (or “Damas-Milner”) is an algorithm for inferring value types based on use. It literally formalizes the intuition that a type can be deduced by the functionality it supports.
+			  
+			  Okay, so we want to formalize an algorithm for inferring types of any given expression. In this post, I'm going to touch on what it means to formalize something, then describe the building blocks of the HM formalization. In [Part 2](https://legacy-blog.akgupta.ca/blog/2013/06/07/so-you-still-dont-understand-hindley-milner-part-2/), I'll flesh out the building blocks of the formalization. Finally in [Part 3](https://legacy-blog.akgupta.ca/blog/2013/06/07/so-you-still-dont-understand-hindley-milner-part-3/), I'll translate that StackOverflow question.  
+			  
+			  \#\# What it means to formalize
+			  
+			  Okay, so we want to talk about expressions. Arbitrary expressions. In an arbitrary language. And we want to talk about inferring types of these expressions. And we want to figure out rules for how we can infer types. And then we're going to want to make an algorithm that uses these rules to infer types. So we're going to need a meta-language. A language to talk about expressions in an arbitrary programming language. This meta-language should:
+			  
+			  * Be abstract and generic, so that it allows us to reason about statements of type inference purely based on their _form_ (hence, _formalization_), without having to worry about their content.
+			  * Give a precise, unambiguous, yet intuitive definition for what an expression is.
+			  * Give those definitions in terms of a small number of uncontroversial primitive concepts.
+			  * Similarly give definitions for types, the idea that an expression has a type, and the idea that we can infer that a given expression has a given type.
+			  * Lend itself to a simple, terse symbolic representation, e.g. rather than saying "the expression formed by applying the first expression to the second expression has the type of a function from strings to some type we don't care to specify in the current context" we could simply say "_e_1(_e_2): String → _t_".
+			  * Be easily translated to something a computer can understand and implement, so we can ultimately automate type inference.
+			  
+			  To make all that a little more concrete, let's look at a really quick example of a formalization. If, instead of formalizing a language for talking about inferring types of expressions in an arbitrary programming language, what if we wanted to formalize a language for talking about truths of sentences in arbitrary natural languages? Without formalization, we might say something like
+			  
+			  > Suppose I know that if it's raining, Bob will carry an umbrella.  
+			  > And suppose I also know that it's raining.  
+			  > Then, I can conclude that Bob will carry an umbrella.
+			  > 
+			  > And any argument that takes this form is a valid way to reason.
+			  
+			  Propositional Calculus formalizes that whole things as a rule known as Modus Ponens:
+			  
+			  where _A_ and _B_ are variables representing propositions (a.k.a. sentences or clauses) in an arbitrary natural language.
+			  
+			  Okay, so let's enumerate the building blocks of the HM formalization:
+			  
+			  \#\# Building blocks of the formalization
+			  
+			  We will need:
+			  
+			  1. A formal way to talk about expressions. This formalization should meet the criteria enumerated above; for this purpose we use the **Lambda Calculus**. I'll be explaining that in a minute, but there's nothing crazy going on here.
+			  2. A formal way to talk about types, and a formal way to talk about expressions and types together. After all, the purpose of the HM algorithm is to be able to deduce statements of the form "expression _e_ has type _t_".
+			  3. A formal set of rules for deriving statements about expression types from other such statements. Rules along the lines of: "if I can already demonstrate that some expression has this type, and another expression has that type, then this third expression has this other type". _Such a set of rules is exactly what you're seeing in that SO question_. I'll be translating this in full detail.
+			  4. An algorithm that intelligently uses the deduction rules to get from a starting point to deducing/inferring a desired conclusion statement: "the expression _e_ that I'm interested in has type _t_". This is the "algorithm" part for the "HM algorithm", and that's not something I'll be going into in these posts.
+			  
+			  Onward, ho!
+			  
+			  * [Part 2](https://legacy-blog.akgupta.ca/blog/2013/06/07/so-you-still-dont-understand-hindley-milner-part-2/), wherein we thoroughly define points 1 and 2 above, and demystify the mathematical syntax.
+			  * [Part 3](https://legacy-blog.akgupta.ca/blog/2013/06/07/so-you-still-dont-understand-hindley-milner-part-3/), wherein we translate the type inference rules in point 3 above.
+			  
+			  \#\# Comments
 	- [strawman:concurrency [ES Wiki]](https://omnivore.app/me/strawman-concurrency-es-wiki-18eedf4b141)
 	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20160404122250/http://wiki.ecmascript.org/doku.php?id=strawman%25253Aconcurrency)
