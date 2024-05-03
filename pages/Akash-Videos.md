@@ -1,0 +1,18 @@
+### Video 2
+	- Create an Account
+	- Fund your Account
+	- Configure your Network
+	- Create your Configuration
+- ### Video 3
+	- Create your Certificate
+	- In the last video, we went through the steps necessary to begin working with the provider-services command-line tool. This included
+	-
+- ### Video 4
+	- Create your Deployment
+	- View your Bids
+	- Create a Lease
+	- Send the Manifest
+- ### Video 5
+- Update the Deployment
+- ### Video 6
+- Close Deployment
