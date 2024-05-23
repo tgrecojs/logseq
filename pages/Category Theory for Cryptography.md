@@ -136,7 +136,7 @@
 		- By embracing the power of category theory and functional programming, we can unlock new possibilities in cryptography and create more secure, efficient, and composable systems. # 3.2 **Monads and Encryption/Decryption**
 		- =====================================================
 		- As we delve into the realm of category theory and its applications in cryptography, we find ourselves at the threshold of a fascinating topic: monads and their role in encryption and decryption. In this article, we’ll explore the intricacies of monads, their relationship with encryption and decryption, and how they can be utilized to create robust cryptographic systems in JavaScript.
-- # 3.2 **Monads and Encryption/Decryption**
+- # 3.2 Monads
 	- ### **Recap of Monoids and Category Theory Fundamentals**
 		- Before we dive into the world of monads, let’s briefly revisit the concepts of monoids and category theory. In our previous article, we discussed the importance of monoids in category theory, specifically their role in defining algebraic structures. We also touched upon the concept of associativity and identity elements, which are essential in understanding the properties of monoids.
 	- ### **Monads: A Mathematical Structure for Composition**
@@ -266,7 +266,7 @@
 		- ```
 		  `**[1]** "Category Theory for Scientists" by David I. Spivak **[2]** "Cryptography Engineering" by Bruce Schneier, Niels Ferguson, and Tadayoshi Kohno`
 		  ```
-- # 4.1 **Associativity and Identity Elements: Unlocking the Power of Category Theory in JavaScript Cryptography**
+- # # 4.1 **Associativity and Identity Elements: Unlocking the Power of Category Theory in JavaScript Cryptography**
 	- As we delve deeper into the realm of Category Theory and its applications in JavaScript cryptography, we find ourselves at the threshold of a fascinating topic: Associativity and Identity Elements. In this article, we will embark on an indepth exploration of these fundamental concepts, leveraging your background in functional programming and prototypal inheritance to create a seamless learning experience.
 	- ### Associativity: A Key Concept in Category Theory
 		- In the context of Category Theory, associativity is a property that ensures the order in which we combine objects does not affect the result. This concept is crucial in cryptography, as it allows us to build complex cryptographic primitives from simpler components. To illustrate this, let’s consider a simple example using JavaScript:

@@ -266,7 +266,7 @@
 		- ```
 		  `**[1]** "Category Theory for Scientists" by David I. Spivak **[2]** "Cryptography Engineering" by Bruce Schneier, Niels Ferguson, and Tadayoshi Kohno`
 		  ```
-- # 4.1 **Associativity and Identity Elements: Unlocking the Power of Category Theory in JavaScript Cryptography**
+- # # 4.1 **Associativity and Identity Elements: Unlocking the Power of Category Theory in JavaScript Cryptography**
 	- As we delve deeper into the realm of Category Theory and its applications in JavaScript cryptography, we find ourselves at the threshold of a fascinating topic: Associativity and Identity Elements. In this article, we will embark on an indepth exploration of these fundamental concepts, leveraging your background in functional programming and prototypal inheritance to create a seamless learning experience.
 	- ### Associativity: A Key Concept in Category Theory
 		- In the context of Category Theory, associativity is a property that ensures the order in which we combine objects does not affect the result. This concept is crucial in cryptography, as it allows us to build complex cryptographic primitives from simpler components. To illustrate this, let’s consider a simple example using JavaScript:
