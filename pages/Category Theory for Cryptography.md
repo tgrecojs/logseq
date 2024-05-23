@@ -44,7 +44,7 @@
 		  `Homomorphic Encryption using Category Theory Secure MultiParty Computation with Categorical Structures`
 		  ```
 		- By exploring the connections between category theory and cryptography, we can develop a deeper understanding of the underlying principles and create more secure and efficient cryptographic systems.
-- # # 2.1 **Fundamentals of Category Theory**
+- # 2.1 **Fundamentals of Category Theory**
 	- As we embark on this journey to harness the power of category theory in implementing cryptography in JavaScript, it’s essential to establish a solid foundation in the fundamentals of category theory. This article will delve into the core concepts of category theory, providing a comprehensive exploration of the subject matter. We’ll focus on the key principles, definitions, and theorems that will serve as the building blocks for our subsequent discussions on cryptography.
 	- ## **What is Category Theory?**
 		- Category theory is a branch of mathematics that studies the commonalities and patterns between different mathematical structures. It provides a framework for abstracting and generalizing the relationships between objects, allowing us to identify and analyze the underlying structures that govern various mathematical disciplines. In essence, category theory is a metamathematical framework that enables us to understand the connections and patterns between different mathematical objects and structures.
@@ -74,7 +74,7 @@
 		- In this article, we’ve established a solid foundation in the fundamentals of category theory. We’ve explored the core concepts, definitions, and theorems that will serve as the building blocks for our subsequent discussions on cryptography. As we move forward, we’ll delve deeper into the applications of category theory in cryptography, providing a comprehensive understanding of how these abstract mathematical structures can be used to implement cryptographic primitives in JavaScript.
 	- ## **What’s Next?**
 		- In the next article, we’ll explore the application of category theory in constructing Merkle trees using categorical structures. We’ll examine how category theory can be used to implement cryptographic hash functions, encryption, and decryption in JavaScript. Stay tuned!
-- # # 2.2 **Applications of Category Theory in Cryptography**
+- # 2.2 **Applications of Category Theory in Cryptography**
 	- As we delve into the realm of cryptography, it’s essential to understand the profound impact of category theory on this field. In this article, we’ll explore the applications of category theory in cryptography, building upon the foundational concepts of monoids, functors, and monads. Our focus will be on demonstrating the practical implications of category theory in JavaScript, catering to your background in functional programming and prototypal inheritance.
 	- ## **Cryptographic Hash Functions**
 		- A fundamental concept in cryptography, hash functions play a crucial role in ensuring data integrity and authenticity. Using category theory, we can construct cryptographic hash functions that leverage the properties of monoids and functors. Let’s create a JavaScript implementation of a cryptographic hash function using the `crypto` module:
@@ -103,7 +103,7 @@
 		  `[Category Theory for Scientists](https://arxiv.org/abs/0905.0349) [Cryptography Engineering](https://www.schneier.com/books/cryptographyengineering/)`
 		  ```
 		- By following this study plan, you’ll gain a comprehensive understanding of category theory and its applications in cryptography, enabling you to implement advanced cryptographic primitives in JavaScript.
-- # # 3.1 **Functors and Cryptographic Hash Functions: Unveiling the Power of Category Theory in JavaScript**
+- # 3.1 **Functors and Cryptographic Hash Functions: Unveiling the Power of Category Theory in JavaScript**
 	- As we delve into the realm of category theory and its applications in cryptography, we find ourselves at the intersection of abstract algebra and functional programming. In this article, we will explore the fascinating connection between functors and cryptographic hash functions, leveraging our knowledge of monads, monoids, and other algebraic structures to create robust cryptographic primitives in JavaScript.
 	- ### Understanding Functors in Category Theory
 		- Before diving into the world of cryptographic hash functions, it’s essential to establish a solid understanding of functors in category theory. A functor can be thought of as a structurepreserving function between categories, allowing us to map objects and morphisms from one category to another while preserving their composition and identity.
@@ -136,31 +136,31 @@
 		- By embracing the power of category theory and functional programming, we can unlock new possibilities in cryptography and create more secure, efficient, and composable systems. # 3.2 **Monads and Encryption/Decryption**
 		- =====================================================
 		- As we delve into the realm of category theory and its applications in cryptography, we find ourselves at the threshold of a fascinating topic: monads and their role in encryption and decryption. In this article, we’ll explore the intricacies of monads, their relationship with encryption and decryption, and how they can be utilized to create robust cryptographic systems in JavaScript.
-	- # 3.2 Monads
-		- ### **Recap of Monoids and Category Theory Fundamentals**
-			- Before we dive into the world of monads, let’s briefly revisit the concepts of monoids and category theory. In our previous article, we discussed the importance of monoids in category theory, specifically their role in defining algebraic structures. We also touched upon the concept of associativity and identity elements, which are essential in understanding the properties of monoids.
-		- ### **Monads: A Mathematical Structure for Composition**
-			- A monad is a mathematical structure that provides a way to compose functions in a predictable and composable manner. In the context of category theory, monads are used to define a monoidal category, which is a category with a monoid structure on its objects. Monads are essential in functional programming, as they provide a way to abstract away lowlevel details and focus on the composition of functions.
-			- In JavaScript, we can represent monads using functions that take a value and return a new value, while maintaining the properties of the original value. This is particularly useful when working with asynchronous code, as it allows us to write composable functions that can be easily chained together.
-		- ### **Monads and Encryption**
-			- Now, let’s explore how monads can be used in the context of encryption. In cryptography, encryption and decryption are fundamental concepts that rely on the principles of algebraic structures. Monads can be used to define an encryption scheme, where the monad structure is used to compose encryption and decryption functions.
-			- Consider a simple example of a Caesar cipher, where each letter is shifted by a fixed number of positions. We can define a monad that takes a plaintext message and applies the Caesar cipher encryption scheme. The resulting ciphertext can then be decrypted using the inverse operation.
-			- ```
-			  `const caesarCipher = (shift) => (message) => { // Encrypt the message using the Caesar cipher const encryptedMessage = message.split('').map((char) => {     const charCode = char.charCodeAt(0);     const encryptedCharCode = charCode + shift;     return String.fromCharCode(encryptedCharCode); }).join(''); return encryptedMessage; }; const decrypt = (shift) => (ciphertext) => { // Decrypt the ciphertext using the inverse operation const decryptedMessage = ciphertext.split('').map((char) => {     const charCode = char.charCodeAt(0);     const decryptedCharCode = charCode  shift;     return String.fromCharCode(decryptedCharCode); }).join(''); return decryptedMessage; }; const encrypt = caesarCipher(3); // Shift by 3 positions const ciphertext = encrypt('Hello, World!'); console.log(ciphertext); // Output: Khoor, Zruog! const decryptedMessage = decrypt(3)(ciphertext); console.log(decryptedMessage); // Output: Hello, World!`
-			  ```
-			- In this example, we defined a monad `caesarCipher` that takes a shift value and returns an encryption function. The `decrypt` function is the inverse operation, which takes a ciphertext and returns the original plaintext message.
-		- ### **Monads and Decryption**
-			- Monads can also be used to define decryption schemes. Consider a scenario where we want to decrypt a ciphertext using a decryption key. We can define a monad that takes the decryption key and returns a decryption function.
-			- ```
-			  `const decryptionMonad = (decryptionKey) => (ciphertext) => { // Decrypt the ciphertext using the decryption key const decryptedMessage = ciphertext.split('').map((char) => {     const charCode = char.charCodeAt(0);     const decryptedCharCode = charCode ^ decryptionKey;     return String.fromCharCode(decryptedCharCode); }).join(''); return decryptedMessage; }; const decrypt = decryptionMonad(0x1234); // Define the decryption key const ciphertext = 'Hello, World!'; const decryptedMessage = decrypt(ciphertext); console.log(decryptedMessage); // Output: Hello, World!`
-			  ```
-			- In this example, we defined a monad `decryptionMonad` that takes a decryption key and returns a decryption function. The `decrypt` function is then used to decrypt the ciphertext, resulting in the original plaintext message.
-		- ### **Conclusion**
-			- In this article, we explored the concept of monads and their role in encryption and decryption. We saw how monads can be used to define encryption and decryption schemes, providing a composable and predictable way to work with cryptographic primitives in JavaScript. By leveraging the principles of category theory and functional programming, we can create robust and modular cryptographic systems that are easy to maintain and extend.
-			- As we move forward in our study plan, we’ll delve deeper into the applications of category theory in cryptography, exploring topics such as functors and cryptographic hash functions, and constructing Merkle trees using categorical structures. The connection between monads and encryption/decryption sets the stage for our next topic, where we’ll explore the relationship between functors and cryptographic hash functions.
-			- **Next Article:** Functors and Cryptographic Hash Functions
-			- In our next article, we’ll explore the connection between functors and cryptographic hash functions, and how they can be used to construct robust cryptographic systems in JavaScript. We’ll delve into the world of functors, exploring their role in category theory and their applications in cryptography.
-- # # 3.3 **Monoids in Category Theory: Unveiling the Algebraic Foundations of Cryptography**
+- # 3.2 **Monads and Encryption/Decryption**
+	- ### **Recap of Monoids and Category Theory Fundamentals**
+		- Before we dive into the world of monads, let’s briefly revisit the concepts of monoids and category theory. In our previous article, we discussed the importance of monoids in category theory, specifically their role in defining algebraic structures. We also touched upon the concept of associativity and identity elements, which are essential in understanding the properties of monoids.
+	- ### **Monads: A Mathematical Structure for Composition**
+		- A monad is a mathematical structure that provides a way to compose functions in a predictable and composable manner. In the context of category theory, monads are used to define a monoidal category, which is a category with a monoid structure on its objects. Monads are essential in functional programming, as they provide a way to abstract away lowlevel details and focus on the composition of functions.
+		- In JavaScript, we can represent monads using functions that take a value and return a new value, while maintaining the properties of the original value. This is particularly useful when working with asynchronous code, as it allows us to write composable functions that can be easily chained together.
+	- ### **Monads and Encryption**
+		- Now, let’s explore how monads can be used in the context of encryption. In cryptography, encryption and decryption are fundamental concepts that rely on the principles of algebraic structures. Monads can be used to define an encryption scheme, where the monad structure is used to compose encryption and decryption functions.
+		- Consider a simple example of a Caesar cipher, where each letter is shifted by a fixed number of positions. We can define a monad that takes a plaintext message and applies the Caesar cipher encryption scheme. The resulting ciphertext can then be decrypted using the inverse operation.
+		- ```
+		  `const caesarCipher = (shift) => (message) => { // Encrypt the message using the Caesar cipher const encryptedMessage = message.split('').map((char) => {     const charCode = char.charCodeAt(0);     const encryptedCharCode = charCode + shift;     return String.fromCharCode(encryptedCharCode); }).join(''); return encryptedMessage; }; const decrypt = (shift) => (ciphertext) => { // Decrypt the ciphertext using the inverse operation const decryptedMessage = ciphertext.split('').map((char) => {     const charCode = char.charCodeAt(0);     const decryptedCharCode = charCode  shift;     return String.fromCharCode(decryptedCharCode); }).join(''); return decryptedMessage; }; const encrypt = caesarCipher(3); // Shift by 3 positions const ciphertext = encrypt('Hello, World!'); console.log(ciphertext); // Output: Khoor, Zruog! const decryptedMessage = decrypt(3)(ciphertext); console.log(decryptedMessage); // Output: Hello, World!`
+		  ```
+		- In this example, we defined a monad `caesarCipher` that takes a shift value and returns an encryption function. The `decrypt` function is the inverse operation, which takes a ciphertext and returns the original plaintext message.
+	- ### **Monads and Decryption**
+		- Monads can also be used to define decryption schemes. Consider a scenario where we want to decrypt a ciphertext using a decryption key. We can define a monad that takes the decryption key and returns a decryption function.
+		- ```
+		  `const decryptionMonad = (decryptionKey) => (ciphertext) => { // Decrypt the ciphertext using the decryption key const decryptedMessage = ciphertext.split('').map((char) => {     const charCode = char.charCodeAt(0);     const decryptedCharCode = charCode ^ decryptionKey;     return String.fromCharCode(decryptedCharCode); }).join(''); return decryptedMessage; }; const decrypt = decryptionMonad(0x1234); // Define the decryption key const ciphertext = 'Hello, World!'; const decryptedMessage = decrypt(ciphertext); console.log(decryptedMessage); // Output: Hello, World!`
+		  ```
+		- In this example, we defined a monad `decryptionMonad` that takes a decryption key and returns a decryption function. The `decrypt` function is then used to decrypt the ciphertext, resulting in the original plaintext message.
+	- ### **Conclusion**
+		- In this article, we explored the concept of monads and their role in encryption and decryption. We saw how monads can be used to define encryption and decryption schemes, providing a composable and predictable way to work with cryptographic primitives in JavaScript. By leveraging the principles of category theory and functional programming, we can create robust and modular cryptographic systems that are easy to maintain and extend.
+		- As we move forward in our study plan, we’ll delve deeper into the applications of category theory in cryptography, exploring topics such as functors and cryptographic hash functions, and constructing Merkle trees using categorical structures. The connection between monads and encryption/decryption sets the stage for our next topic, where we’ll explore the relationship between functors and cryptographic hash functions.
+		- **Next Article:** Functors and Cryptographic Hash Functions
+		- In our next article, we’ll explore the connection between functors and cryptographic hash functions, and how they can be used to construct robust cryptographic systems in JavaScript. We’ll delve into the world of functors, exploring their role in category theory and their applications in cryptography.
+- # 3.3 **Monoids in Category Theory: Unveiling the Algebraic Foundations of Cryptography**
 	- As we delve into the realm of category theory, our focus shifts to the fundamental concept of monoids, a crucial algebraic structure that underlies various cryptographic primitives. In this article, we will explore the fascinating world of monoids in category theory, laying the groundwork for our subsequent discussions on functors, monads, and their applications in cryptography.
 	- ## **Recap: Category Theory Fundamentals**
 		- [](https://gist.github.com/tgrecojs/68f7ef7b33907ab0cfa5296fe5ccbd15#recapcategorytheoryfundamentals)
@@ -200,7 +200,7 @@
 		  `Explore the role of functors in constructing cryptographic hash functions Delve deeper into the world of monads and their applications in encryption and decryption Construct a Merkle tree using categorical structures Examine the applications of category theory in cryptography`
 		  ```
 		- Stay tuned for the next installment of our journey into the fascinating world of category theory and cryptography!
-- # # 3.4 **Constructing Merkle Trees with Categorical Structures**
+- # 3.4 **Constructing Merkle Trees with Categorical Structures**
 	- ## **Introduction**
 		- In the realm of cryptography, Merkle trees play a vital role in ensuring the integrity and authenticity of data. By leveraging categorical structures, we can create an elegant and robust implementation of Merkle trees in JavaScript. As an advanced software developer with a strong background in functional programming, you’re wellequipped to dive into the world of categorical cryptography. In this article, we’ll explore the construction of Merkle trees using categorical structures, bridging the gap between theoretical foundations and practical implementation.
 	- ## **Recap: Fundamentals of Category Theory**
@@ -238,7 +238,7 @@
 		- ```
 		  `[1] "Category Theory for Scientists" by David I. Spivak [2] "Categorical Quantum Mechanics" by Bob Coecke and Aleks Kissinger`
 		  ```
-- # # 3.5 **Encryption and Decryption in Categorical Contexts**
+- # 3.5 **Encryption and Decryption in Categorical Contexts**
 	- As we delve into the realm of cryptography, we find ourselves at the intersection of category theory and JavaScript. In this article, we will explore the fascinating world of encryption and decryption, leveraging the concepts of category theory to create robust cryptographic primitives. Our journey will take us through the application of monoids, functors, and monads to develop secure encryption and decryption mechanisms.
 	- ## **Motivation and Background**
 		- As an advanced software developer with a strong foundation in functional programming, you’re wellversed in the concepts of monads, monoids, and semigroups. Your expertise in prototypal inheritance and arrow functions will serve as a solid foundation for exploring the intricacies of cryptographic primitives in JavaScript. Our focus will be on implementing encryption and decryption using category theory, building upon the fundamentals established in the previous articles.
@@ -266,7 +266,7 @@
 		- ```
 		  `**[1]** "Category Theory for Scientists" by David I. Spivak **[2]** "Cryptography Engineering" by Bruce Schneier, Niels Ferguson, and Tadayoshi Kohno`
 		  ```
-- # # 4.1 **Associativity and Identity Elements: Unlocking the Power of Category Theory in JavaScript Cryptography**
+- # 4.1 **Associativity and Identity Elements: Unlocking the Power of Category Theory in JavaScript Cryptography**
 	- As we delve deeper into the realm of Category Theory and its applications in JavaScript cryptography, we find ourselves at the threshold of a fascinating topic: Associativity and Identity Elements. In this article, we will embark on an indepth exploration of these fundamental concepts, leveraging your background in functional programming and prototypal inheritance to create a seamless learning experience.
 	- ### Associativity: A Key Concept in Category Theory
 		- In the context of Category Theory, associativity is a property that ensures the order in which we combine objects does not affect the result. This concept is crucial in cryptography, as it allows us to build complex cryptographic primitives from simpler components. To illustrate this, let’s consider a simple example using JavaScript:
