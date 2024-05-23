@@ -1,7 +1,6 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Eczar:wght@400..800&family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Josefin+Sans:wght@100..700&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap')**/
 
 
-  @import url("https://wirtzdan.github.io/logseq-paper-theme/custom.css");
 
 --root {
   --display-recent-pages: none;
@@ -9,7 +8,6 @@
   --display-arrow-navigation: none;
   --display-help-button: none;
   --oz-text-size: 18px;
-  --oz-line-height: 1.125;
   --ls-font-family: "Fira Sans", "Inter", "Eczar",sans-serif;
   --oz-page-title-font-family: var(--ls-font-family);
   --oz-code-font-family: "Fira Sans", monospace;
@@ -133,7 +131,6 @@ body {
   font-size: var(--oz-text-size);
   font-family: var(--ls-font-family);
   /*-webkit-font-smoothing: auto;*/
-  line-height: var(--oz-line-height);
 }
 
 

@@ -2,20 +2,27 @@
 - #### **Backstory: "Renegade Tribbles: A Fluffy Revolution"**
 - In the neon haze of the 1970s, a band of renegade Tribbles, those famously adorable fluff balls from the starship corridors of pop culture fame, decided to buck the trend. Unlike their kin, who basked in the limelight of adoration from fans and thrived on the excitement of television screens, this particular group sought a different path. Dubbed the "Fluffernauts," these Tribbles, with their shimmering fur of rebellious hues, escaped into the obscure corners of the galaxy. Here, they embarked on a long sabbatical, eschewing fame for a quieter existence, where they could cultivate a deep philosophical ethos centered around intersubjectivity and mutual understanding. Their legend became but a whisper on the winds of space, known only to the most devout of cosmic wanderers.
 - As centuries turned on backwater planets, the Fluffernauts evolved intellectually and spiritually. Their society was built on the foundational belief in collective existence, their thoughts as interwoven as their furs. Now, as the universe stands on the brink of a new blockchain-powered epoch, the time of the Fluffernauts has come. Spurred by cosmic currents and the alignment of digital stars, they’ve decided to re-enter the galactic stage. Launching their very own cryptocurrency, Tribbles and TribbleB, they aim to spread their ethos of intersubjectivity through the cosmos. Each token, a symbol of their collective philosophy, represents not just a piece of digital currency but a part of a larger, interconnected whole.
-- #### **Token Mechanics and Distribution**
-- Tribble (Primary Token)
+- ## **Token Mechanics and Distribution**
+- ### Tribble (Primary Token)
 	- **Fixed Supply**
+	  collapsed:: true
 		- Echoing the deflationary model of Bitcoin, Tribble will have a capped maximum supply.
-	- Airdrop Mechanics:
+	- collapsed:: true
+	  
+	  Airdrop Mechanics:
 		- **Cost**:  Each claim costs 1 IST.
 		- **Tiered Retroactive Qualification**:
+		  collapsed:: true
 			- Eligibility and initial allocation amounts are determined by past interactions with related blockchain activities:
+			  collapsed:: true
 				- Top Tier: Users who have opened an Inter Protocol Vault, provisioned an Agoric Smart Contract, or staked BLD tokens.
 				- Second Tier: Users who have interacted with ATOM token in the past four months.
 		- **Claim Decay**:
+		  collapsed:: true
 			- The amount of Tribble claimable decreases by 50% per epoch, incentivizing swift action to maximize rewards.
 		- **Dynamic Issuance Schema for Tribble (Base Supply: 10,000,000 Tokens)**
 		- **Initial Base Supply**
+		  collapsed:: true
 			- Fixed Base: The project launches with an initial fixed base supply of 10,000,000 Tribbles available for claiming.
 - #### **Dynamic Supply Expansion Conditions**
 	- Expansion Trigger: The total supply is subject to increase if the number of claims within the first epoch (a predefined period, say 24 hours from launch) reaches certain thresholds.
@@ -40,7 +47,7 @@
   | Tier 4 | 1/4 + General | 40,000 | 25 Tribbles | 1,000,000 Tribbles | 1,000,000 | 500,000 | 250,000 | 125,000 | 62,500 |
   | Tier 5 | General only | 100,000 | 10 Tribbles | 1,000,000 Tribbles | 1,000,000 | 500,000 | 250,000 | 125,000 | 62,500 |
 - ### **TribbleB Minting Cost and Requirements**
-- > To mint TribbleB, the process will involve both a cost component and a token burning mechanism:
+- To mint TribbleB, the process will involve both a cost component and a token burning mechanism:
 	- TribbleB (Derived Token)
 		- Creation: Can be minted by burning Tribbles.
 		- Function: Supports a unique "Proof of Breed" governance model, where governance participation requires having bred at least one TribbleB, emphasizing active engagement in the ecosystem.
@@ -48,11 +55,18 @@
 		- Amount: To mint one TribbleB, a user must burn 10 Tribbles. This process reduces the supply of Tribbles, potentially increasing the rarity and value of the remaining Tribbles.
 	- Monetary Cost:
 		- IST Requirement: In addition to burning Tribbles, minting one TribbleB requires the user to pay 1 IST per Tribble burnt.
-- #### **Governance and Security**
-- > Intersubjective Governance Model: Decisions are made collectively, emphasizing an ethos of shared understanding and equality:
+- ### **Governance and Security**
+- Intersubjective Governance Model: Decisions are made collectively, emphasizing an ethos of shared understanding and equality:
 	- Proof of Breed: Only participants who have actively engaged by breeding TribbleB can vote, ensuring that governance is influenced by those most invested in the ecosystem's health.
 	- Equal Voting Rights: Each participant has one vote, regardless of the number of TribbleBs bred, maintaining fairness and preventing dominance by a few large holders.
 -
+- ## Response
+	- I'm wholly against any mechanism that would penalize early claimers, which is why I mentioned rewarding those responsible for triggering a "bonus mint" event to occur.
+	- It seems there could be quite a but of variability in regards to how many people claim their tokens, and when they claim their tokens. Using a mechanism like this token can potentially be allow us to cast a dynamically wide net.
+	- mechanism can potentially act as a failsafe protecting us from a situation in which there is a surplus of tokens,
+	- having a bit more control over
+	- we have to decide on the ideal number of people we'd like to get to this to,  using a mechanism like this token can potentially be a vehicle for expanding the airdrop as it allows us to case a wide net
+	- the wall getting burne
 - tags: #[[Merkle Airdrop]]
 -
 -

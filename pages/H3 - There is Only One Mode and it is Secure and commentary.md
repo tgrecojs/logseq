@@ -1,0 +1,6 @@
+- Good Protocols bootstrap into secure mode, immediately. On first time starting up, the protocol goes into secure mode. From there on, it only gets better.
+- There is no insecure mode. No button to turn off, no feature to forget, no way to trick the application.
+- There should be no necessary setup by the user. If a public key is needed, make it. If the other side needs a secret key, send it. If you need a password, invent it and suggest the user replaces it, don't ask for it and block the action.
+- It should take an Act of God to start up in anything but the best possible security you can manage. A Presidential Order doesn't cut it. Make your protocol immorally promiscuous and your users will thank you, even if your reputation will take a dive for about 5 years. Don't worry, your users will outlive their users.
+- In practice, a perfect start-up is impossible, and we do not let a perfect theory be the enemy of a good protocol. Your protocol should leap into life with joy and abandon, and reward your users with instantly secure communication. Let an expert add some extra features if they want to get that warm gooey feeling of no-risk security, but never let him tell you that near enough isn't good enough. Instead, send him paddling over to a committee
+-

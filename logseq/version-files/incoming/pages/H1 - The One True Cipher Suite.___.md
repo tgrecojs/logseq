@@ -1,0 +1,11 @@
+- In cryptoplumbing, the gravest choices are apparently on the nature of the cipher suite. To include *latest fad algo* or not? Instead, I offer you a simple solution. Don't.
+- *There is one cipher suite, and it is numbered Number 1.*
+- Cypersuite #1 is always negotiated as Number 1 in the very first message. It is your choice, your ultimate choice, and your destiny. Pick well.
+- If your users are nice to you, promise them Number 2 in two years. If they are not, don't. Either way, do not deliver any more cipher suites for at least 7 years, one for each hypothesis.
+- **And then it all went to pot...**
+  We see this with PGP. Version 2 was quite simple and therefore stable -- there was RSA, IDEA, MD5, and some weird padding scheme. That was it. Compatibility arguments were few and far between. Grumbles were limited to the padding scheme and a few other quirks.
+- Then came Versions 3-8, and it could be said that the explosion of options and features and variants caused more incompatibility than any standards committee could have done on its own.
+- **Avoid the Champagne Hangover**
+- Do your homework up front.
+- Pick a good suite of ciphers, ones that are [Pareto-Secure](http://iang.org/papers/pareto-secure.html), and do your best to make the combination strong [[1](https://iang.org/ssl/h1_the_one_true_cipher_suite.html#ref_1)]. Document the short falls and do not worry about them after that. Cut off any idle fingers that can't keep from tweaking. Do not permit people to sell you on the marginal merits of some crazy public key variant or some experimental MAC thing that a cryptographer knocked up over a weekend or some minor foible that allows an attacker to learn your aunty's birth date after asking a million times.
+- Resist the temptation. Stick with The One.
