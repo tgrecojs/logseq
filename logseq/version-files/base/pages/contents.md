@@ -1,3 +1,4 @@
 -
 - {{renderer :tocgen2, [[monoids: unlocking the power of composition]], calc(100vh - 135px)}}
 - {{renderer :tocgen2, [[complex fp with adts]], calc(100vh - 135px)}}
+- {{renderer :tocgen2, [[fantas-eel-and-specification]], calc(100vh - 135px)}}

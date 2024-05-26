@@ -1,13 +1,152 @@
 ## All posts
-	- [19. Semigroupoid and Category · Tom Harding](https://omnivore.app/me/fantas-eel-and-specification-19-semigroupoid-and-category-tom-ha-18fa66a8248)
+	- [Rethinking Unit Test Assertions. Well written automated tests always act… | by Eric Elliott | JavaScript Scene | Medium](https://omnivore.app/me/rethinking-unit-test-assertions-well-written-automated-tests-alw-18fac9bc96e)
 	  collapsed:: true
+	  site:: [JavaScript Scene](https://medium.com/javascript-scene/rethinking-unit-test-assertions-55f59358253f)
+	  author:: Eric Elliott
+	  date-saved:: [[05/24/2024]]
+	  date-published:: [[10/08/2018]]
+		- ### Content
+		  collapsed:: true
+			- ![](https://proxy-prod.omnivore-image-cache.app/2304x1296,sBg_NAMhmEXc5SAd4mo4Dbllf9KWhVCiAu77bHdfJtK0/https://miro.medium.com/v2/resize:fit:2304/1*8HSjkuZT5pn-XbiDLWd1BA.jpeg)
+			  
+			  Well written automated tests always act as a good bug report when they fail, but few developers spend time to think about what information a good bug report needs.
+			  
+			  There are [5 questions every unit test must answer](https://medium.com/javascript-scene/what-every-unit-test-needs-f6cd34d9836d). I’ve described them in detail before, so we’ll just skim them this time:
+			  
+			  1. What is the unit under test (module, function, class, whatever)?
+			  2. What should it do? (Prose description)
+			  3. What was the actual output?
+			  4. What was the expected output?
+			  5. How do you reproduce the failure?
+			  
+			  A lot of test frameworks allow you to ignore one or more of these questions, and that leads to bug reports that aren’t very useful.
+			  
+			  Let’s take a look at this example using a fictional testing framework that supplies the commonly supplied `pass()` and `fail()` assertions:
+			  
+			  describe('addEntity()', async ({ pass, fail }) => {  
+			  const myEntity  = { id: 'baz', foo: 'bar' };  try {  
+			    const response = await addEntity(myEntity);  
+			    const storedEntity = await getEntity(response.id);  
+			    pass('should add the new entity');  
+			  } catch(err) {  
+			    fail('failed to add and read entity', { myEntity, error });  
+			  }  
+			  });
+			  
+			  We’re on the right track here, but we’re missing some information. Let’s try to answer the 5 questions using the data available in this test:
+			  
+			  1. **What is the unit under test?** `addEntity()`
+			  2. **What should it do?** `'should add the new entity'`
+			  3. **What was the actual output?** _Oops. We don’t know. We didn’t supply this data to the testing framework._
+			  4. **What was the expected output?** _Again, we don’t know. We’re not testing a return value here. Instead, we’re assuming that if it doesn’t throw, everything worked as expected — but what if it didn’t? We should be testing the resulting value if the function returns a value or resolving promise._
+			  5. **How do you reproduce the failure?** _We can see this a little bit in the test setup, but we could be more explicit about this. For example, it would be nice to have a prose description of the input that you’re feeding in to give us a better understanding of the intent of the test case._
+			  
+			  I’d score this 2.5 out of 5\. Fail. This test is not doing its job. It is clearly not answering the 5 questions every unit test must answer.
+			  
+			  The problem with most test frameworks is that they’re so busy making it easy for you to take shortcuts with their “convenient” assertions that they forget that the biggest value of a test is realized _when the test fails._
+			  
+			  At the failure stage, the convenience of writing the test matters _a lot less_ than how easy it is to figure out what went wrong when we read the test.
+			  
+			  In [“5 Questions Every Unit Test Must Answer”](https://medium.com/javascript-scene/what-every-unit-test-needs-f6cd34d9836d), I wrote:
+			  
+			  > _“_`equal()` is my favorite assertion. If the only available assertion in every test suite was _equal(),_ almost every test suite in the world would be better for it.”
+			  
+			  In the years since I wrote that, I doubled down on that belief. While testing frameworks got busy adding even more “convenient” assertions, I wrote a thin wrapper around Tape that only exposed a deep equality assertion. In other words, I took the already minimal Tape library, and _removed features_ to make the testing experience better.
+			  
+			  I called the wrapper library “[RITEway](https://github.com/ericelliott/riteway)” after the RITE Way testing principles. Tests should be:
+			  
+			  * **R**eadable
+			  * **I**solated (for unit tests) or **I**ntegrated (for functional and integration tests, test should be isolated and components/modules should be integrated)
+			  * **T**horough, and
+			  * **E**xplicit
+			  
+			  RITEway forces you to write Readable, Isolated, and Explicit tests, because that’s the only way you can use the API. It also makes it easier to be thorough by making test assertions so simple that you’ll want to write more of them.
+			  
+			  Here’s the signature for RITEway’s `assert()`:
+			  
+			  assert({  
+			  given: Any,  
+			  should: String,  
+			  actual: Any,  
+			  expected: Any  
+			  }) => Void
+			  
+			  The assertion must be in a `describe()` block which takes a label for the unit under test as the first parameter. A complete test looks like this:
+			  
+			  describe('sum()', async assert => {  
+			  assert({  
+			    given: 'no arguments',  
+			    should: 'return 0',  
+			    actual: sum(),  
+			    expected: 0  
+			  });  
+			  });
+			  
+			  Which produces the following:
+			  
+			  TAP version 13  
+			  \# sum()  
+			  ok 1 Given no arguments: should return 0
+			  
+			  Let’s take another look at our 2.5 star test from above and see if we can improve our score:
+			  
+			  describe('addEntity()', async assert => {  
+			  const myEntity  = { id: 'baz', foo: 'bar' };  
+			  const given =  'an entity';  
+			  const should = 'read the same entity from the api';  try {  
+			    const response = await addEntity(myEntity);  
+			    const storedEntity = await getEntity(response.id);    assert({  
+			      given,  
+			      should,  
+			      actual: storedEntity,  
+			      expected: myEntity  
+			    });  
+			  } catch(error) {  
+			    assert({  
+			      given,  
+			      should,  
+			      actual: error,  
+			      expected: myEntity  
+			    });  
+			  }  
+			  });
+			  
+			  1. **What is the unit under test?** `addEntity()`
+			  2. **What should it do?** `'given an entity: should read the same entity from the api'`
+			  3. **What was the actual output?** `{ id: 'baz', foo: 'bar' }`
+			  4. **What was the expected output?** `{ id: 'baz', foo: 'bar' }`
+			  5. **How do you reproduce the failure?** Now the instructions to reproduce the test are more explicitly spelled out in the message: The given and should descriptions are supplied.
+			  
+			  Nice! Now we’re passing the testing test.
+			  
+			  \#\# Is a Deep Equality Assertion Really Enough?
+			  
+			  I have been using RITEway on an almost-daily basis across several large production projects for almost a year and a half. It has evolved a little. We’ve made the interface _even simpler_ than it originally was, but I’ve never wanted another assertion in all that time, and our test suites are the simplest, most readable test suites I have ever seen in my entire career.
+			  
+			  I think it’s time to share this innovation with the rest of the world. If you want to get started with [RITEway](https://github.com/ericelliott/riteway):
+			  
+			  npm install --save-dev riteway
+			  
+			  It’s going to change the way you think about testing software.
+			  
+			  In short:
+			  
+			  > Simple tests are better tests.
+			  
+			  _P.S. I’ve been using the term “unit tests” throughout this article, but that’s just because it’s easier to type than “automated software tests” or “unit tests and functional tests and integration tests”, but everything I’ve said about unit tests in this article applies to every automated software test I can think of. I like these tests much better than Cucumber/Gherkin for functional tests, too._
+			  
+			  \#\# Next Steps
+			  
+			  [TDD Day](https://tddday.com/) is an online recorded webinar deep dive on test driven development, different kinds of tests and the roles they play, how to write more testable software, and [how TDD made me a better developer](https://medium.com/javascript-scene/tdd-changed-my-life-5af0ce099f80), and how it can do the same for you. It’s a great master class to help you or your team reach the next level of TDD practice, featuring 5 hours of video content and interactive quizzes to test your memory.
+			  
+			  More video lessons on test driven development are available for members of EricElliottJS.com. If you’re not a member, [sign up today](https://ericelliottjs.com/).
+	- [19. Semigroupoid and Category · Tom Harding](https://omnivore.app/me/fantas-eel-and-specification-19-semigroupoid-and-category-tom-ha-18fa66a8248)
 	  site:: [web.archive.org](https://web.archive.org/web/20230301115944/http://www.tomharding.me/2017/07/10/fantas-eel-and-specification-19/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[07/09/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20230301115944/http://www.tomharding.me/2017/07/10/fantas-eel-and-specification-19/
 			  
 			  \#\# Fantas, Eel, and Specification 19: Semigroupoid and Category
@@ -187,14 +326,12 @@
 			  
 			  ♥ ♥ ♥
 	- [18. Bifunctor and Profunctor](https://omnivore.app/me/fantas-eel-and-specification-18-bifunctor-and-profunctor-tom-har-18fa66a0046)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20230301115931/http://www.tomharding.me/2017/06/26/fantas-eel-and-specification-18/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[06/25/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20230301115931/http://www.tomharding.me/2017/06/26/fantas-eel-and-specification-18/
 			  
 			  \#\# Fantas, Eel, and Specification 18: Bifunctor and Profunctor
@@ -380,14 +517,12 @@
 			  
 			  ♥
 	- [16. Extend](https://omnivore.app/me/fantas-eel-and-specification-16-extend-tom-harding-18fa6698e51)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20231206140740/http://www.tomharding.me/2017/06/12/fantas-eel-and-specification-16/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[06/11/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20231206140740/http://www.tomharding.me/2017/06/12/fantas-eel-and-specification-16/
 			  
 			  You’re **still** here? That means you survived `Monad`! See? Told you it isn’t that scary. It’s nothing we haven’t **already seen**. Well, _today_, we’re going to revisit `Chain` with one _slight_ difference. As we know, `Chain` takes an `m a` to an `m b` with some help from an `a -> m b` function. It **sequences** our ideas. However, _what if I told you_… we could go **backwards**? Let’s `Extend` your horizons.
@@ -692,14 +827,12 @@
 			  
 			  ♥
 	- [15. Monad](https://omnivore.app/me/fantas-eel-and-specification-15-monad-tom-harding-18fa669234f)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20230610043014/http://www.tomharding.me/2017/06/05/fantas-eel-and-specification-15/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[06/04/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20230610043014/http://www.tomharding.me/2017/06/05/fantas-eel-and-specification-15/
 			  
 			  **Today is the day**, Fantasists. We all knew it was coming, but we _hoped_ it wouldn’t be so soon. Sure enough, though, **here we are**. We’ve battled through **weeks** of structures, and reached the dreaded `Monad`. Say your goodbyes to your loved ones, and **let’s go**.
@@ -997,17 +1130,14 @@
 			  
 			  ♥
 		- ### Highlights
-		  collapsed:: true
 			- > fantas-eel-and-specification [⤴️](https://omnivore.app/me/fantas-eel-and-specification-15-monad-tom-harding-18fa669234f#3a9eed79-21b5-41dd-9f3f-38bb914c6df7)
 	- [14. ChainRec](https://omnivore.app/me/fantas-eel-and-specification-14-chain-rec-tom-harding-18fa668c647)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20230924043628/http://www.tomharding.me/2017/05/30/fantas-eel-and-specification-14/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[05/29/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20230924043628/http://www.tomharding.me/2017/05/30/fantas-eel-and-specification-14/
 			  
 			  **Happy Tuesday**, Fantasists! Sorry for the wait; I’ve been chasing around [an issue to change this entry](https://web.archive.org/web/20230924043628/https://github.com/fantasyland/fantasy-land/issues/250)! No movement on that yet, so let’s **soldier on**! We’ve seen that `chain` allows us to **sequence** our actions, which means we can now do pretty much **anything we want**! As fellow JavaScripters, this is of course the time we get cynical; it can’t be _that_ simple, right? **Absolutely not**, and let’s take a look at a **convoluted example** to show us why!
@@ -1239,14 +1369,12 @@
 			  
 			  As usual, feel free to play with [the post’s code gist](https://web.archive.org/web/20230924043628/https://gist.github.com/richdouglasevans/4c0a197c3d8312961a1c7fba557f4425) to experiment further!
 	- [13. Chain](https://omnivore.app/me/fantas-eel-and-specification-13-chain-tom-harding-18fa6688789)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20231206142142/http://www.tomharding.me/2017/05/15/fantas-eel-and-specification-13/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[05/14/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20231206142142/http://www.tomharding.me/2017/05/15/fantas-eel-and-specification-13/
 			  
 			  _You told me to **leave you alone**. My Papa said, “**Come on home**”. My doctor said, “**Take it easy**”, but your lovin’ is **much too strong**. I’m added to your… `Chain`, `Chain`, `Chain`_! Maybe we didn’t compose _that_ one, but we’re going to `compose` plenty of things today!
@@ -1599,14 +1727,12 @@
 			  
 			  _† Hat-tip to [@safareli](https://web.archive.org/web/20231206142142/https://twitter.com/safareli/), who reminded me to include this bit!_
 	- [12. Traversable](https://omnivore.app/me/fantas-eel-and-specification-12-traversable-tom-harding-18fa66810f1)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20231206143607/http://www.tomharding.me/2017/05/08/fantas-eel-and-specification-12/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[05/07/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20231206143607/http://www.tomharding.me/2017/05/08/fantas-eel-and-specification-12/
 			  
 			  It’s **`Traversable` Monday™**, everyone! Granted, _tomorrow_ would have made for a catchier opening, but I wasn’t thinking this far ahead when I picked the day to release these. Still, I bet you can’t _wait_ for `Monad`s now! Putting all that aside, does everyone remember how great the `insideOut` function from [the Applicative post](https://web.archive.org/web/20231206143607/http://www.tomharding.me/2017/04/17/fantas-eel-and-specification-9/) was? Well, today’s post is all about your **new favourite typeclass**.
@@ -1826,12 +1952,10 @@
 			  
 			  ♥
 	- [[p2p-hackers] part 2: proxying and introduction: the two fundamental operations of emergent networks](https://omnivore.app/me/p-2-p-hackers-part-2-proxying-and-introduction-the-two-fundament-18fa41cbe86)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20140618094030/http://zgp.org/pipermail/p2p-hackers/2001-September/000296.html)
 	  author:: unknown
 	  date-saved:: [[05/23/2024]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20140618094030/http://zgp.org/pipermail/p2p-hackers/2001-September/000296.html
 			  
 			  **zooko at zooko.com** [zooko at zooko.com](https://web.archive.org/web/20140618094030/mailto:p2p-hackers%40zgp.org?Subject=%5Bp2p-hackers%5D%20part%202%3A%20proxying%20and%20introduction%3A%20the%20two%20fundamental%20operations%20of%20emergent%20networks&In-Reply-To= "[p2p-hackers] part 2: proxying and introduction: the two fundamental operations of emergent networks")  
@@ -1985,14 +2109,12 @@
 			  
 			  [More information about the P2p-hackers mailing list](https://web.archive.org/web/20140618094030/http://zgp.org/cgi-bin/mailman/listinfo/p2p-hackers)
 	- [11. Foldable](https://omnivore.app/me/fantas-eel-and-specification-11-foldable-tom-harding-18fa667d836)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20231206151632/http://www.tomharding.me/2017/05/01/fantas-eel-and-specification-11/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[04/30/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20231206151632/http://www.tomharding.me/2017/05/01/fantas-eel-and-specification-11/
 			  
 			  Welcome back, Fantasists! This week has been **hectic**, so I haven’t caught up the [companion repository](https://web.archive.org/web/20231206151632/http://github.com/i-am-tom/fantas-eel-and-specification) as I’d hoped to. However, I should have some time to devote to it this week, so watch this space! Anyway, why don’t we have some **down time** before we get onto the **really grizzly** parts of the spec? Let’s take a look at `Foldable`.
@@ -2178,14 +2300,12 @@
 			  
 			  ♥
 	- [10. ALT, Plus, and Alternative](https://omnivore.app/me/fantas-eel-and-specification-10-alt-plus-and-alternative-tom-har-18fa666fde5)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/04/24/fantas-eel-and-specification-10/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[04/23/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/04/24/fantas-eel-and-specification-10/
 			  
 			  \#\# Fantas, Eel, and Specification 10: Alt, Plus, and Alternative
@@ -2333,14 +2453,12 @@
 			  
 			  Take care ♥
 	- [9. Applicative](https://omnivore.app/me/fantas-eel-and-specification-9-applicative-tom-harding-18fa662353b)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20240103060406/http://www.tomharding.me/2017/04/17/fantas-eel-and-specification-9/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[04/16/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20240103060406/http://www.tomharding.me/2017/04/17/fantas-eel-and-specification-9/
 			  
 			  _I asked my **German** friend whether any of this series’ posts particularly stood out. They said **9**, so I’d better make this a good one!_ I told you we were doing jokes now, right? Moving on… _Today_, we’re going to finish up a topic we started last week and move from our `Apply` types to `Applicative`. If you understood [the Apply post](https://web.archive.org/web/20240103060406/http://www.tomharding.me/2017/04/10/fantas-eel-and-specification-8/), this one is _hopefully_ going to be pretty intuitive. **Hooray**!
@@ -2547,14 +2665,12 @@
 			  
 			  Thank you _so much_ for reading, and take care ♥
 	- [8. Apply](https://omnivore.app/me/fantas-eel-and-specification-8-apply-tom-harding-18fa6664fff)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20240103060404/http://www.tomharding.me/2017/04/10/fantas-eel-and-specification-8/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[04/09/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20240103060404/http://www.tomharding.me/2017/04/10/fantas-eel-and-specification-8/
 			  
 			  Aaand we’re back - hello, everyone! Today, we’re going to take another look at those mystical [Functor types](https://web.archive.org/web/20240103060404/http://www.tomharding.me/2017/03/27/fantas-eel-and-specification-6/). We said a couple weeks ago that functors encapsulate a little world (**context**) with some sort of _language extension_. Well, what happens **when worlds collide**? Let’s talk about `Apply`.
@@ -2764,17 +2880,14 @@
 			  
 			  For now until we talk about `Applicative`, though, it’s goodbye from me! Keep at it, `Apply` yourself (_zing - this blog has jokes now!_), and take care ♥
 		- ### Highlights
-		  collapsed:: true
 			- > fantas-eel-and-specification [⤴️](https://omnivore.app/me/fantas-eel-and-specification-8-apply-tom-harding-18fa6664fff#dc9da986-ffd9-4a82-8de1-80c90b5ad8b9)
 	- [7. Contravariabt](https://omnivore.app/me/fantas-eel-and-specification-7-contravariant-tom-harding-18fa66599e6)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20231206151556/http://www.tomharding.me/2017/04/03/fantas-eel-and-specification-7/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[04/02/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20231206151556/http://www.tomharding.me/2017/04/03/fantas-eel-and-specification-7/
 			  
 			  Well, well, well. We’re a fair few weeks into this - I hope this is all still making sense! In the last article, we talked about **functors**, and how they’re really just containers to provide “language extensions” (or **contexts**). Well, today, we’re going to talk about another _kind_ of functor that looks… _ooky spooky_:
@@ -2991,15 +3104,15 @@
 			  Something to explore! Next time, we’ll talk about `Apply` (and probably `Applicative`) - my **second favourite** typeclass (after `Comonad` \- we’ll get to _that_ one in a few more weeks!) I hope you’re all well, and hopefully learning a thing or two along the way. See you in a week!
 			  
 			  Take care ♥
+			-
+			-
 	- [6. Functor](https://omnivore.app/me/fantas-eel-and-specification-6-functor-tom-harding-18fa665328f)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20231230183557/http://www.tomharding.me/2017/03/27/fantas-eel-and-specification-6/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[03/26/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20231230183557/http://www.tomharding.me/2017/03/27/fantas-eel-and-specification-6/
 			  
 			  Fantasy Landers, **assemble**! We’ve been `concat`enating for two weeks now; are you ready for something a bit different? Well, **good news**! If you’re humming, “_Oh won’t you take me… to functor town?_”, then this is the article for you. Today, friends, we’re going to talk about **functors**.
@@ -3103,14 +3216,12 @@
 			  
 			  Take care ♥
 	- [5. Monoid](https://omnivore.app/me/fantas-eel-and-specification-5-monoid-tom-harding-18fa664f60f)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20230924031037/http://www.tomharding.me/2017/03/21/fantas-eel-and-specification-5/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[03/20/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20230924031037/http://www.tomharding.me/2017/03/21/fantas-eel-and-specification-5/
 			  
 			  Good Tuesday, Fantasists! This week, we’re going to take a quick(!) look at [the semigroup](https://web.archive.org/web/20230924031037/http://www.tomharding.me/2017/03/13/fantas-eel-and-specification-4/)’s older sibling: the **monoid**. We saw last week that a `Semigroup` type is one that has some concept of _combining_ values (via `concat`). _Well_, a `Monoid` type is any `Semigroup` type that happens to have a special value - we’ll call it an **identity** value - stored on the type as a function called `empty`.
@@ -3311,13 +3422,11 @@
 			  
 			  Take care ♥
 	- [4. Semigroup](https://omnivore.app/me/fantas-eel-and-specification-4-semigroup-tom-harding-18fa6645ac6)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20231219092021/http://www.tomharding.me/2017/03/13/fantas-eel-and-specification-4/)
 	  author:: unknown
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[03/12/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20231219092021/http://www.tomharding.me/2017/03/13/fantas-eel-and-specification-4/
 			  
 			  Today, after a moment of thanks to all those following this series (seriously, _thank you_ ♥), we can move onto a question that has occupied human thought for aeons: how do we generalise the process of combining (or [mooshmashing](https://web.archive.org/web/20231219092021/https://twitter.com/drboolean/status/700436888390217728)) things together? With **semigroups**, of course!
@@ -3578,14 +3687,12 @@
 			  
 			  _\* I’ve given [a lightning talk on monoids](https://web.archive.org/web/20231219092021/https://www.youtube.com/watch?v=Sn8uTpySGWA) in the past, but it’s a PHP talk by a younger Tom, so it’s all a bit painful to watch, I’m afraid!_
 	- [3.5. Ord](https://omnivore.app/me/fantas-eel-and-specification-3-5-ord-tom-harding-18fa663db79)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20230924025047/http://www.tomharding.me/2017/04/09/fantas-eel-and-specification-3.5/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[04/08/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20230924025047/http://www.tomharding.me/2017/04/09/fantas-eel-and-specification-3.5/
 			  
 			  _Honestly, at this rate, the spec is going to grow faster than this blog series…_ We interrupt our usual schedule to introduce **Fantasy Land’s newest member**: let’s welcome `Ord`! _Spoiler alert: if you’ve been following this series, this is going to be a pretty easy one_.
@@ -3696,14 +3803,12 @@
 			  
 			  _\* If you decide to do this, this is a **great** candidate for an [npm](https://web.archive.org/web/20230924025047/http://npmjs.com/) package. Seriously, **I will use this** \- let me know when you publish!_
 	- [3. Setoid](https://omnivore.app/me/fantas-eel-and-specification-3-setoid-tom-harding-18fa66310b3)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20230924025453/http://www.tomharding.me/2017/03/09/fantas-eel-and-specification-3/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[03/08/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20230924025453/http://www.tomharding.me/2017/03/09/fantas-eel-and-specification-3/
 			  
 			  **Congratulations!** You’ve mastered [the fundamentals of daggy](https://web.archive.org/web/20230924025453/http://www.tomharding.me/2017/03/03/fantas-eel-and-specification/), nailed the [intro to type signatures](https://web.archive.org/web/20230924025453/http://www.tomharding.me/2017/03/08/fantas-eel-and-specification-2/), and are ready to begin your journey through Fantasy Land. First stop: the **setoid**.
@@ -3844,14 +3949,12 @@
 			  _\* The important point here is that equivalence is **much deeper** than pointer equality. Just try typing `(x => x) === (x => x)` into your Node REPL._
 	- [2. Type Signatures
 	  ](https://omnivore.app/me/fantas-eel-and-specification-2-type-signatures-tom-harding-18fa661c1b1)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20231206135745/http://www.tomharding.me/2017/03/08/fantas-eel-and-specification-2/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[03/07/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20231206135745/http://www.tomharding.me/2017/03/08/fantas-eel-and-specification-2/
 			  
 			  \#\# Fantas, Eel, and Specification 2: Type Signatures
@@ -4028,14 +4131,12 @@
 			  _† Pronounced “toople”, regardless of which side of the pond you inhabit. Weird, right?_
 	- [1. Daggy
 	  ](https://omnivore.app/me/fantas-eel-and-specification-1-daggy-tom-harding-18fa660d987)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20240111162214/http://www.tomharding.me/2017/03/03/fantas-eel-and-specification/)
 	  author:: unknown
 	  labels:: [[fantas-eel-and-specification]] [[fantasyland]] [[functional programming]]
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[03/02/2017]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20240111162214/http://www.tomharding.me/2017/03/03/fantas-eel-and-specification/
 			  
 			  Hello again, the Internet! As a functional programming zealot\* and JavaScript developer†, I spend a **lot** of my time raving about their crossover. In this series, we’ll look at the [Fantasy Land](https://web.archive.org/web/20240111162214/https://github.com/fantasyland/fantasy-land) spec in its entirety, and go through examples of how we can use the typeclasses within it. However, before we go any further, we need to talk about [daggy](https://web.archive.org/web/20240111162214/https://github.com/fantasyland/daggy).
@@ -4235,13 +4336,11 @@
 			  
 			  _‡ We call this an **isomorphism**!_
 	- [web scraping chatgpt - Google Search](https://omnivore.app/me/web-scraping-chatgpt-google-search-18fa61c9f85)
-	  collapsed:: true
 	  site:: [google.com](https://www.google.com/search?client=firefox-b-1-d&q=web+scraping+chatgpt)
 	  author:: unknown
 	  date-saved:: [[05/23/2024]]
 	  date-published:: [[07/27/2023]]
 		- ### Content
-		  collapsed:: true
 			- — _Scraping_ with _ChatGPT_: A Step-by-Step Tutorial · Right-click one of the game titles and select “Inspect.” This will open the HTML code for this ...
 			  
 			  ![](https://proxy-prod.omnivore-image-cache.app/42x24,suDKtAdJjZVaDCu87ZoctTgatPxGHNfIuHtFlEp9Bk6c/https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfjOi2n_Ll0IW59CyYMR6Hf3eGiqoysZunLiDuX0vFog&s)
@@ -4266,12 +4365,10 @@
 			  
 			   — GPT _Scraper_ uses a two-step process to crawl any _website_ and extract the data, then feed it into GPT via the OpenAI API. The _scraper_ first loads ...
 	- [On the intersection of Ricardian and Smart Contracts](https://omnivore.app/me/on-the-intersection-of-ricardian-and-smart-contracts-18fa459ac1f)
-	  collapsed:: true
 	  site:: [iang.org](https://iang.org/papers/intersection_ricardian_smart.html)
 	  author:: unknown
 	  date-saved:: [[05/23/2024]]
 		- ### Content
-		  collapsed:: true
 			- **On the intersection of Ricardian and Smart Contracts** 
 			  
 			   Ian Grigg  
@@ -4416,12 +4513,10 @@
 			  
 			  **\[CA\]** James Hazard, CommonAccord, http://www.commonaccord.org/
 	- [[p2p-hackers] part 2: proxying and introduction: the two fundamental operations of emergent networks](https://omnivore.app/me/p-2-p-hackers-part-2-proxying-and-introduction-the-two-fundament-18fa41cbe86)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20140618094030/http://zgp.org/pipermail/p2p-hackers/2001-September/000296.html)
 	  author:: unknown
 	  date-saved:: [[05/23/2024]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20140618094030/http://zgp.org/pipermail/p2p-hackers/2001-September/000296.html
 			  
 			  **zooko at zooko.com** [zooko at zooko.com](https://web.archive.org/web/20140618094030/mailto:p2p-hackers%40zgp.org?Subject=%5Bp2p-hackers%5D%20part%202%3A%20proxying%20and%20introduction%3A%20the%20two%20fundamental%20operations%20of%20emergent%20networks&In-Reply-To= "[p2p-hackers] part 2: proxying and introduction: the two fundamental operations of emergent networks")  
@@ -4575,12 +4670,10 @@
 			  
 			  [More information about the P2p-hackers mailing list](https://web.archive.org/web/20140618094030/http://zgp.org/cgi-bin/mailman/listinfo/p2p-hackers)
 	- [Online Tutorial: What the hell are Monads?](https://omnivore.app/me/online-tutorial-what-the-hell-are-monads-18fa0eb5db5)
-	  collapsed:: true
 	  site:: [web.archive.org](https://web.archive.org/web/20031210081239/http://www.abercrombiegroup.co.uk/~noel/research/monads.html)
 	  author:: Noel Winstanley
 	  date-saved:: [[05/22/2024]]
 		- ### Content
-		  collapsed:: true
 			- The Wayback Machine - https://web.archive.org/web/20031210081239/http://www.abercrombiegroup.co.uk:80/\~noel/research/monads.html
 			  
 			  \#\#\#\# Noel Winstanley, 1999
@@ -4798,13 +4891,11 @@
 			  * **Monadic Parser Combinators**: Graham Hutton and Erik Meijer have published a [ tutorial paper](https://web.archive.org/web/20031210081239/http://www.cs.nott.ac.uk/Department/Staff/gmh/bib.html\#pearl)on this subject which also describes the use of monads to structure functional programs in general. Libraries of the parser combinators are also provided. Definately one to read.
 			  * **The rest**: Simon Peyton Jones has a fine [list of papers](https://web.archive.org/web/20031210081239/http://research.microsoft.com/Users/simonpj/Papers/papers.html) published by himself and colleagues. Especially relevant are the sections on [foreign language integration](https://web.archive.org/web/20031210081239/http://research.microsoft.com/Users/simonpj/Papers/papers.html\#applications), [monads, state & concurrency](https://web.archive.org/web/20031210081239/http://research.microsoft.com/Users/simonpj/Papers/papers.html\#monads), and [graphical user interfaces](https://web.archive.org/web/20031210081239/http://research.microsoft.com/Users/simonpj/Papers/papers.html\#gui).
 	- [Sardex, an emerging model for credit clearing exchanges? | Beyond Money](https://omnivore.app/me/sardex-an-emerging-model-for-credit-clearing-exchanges-beyond-mo-18f82502a8a)
-	  collapsed:: true
 	  site:: [Beyond Money](https://beyondmoney.net/2015/08/20/sardex-an-emerging-model-for-credit-clearing-exchanges/)
 	  author:: Posted on
 	  date-saved:: [[05/16/2024]]
 	  date-published:: [[08/20/2015]]
 		- ### Content
-		  collapsed:: true
 			- Last week I had occasion to visit the Italian island of Sardinia and spend a few hours meeting with the founders and managers of a commercial trade exchange called Sardex. Here below is an abbreviated report of what I learned. The pdf version of the report can be found [here](https://beyondmoney.files.wordpress.com/2015/08/2015-sardexreport.pdf).
 			  
 			  Sardex, a brief report  
@@ -4859,12 +4950,10 @@
 			  
 			  \\# \# \#
 	- [Grant Matcher Puzzle](https://omnivore.app/me/grant-matcher-puzzle-18f6688cf88)
-	  collapsed:: true
 	  site:: [erights.org](http://erights.org/elib/equality/grant-matcher/index.html)
 	  author:: Mark S. Miller
 	  date-saved:: [[05/11/2024]]
 		- ### Content
-		  collapsed:: true
 			- ---
 			  
 			  Many systems designers have wrestled with the notion of object identity. The issues must be resolved to design foundational equality primitives. Should an object system provide a means to tell whether two object references refer to the same object, without consulting either of the objects involved? Following Lisp, we call any such primitive _EQ_. Pure capability systems that are otherwise equivalent have come to different answers. The implications of these different answers were [not understood](http://erights.org/elib/equality/grant-matcher/history.html) until the Grant Matcher Puzzle. 
@@ -4934,14 +5023,11 @@
 			  
 			  Unless stated otherwise, all text on this page which is either unattributed or by Mark S. Miller is hereby placed in the public domain.
 		- ### Highlights
-		  collapsed:: true
 			- > By _voluntary_ we mean: Were a different program substituted for Alice, but placed in the same exact external environment, that program would be able to choose not to give access to Carol. This is the basis for _discretionary security_ in capability systems. [⤴️](https://omnivore.app/me/grant-matcher-puzzle-18f6688cf88#4ea799b5-79ff-4424-aa7b-37d7b7350801)
 	- [(2) X](https://omnivore.app/me/2-x-18f6414201b)
-	  collapsed:: true
 	  site:: [X (formerly Twitter)](https://twitter.com/zooko/thread/1780318455419285710)
 	  date-saved:: [[05/10/2024]]
 		- ### Content
-		  collapsed:: true
 			- \#\# Thread
 			  
 			  But that process is super inefficient! It can be expensive/difficult/time-consuming for Alice and Charlie to acquire that cash, and it doesn’t benefit anyone (other than by allowing Bob, who is $75 richer, to trade with people outside that network).![⤵️](https://proxy-prod.omnivore-image-cache.app/0x0,sFL3ZwUcVqOIuuagg1ugrZKcfsjscKVV_NdRuNabLAmg/https://abs-0.twimg.com/emoji/v2/svg/2935.svg)
@@ -4974,12 +5060,10 @@
 			  
 			  And how I see Zcash fitting into all this? It’s hardest of hard money! It is harder than U.S. Treasuries or gold because its supply is known and is capped at 21 million ZEC, and it is harder than Bitcoin because of that third requirement that I alluded to above: fungibility.![🔚](https://proxy-prod.omnivore-image-cache.app/0x0,sJaRt502NGW6W3Cch3DY50HdT0LYwtzTv_RNhZvFlQic/https://abs-0.twimg.com/emoji/v2/svg/1f51a.svg "End with leftwards arrow above")
 	- [ConsiLLiuM](https://omnivore.app/me/consi-l-liu-m-18f411497ee)
-	  collapsed:: true
 	  site:: [consillium.app](https://www.consillium.app/?id=8bf5c81f-eb8e-4fe4-b0ff-370a6f341c63)
 	  labels:: [[consillium]]
 	  date-saved:: [[05/03/2024]]
 		- ### Content
-		  collapsed:: true
 			- \#\# Using Category Theory & Lambda Calculus in JavaScript
 			  
 			  The combination of category theory and lambda calculus in JavaScript involves the application of abstract mathematical concepts to the design and implementation of functional programs. This approach allows for the creation of deterministic JavaScript programs that can be composed and structured using the principles of category theory and lambda calculus. With an advanced understanding of functional programming and familiarity with concepts such as functors, monads, and semi groups, the integration of category theory and lambda calculus can significantly enhance the development of robust and maintainable software systems. In order to further strengthen your comprehension and application of these principles, it is recommended to delve deeper into the connections between category theory and lambda calculus and commence building deterministic JavaScript programs to reinforce your skills and knowledge in this domain.
@@ -5055,16 +5139,13 @@
 			  
 			  As we've seen, Combinatory Logic provides a powerful framework for building deterministic JavaScript programs. By continuing to explore the connections between Category Theory, Lambda Calculus, and Combinatory Logic, we'll gain a deeper understanding of how to create robust, modular programs that are efficient, predictable, and easy to maintain.
 	- [Akash CLI Installation | Akash Network - Your Guide to Decentralized Cloud](https://omnivore.app/me/akash-cli-installation-akash-network-your-guide-to-decentralized-18f27cb9c34)
-	  collapsed:: true
 	  site:: [akash.network](https://akash.network/docs/deployments/akash-cli/installation/)
 	  labels:: [[akash]]
 	  date-saved:: [[04/28/2024]]
 		- ### Highlights
-		  collapsed:: true
 			- > Configure the name of your key. [⤴️](https://omnivore.app/me/akash-cli-installation-akash-network-your-guide-to-decentralized-18f27cb9c34#d4e49de7-ec5c-41f8-878f-36f0bf73c7bc)
 			- > you [⤴️](https://omnivore.app/me/akash-cli-installation-akash-network-your-guide-to-decentralized-18f27cb9c34#2e87ff73-fc4a-432e-98c0-10662de8ea72)
 		- ### Content
-		  collapsed:: true
 			- \#\#  Akash CLI Installation 
 			  
 			  Explore detailed steps and options of the Akash CLI. In this guide we will define each environment variable and use within each command.
@@ -17174,10 +17255,8 @@
 				  * Communicating Event-Loops (E; near and far references; eventual references; batching)  
 				  Different kinds of “futures” or “promises” also appear in many of these variations in order to integrate asynchronous message_reception_ with otherwise-sequential programming.
 	- [blockchain-new-paper](https://omnivore.app/me/u-7-e-8-dd-540-b-132-11-ee-b-631-eb-976-daebc-17-blockchain-new--18cfd24bdf0)
-	  collapsed:: true
 	  site:: [omnivore.app](https://omnivore.app/attachments/u/7e8dd540-b132-11ee-b631-eb976daebc17/blockchain-new-paper.pdf)
 	  author:: MCA-46
 	  date-saved:: [[01/12/2024]]
 		- ### Content
-		  collapsed:: true
 			-
