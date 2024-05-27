@@ -187,63 +187,65 @@
 		  
 		  ---
 - ## 2. Dynamic Accumulator Merkle Tree
-- ### Introduction
-	- A Dynamic Accumulator Merkle Tree is a variant designed to allow for the dynamic addition and removal of elements in a verifiable manner.
-- ### Structure
-	- **Accumulator Nodes:** Combine Merkle Tree structures with cryptographic accumulators that efficiently support dynamic updates.
-	- **Membership Witnesses:** Each element has an associated witness enabling verification of membership or non-membership.
-- ### Properties
-	- **Dynamic Updates:** Efficiently handles additions and deletions of elements.
-	- **Composable Proofs:** Permit the composition of multiple membership witnesses for combined proofs.
-	- **Efficient Verification:** Verifiers can quickly verify membership without knowledge of the complete tree structure.
-- ### Use Cases
-	- **Cryptographic Proof Systems:** Useful in modern cryptographic protocols that require verifiable dynamic membership.
-	- **Database Systems:** Helps maintain integrity and verifiability for dynamically changing data sets.
-- ### Diagram Example
-  
-  ```
-                Root Hash
-                   / \
-         Acc Hash0-1  Acc Hash2-3
-        /       \          /      \
-  Acc Hash0   Acc Hash1  Acc Hash2 Acc Hash3
-  /    \       /   \      /    \       /     \
-  D0(D)  D1(A)  D2(A) D3(D) D4(A) D5(D) D6(A)  D7(A)
-  
-  (D) = Deleted
-  (A) = Active
-  ```
-  
-  ---
-- ## 3. Verkle Tree
-- ### Introduction
-	- A Verkle Tree (or Vector Commitment Merkle Tree) is an advanced variant designed to allow for efficient proof sizes while maintaining compact and efficient membership proofs.
-- ### Structure
-	- **Hybrid Nodes:** Contains vectors representing multiple commits from a base field, combining elements of vector commitments with traditional Merkle Trees.
-	- **Aggregation:** Nodes can group proofs together efficiently.
-	- **Branching Factor:** Larger branching factor (e.g., $$2^{16}$$) for minimal depth and efficient proof construction.
-- ### Properties
-	- **Compact Proofs:** Provides more compact proofs than traditional Merkle Trees, even for large data sets.
-	- **Efficient Aggregation:** Facilitates efficient aggregation while maintaining proof succinctness.
-	- **Scalability:** Particularly effective for large datasets with high branching factors and numerous proofs.
-- ### Use Cases
-	- **Blockchain State Verification:** Intended for scalable and compact state verification, e.g., Ethereum 2.0 stateless clients.
-	- **Extended Data Structures:** Useful for any large-scale data structure requiring efficient, short proofs of membership/accommodation.
+	- ### Introduction
+		- A Dynamic Accumulator Merkle Tree is a variant designed to allow for the dynamic addition and removal of elements in a verifiable manner.
+	- ### Structure
+		- **Accumulator Nodes:** Combine Merkle Tree structures with cryptographic accumulators that efficiently support dynamic updates.
+		- **Membership Witnesses:** Each element has an associated witness enabling verification of membership or non-membership.
+	- ### Properties
+		- **Dynamic Updates:** Efficiently handles additions and deletions of elements.
+		- **Composable Proofs:** Permit the composition of multiple membership witnesses for combined proofs.
+		- **Efficient Verification:** Verifiers can quickly verify membership without knowledge of the complete tree structure.
+	- ### Use Cases
+		- **Cryptographic Proof Systems:** Useful in modern cryptographic protocols that require verifiable dynamic membership.
+		- **Database Systems:** Helps maintain integrity and verifiability for dynamically changing data sets.
 	- ### Diagram Example
 	  
 	  ```
-	                 Root Hash
-	                    |
-	         --------------------------------
-	        |                                  |
-	  Subtree Commit0                      Subtree Commit1
-	  /   |    \                          /   |   \
-	  Vector Commit0 Vector Commit1 Vector Commit2 Vector Commit3
-	         |                       Cleared Hash Cleared Hash Vector Commit7 ...
-	      Hash0                      (Empty)       (Empty) 
-	   /     |    \                   ......                 /     |    \
-	  Data Block0   Data Block1  ........    Data Block7
+	                Root Hash
+	                   / \
+	         Acc Hash0-1  Acc Hash2-3
+	        /       \          /      \
+	  Acc Hash0   Acc Hash1  Acc Hash2 Acc Hash3
+	  /    \       /   \      /    \       /     \
+	  D0(D)  D1(A)  D2(A) D3(D) D4(A) D5(D) D6(A)  D7(A)
+	  
+	  (D) = Deleted
+	  (A) = Active
 	  ```
 	  
 	  ---
-	- By understanding these additional types of Merkle tree variants, engineers and researchers can make more informed decisions regarding data structure implementation based on their specific needs and constraints. Sparse, dynamic, and verkle implementations each provide unique advantages that complement the foundational properties of the traditional Merkle Tree and can be tailored to meet modern computational and storage requirements.
+- ## 3. Verkle Tree
+	- ### Introduction
+		- A Verkle Tree (or Vector Commitment Merkle Tree) is an advanced variant designed to allow for efficient proof sizes while maintaining compact and efficient membership proofs.
+	- ### Structure
+		- **Hybrid Nodes:** Contains vectors representing multiple commits from a base field, combining elements of vector commitments with traditional Merkle Trees.
+		- **Aggregation:** Nodes can group proofs together efficiently.
+		- **Branching Factor:** Larger branching factor (e.g., $$2^{16}$$) for minimal depth and efficient proof construction.
+	- ### Properties
+		- **Compact Proofs:** Provides more compact proofs than traditional Merkle Trees, even for large data sets.
+		- **Efficient Aggregation:** Facilitates efficient aggregation while maintaining proof succinctness.
+		- **Scalability:** Particularly effective for large datasets with high branching factors and numerous proofs.
+	- ### Use Cases
+		- **Blockchain State Verification:** Intended for scalable and compact state verification, e.g., Ethereum 2.0 stateless clients.
+		- **Extended Data Structures:** Useful for any large-scale data structure requiring efficient, short proofs of membership/accommodation.
+		- ### Diagram Example
+		  
+		  ```
+		                 Root Hash
+		                    |
+		         --------------------------------
+		        |                                  |
+		  Subtree Commit0                      Subtree Commit1
+		  /   |    \                          /   |   \
+		  Vector Commit0 Vector Commit1 Vector Commit2 Vector Commit3
+		         |                       Cleared Hash Cleared Hash Vector Commit7 ...
+		      Hash0                      (Empty)       (Empty) 
+		   /     |    \                   ......                 /     |    \
+		  Data Block0   Data Block1  ........    Data Block7
+		  ```
+		  
+		  ---
+		- By understanding these additional types of Merkle tree variants, engineers and researchers can make more informed decisions regarding data structure implementation based on their specific needs and constraints. Sparse, dynamic, and verkle implementations each provide unique advantages that complement the foundational properties of the traditional Merkle Tree and can be tailored to meet modern computational and storage requirements.
+- tags:: #merkle-trees
+-
