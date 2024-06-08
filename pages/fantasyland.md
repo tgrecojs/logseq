@@ -1,4 +1,4 @@
-- ## Fantasy Land Specification
+## Fantasy Land Specification
 - *Specification for interoperability of common algebraic structures in JavaScript*
 	- a.k.a "Algebraic JavaScript Specification"
 - ### Overview
@@ -30,4 +30,4 @@
 	  ```
 	-
 -
--
+- tt

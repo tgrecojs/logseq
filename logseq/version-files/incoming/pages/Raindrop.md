@@ -73,7 +73,6 @@
 	  last-updated:: [[06/06/2024]]
 		- ## Highlights
 			- > Happy
-	-
 	- [Using Buffers to share data between Node.js and C++ - RisingStack Engineering](https://blog.risingstack.com/using-buffers-node-js-c-plus-plus/)
 	  title:: Using Buffers to share data between Node.js and C++ - RisingStack Engineering
 	  url:: https://blog.risingstack.com/using-buffers-node-js-c-plus-plus/
@@ -712,16 +711,6 @@
 			- > This model is free of conventional race condition or deadlock bugs. While a turn is in progress, it has mutually exclusive access to all state to which it has synchronous access, i.e., all state within its vat, avoiding conventional race condition bugs without any explicit locking
 			- > The model presented here provides no locks or blocking constructs of any kind, although it does not forbid a host environment from providing blocking constructs (like alert). Without blocking, conventional deadlock is impossible
 			- > The vat abstraction differs from the WebWorker abstraction, even though both are based on communicating event loops, since inter-vat messages are always directed at objects within a vat, not a vat as a whole
-	-
-	-
-	-
-	-
-	-
-	-
-	-
-	-
-	-
-	-
 	- [Fantas, Eel, and Specification · Tom Harding](https://web.archive.org/web/20231219083024/http://www.tomharding.me/fantasy-land/)
 	  title:: Fantas, Eel, and Specification · Tom Harding
 	  url:: https://web.archive.org/web/20231219083024/http://www.tomharding.me/fantasy-land/

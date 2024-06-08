@@ -2055,127 +2055,7 @@
   date-saved:: [[05/23/2024]]
   date-published:: [[04/30/2017]]
 	- ### Content
-		- The Wayback Machine - https://web.archive.org/web/20231206151632/http://www.tomharding.me/2017/05/01/fantas-eel-and-specification-11/
-		  
-		  Welcome back, Fantasists! This week has been **hectic**, so I haven’t caught up the [companion repository](https://web.archive.org/web/20231206151632/http://github.com/i-am-tom/fantas-eel-and-specification) as I’d hoped to. However, I should have some time to devote to it this week, so watch this space! Anyway, why don’t we have some **down time** before we get onto the **really grizzly** parts of the spec? Let’s take a look at `Foldable`.
-		  
-		  Wouldn’t you know it, this one comes with a **new function** to add to our repertoire, and it’s one that might look a bit _familiar_ to some readers:
-		  
-		  ```
-		  reduce :: Foldable f =>  
-		    f a ~> ((b, a) -> b, b) -> b  
-		    
-		  
-		  ```
-		  
-		  Do we already know of any `Foldable` types? I’ll suggest one:
-		  
-		  ```
-		  Array.prototype.reduce ::  
-		    [a] ~> ((b, a) -> b, b) -> b  
-		    
-		  
-		  ```
-		  
-		  Straight away, `Array` is a valid `Foldable` type. In fact, Fantasy Land’s `Foldable` was _deliberately_ modelled after `Array`. Why? Because this structure **generalises** `Array.reduce`. **Bam**. With that in mind, let’s look at its law:
-		  
-		  ```
-		  const toArray xs => xs.reduce(  
-		    (acc, x) => acc.concat([x]), []  
-		  )  
-		    
-		  u.reduce(f) === toArray(u).reduce(f)  
-		    
-		  
-		  ```
-		  
-		  This is a **really** weird law because it’s not very… rigorous. You’re unlikely to write a `Foldable` and get this wrong, because the `reduce` in `toArray` probably works in the exact same way as the `reduce` outside. In fact, it’s probably best to look at this more as a **behaviour** than a **law**. _You still have to obey it, though!_
-		  
-		  There’s a _lot_ of space for interpretation here, which isn’t necessarily a good thing. **On the other hand**, it makes it really easy to give some examples!
-		  
-		  ```
-		  // reduce :: Maybe a  
-		  //        ~> ((b, a) -> b, b) -> b  
-		  Maybe.prototype.reduce =  
-		    function (f, acc) {  
-		      return this.cata({  
-		        // Call the function...  
-		        Just: x => f(acc, x),  
-		    
-		        // ... or don't!  
-		        Nothing: () => acc  
-		      })  
-		    }  
-		    
-		  // reduce :: Either e a  
-		  //        ~> ((b, a) -> b, b) -> b  
-		  Either.prototype.reduce =  
-		    function (f, acc) {  
-		      return this.cata({  
-		        // Call the function...  
-		        Right: x => f(acc, x),  
-		    
-		        // Or don't!  
-		        Left: _ => acc  
-		      })  
-		    }  
-		    
-		  
-		  ```
-		  
-		  Because `Nothing` and `Left` represent **failure**, we just return the accumulator. Otherwise, we can use our `f` function once. These examples really just highlight that you don’t _need_ a structure with (potentially) multiple values in order to write a `Foldable` instance. However, it’s definitely **most useful** when that’s the case. For example, let’s build a **binary tree**:
-		  
-		  ```
-		  // BTree a  
-		  const BTree = daggy.taggedSum('BTree', {  
-		    // Recursion!  
-		    // Node (BTree a) a (BTree a)  
-		    Node: ['left', 'x', 'right'],  
-		    
-		    // Leaf  
-		    Leaf: []  
-		  })  
-		    
-		  
-		  ```
-		  
-		  So, `Node`s represent “branch points” of the tree with values, and `Leaf`s represent the ends of branches. Because `left` and `right` are also `BTree` instances, this gives us a recursive tree construction:
-		  
-		  ```
-		  const { Node, Leaf } = BTree  
-		    
-		  //      3  
-		  //     / \  
-		  //    1   5  
-		  //   /|   |\  
-		  //  X 2   4 X  
-		  //   /|   |\  
-		  //  X X   X X  
-		  const MyTree =  
-		    Node(  
-		      Node(  
-		        Leaf,  
-		        1,  
-		        Node(  
-		          Leaf,  
-		          2,  
-		          Leaf ) ),  
-		      3,  
-		      Node(  
-		        Node(  
-		          Leaf,  
-		          4,  
-		          Leaf ),  
-		        5,  
-		        Leaf ) )  
-		    
-		  
-		  ```
-		  
-		  _I’m too ashamed to say how long I spent drawing that tree._ Now, `Array.reduce` combines all our values together (_if your [Semigroup](https://web.archive.org/web/20231206151632/http://www.tomharding.me/2017/03/13/fantas-eel-and-specification-4/) or [Monoid](https://web.archive.org/web/20231206151632/http://www.tomharding.me/2017/03/21/fantas-eel-and-specification-5/) klaxon just sounded, then I’m super proud ♥_) from left to right, so that’s probably what we want to imitate with this tree. How do we do that? With **magical recursion**:
-		  
-		  ```
-		  BTree.prototype.reduce =  
+		- BTree.prototype.reduce =  
 		    function (f, acc) {  
 		      return this.cata({  
 		        Node: (l, x, r) => {  
@@ -2194,61 +2074,7 @@
 		      })  
 		    }  
 		    
-		  MyTree.reduce((x, y) => x + y, 0) // 15  
-		    
-		  
-		  ```
-		  
-		  **Woo**! We reduce the tree starting from the **left-most** element and work across. Whenever we hit a `Node`, we just **recurse** and do the same thing!
-		  
-		  We saw at the end of the last snippet that we can find the **sum** of all the elements, and we could just as easily write `min`, `max`, `product`, or whatever. In fact, [you can do anything with Array.reduce](https://web.archive.org/web/20231206151632/http://www.tomharding.me/2017/02/24/reductio-and-abstract-em/) and generalise it to all `Foldable` types immediately! Whether we then have a `Maybe`, an `Array`, or even a `BTree`, our functions will **Just Work™**!
-		  
-		  ---
-		  
-		  `Product`? `Min`? `Max`? This really does sound like `Monoid` again, doesn’t it? Well, there are **no coincidences** in Fantasy Land. Back in [the Monoid post](https://web.archive.org/web/20231206151632/http://www.tomharding.me/2017/03/21/fantas-eel-and-specification-5/), we wrote the `fold` function:
-		  
-		  ```
-		  // A friendly neighbourhood monoid fold.  
-		  // fold :: Monoid m => (a -> m) -> [a] -> m  
-		  const fold = M => xs => xs.reduce(  
-		    (acc, x) => acc.concat(M(x)),  
-		    M.empty())  
-		    
-		  
-		  ```
-		  
-		  With our new-found `Foldable` knowledge, we now know that this type signature is **too specific**. Let’s fix it:
-		  
-		  ```
-		  fold :: (Foldable f, Monoid m)  
-		       => (a -> m) -> f a -> m  
-		    
-		  
-		  ```
-		  
-		  Yes, this function will in fact work with **any** `Foldable` structure and **any** `Monoid` \- you’ll never need to write `reduce` again! Get comfortable with [using Monoid for reductions](https://web.archive.org/web/20231206151632/https://joneshf.github.io/programming/2015/12/31/Comonads-Monoids-and-Trees.html); it’s definitely a good way to make your code more **declarative**, and hence more **readable**. I know you’re probably _sick_ of hearing about monoids, but they really are **everywhere**!
-		  
-		  ---
-		  
-		  It turns out that _many_ of your favourite `Functor` types have sensible implementations for `reduce`. However, there are **exceptions**:
-		  
-		  We can’t `reduce` [the Task type](https://web.archive.org/web/20231206151632/https://github.com/folktale/data.task/) because we don’t know what the inner values are going to be! It’s the same with `Function`: we don’t know what the return value is going to be until we give it an **argument**. Remember: **functors’ inner values aren’t always reachable**.
-		  
-		  > Incidentally, if a `Functor` _does_ have an always-reachable inner value, we can call it [a Copointed functor](https://web.archive.org/web/20231206151632/https://hackage.haskell.org/package/pointed-5/docs/Data-Copointed.html). Remember how [Applicative’s of is a function of Pointed](https://web.archive.org/web/20231206151632/http://www.tomharding.me/2017/04/17/fantas-eel-and-specification-9/) functors? Think about the relationship between `Pointed` and `Copointed`. There are **no coincidences** in Fantasy Land!
-		  
-		  ---
-		  
-		  This week, why not make a `Foldable` **Rose Tree**? Or **Set**? There are plenty of opportunities to practise here. Before we go, some of you may have noticed that you can `reduce` most things by just returning the **initial value** given to you:
-		  
-		  ```
-		  MyType.prototype.reduce = (f, acc) => acc  
-		    
-		  
-		  ```
-		  
-		  It satisfies the “law”, right? This is what I mean: this law is **not a good’un**, and leaves too much room for interpretation. Still, there’s no point in _moaning_: we’ll see next time that `Traversable` (my **all-time favourite** part of the Fantasy Land spec!) saves the day! From now on, Fantasists, the excitement is **non-stop**.
-		  
-		  ♥
+		  MyTree.reduce((x, y) => x + y, 0) // 15
 - [10. ALT, Plus, and Alternative](https://omnivore.app/me/fantas-eel-and-specification-10-alt-plus-and-alternative-tom-har-18fa666fde5)
   collapsed:: true
   site:: [web.archive.org](https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/04/24/fantas-eel-and-specification-10/)
@@ -2258,157 +2084,157 @@
   date-published:: [[04/23/2017]]
 	- ### Content
 		- The Wayback Machine - https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/04/24/fantas-eel-and-specification-10/
-		  ## Fantas, Eel, and Specification 10: Alt, Plus, and Alternative
-		- We’re in **double digits**! Isn’t this exciting? It also means that, by my estimations, we’re **well over half way**! Before we get _too_ excited by `Profunctor` and `Comonad`, though, might I tempt you with an… `Alternative`?
-		  
-		  Today, we’re going to bundle together **three** very well-related entries in the spec, starting with `Alt`. This little typeclass has one function:
-		  
-		  ```
-		  alt :: Alt f => f a ~> f a -> f a  
-		    
-		  
-		  ```
-		  
-		  As we know, with great algebraic structure, come great **laws**:
-		  
-		  ```
-		  // Associativity  
-		  a.alt(b).alt(c) === a.alt(b.alt(c))  
-		    
-		  // Distributivity  
-		  a.alt(b).map(f) === a.map(f).alt(b.map(f))  
-		    
-		  
-		  ```
-		  
-		  The **associativity** law is _exactly_ what we saw in [the Semigroup post](https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/03/13/fantas-eel-and-specification-4/) with `concat`! As we said back then, think of it as, “_Keeping left-to-right order the same, you can combine the elements however you like_”.
-		  
-		  **Distributivity** gives us another clue that we might be looking at something a bit `Semigroup`\-flavoured. We can **`map` first** over the elements and then `alt` **or** **`alt` first** and then `map` over the result, and we’ll end up at the **same value**. Either way, some kind of “combination” definitely seems to be going on here.
-		  
-		  So, **what is it**? Well… it’s like a **semigroup for functors**. It’s a way of combining values of a functor type _without_ the requirement that the inner type be a `Semigroup`. _Why_, you ask? Well, we get a little hint from the name.
-		  
-		  `Alt` allows us to provide some _alternative_ value as a “fallback” when the first “fails”. Of course, this is particularly relevant to types with some notion of **failure**:
-		  
-		  ```
-		  Maybe.prototype.alt = function (that) {  
-		    this.cata({  
-		      Just: _ => this,  
-		      Nothing: _ => that  
-		    })  
-		  }  
-		    
-		  
-		  ```
-		  
-		  If we have a `Just` on the left, we return it. Otherwise, we **fall back** to the second value! Naturally, you can chain as many of these as you like:
-		  
-		  ```
-		  // Just(3) - note the "Nothing"s are  
-		  // usually the result of some functions.  
-		  Nothing.alt(Nothing).alt(Just(3))  
-		    
-		  
-		  ```
-		  
-		  It turns out there are **loads** of use cases for `alt`, which isn’t too surprising if you look at it as a **functor-level `if/else`**. You can do [database connection failover](https://web.archive.org/web/20240209071417/https://gist.github.com/i-am-tom/9651cd1e95443c4cbf3953429e988b07), [API/resource routing](https://web.archive.org/web/20240209071417/https://github.com/slamdata/purescript-routing/blame/master/GUIDE.md\#L96-L102), and, most magically of all, [text parsing](https://web.archive.org/web/20240209071417/https://github.com/purescript/purescript/blob/master/src/Language/PureScript/Parser/Declarations.hs\#L161-L169). _Those last two were in PureScript and Haskell respectively, but don’t worry: in these languages, `alt` has an operator, written as `<|>`._
-		  
-		  The key thing all these cases have in common is that you want to _try_ something with a contingency plan for _failure_. That’s all there is to `Alt`!
-		  
-		  ---
-		  
-		  If `Alt` will be our functor-level `Semigroup`, what’s our **functor-level `Monoid`**? In comes `Plus`, which extends `Alt` with one more function called `zero`:
-		  
-		  ```
-		  zero :: Plus f => () -> f a  
-		    
-		  
-		  ```
-		  
-		  Looks a bit like `Monoid`’s `empty`, right? Note that there’s no restriction on the `a`, so this `zero` value must work for **any type**. This one has **three laws**, but the first two will look really familiar to readers of [the Monoid post](https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/03/21/fantas-eel-and-specification-5/):
-		  
-		  ```
-		  // Right identity - zero on the right  
-		  x.alt(A.zero()) === x  
-		    
-		  // Guess what this one's called?  
-		  A.zero().alt(x) === x  
-		    
-		  // The new one: annihilation  
-		  A.zero().map(f) === A.zero()  
-		    
-		  
-		  ```
-		  
-		  The left and right **identity** laws just say, “_`zero` makes no difference to the other value, regardless of which side of `alt` you put it_”. **Annihilation** gives us a stronger idea of what `zero` does: **nothing**! `Plus` types _must_ be functors; for a `map` call to do _nothing_ in all cases, the type must have the ability to be **empty**, whatever that means.
-		  
-		  Think of our `Maybe` type: what can we `map` over with _any_ function and not change the value? `Nothing`! In fact, `() => Nothing` is the **only valid** implementation of `zero` for `Maybe`.
-		  
-		  What about `Array`? Well, `map` transforms every value in the array, so the only array that _wouldn’t_ be changed is the empty one. `() => []` is the **only valid** implementation of `zero` for `Array`.
-		  
-		  > We didn’t cover `Array` as an `Alt` because it’s a bit of a funny one. Back when we discussed [functors](https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/03/27/fantas-eel-and-specification-6/), we saw that `Array` _extends_ our language to allow us to represent **several values** at once. This can be thought of as **non-determinism** if we see an `Array` as the set of **possible values**. Thus, the `alt` implementation for `Array` is the same as `concat` \- all we’re doing is combining the two sets of possibilities!
-		  
-		  So, `Plus` adds to `Alt` what `Monoid` adds to `Semigroup`, and, in fact, what `Applicative` adds to `Apply`: an **identity**. Are we bored of this pattern yet? I hope not, because we’re _still_ not done with it! Incidentally, we can write custom `Semigroup` and `Monoid` types to encapsulate this behaviour so we can reuse the functions we talked about in their posts:
-		  
-		  ```
-		  // The value MUST be an Alt-implementer.  
-		  const Alt = daggy.tagged('Alt', ['value'])  
-		    
-		  // Alt is a valid semigroup!  
-		  Alt.prototype.concat = function (that) {  
-		    return Alt(this.value.alt(that.value))  
-		  }  
-		    
-		  // The value MUST be a Plus-implementer.  
-		  // And, as usual, we need a TypeRep...  
-		  const Plus = T => {  
-		    const Plus_ = daggy.tagged('Plus', ['value'])  
-		    
-		    // Plus is a valid semigroup...  
-		    Plus_.prototype.concat =  
-		      function (that) {  
-		        return Plus(  
-		          this.value.alt(  
-		            that.value))  
-		      }  
-		    
-		    // ... and a valid monoid!  
-		    Plus_.empty = () => Plus_(T.zero())  
-		  }  
-		    
-		  
-		  ```
-		  
-		  Monoids are **everywhere**, I tell you. Stare at something long enough and it’ll start to look like a monoid.
-		  
-		  ---
-		  
-		  The final boss level on this `Alt` quest is `Alternative`. There are **no special functions** for this one, as it is simply the name for a structure that implements both `Plus` _and_ `Applicative`. Still, I know how much you _love_ laws:
-		  
-		  ```
-		  // Distributivity  
-		  x.ap(f.alt(g)) === x.ap(f).alt(x.ap(g))  
-		    
-		  // Annihilation  
-		  x.ap(A.zero()) === A.zero()  
-		    
-		  
-		  ```
-		  
-		  **Distributivity** is exactly as the same law that we saw with `Alt` and `map` at the beginning of all this, but now for `ap`. We can either **`alt` first** and _then_ `ap` the result to `x`, **or** we can **`ap` first** to both separately, and then `alt`. Either way, we end up in the same place.
-		  
-		  **Annihilation** is a _really_ scary word for a not-so-scary idea, if you think back to the `zero` values we discussed earlier. You couldn’t apply a value to `Nothing`, right? Or an empty list of functions? The **annihilation** law defines this behaviour: if you try to do **something with nothing**, you get **nothing**. Whatever you were doing is considered a _failure_, and `zero` is returned.
-		  
-		  You’ll often hear `Alternative` types described as **monoid-shaped applicatives**, and this is a good intuition. We talked about `of` as being the **identity** of `Applicative`, but this is only at **context-level**. For an `Alternative` type, `zero` is the identity value at context- **and** value-level.
-		  
-		  ---
-		  
-		  `Maybe`, `Array`, `Task`, `Either`: we’ve seen a lot of types that can very naturally implement `Alternative`. You could even make `Function` an `Alternative` if you knew the output would be of a `Plus`\-implementing type. With that, you could then write a function whose body can do **extra computation** depending on the result; who needs `if/else`?
-		  
-		  That’s about all there is to it! `Alt`, `Plus`, and `Alternative` are **under-appreciated** typeclasses, particularly within functional JavaScript. Take some time to look through your code, glare at the `if/else`, `try/catch`, and `switch` blocks, and see whether they’re really just `alt`s in disguise!
-		  
-		  Next time, we’ll be looking into your **new favourite** typeclasses: `Foldable` and `Traversable`. Try to contain your excitement until then!
-		  
-		  Take care ♥
+- ## Fantas, Eel, and Specification 10: Alt, Plus, and Alternative
+	- We’re in **double digits**! Isn’t this exciting? It also means that, by my estimations, we’re **well over half way**! Before we get _too_ excited by `Profunctor` and `Comonad`, though, might I tempt you with an… `Alternative`?
+	  
+	  Today, we’re going to bundle together **three** very well-related entries in the spec, starting with `Alt`. This little typeclass has one function:
+	  
+	  ```
+	  alt :: Alt f => f a ~> f a -> f a  
+	    
+	  
+	  ```
+	  
+	  As we know, with great algebraic structure, come great **laws**:
+	  
+	  ```
+	  // Associativity  
+	  a.alt(b).alt(c) === a.alt(b.alt(c))  
+	    
+	  // Distributivity  
+	  a.alt(b).map(f) === a.map(f).alt(b.map(f))  
+	    
+	  
+	  ```
+	  
+	  The **associativity** law is _exactly_ what we saw in [the Semigroup post](https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/03/13/fantas-eel-and-specification-4/) with `concat`! As we said back then, think of it as, “_Keeping left-to-right order the same, you can combine the elements however you like_”.
+	  
+	  **Distributivity** gives us another clue that we might be looking at something a bit `Semigroup`\-flavoured. We can **`map` first** over the elements and then `alt` **or** **`alt` first** and then `map` over the result, and we’ll end up at the **same value**. Either way, some kind of “combination” definitely seems to be going on here.
+	  
+	  So, **what is it**? Well… it’s like a **semigroup for functors**. It’s a way of combining values of a functor type _without_ the requirement that the inner type be a `Semigroup`. _Why_, you ask? Well, we get a little hint from the name.
+	  
+	  `Alt` allows us to provide some _alternative_ value as a “fallback” when the first “fails”. Of course, this is particularly relevant to types with some notion of **failure**:
+	  
+	  ```
+	  Maybe.prototype.alt = function (that) {  
+	    this.cata({  
+	      Just: _ => this,  
+	      Nothing: _ => that  
+	    })  
+	  }  
+	    
+	  
+	  ```
+	  
+	  If we have a `Just` on the left, we return it. Otherwise, we **fall back** to the second value! Naturally, you can chain as many of these as you like:
+	  
+	  ```
+	  // Just(3) - note the "Nothing"s are  
+	  // usually the result of some functions.  
+	  Nothing.alt(Nothing).alt(Just(3))  
+	    
+	  
+	  ```
+	  
+	  It turns out there are **loads** of use cases for `alt`, which isn’t too surprising if you look at it as a **functor-level `if/else`**. You can do [database connection failover](https://web.archive.org/web/20240209071417/https://gist.github.com/i-am-tom/9651cd1e95443c4cbf3953429e988b07), [API/resource routing](https://web.archive.org/web/20240209071417/https://github.com/slamdata/purescript-routing/blame/master/GUIDE.md\#L96-L102), and, most magically of all, [text parsing](https://web.archive.org/web/20240209071417/https://github.com/purescript/purescript/blob/master/src/Language/PureScript/Parser/Declarations.hs\#L161-L169). _Those last two were in PureScript and Haskell respectively, but don’t worry: in these languages, `alt` has an operator, written as `<|>`._
+	  
+	  The key thing all these cases have in common is that you want to _try_ something with a contingency plan for _failure_. That’s all there is to `Alt`!
+	  
+	  ---
+	  
+	  If `Alt` will be our functor-level `Semigroup`, what’s our **functor-level `Monoid`**? In comes `Plus`, which extends `Alt` with one more function called `zero`:
+	  
+	  ```
+	  zero :: Plus f => () -> f a  
+	    
+	  
+	  ```
+	  
+	  Looks a bit like `Monoid`’s `empty`, right? Note that there’s no restriction on the `a`, so this `zero` value must work for **any type**. This one has **three laws**, but the first two will look really familiar to readers of [the Monoid post](https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/03/21/fantas-eel-and-specification-5/):
+	  
+	  ```
+	  // Right identity - zero on the right  
+	  x.alt(A.zero()) === x  
+	    
+	  // Guess what this one's called?  
+	  A.zero().alt(x) === x  
+	    
+	  // The new one: annihilation  
+	  A.zero().map(f) === A.zero()  
+	    
+	  
+	  ```
+	  
+	  The left and right **identity** laws just say, “_`zero` makes no difference to the other value, regardless of which side of `alt` you put it_”. **Annihilation** gives us a stronger idea of what `zero` does: **nothing**! `Plus` types _must_ be functors; for a `map` call to do _nothing_ in all cases, the type must have the ability to be **empty**, whatever that means.
+	  
+	  Think of our `Maybe` type: what can we `map` over with _any_ function and not change the value? `Nothing`! In fact, `() => Nothing` is the **only valid** implementation of `zero` for `Maybe`.
+	  
+	  What about `Array`? Well, `map` transforms every value in the array, so the only array that _wouldn’t_ be changed is the empty one. `() => []` is the **only valid** implementation of `zero` for `Array`.
+	  
+	  > We didn’t cover `Array` as an `Alt` because it’s a bit of a funny one. Back when we discussed [functors](https://web.archive.org/web/20240209071417/http://www.tomharding.me/2017/03/27/fantas-eel-and-specification-6/), we saw that `Array` _extends_ our language to allow us to represent **several values** at once. This can be thought of as **non-determinism** if we see an `Array` as the set of **possible values**. Thus, the `alt` implementation for `Array` is the same as `concat` \- all we’re doing is combining the two sets of possibilities!
+	  
+	  So, `Plus` adds to `Alt` what `Monoid` adds to `Semigroup`, and, in fact, what `Applicative` adds to `Apply`: an **identity**. Are we bored of this pattern yet? I hope not, because we’re _still_ not done with it! Incidentally, we can write custom `Semigroup` and `Monoid` types to encapsulate this behaviour so we can reuse the functions we talked about in their posts:
+	  
+	  ```
+	  // The value MUST be an Alt-implementer.  
+	  const Alt = daggy.tagged('Alt', ['value'])  
+	    
+	  // Alt is a valid semigroup!  
+	  Alt.prototype.concat = function (that) {  
+	    return Alt(this.value.alt(that.value))  
+	  }  
+	    
+	  // The value MUST be a Plus-implementer.  
+	  // And, as usual, we need a TypeRep...  
+	  const Plus = T => {  
+	    const Plus_ = daggy.tagged('Plus', ['value'])  
+	    
+	    // Plus is a valid semigroup...  
+	    Plus_.prototype.concat =  
+	      function (that) {  
+	        return Plus(  
+	          this.value.alt(  
+	            that.value))  
+	      }  
+	    
+	    // ... and a valid monoid!  
+	    Plus_.empty = () => Plus_(T.zero())  
+	  }  
+	    
+	  
+	  ```
+	  
+	  Monoids are **everywhere**, I tell you. Stare at something long enough and it’ll start to look like a monoid.
+	  
+	  ---
+	  
+	  The final boss level on this `Alt` quest is `Alternative`. There are **no special functions** for this one, as it is simply the name for a structure that implements both `Plus` _and_ `Applicative`. Still, I know how much you _love_ laws:
+	  
+	  ```
+	  // Distributivity  
+	  x.ap(f.alt(g)) === x.ap(f).alt(x.ap(g))  
+	    
+	  // Annihilation  
+	  x.ap(A.zero()) === A.zero()  
+	    
+	  
+	  ```
+	  
+	  **Distributivity** is exactly as the same law that we saw with `Alt` and `map` at the beginning of all this, but now for `ap`. We can either **`alt` first** and _then_ `ap` the result to `x`, **or** we can **`ap` first** to both separately, and then `alt`. Either way, we end up in the same place.
+	  
+	  **Annihilation** is a _really_ scary word for a not-so-scary idea, if you think back to the `zero` values we discussed earlier. You couldn’t apply a value to `Nothing`, right? Or an empty list of functions? The **annihilation** law defines this behaviour: if you try to do **something with nothing**, you get **nothing**. Whatever you were doing is considered a _failure_, and `zero` is returned.
+	  
+	  You’ll often hear `Alternative` types described as **monoid-shaped applicatives**, and this is a good intuition. We talked about `of` as being the **identity** of `Applicative`, but this is only at **context-level**. For an `Alternative` type, `zero` is the identity value at context- **and** value-level.
+	  
+	  ---
+	  
+	  `Maybe`, `Array`, `Task`, `Either`: we’ve seen a lot of types that can very naturally implement `Alternative`. You could even make `Function` an `Alternative` if you knew the output would be of a `Plus`\-implementing type. With that, you could then write a function whose body can do **extra computation** depending on the result; who needs `if/else`?
+	  
+	  That’s about all there is to it! `Alt`, `Plus`, and `Alternative` are **under-appreciated** typeclasses, particularly within functional JavaScript. Take some time to look through your code, glare at the `if/else`, `try/catch`, and `switch` blocks, and see whether they’re really just `alt`s in disguise!
+	  
+	  Next time, we’ll be looking into your **new favourite** typeclasses: `Foldable` and `Traversable`. Try to contain your excitement until then!
+	  
+	  Take care ♥
 - [9. Applicative](https://omnivore.app/me/fantas-eel-and-specification-9-applicative-tom-harding-18fa662353b)
   collapsed:: true
   site:: [web.archive.org](https://web.archive.org/web/20240103060406/http://www.tomharding.me/2017/04/17/fantas-eel-and-specification-9/)
