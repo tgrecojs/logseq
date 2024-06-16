@@ -1,0 +1,53 @@
+{:blocks (
+{:block/content "{{embed ((6663a025-f150-472c-b07d-5470ab78cfdb))}}"
+:block/format :markdown
+:block/left 
+{:block/uuid #uuid "666f34d8-01bf-44e3-8282-1288f3399da1"}
+:block/parent 
+{:block/uuid #uuid "666f34d8-01bf-44e3-8282-1288f3399da1"}
+:block/uuid #uuid "666f351a-4e33-4b7f-9021-ce1f71bceb0d"} 
+{:block/created-at 1718564171324
+:block/properties 
+{:ls-type :whiteboard-shape
+:logseq.tldraw.shape 
+{:blockType "B"
+:stroke "green"
+:collapsed false
+:borderRadius 8
+:index 0
+:scale [1 1]
+:pageId "666f351a-4e33-4b7f-9021-ce1f71bceb0d"
+:scaleLevel "md"
+:fill "green"
+:compact true
+:isAutoResizing true
+:type "logseq-portal"
+:size [400 461.8841247558594]
+:strokeType "line"
+:strokeWidth 2
+:opacity 1
+:id "fc1fe6b0-2c11-11ef-95ad-4d209a3bb3cc"
+:noFill false
+:isLocked false
+:point [64 160]
+:parentId "666f34d8-01bf-44e3-8282-1288f3399da1"
+:collapsedHeight 0
+:nonce 1718564122817}}
+:block/updated-at 1718564171324})
+:pages (
+{:block/uuid #uuid "666f34d8-01bf-44e3-8282-1288f3399da1"
+:block/properties 
+{:ls-type :whiteboard-page
+:logseq.tldraw.page 
+{:id "666f34d8-01bf-44e3-8282-1288f3399da1"
+:name "airdrop distribution"
+:bindings 
+{}
+:nonce 1
+:assets []
+:shapes-index ("fc1fe6b0-2c11-11ef-95ad-4d209a3bb3cc")}}
+:block/updated-at 1718564171324
+:block/created-at 1718564056216
+:block/type "whiteboard"
+:block/name "airdrop distribution"
+:block/original-name "airdrop distribution"})}

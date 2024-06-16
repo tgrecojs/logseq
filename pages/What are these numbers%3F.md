@@ -1,0 +1,25 @@
+-
+- ### The video explains basic symbols from logic and set theory, representing logical operations, implications in math, and different sets of numbers.
+	- 🔤 The video explains basic symbols from logic and set theory, representing logical operations such as "and," "or," and "exclusive or," as well as negation.
+		- The video explains basic symbols from logic and set theory that people often see but don't understand.
+		- The symbols discussed in the video represent logical operations such as "and," "or," and "exclusive or," as well as negation.
+	- 🔑 Implications in math are represented by arrows, with the single arrow indicating "if-then" and the double arrow indicating "if and only if".
+	- 🔢 The symbols "A" and "E" in mathematics represent "for all" and "there exists" respectively, used to interpret statements in different contexts such as natural and rational numbers.
+		- The symbols used in mathematics indicate statements and their implications, with a distinction between formal and meta statements.
+		- For any given number, the symbols "A" and "E" represent "for all" and "there exists" respectively, and can be used to interpret statements in different contexts such as natural and rational numbers.
+		- The symbols discussed represent statements and negations of existence.
+	- 🔢 Sets in mathematics can be collections of various mathematical objects, and the symbol "fi" represents an empty set with no elements.
+		- Sets in mathematics are collections of mathematical objects, which can be numbers, functions, polygons, or any abstract idea found in mathematics.
+		- The symbol "fi" is not a Greek letter but a letter in the Danish alphabet, representing an empty set with no elements, distinct from zero.
+	- 🔍 The symbol "C" represents the part outside of a set in introductory set theory, but it loses meaning in advanced set theory and is not used in research.
+		- A set can be thought of as a bag containing elements, and the set difference is the part of one set that is not in the other set.
+		- The symbol "C" is used in introductory set theory to represent the part outside of a set, but it loses meaning in more advanced set theory and is not used in research.
+	- 🔢 Intersection and union symbols represent common and combined elements of sets, with debate over whether a subset can be equal to the set it is a subset of.
+		- Intersection and union symbols are used to represent the common and combined elements of sets, respectively.
+		- A is a subset of B means everything in A is also in B, with some debate over whether A can be equal to B or not.
+	- 🔤 The symbols discussed in the video represent subset, membership, and negation in set theory.
+	- 🔢 Different symbols represent sets of numbers, including natural, integers, rational, real, and complex numbers, with prescribed meanings and discussion on the size of types from well ordering of natural numbers.
+		- The symbols discussed in the video represent different sets of numbers, including natural numbers, integers, rational numbers, real numbers, and complex numbers.
+		- Alf, Beth, and dad symbols have prescribed meanings, and the video discusses the size of how many types you can get from well ordering of the natural numbers.
+- tags:: #[[Set Theory]],  #[[Logic]], #[[Numberphile]]
+-
