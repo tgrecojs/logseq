@@ -6,7 +6,7 @@
 :block/parent 
 {:block/uuid #uuid "666f34d8-01bf-44e3-8282-1288f3399da1"}
 :block/uuid #uuid "666f351a-4e33-4b7f-9021-ce1f71bceb0d"} 
-{:block/created-at 1718564223485
+{:block/created-at 1718564345001
 :block/properties 
 {:ls-type :whiteboard-shape
 :logseq.tldraw.shape 
@@ -23,7 +23,7 @@
 :compact true
 :isAutoResizing true
 :type "logseq-portal"
-:size [760 352.15621825517337]
+:size [760 382.1933898925781]
 :strokeType "line"
 :strokeWidth 2
 :opacity 1
@@ -33,8 +33,35 @@
 :point [-768 264]
 :parentId "666f34d8-01bf-44e3-8282-1288f3399da1"
 :collapsedHeight 0
-:nonce 1718564123388}}
-:block/updated-at 1718564223485})
+:nonce 1718564123394}}
+:block/updated-at 1718564345001} 
+{:block/created-at 1718564390700
+:block/properties 
+{:ls-type :whiteboard-shape
+:logseq.tldraw.shape 
+{:blockType "B"
+:stroke ""
+:collapsed false
+:borderRadius 8
+:index 1
+:scale [1 1]
+:pageId "6663a025-f150-472c-b07d-5470ab78cfdb"
+:scaleLevel "md"
+:fill ""
+:compact false
+:isAutoResizing true
+:type "logseq-portal"
+:size [400 547.7273864746094]
+:strokeType "line"
+:strokeWidth 2
+:opacity 1
+:id "8b9ab4a0-2c12-11ef-abbb-15d0dc3a0aba"
+:noFill false
+:point [632 1008]
+:parentId "666f34d8-01bf-44e3-8282-1288f3399da1"
+:collapsedHeight 0
+:nonce 1718564363503}}
+:block/updated-at 1718564390700})
 :pages (
 {:block/uuid #uuid "666f34d8-01bf-44e3-8282-1288f3399da1"
 :block/properties 
@@ -46,8 +73,8 @@
 {}
 :nonce 1
 :assets []
-:shapes-index ("fc1fe6b0-2c11-11ef-95ad-4d209a3bb3cc")}}
-:block/updated-at 1718564223485
+:shapes-index ("fc1fe6b0-2c11-11ef-95ad-4d209a3bb3cc" "8b9ab4a0-2c12-11ef-abbb-15d0dc3a0aba")}}
+:block/updated-at 1718564390700
 :block/created-at 1718564056216
 :block/type "whiteboard"
 :block/name "airdrop distribution"
