@@ -14,9 +14,9 @@
 	- ### Formula for Daily Token Allocation
 	  id:: 6663a025-f150-472c-b07d-5470ab78cfdb
 		- The daily token allocation for an individual follows an exponential decay. The formula for the tokens available to claim by an individual on a given day is:
-			- > $$
-			  a_n = a_1 \cdot r^{(n-1)}
-			  $$
+		  > $$
+		  a_n = a_1 \cdot r^{(n-1)}
+		  $$
 		- Where:
 			- \( a_n \) is the number of tokens available to claim on day \( n \).
 			- \( a_1 \) is the initial number of tokens available to claim on day 1.
