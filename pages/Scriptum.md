@@ -1,6 +1,6 @@
 ## Functors
 - ### Scriptum
-- tags::: functional programming, fp
+- tags::: #[[functional programming]], fp
 -
 -
 -
