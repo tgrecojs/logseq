@@ -4,7 +4,7 @@
 	- #### Transitioning into the digital era
 		- Human Markets and Computational Markets
 		- Social Coordination
-		-
+		- > Within a computational system, activities need produce neither pollution nor other effects on non-consenting objects; the most typical product, information, does not form a depletable physical inventory; specialized labor forces (copies of specialized objects) can be expanded almost instantly and can be cut back without human anguish.
 	- | Market Types | Traditional | Digital |
 	  | --- | --- | --- |
 	  |  | Man hours | Processor Time |
@@ -12,4 +12,10 @@
 	  | Cell 3-1 | Machinery  | Factories |
 	  | Cell 4-1 | Cell 4-2 | Cell 4-3 |
 	- #### Hypothesis
+		- By transitioning to fully digital systems, we can potentially create markets that are orders of magnitude more efficient.
+		- system that has no upper bounds
+		- the door for markets to improvde Efficiencies stem from transitioning markets to being fully electronic
+		- Transitioning markets to digital form can in the creation of a recursive  in markets operating more efficiently
+		- effectiveness
+		-
 		-
