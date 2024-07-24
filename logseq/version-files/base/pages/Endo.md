@@ -1,5 +1,4 @@
 public:: true
-
 - ### Knowledge Base
 	- [[Endo Applications]]
 	- [[Daemon Videos]]

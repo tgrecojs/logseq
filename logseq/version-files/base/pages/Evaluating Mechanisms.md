@@ -2,7 +2,6 @@
 -
 -
 - ## Decay Factor Reasoning
-  collapsed:: true
 	- The choice of decay factor \( r \) is critical to meeting specific distribution goals. The decay factor controls how the distribution of tokens decreases each day. Let's delve into the reasoning for using a decay factor of \( 0.8 \), explore other potential values, and outline criteria for choosing the best decay factor.
 	- ### Reasoning Behind Using a Decay Factor of 0.8
 	  

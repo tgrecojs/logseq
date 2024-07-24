@@ -1,4 +1,5 @@
 ## **Basic blockchain knowledge: how does wallet apps derive your address from your seed phrase?**
+id:: 669df35f-2823-48a4-a84a-3e7dd2f71ba5
 	- This is a rather complex process, involving many steps, summarized in the diagram below:
 	- ![Image](https://pbs.twimg.com/media/F_ClOQzWAAAV9ZQ?format=jpg&name=large)
 	- ### Step 1 --> Step 2

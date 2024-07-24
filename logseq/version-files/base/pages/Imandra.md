@@ -1,4 +1,4 @@
-- ## Resources
+## Resources
 - [Demos](https://www.imandra.ai/demos)
   logseq.order-list-type:: number
 - [Documentation](https://docs.imandra.ai/imandra-docs)
@@ -17,11 +17,9 @@
 	- the current National Best Bid and Offer (a.k.a. [NBB/O](https://www.investopedia.com/terms/n/nbbo.asp)). The NBB/O is the highest bid price and the lowest big (ask) price available across all markets.
 - *The NBB/O is a composite of the tighest bid-ask spread in the market*
 - ![Bid-Ask Spread](https://www.investopedia.com/thmb/bCGbSYtlVNkYGX1LhFg673U0SWI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/bid-askspread-v4-dc6919600c5b4c5084b21e24fd3c7e5e.jpg)
+- ![Bid-Ask Spread](https://www.investopedia.com/thmb/bCGbSYtlVNkYGX1LhFg673U0SWI=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/bid-askspread-v4-dc6919600c5b4c5084b21e24fd3c7e5e.jpg){:height 382, :width 561}
 - ### Market Conditions
 - /pyth
-	-
-	-
--
 - https://docs.imandra.ai/imandra-docs/notebooks/ubs-case-study/
 -
 - [[Transitive Law]]

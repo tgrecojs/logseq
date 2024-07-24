@@ -168,3 +168,6 @@
 	  
 	  Using a decay factor of \( 0.8 \) provides a balanced and moderate rate of decay suitable for many scenarios. However, different factors like participant behavior, engagement goals, and the desired rate of token distribution can suggest the use of different decay factors. A higher \( r \) may maintain token attractiveness over the distribution period, while a lower \( r \) better incentivizes early participation. The best choice depends on the specific objectives and constraints of the token distribution plan.
 -
+-
+- tags:: #[[Airdrop Spec]], #[[Tribble Coin]]
+-

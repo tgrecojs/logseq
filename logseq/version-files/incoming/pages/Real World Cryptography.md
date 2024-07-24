@@ -57,6 +57,9 @@ tags:: #Books, #book-notes
 			  logseq.order-list-type:: number
 				- All cryptographic algorithms must care about the size of their parameters in practice
 				  logseq.order-list-type:: number
+- ## Book Anotations
+-
+-
 -
 - ## Glossary
 	- **uniform distribution**
@@ -69,3 +72,8 @@ tags:: #Books, #book-notes
 		  logseq.order-list-type:: number
 			- **It will output 00 25% of the time, 01 25% of the time, and so on**. In turn, not much work is needed to produce a collision.
 			  logseq.order-list-type:: number
+	- Exclusive OR (**XOR**)
+	  logseq.order-list-type:: number
+		- [[XOR Notes]]
+		  logseq.order-list-type:: number
+		- logseq.order-list-type:: number

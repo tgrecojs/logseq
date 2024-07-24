@@ -247,12 +247,7 @@
  ;;  ["js" "Javascript"]
  ;;  ["md" "Markdown"]
  ;;  ]
- 
- :commands [
-  ["js", "JavaScript"]
-  ["javascript" [[:editor/input "```javascript\n\n```" {:backward-pos 4}]]]
-  ["ocaml" [[:editor/input "```ocaml\n\n```" {:backward-pos 4}]]]
-]
+ :commands []
 
  ;; Enable collapsing blocks with titles but no children.
  ;; By default, only blocks with children can be collapsed.
@@ -416,5 +411,4 @@
  ;;   - :triple-lowbar (default)
  ;;      ;use triple underscore `___` for slash `/` in page title
  ;;      ;use Percent-encoding for other invalid characters
- :file/name-format :triple-lowbar
- :graph/settings {:journal? true}}
+ :file/name-format :triple-lowbar}

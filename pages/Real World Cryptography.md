@@ -1,5 +1,4 @@
 tags:: #Books, #book-notes
-
 	- #### TIL Why 256 #[[TIL Series]]
 		- > SHA-256 always provides an output of 256 bits (32 bytes), which is always encoded as 64 alphanumeric characters in hexadecimal.
 		- 256 bits is equal to 32 bytes.
