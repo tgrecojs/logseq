@@ -1,0 +1,14 @@
+### Overview
+	- SHA256 and Keccak256 are both cryptographic hash functions used for generating digital fingerprints of electronic data.
+- ## Sha256
+	- Overview:
+		- Sha256 has functions produces a 256-bit hash value known as a messsage digest.
+	- Output:
+		- The 256-bit hash value produced by the sha256 hash function is represented as a **string of [[_red]]==64 hexadecimal== digits**
+	- Use cases:
+		- Commonly used for:
+			- data integrity checks
+			- digital signatures, password storage
+			- blockchain applications like Bitcoin that require a 256-bit hash.
+	- #### Recall Cards
+		- Sha256 has functions produces a ____bit hash value known as a message ______ . #card
