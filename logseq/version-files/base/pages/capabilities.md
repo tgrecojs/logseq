@@ -9,10 +9,13 @@
 			- A capability c is an unforgeable object reference that allows its holder to send messages to the object it references by invoking c. In any object-capability system, capabilities and data are primitively distinct, meaning that each can always be distinguished from the other 6 .
 	-
 	- ## Equality
+	- ## Equality
 	  collapsed:: true
 		- ## The Left Hand of Equals
 			- > Autognosis means ‘self knowledge’. An autognostic object can only have detailed knowledge of itself. All other objects are abstract. The converse is quite useful: any programming model that allows inspection of the representation of more than one abstraction at a time is not object-oriented.
 		-
+	- ## Powerbox
+	  collapsed:: true
 	- ## Powerbox
 		- {{embed [[Powerbox Pattern]]}}
 - ### Waterken
