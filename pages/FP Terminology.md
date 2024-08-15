@@ -1,0 +1,12 @@
+## Algebraic Data Types
+	- Any crazed software developer will be happy to transfer any knowledge they have regarding how to improve the development process. If you asked one hundred JavaScript developers how to improve the development process,  the responses you'll receive are going to be impacted significantly by a developer's experiences, their level of experience, their preferences with respect to tooling, etc.
+	- There will always be some level of subjectivity within these responses. What constitutes as an improvements varies "Improvement" on the perspective of look incredibly different when viewed through the lense
+	- There's no denying that the functional programming paradigm can result in the creation of overly complex code bases
+	- ### Rose-colored glasses
+		- Algebraic data types are  **[[composite types]]** that are  algebraic data types ADTs encapsulate data
+		- > The fact that a data type can be formed by applying some operations between them gives a data type can be formed by them the the name algebraic
+		-
+		- This structure allows for types to be connected by way of mathematical operations.
+	-
+	-
+-

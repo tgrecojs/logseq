@@ -1,0 +1,29 @@
+### Type Systems
+	- Decidibilty
+		- can use to make a deicision
+	- soundness
+		- everything we can prove is true
+	- completeness
+- ### Supmply typed lamba
+	- gamme
+		- context
+	- tern syle
+		- ype judgement
+	- sigma
+		- denotes the type
+-
+- Polymorphic
+	- for all alpha a -> a
+- monoprhic
+	- vairable
+	- application
+	- abstraction
+- polymorphic
+	- gamma
+	- quantifier logic
+-
+- variables are bound
+	- universally qunatified
+	- appearing in function types.
+- we use the instantiation rule to go from a polymorphic type to a specific type.
+-
