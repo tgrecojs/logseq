@@ -1,5 +1,6 @@
 public:: true
-- Source:
+
+- **Source:**
 	- https://www.hpl.hp.com/techreports/2006/HPL-2006-116.html
 - ### Overview
 	- Research paper by Mark Miller and Mark Steigler focused around "Emily", an OCaml subset that made the language comply with POLA best practices.

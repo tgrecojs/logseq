@@ -4,7 +4,6 @@
 	- A Powerbox is an object with extensive authority. At minimum, it must hold all the authority that any of the applications it might service might need.
 	- At a minimum it must hold all the authority that any of the applications it might service might need.
 	- **The powerbox is a composition of objects that grants, revokes, negotiates, and in general manages, the authorities granted to another object.**
-	-
 - [[How Emily Tamed the Caml]]
 - ## History:
 	- The powerbox pattern was invented during the development of CapDesk and the DarpaBrowser; the experiences with building both a good (secure and flexible) powerbox and a poor (rigid yet breachable) powerbox led to a better understanding of the concept.
@@ -35,7 +34,23 @@
 			- the root module of a program.
 			- it is through the `main` module that objects receive the permissions they need.
 			- example - e-mail client
-				- address book has the authority to read from the address-book file.
+				- Attack Scenario
+					- Consider a malicious JPEG image embedded in an email. The JPEG image, when read by the rendering engine will achieve a full breach of the renderer.
+					- Because the renderer, as a part of the application, has all the application's authority, the attacker acquires both of the authorities needed to replicate itself.
+						- ![image.png](../assets/image_1724247514739_0.png){:height 192, :width 296}
+						-
+				- Conclusion:
+					- **Confinement at the application level is insufficient.**
+				- ### Attack Mitigation
+					- Address book Manager
+						- has the authority to read the address book, but it does not have the authority to send or receive mail.
+						- ✅ the address book manager is POLA-confined.
+					- Malicious JPEG
+						- now consider the rendering engine. The JPEG image, when displayed, still achieves full breach of the renderer. But the renderer has neither the authority to read the address book, nor the authority to send mail. The self-replicating JPEG attack fails.
+						- ✅ the malicious JPEG is POLA-confined.
+					- In fact, a virus needs to achieve two independent breaches of the system to replicate: it must breach both the send module and the address book manager. Limiting the size of modules and number of modules that hold those
+					  authorities reduces risk of introducing a vulnerability. At the same time, requiring multiple breaches increases the difficulty of exploiting a vulnerability.
+				-
 				- the renderer only has authority to the `document` API (assuming that the user-interface is being rendered within its own confined, frozen Compartment).
 			- example - Native Application - card deck shuffler
 -

@@ -1,6 +1,14 @@
 - A collection of themes that I've enjoyed enough to make note of them within this digital record.
-- ## Dark Mode
+- > **All screenshots on this pages have their sizes explicitly set to  720x280 
+   (click on images to view usage of `{height 280, :width 720}`**
+- ## Light Themes
+	- **"Solarized Light FJS**
+		- ![solorized-light-fjs-ss.png](../assets/solorized-light-fjs-ss_1723735151547_0.png){:height 280, :width 720}
+- ## Dark Themes
 	- **"Downpour Contrast (rainglow)"**
-		- ![image.png](../assets/image_1723734841948_0.png){:height 386, :width 933}
+		- ![image.png](../assets/image_1723734841948_0.png){:height 280, :width 720}
+	- **"Goldfish (Rainglow)"**
+		- ![theme-ss-2.png](../assets/theme-ss-2_1723734971539_0.png){:height 280, :width 720}
 	-
+-
 -
