@@ -33,31 +33,33 @@
 		- `main` module (start function)
 			- the root module of a program.
 			- it is through the `main` module that objects receive the permissions they need.
-			- ## Applying POLA to lockdown composable applications
-				- ### Attack Scenario - Email Client
-					- Consider a malicious JPEG image embedded in an email. The JPEG image, when read by the rendering engine will achieve a full breach of the renderer.
-					- Because the renderer, as a part of the application, has all the application's authority, the attacker acquires both of the authorities needed to replicate itself:
-						- **address book authority read**
-						- **address book send authority**
-							- ![image.png](../assets/image_1724247514739_0.png){:height 192, :width 296}
-						-
-					- > **Confinement at the application level is insufficient.**
-				- ### Attack Mitigation
-					- Address book Manager
-						- has the authority to read the address book, but it does not have the authority to send or receive mail.
-						- ✅ the address book manager is POLA-confined.
-					- Malicious JPEG
-						- now consider the rendering engine. The JPEG image, when displayed, still achieves full breach of the renderer. But the renderer has neither the authority to read the address book, nor the authority to send mail. The self-replicating JPEG attack fails.
-						- ✅ the malicious JPEG is POLA-confined.
-					- ### Conclusion
-						- A virus needs to achieve two independent breaches of the system to replicate:
-							- it must breach both the send module.
-							- the address book manager.
-						- #### Tips for safer applications
-							- Limiting the size of modules and number of modules that hold those authorities reduces risk of introducing a vulnerability. 
-							  logseq.order-list-type:: number
-							- requiring multiple breaches increases the difficulty of exploiting a vulnerability
-							  logseq.order-list-type:: number
--
+- ## Applying POLA to lockdown composable applications
+	- ### Attack Scenario - Email Client
+		- Consider a malicious JPEG image embedded in an email. The JPEG image, when read by the rendering engine will achieve a full breach of the renderer.
+		- Because the renderer, as a part of the application, has all the application's authority, the attacker acquires both of the authorities needed to replicate itself:
+			- **address book authority read**
+			- **address book send authority**
+				- ![image.png](../assets/image_1724247514739_0.png){:height 192, :width 296}
+			-
+		- > **Confinement at the application level is insufficient.**
+	- ### Attack Mitigation
+		- Address book Manager
+			- has the authority to read the address book, but it does not have the authority to send or receive mail.
+			- ✅ the address book manager is POLA-confined.
+		- Malicious JPEG
+			- now consider the rendering engine. The JPEG image, when displayed, still achieves full breach of the renderer. But the renderer has neither the authority to read the address book, nor the authority to send mail. The self-replicating JPEG attack fails.
+			- ✅ the malicious JPEG is POLA-confined.
+		- ### Conclusion
+			- A virus needs to achieve two independent breaches of the system to replicate:
+				- it must breach both the send module.
+				- the address book manager.
+- ### Tips for safer applications
+	- Limit the size of modules.
+	  logseq.order-list-type:: number
+	- Limit number of modules that hold those authorities reduces risk of introducing a vulnerability.
+	  logseq.order-list-type:: number
+	- requiring multiple breaches increases the difficulty of exploiting a vulnerability
+	  logseq.order-list-type:: number
+- In the powerbox pattern... the “main” module of the application (where execution begins) hands out to each module just enough authority to do the job needed by that particular module. - [[How Emily Tamed the Caml]]
 -
 -

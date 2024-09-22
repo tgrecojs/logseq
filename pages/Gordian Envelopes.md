@@ -36,7 +36,7 @@
 			- The holder can elide parts of the document that have been previiously signed without corrupting / invalidating the signature.
 			- ### Elision in Gordion Envelopes
 				- The image below shows contents of a gordion envelope
-					- ![ss_08142024_000462.png](../assets/ss_08142024_000462_1723654636983_0.png)
+					- ![ss_08142024_000462.png](../assets/ss_08142024_000462_1723654636983_0.png){:height 253, :width 324}
 				- Every part of a gordion envelop is a node in a tree.
 				- Every node is the tree has a unique digest.
 				- #### The characteristic digest
