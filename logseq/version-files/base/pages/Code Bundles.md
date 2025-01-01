@@ -17,9 +17,11 @@
 	- ## How Swingset Uses Bundles
 		- The swingset kernel maintains a "bundle table" in the kernel database. Bundles can be installed here, indexed by their bundle ID, and retrieved for various purposes:
 		- all swingset vats, both static and dynamic, start from a bundle
-		- in these bundles, the entry point module exports a function named `buildRootObject`
-		- through `vatAdminService~.getBundleCap()`, vat code can exchange a bundle ID for a bundlecap
-		- the bundlecap can be used with `vatAdminService~.createVat()` to make a new dynamic vat
+			- in these bundles, the entry point module exports a function named `buildRootObject`
+			- through `vatAdminService~.getBundleCap()`, vat code can exchange a bundle ID for a bundlecap
+		- #### Vat Creation
+			- the bundlecap can be used with `vatAdminService~.createVat()` to make a new dynamic vat
+		- Va
 		- userspace can use `D(bundleCap).getBundle()` to fetch the bundle itself, for use with an `importBundle()` that does not create an entire new vat
 		- the Zoe "ZCF" facet uses this to load contract code within an existing vat
 		- this could also be used as part of an in-vat upgrade process, to load new behavior
