@@ -16,7 +16,7 @@
 	- ==A "bundlecap" is an object (specifically a swingset "device node") which identifies a specific installed bundle==. Bundlecaps only exist within swingset vats. Each bundlecap knows the bundle ID to which it refers. There is at most one bundlecap per bundle ID. ==It is not possible to make a bundlecap for a bundle that is not yet installed into the enclosing kernel, and holding a bundlecap guarantees that the bundle will be available== (bundles may be GCed, but the bundlecap holds a reference that inhibits collection).
 	- ## How Swingset Uses Bundles
 		- The swingset kernel maintains a "bundle table" in the kernel database. Bundles can be installed here, indexed by their bundle ID, and retrieved for various purposes:
-		- * all swingset vats, both static and dynamic, start from a bundle
+		- all swingset vats, both static and dynamic, start from a bundle
 		- in these bundles, the entry point module exports a function named `buildRootObject`
 		- through `vatAdminService~.getBundleCap()`, vat code can exchange a bundle ID for a bundlecap
 		- the bundlecap can be used with `vatAdminService~.createVat()` to make a new dynamic vat
