@@ -22,7 +22,7 @@
 		- #### Vat Creation
 			- the bundlecap can be used with `vatAdminService~.createVat()` to make a new dynamic vat
 		- Vats in Userspace
-			- `D(bundleCap).getBundle()`
+			- `D(bundleCap).getBundle()` **fetches** a.
 			- to fetch the bundle itself, for use with an `importBundle()` that does not create an entire new vat
 		- the Zoe "ZCF" facet uses this to load contract code within an existing vat
 		- this could also be used as part of an in-vat upgrade process, to load new behavior
