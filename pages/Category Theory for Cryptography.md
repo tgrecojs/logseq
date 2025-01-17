@@ -508,3 +508,4 @@
 		- [Cryptographic Hash Functions and their Applications](https://en.wikipedia.org/wiki/Cryptographic_hash_function)
 		- **What's Next?**
 		- In the next article, we will explore the world of functors and cryptographic hash functions. Stay tuned!
+- tags:: #Cryptography]], #[[Category Theory]], #[[consillium]]
