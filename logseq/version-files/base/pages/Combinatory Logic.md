@@ -12,5 +12,5 @@
 		-
 		-
 		-
-- tags:: #[[TIL Series]], #[[Functional Programming]], #[[consillium]]
+- tags:: #[[TIL Series]], #[[Functional Programming]], #[[Consillium]]
 -
