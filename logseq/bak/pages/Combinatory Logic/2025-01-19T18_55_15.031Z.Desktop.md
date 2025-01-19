@@ -1,0 +1,16 @@
+- https://www.consillium.app/?id=8bf5c81f-eb8e-4fe4-b0ff-370a6f341c63
+- ### TIL - `S` and `K` combinators are viewed as the foundation for combinatory logic
+	- Substituion Combinator
+		- A.k.a. `S`
+		- \[S(f,g,x)=f(x)(g(x))\]
+		- ### K Combinator
+		- \[K(x,f)=\lambda y.x\]
+		-
+		-
+		-
+		-
+		-
+		-
+		-
+- tags:: #[[TIL Series]], #[[Functional Programming]], #consillium
+-
