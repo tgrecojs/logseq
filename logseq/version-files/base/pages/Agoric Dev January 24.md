@@ -44,6 +44,16 @@
 			- Uses find/query invitation by kvs mechanism
 			- Requires Instance and description
 		- ```typescript
+		  /**
+		   * the invitation is already in your Zoe "invitation" purse so we need to query it
+		   * - use the find/query invitation by kvs thing
+		   */
+		  export type PurseInvitationSpec = {
+		      source: 'purse';
+		      instance: Instance;
+		      description: string;
+		  };
+		  
 		  
 		  ```
 	- ## ContinuingInvitationSpec
@@ -53,7 +63,17 @@
 			- References previousOffer
 			- Requires invitationMakerName
 			- Optional invitationArgs
--
+		- ```
+		  /**
+		   * continuing invitation in which the offer result from a previous invitation had an `invitationMakers` property
+		   */
+		  export type ContinuingInvitationSpec = {
+		      source: 'continuing';
+		      previousOffer: import('./offers.js').OfferId;
+		      invitationMakerName: string;
+		      invitationArgs?: any[];
+		  };
+		  ```
 -
 	- In the Agoric codebase, "coalesce" generally refers to the process of combining or merging multiple state updates into a single, coherent state representation. Let me explain how it works in the context you've shared:
 	  

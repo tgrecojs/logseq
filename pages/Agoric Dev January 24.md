@@ -29,7 +29,7 @@
 		- ```
 		  /**
 		   * source is a contract (in which case this takes an Instance to look up in zoe)
-		   */
+		   
 		  export type ContractInvitationSpec = {
 		      source: 'contract';
 		      instance: Instance;
@@ -53,6 +53,8 @@
 		      instance: Instance;
 		      description: string;
 		  };
+		  
+		  
 		  ```
 	- ## ContinuingInvitationSpec
 		- **Source Type:** 'continuing'
@@ -61,7 +63,18 @@
 			- References previousOffer
 			- Requires invitationMakerName
 			- Optional invitationArgs
--
+		- ```tyepscript
+		  
+		  /**
+		   * source is a contract (in which case this takes an Instance to look up in zoe)
+		   
+		  export type ContractInvitationSpec = {
+		      source: 'contract';
+		      instance: Instance;
+		      publicInvitationMaker: string;
+		      invitationArgs?: any[];
+		  };
+		  ```
 -
 	- In the Agoric codebase, "coalesce" generally refers to the process of combining or merging multiple state updates into a single, coherent state representation. Let me explain how it works in the context you've shared:
 	  
