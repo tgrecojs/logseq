@@ -27,7 +27,15 @@
 			- Uses publicInvitationMaker
 			- Optional invitationArgs
 		- ```
-		  
+		  /**
+		   * source is a contract (in which case this takes an Instance to look up in zoe)
+		   */
+		  export type ContractInvitationSpec = {
+		      source: 'contract';
+		      instance: Instance;
+		      publicInvitationMaker: string;
+		      invitationArgs?: any[];
+		  };
 		  ```
 	- ## `PurseInvitationSpec`
 		- **Source Type:** 'purse'
@@ -35,6 +43,17 @@
 		- **Key Components:**
 			- Uses find/query invitation by kvs mechanism
 			- Requires Instance and description
+		- ```typescript
+		  /**
+		   * the invitation is already in your Zoe "invitation" purse so we need to query it
+		   * - use the find/query invitation by kvs thing
+		   */
+		  export type PurseInvitationSpec = {
+		      source: 'purse';
+		      instance: Instance;
+		      description: string;
+		  };
+		  ```
 	- ## ContinuingInvitationSpec
 		- **Source Type:** 'continuing'
 		- **Description:** Continuing invitation where offer result from previous invitation had invitationMakers property
