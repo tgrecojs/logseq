@@ -1,4 +1,4 @@
-### Zoe Invitation Types
+## Zoe Invitation Types
 	- # Invitation Types Analysis Notes
 	- ## AgoricContractInvitationSpec
 	  1. **Source Type:** 'agoricContract'
@@ -71,4 +71,5 @@
 					- Instead of looking at every transaction to know your balance
 						- You can "coalesce" them into a final balance that represents the end state
 						- This final state incorporates all the individual changes that happened over time
-- tags:: #[[agoric-sdk]], #[[Airdepo Deployment]]
+- tags:: #[[agoric-sdk]], [[Merkle Airdrop]], [[Zoe]]
+- id:: 67946fc8-2826-4a5c-a4f9-e042e1c927b9
