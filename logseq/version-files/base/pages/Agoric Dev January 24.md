@@ -1,4 +1,165 @@
-# Zoe Invitation Types
+## Trae
+	- I understand you want to create a performance testing script that measures both wallet provisioning and claim transaction times. Here's how we can structure this:
+	  
+	  ```javascript:/Users/tgreco/dapp-airdrop/nodes-cli-analysis/performance-test.js
+	  import { exec } from 'node:child_process';
+	  import { promisify } from 'node:util';
+	  import { merkleTreeAPI } from '../ui/src/airdrop-data/merkle-tree/index.js';
+	  import { TEST_ACCOUNTS } from '../ui/src/generated_keys.js';
+	  
+	  const execAsync = promisify(exec);
+	  
+	  const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+	  
+	  /**
+	   * @typedef {Object} PerformanceMetrics
+	   * @property {number} provisionTime - Time taken for wallet provisioning
+	   * @property {number} claimTime - Time taken for claim transaction
+	   * @property {string} address - Account address
+	   * @property {string} iteration - Test iteration number
+	   * @property {Error} [error] - Error if any operation failed
+	   */
+	  
+	  /**
+	   * Executes a shell command and measures its execution time
+	   * @param {string} command - Command to execute
+	   * @returns {Promise<{duration: number, output: string}>}
+	   */
+	  async function measureCommand(command) {
+	    const start = performance.now();
+	    const { stdout, stderr } = await execAsync(command);
+	    const duration = performance.now() - start;
+	    return { duration, output: stdout };
+	  }
+	  
+	  /**
+	   * Creates the offer JSON for a claim transaction
+	   * @param {Object} account - Account details
+	   * @returns {string} Stringified offer JSON
+	   */
+	  function createOfferJSON(account) {
+	    const offerBody = {
+	      id: `${account.address}-claim-attempt`,
+	      invitationSpec: {
+	        source: 'contract',
+	        instancePath: ['tribblesAirdrop2'],
+	        callPipe: [['makeClaimTokensInvitation']],
+	        offerArgs: {
+	          key: account.pubkey.key,
+	          proof: merkleTreeAPI.generateMerkleProof(account.pubkey.key, TEST_ACCOUNTS.map(a => a.pubkey.key)),
+	          address: account.address,
+	          tier: Math.floor(Math.random() * 5)
+	        },
+	        proposal: {
+	          give: { Fee: { brand: 'IST', value: 5n } }
+	        }
+	      }
+	    };
+	    return JSON.stringify(offerBody);
+	  }
+	  
+	  /**
+	   * Processes a batch of accounts
+	   * @param {Array} accounts - Array of accounts to process
+	   * @param {number} iteration - Current iteration number
+	   * @returns {Promise<PerformanceMetrics[]>}
+	   */
+	  async function processBatch(accounts, iteration) {
+	    const metrics = [];
+	  
+	    for (const account of accounts) {
+	      try {
+	        // Provision wallet
+	        const provisionCommand = `agoric wallet provision --account ${account.address} --nickname test-${iteration}-${account.address} --keyring-backend test --spend`;
+	        const { duration: provisionTime } = await measureCommand(provisionCommand);
+	  
+	        // Create and execute claim transaction
+	        const offerJSON = createOfferJSON(account);
+	        const claimCommand = `agoric wallet --keyring-backend test send --offer '${offerJSON}'`;
+	        const { duration: claimTime } = await measureCommand(claimCommand);
+	  
+	        metrics.push({
+	          provisionTime,
+	          claimTime,
+	          address: account.address,
+	          iteration: `${iteration}`,
+	        });
+	      } catch (error) {
+	        metrics.push({
+	          provisionTime: 0,
+	          claimTime: 0,
+	          address: account.address,
+	          iteration: `${iteration}`,
+	          error,
+	        });
+	      }
+	    }
+	  
+	    return metrics;
+	  }
+	  
+	  /**
+	   * Main test execution function
+	   */
+	  async function runPerformanceTest() {
+	    const BATCH_SIZE = 5;
+	    const ITERATIONS = 100;
+	    const DELAY_BETWEEN_BATCHES = 5000; // 5 seconds
+	    const allMetrics = [];
+	  
+	    for (let i = 0; i < ITERATIONS; i++) {
+	      console.log(`Starting iteration ${i + 1}/${ITERATIONS}`);
+	      
+	      // Select 5 accounts for this batch
+	      const batchAccounts = TEST_ACCOUNTS.slice(i * BATCH_SIZE, (i + 1) * BATCH_SIZE);
+	      
+	      const batchMetrics = await processBatch(batchAccounts, i + 1);
+	      allMetrics.push(...batchMetrics);
+	      
+	      // Write metrics to file after each batch
+	      const metricsJSON = JSON.stringify(allMetrics, null, 2);
+	      await fs.promises.writeFile('performance-metrics.json', metricsJSON);
+	      
+	      // Wait 5 seconds before next batch
+	      await delay(DELAY_BETWEEN_BATCHES);
+	    }
+	  
+	    console.log('Performance test completed');
+	    return allMetrics;
+	  }
+	  
+	  // Run the test
+	  runPerformanceTest().catch(console.error);
+	  ```
+	  
+	  This script:
+	  1. Processes accounts in batches of 5
+	  2. For each account:
+		- Measures wallet provisioning time
+		- Measures claim transaction time
+		- Records both metrics
+		  3. Waits 5 seconds between batches
+		  4. Runs for 100 iterations
+		  5. Saves metrics to a JSON file
+		  
+		  The metrics include:
+	- Provisioning time
+	- Claim transaction time
+	- Account address
+	- Iteration number
+	- Any errors that occurred
+	  
+	  You can run this with:
+	  ```bash
+	  node performance-test.js
+	  ```
+	  
+	  The script will create a `performance-metrics.json` file with detailed timing data that you can analyze later.
+	  
+	  Would you like me to add any additional metrics or modify the test parameters?
+	-
+-
+- # Zoe Invitation Types
 	- ## `AgoricContractInvitationSpec`
 		- **Source Type:** 'agoricContract'
 		- **Description:** Invitation source is a chain of calls starting with an agoricName
