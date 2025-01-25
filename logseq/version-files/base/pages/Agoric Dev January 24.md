@@ -63,14 +63,15 @@
 			- References previousOffer
 			- Requires invitationMakerName
 			- Optional invitationArgs
-		- ```
+		- ```typescript
+		  
 		  /**
-		   * continuing invitation in which the offer result from a previous invitation had an `invitationMakers` property
+		   * source is a contract (in which case this takes an Instance to look up in zoe)
 		   */
-		  export type ContinuingInvitationSpec = {
-		      source: 'continuing';
-		      previousOffer: import('./offers.js').OfferId;
-		      invitationMakerName: string;
+		  export type ContractInvitationSpec = {
+		      source: 'contract';
+		      instance: Instance;
+		      publicInvitationMaker: string;
 		      invitationArgs?: any[];
 		  };
 		  ```

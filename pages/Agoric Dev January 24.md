@@ -29,7 +29,7 @@
 		- ```
 		  /**
 		   * source is a contract (in which case this takes an Instance to look up in zoe)
-		   
+		   */
 		  export type ContractInvitationSpec = {
 		      source: 'contract';
 		      instance: Instance;
@@ -63,11 +63,11 @@
 			- References previousOffer
 			- Requires invitationMakerName
 			- Optional invitationArgs
-		- ```tyepscript
+		- ```typescript
 		  
 		  /**
 		   * source is a contract (in which case this takes an Instance to look up in zoe)
-		   
+		   */
 		  export type ContractInvitationSpec = {
 		      source: 'contract';
 		      instance: Instance;
