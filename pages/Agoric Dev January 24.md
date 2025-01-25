@@ -1,14 +1,12 @@
-## Zoe Invitation Types
-	- # Invitation Types Analysis Notes
-	- ## AgoricContractInvitationSpec
+# Zoe Invitation Types
+	- ## `AgoricContractInvitationSpec`
 		- **Source Type:** 'agoricContract'
 		- **Description:** Invitation source is a chain of calls starting with an agoricName
 		- **Key Components:**
 			- Starts with instancePath lookup within agoricNames
 			- Uses callPipe for executing calls on preceding results
 			- Final result expected to return an Invitation
-	-
-	- ## ContractInvitationSpec
+	- ## `ContractInvitationSpec`
 		- **Source Type:** 'contract'
 		- **Description:** Source is a contract that takes an Instance to look up in zoe
 		- **Key Components:**
@@ -22,16 +20,12 @@
 			- Uses find/query invitation by kvs mechanism
 			- Requires Instance and description
 	- ## ContinuingInvitationSpec
-	  1.
-		- **
-		- Source Type:** 'continuing'
-		  2. **Description:** Continuing invitation where offer result from previous invitation had invitationMakers property
-		  3. **Key Components:**
-		- References previousOffer
-		- Requires invitationMakerName
-		- Optional invitationArgs
-		  
-		  *Would you like me to capture any additional details or organize these notes differently?*
+		- **Source Type:** 'continuing'
+		- **Description:** Continuing invitation where offer result from previous invitation had invitationMakers property
+		- **Key Components:**
+			- References previousOffer
+			- Requires invitationMakerName
+			- Optional invitationArgs
 -
 -
 	- In the Agoric codebase, "coalesce" generally refers to the process of combining or merging multiple state updates into a single, coherent state representation. Let me explain how it works in the context you've shared:
