@@ -18,16 +18,6 @@
 		      instancePath: string[];
 		      callPipe: Array<[methodName: string, methodArgs?: any[]]>;
 		  };
-		  
-		  /**
-		   * source is a contract (in which case this takes an Instance to look up in zoe)
-		   */
-		  export type ContractInvitationSpec = {
-		      source: 'contract';
-		      instance: Instance;
-		      publicInvitationMaker: string;
-		      invitationArgs?: any[];
-		  };
 		  ```
 	- ## `ContractInvitationSpec`
 		- **Source Type:** 'contract'
