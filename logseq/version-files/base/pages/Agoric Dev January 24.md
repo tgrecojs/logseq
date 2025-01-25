@@ -1,35 +1,44 @@
-## Zoe Invitation Types
-	- # Invitation Types Analysis Notes
-	- ## AgoricContractInvitationSpec
+# Zoe Invitation Types
+	- ## `AgoricContractInvitationSpec`
 		- **Source Type:** 'agoricContract'
 		- **Description:** Invitation source is a chain of calls starting with an agoricName
 		- **Key Components:**
 			- Starts with instancePath lookup within agoricNames
 			- Uses callPipe for executing calls on preceding results
 			- Final result expected to return an Invitation
-	-
-	- ## ContractInvitationSpec
+		- ```typescript
+		  /**
+		   * source of invitation is a chain of calls starting with an agoricName
+		   * - the start of the pipe is a lookup of instancePath within agoricNames
+		   * - each entry in the callPipe executes a call on the preceding result
+		   * - the end of the pipe is expected to return an Invitation
+		   */
+		  export type AgoricContractInvitationSpec = {
+		      source: 'agoricContract';
+		      instancePath: string[];
+		      callPipe: Array<[methodName: string, methodArgs?: any[]]>;
+		  };
+		  ```
+	- ## `ContractInvitationSpec`
 		- **Source Type:** 'contract'
 		- **Description:** Source is a contract that takes an Instance to look up in zoe
 		- **Key Components:**
 			- Requires Instance
 			- Uses publicInvitationMaker
 			- Optional invitationArgs
-	- ## PurseInvitationSpec
-	  1. **Source Type:** 'purse'
-	  2. **Description:** Invitation is already in Zoe "invitation" purse requiring query
-	  3. **Key Components:**
-		- Uses find/query invitation by kvs mechanism
-		- Requires Instance and description
+	- ## `PurseInvitationSpec`
+		- **Source Type:** 'purse'
+		- **Description:** Invitation is already in Zoe "invitation" purse requiring query
+		- **Key Components:**
+			- Uses find/query invitation by kvs mechanism
+			- Requires Instance and description
 	- ## ContinuingInvitationSpec
-	  1. **Source Type:** 'continuing'
-	  2. **Description:** Continuing invitation where offer result from previous invitation had invitationMakers property
-	  3. **Key Components:**
-		- References previousOffer
-		- Requires invitationMakerName
-		- Optional invitationArgs
-		  
-		  *Would you like me to capture any additional details or organize these notes differently?*
+		- **Source Type:** 'continuing'
+		- **Description:** Continuing invitation where offer result from previous invitation had invitationMakers property
+		- **Key Components:**
+			- References previousOffer
+			- Requires invitationMakerName
+			- Optional invitationArgs
 -
 -
 	- In the Agoric codebase, "coalesce" generally refers to the process of combining or merging multiple state updates into a single, coherent state representation. Let me explain how it works in the context you've shared:

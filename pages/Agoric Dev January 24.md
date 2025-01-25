@@ -6,6 +6,19 @@
 			- Starts with instancePath lookup within agoricNames
 			- Uses callPipe for executing calls on preceding results
 			- Final result expected to return an Invitation
+		- ```typescript
+		  /**
+		   * source of invitation is a chain of calls starting with an agoricName
+		   * - the start of the pipe is a lookup of instancePath within agoricNames
+		   * - each entry in the callPipe executes a call on the preceding result
+		   * - the end of the pipe is expected to return an Invitation
+		   */
+		  export type AgoricContractInvitationSpec = {
+		      source: 'agoricContract';
+		      instancePath: string[];
+		      callPipe: Array<[methodName: string, methodArgs?: any[]]>;
+		  };
+		  ```
 	- ## `ContractInvitationSpec`
 		- **Source Type:** 'contract'
 		- **Description:** Source is a contract that takes an Instance to look up in zoe
@@ -13,7 +26,10 @@
 			- Requires Instance
 			- Uses publicInvitationMaker
 			- Optional invitationArgs
-	- ## PurseInvitationSpec
+		- ```
+		  
+		  ```
+	- ## `PurseInvitationSpec`
 		- **Source Type:** 'purse'
 		- **Description:** Invitation is already in Zoe "invitation" purse requiring query
 		- **Key Components:**
