@@ -1,13 +1,13 @@
 ## Zoe Invitation Types
 	- # Invitation Types Analysis Notes
 	- ## AgoricContractInvitationSpec
-		- **Source Type:** 'agoricContract'
-		- Starts with instancePath lookup within agoricNames
-		- Uses callPipe for executing calls on preceding results
-		- Final result expected to return an Invitation
-	- logseq.order-list-type:: number
-	- 2. **Description:** Invitation source is a chain of calls starting with an agoricName
-	  3. **Key Components:**
+		- **Key Components:**
+			- **Source Type:** 'agoricContract'
+			- Starts with instancePath lookup within agoricNames
+			- Uses callPipe for executing calls on preceding results
+			- Final result expected to return an Invitation
+	-
+		- **Description:** Invitation source is a chain of calls starting with an agoricName
 	- ## ContractInvitationSpec
 	  1. **Source Type:** 'contract'
 	  2. **Description:** Source is a contract that takes an Instance to look up in zoe
