@@ -1,3 +1,7 @@
+-
+-
+-
+-
 tags:: #[[agoric-sdk]], #[[Airdepo Deployment]]
 
 	- In the Agoric codebase, "coalesce" generally refers to the process of combining or merging multiple state updates into a single, coherent state representation. Let me explain how it works in the context you've shared:
@@ -40,7 +44,3 @@ tags:: #[[agoric-sdk]], #[[Airdepo Deployment]]
 					- Instead of looking at every transaction to know your balance
 						- You can "coalesce" them into a final balance that represents the end state
 						- This final state incorporates all the individual changes that happened over time
--
--
--
--

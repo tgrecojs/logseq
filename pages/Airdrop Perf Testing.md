@@ -1,5 +1,36 @@
-tags:: #[[agoric-sdk]], #[[Airdepo Deployment]]
-
+### Zoe Invitation Types
+	- # Invitation Types Analysis Notes
+	- ## AgoricContractInvitationSpec
+	  1. **Source Type:** 'agoricContract'
+	  2. **Description:** Invitation source is a chain of calls starting with an agoricName
+	  3. **Key Components:**
+		- Starts with instancePath lookup within agoricNames
+		- Uses callPipe for executing calls on preceding results
+		- Final result expected to return an Invitation
+	- ## ContractInvitationSpec
+	  1. **Source Type:** 'contract'
+	  2. **Description:** Source is a contract that takes an Instance to look up in zoe
+	  3. **Key Components:**
+		- Requires Instance
+		- Uses publicInvitationMaker
+		- Optional invitationArgs
+	- ## PurseInvitationSpec
+	  1. **Source Type:** 'purse'
+	  2. **Description:** Invitation is already in Zoe "invitation" purse requiring query
+	  3. **Key Components:**
+		- Uses find/query invitation by kvs mechanism
+		- Requires Instance and description
+	- ## ContinuingInvitationSpec
+	  1. **Source Type:** 'continuing'
+	  2. **Description:** Continuing invitation where offer result from previous invitation had invitationMakers property
+	  3. **Key Components:**
+		- References previousOffer
+		- Requires invitationMakerName
+		- Optional invitationArgs
+		  
+		  *Would you like me to capture any additional details or organize these notes differently?*
+-
+-
 	- In the Agoric codebase, "coalesce" generally refers to the process of combining or merging multiple state updates into a single, coherent state representation. Let me explain how it works in the context you've shared:
 	  
 	  1. In <mcfile name="wallet.js" path="/Users/tgreco/agoric-sdk/packages/agoric-cli/src/lib/wallet.js"></mcfile>, the <mcsymbol name="coalesceWalletState" filename="wallet.js" path="/Users/tgreco/agoric-sdk/packages/agoric-cli/src/lib/wallet.js" startline="111" type="function"></mcsymbol> function:
@@ -40,7 +71,4 @@ tags:: #[[agoric-sdk]], #[[Airdepo Deployment]]
 					- Instead of looking at every transaction to know your balance
 						- You can "coalesce" them into a final balance that represents the end state
 						- This final state incorporates all the individual changes that happened over time
--
--
--
--
+- tags:: #[[agoric-sdk]], #[[Airdepo Deployment]]
