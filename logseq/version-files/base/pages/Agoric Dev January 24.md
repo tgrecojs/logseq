@@ -1,20 +1,20 @@
 ## Zoe Invitation Types
 	- # Invitation Types Analysis Notes
 	- ## AgoricContractInvitationSpec
+		- **Source Type:** 'agoricContract'
+		- **Description:** Invitation source is a chain of calls starting with an agoricName
 		- **Key Components:**
-			- **Source Type:** 'agoricContract'
 			- Starts with instancePath lookup within agoricNames
 			- Uses callPipe for executing calls on preceding results
 			- Final result expected to return an Invitation
 	-
-		- **Description:** Invitation source is a chain of calls starting with an agoricName
 	- ## ContractInvitationSpec
-	  1. **Source Type:** 'contract'
-	  2. **Description:** Source is a contract that takes an Instance to look up in zoe
-	  3. **Key Components:**
-		- Requires Instance
-		- Uses publicInvitationMaker
-		- Optional invitationArgs
+		- **Source Type:** 'contract'
+		- **Description:** Source is a contract that takes an Instance to look up in zoe
+		- **Key Components:**
+			- Requires Instance
+			- Uses publicInvitationMaker
+			- Optional invitationArgs
 	- ## PurseInvitationSpec
 	  1. **Source Type:** 'purse'
 	  2. **Description:** Invitation is already in Zoe "invitation" purse requiring query
