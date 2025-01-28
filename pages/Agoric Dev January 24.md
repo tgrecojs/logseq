@@ -1,4 +1,36 @@
-## Trae
+## AnteHandler
+	- # AnteDecorator Queue Management System
+	- ## Main Purpose
+	  The AnteDecorator controls message flow in the Swingset system.
+	- ## How it Works
+		- It monitors the size of incoming messages
+		- Messages go into two queues:
+		- Action Queue
+		- High Priority Queue
+	- ## Queue Management
+		- There is a size limit for the Action Queue
+		  * High Priority Queue items:
+		  * Skip the size checks
+		  * Still count in total queue size
+		  * Can make the queue exceed limits
+	- ## Message Processing Steps
+	  1. Messages enter through CheckTx (mempool stage)
+	  2. Messages process through DeliverTx (execution stage)
+	- ## Challenge
+	  The system can't know at CheckTx:
+	  * How many messages will be allowed later
+	  * The size of previous messages in the block
+	- ## Solution
+	  The system uses a safety buffer:
+	  * Mempool admission uses a lower limit (around 50%)
+	  * This creates a hysteresis effect
+	  * Full queue capacity is available at execution time
+	  
+	  This design helps prevent queue overflow while maintaining system efficiency.
+	-
+-
+-
+- ## Trae
 	- I understand you want to create a performance testing script that measures both wallet provisioning and claim transaction times. Here's how we can structure this:
 	  
 	  ```javascript:/Users/tgreco/dapp-airdrop/nodes-cli-analysis/performance-test.js
