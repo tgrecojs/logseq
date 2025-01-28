@@ -1,7 +1,7 @@
 ## AnteHandler
 	- # AnteDecorator Queue Management System
 	- ## Main Purpose
-	  The AnteDecorator controls message flow in the Swingset system.
+		- The AnteDecorator controls message flow in the Swingset system.
 	- ## How it Works
 		- It monitors the size of incoming messages
 		- Messages go into two queues:
@@ -9,24 +9,26 @@
 		- High Priority Queue
 	- ## Queue Management
 		- There is a size limit for the Action Queue
-		  * High Priority Queue items:
-		  * Skip the size checks
-		  * Still count in total queue size
-		  * Can make the queue exceed limits
+		- High Priority Queue items:
+		- Skip the size checks
+		- Still count in total queue size
+		- Can make the queue exceed limits
 	- ## Message Processing Steps
-	  1. Messages enter through CheckTx (mempool stage)
-	  2. Messages process through DeliverTx (execution stage)
+		- Messages enter through CheckTx (mempool stage)
+		  logseq.order-list-type:: number
+		- Messages process through DeliverTx (execution stage)
+		  logseq.order-list-type:: number
 	- ## Challenge
-	  The system can't know at CheckTx:
-	  * How many messages will be allowed later
-	  * The size of previous messages in the block
+	- The system can't know at CheckTx:
+		- How many messages will be allowed later
+		- The size of previous messages in the block
 	- ## Solution
-	  The system uses a safety buffer:
-	  * Mempool admission uses a lower limit (around 50%)
-	  * This creates a hysteresis effect
-	  * Full queue capacity is available at execution time
-	  
-	  This design helps prevent queue overflow while maintaining system efficiency.
+	- The system uses a safety buffer:
+		- Mempool admission uses a lower limit (around 50%)
+		- This creates a hysteresis effect
+		- Full queue capacity is available at execution time
+		  
+		  This design helps prevent queue overflow while maintaining system efficiency.
 	-
 -
 -
