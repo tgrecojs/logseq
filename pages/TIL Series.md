@@ -1,4 +1,6 @@
-- ## `for (;;)` creates an infinite loop
+## Infinite loops with `for(;;;)`
+	-
+	-
 	- often come across this within the context of #Endo, or #[[agoric sdk]] code.
 	- how this works?
 		- `for` has 3 parts, each of which is optional.
