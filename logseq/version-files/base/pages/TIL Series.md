@@ -1,5 +1,9 @@
 ## Infinite loops with `for(;;;)`
+	- For the last ~3 years, i've spent the vast majority of my time focused on developing secure, distributed systems using none other than JavaScript.
 	-
+	-
+	- on distributed systems.
+	- It may come as a surprise to many reade
 	-
 	- often come across this within the context of #Endo, or #[[agoric sdk]] code.
 	- how this works?
