@@ -1,5 +1,5 @@
 ## Infinite loops with `for(;;;)`
-	-
+	- For the last ~3 years, i've spent the vast ma
 	-
 	- often come across this within the context of #Endo, or #[[agoric sdk]] code.
 	- how this works?
