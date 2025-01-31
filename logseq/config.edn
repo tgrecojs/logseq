@@ -420,4 +420,5 @@
  :graph/settings {:journal? true
  :builtin-pages? true}
  :journal/page-title-format "MM/dd/yyyy"
- :editor/logical-outdenting? true}
+ :editor/logical-outdenting? true
+ :graph/forcesettings {:link-dist 130}}
