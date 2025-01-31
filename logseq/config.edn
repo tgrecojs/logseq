@@ -417,6 +417,7 @@
  ;;      ;use triple underscore `___` for slash `/` in page title
  ;;      ;use Percent-encoding for other invalid characters
  :file/name-format :triple-lowbar
- :graph/settings {:journal? true}
+ :graph/settings {:journal? true
+ :builtin-pages? true}
  :journal/page-title-format "MM/dd/yyyy"
  :editor/logical-outdenting? true}
