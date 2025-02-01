@@ -43,3 +43,8 @@
 			- [32:49](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=1969) 🚀 Try out RsPack and explore its features, along with Kevin's YouTube channel for comparisons and insights.
 -
 -
+- tags:: [[Build Tools]], [[rspack]]
+-
+-
+-
+-
