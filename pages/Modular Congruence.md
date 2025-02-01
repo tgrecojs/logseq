@@ -32,7 +32,8 @@
 		- This can include more than one of the same prime number.
 		- For example, the prime factorization of `2020` is `2×2×5`.
 	- #### Counting Divisors
-		- If you know the prime factorization of a number, you can
+		- If you know the prime factorization of a number, you can easily figure out how many divisors the number has.
+		-
 	-
 -
 -
