@@ -25,7 +25,7 @@
 - # Divisibility
 	- ## Divisibility by 9 and 3
 		- An integer is divisible by 3 **if and only if the sume of its digits are divisible by 3**
-		-
+		- > An integer is congruent to 0 modulo 3 if and only if the sum of its digits is congruent to 0 modulo 3.
 -
 -
 -
