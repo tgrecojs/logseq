@@ -14,6 +14,16 @@
 	- **Standard Representitive**
 		- Each congruence class modulo `m` will contain exactly one integer between 0 and `m - 1`.
 		- This integer is known as the **standard representive** of the congruence class.
-		-
+	- \begin{matrix}a\equiv b&\pmod{m}\\c\equiv d&\pmod{m},\end{matrix}
 	-
+	-
+- ## Arithmetic with Remainers
+	- the remainder of a **sum** is equal to the remainder of the **sum** of the remainders and that
+	- the remainder of a **product** is equal to the remainder of the **product** of the remainders.
+-
+-
+-
+-
+-
+-
 tags:: [[Cryptography]]
