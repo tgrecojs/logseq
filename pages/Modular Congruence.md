@@ -7,6 +7,7 @@
 				- 10 / 9 -> 1 mod 1
 				- 100 / 9 -> 10 mod 1
 			- Approach 2:
-				- $$$$
+				- 100 - 10 = 90
+				- 90 / 9 = 10
 -
 tags:: [[Cryptography]]
