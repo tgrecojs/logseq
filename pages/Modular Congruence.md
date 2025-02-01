@@ -11,5 +11,8 @@
 				- 90 / 9 = 10
 - ### Congruence class
 	- For a given integer `a` and a modulus `m`, there are **infinitely many integers congruents to `a modulo m`**
+	- **Standard Representitive**
+		- Each congruence class modulo `m` will contain exactly one integer between 0 and `m - 1`.
+		-
 	-
 tags:: [[Cryptography]]
