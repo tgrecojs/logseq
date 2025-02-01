@@ -22,7 +22,10 @@
 	- the remainder of a **sum** is equal to the remainder of the **sum** of the remainders and that
 	- the remainder of a **product** is equal to the remainder of the **product** of the remainders.
 -
--
+- # Divisibility
+	- ## Divisibility by 9 and 3
+		- An integer is divisible by 3 **if and only if the sume of its digits are divisible by 3**
+		-
 -
 -
 -
