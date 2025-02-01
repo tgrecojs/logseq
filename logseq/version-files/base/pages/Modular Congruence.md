@@ -2,7 +2,7 @@
 - $$a \equiv b \pmod{m}$$
 - ### Rules of $$a \equiv b \pmod{m}$$
 	- `a` and `b` must leave the **Same remainder** when divided by `m`
-		- Example - $$10 \equiv 9 \: (\mod m)$$
-		-
+		- **Example** -> $$10 \equiv 9 \: (\text{mod } m)$$
+			-
 -
 tags:: [[Cryptography]]
