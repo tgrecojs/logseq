@@ -9,5 +9,6 @@
 			- Approach 2:
 				- 100 - 10 = 90
 				- 90 / 9 = 10
--
+- ### Congruence class
+	-
 tags:: [[Cryptography]]
