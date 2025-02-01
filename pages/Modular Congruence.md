@@ -10,5 +10,6 @@
 				- 100 - 10 = 90
 				- 90 / 9 = 10
 - ### Congruence class
+	- For a given integer `a` and a modulus `m`, there are **infinitely many integers congruents to `a modulo m`**
 	-
 tags:: [[Cryptography]]
