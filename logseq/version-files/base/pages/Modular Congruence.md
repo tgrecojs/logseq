@@ -4,5 +4,8 @@
 	- `a` and `b` must leave the **Same remainder** when divided by `m`
 		- **Example** -> $$10 \equiv 9 \: (\text{mod } m)$$
 			-
+			- 10 / 9 -> 1 mod 1
+			- 100 / 9 -> 10 mod 1
+			-
 -
 tags:: [[Cryptography]]
