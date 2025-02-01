@@ -3,41 +3,41 @@
     - {{video  https://www.youtube.com/watch?v=5iVa3U0qZqM}}
     -
     - ### RsPack 1 is a Rust-based build tool that offers a faster, user-friendly alternative to Webpack, enhancing web development efficiency and compatibility while addressing ongoing challenges in module support and integration.
-    	- * [00:00](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=0) 🚀 RsPack 1's release marks a pivotal advancement in build tools, offering a Rust-based, user-friendly alternative to Webpack that enhances web development and is gaining traction in mainstream use.
-    	- * Kevin joins the discussion on the release of RsPack version 1, marking a significant moment for collaboration in build tools.
-    	- * RS Pack is an innovative build tool developed from a real business use case at Bance, aimed at enhancing the open-source tech experience.
-    	- * RsPack, written in Rust for improved performance, offers a user-friendly alternative to Webpack with full API compatibility and simplifies the bundling process for web development.
-    	- * RS Pack is widely used for backend APIs, and its integration with NX is moving towards mainstream adoption.
-    	- * Migrating from Webpack to RsPack can be challenging due to the limitations of alternatives like esbuild and Vite, which don't align well with specific project needs.
-    	- * [06:06](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=366) 🚀 RsPack is a versatile build tool that excels in non-web projects and simplifies ESM and CommonJS support, despite ongoing challenges in the transition to ESM.
-    	- * After initial skepticism, the speaker found RsPack to be an impressive build tool that supports various features and was easy to set up.
-    	- * For web development, switch to RS Build for its simplicity and defaults, while RS Pack is better suited for non-web projects like VS Code extensions.
-    	- * RsPack supports both CommonJS and ESM builds natively, allowing users to choose without hassle, which is beneficial for projects still using CommonJS.
-    	- * The transition to ESM in build tools is improving but still presents challenges, particularly with dependency management and compatibility issues.
-    	- * [10:02](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=602) 🔧 Upgrading Node packages often causes version conflicts, while modern tools improve ESM and CJS support, but challenges persist, highlighting the need for compatibility and the utility of RS build's plug-in system.
-    	- * Upgrading packages in backend Node APIs often leads to issues due to version conflicts, despite improvements in the process.
-    	- * Modern tools are driving improvements in Node's ESM and CJS support, but challenges remain, particularly with testing frameworks that struggle with ESM compatibility.
-    	- * The transition to ESM is beneficial but still incomplete, necessitating support for both ESM and CommonJS to ensure compatibility and smooth integration in various systems.
-    	- * RS build is a plug-in based tool that offers many features out of the box, making it easy to create additional plugins if needed.
-    	- * [14:16](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=857) 🚀 RsPack is a faster, simpler alternative to Webpack, evolving towards a Rust-based architecture and enhancing the developer experience with improved tools and compatibility.
-    	- * RsPack is a faster alternative to Webpack for those looking to migrate to a different build tool.
-    	- * RS Pack and V are evolving towards a Rust-based architecture, indicating a convergence in build tools.
-    	- * RS Pack and RS Build are essential for businesses needing efficient builds and module federation, driving their adoption and improvement.
-    	- * Investment in RsPack aims to enhance the developer experience with improved tools like RS Doctor, making configuration easier and diagnostics more accessible for both everyday and enterprise users.
-    	- * RsPack simplifies the build process by being compatible with existing tools like Webpack while minimizing configuration and bundler issues, making it more accessible for developers.
-    	- * RS Pack is a faster, simpler alternative to Webpack with a similar API, making it ideal for projects that require less complex configurations.
-    	- * [20:54](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=1254) 🚀 Module Federation's evolution into a bundler-agnostic solution, along with RsPack's superior hot module replacement, is transforming code sharing and development efficiency in large projects.
-    	- * Module Federation has evolved into a bundler-agnostic solution, simplifying integration in various build tools like Webpack and RsPack, driven by business needs and support from its creator.
-    	- * Code sharing among large teams is enhanced by bundlers with runtime capabilities, allowing seamless module integration without traditional package management.
-    	- * RsPack offers superior hot module replacement and faster development experience, making it a preferred choice for large projects over Webpack and Vite.
-    	- * [23:48](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=1429) 🚀 RsPack is a powerful, framework-agnostic build tool that reduces bundle size and enhances efficiency through advanced code splitting and tree shaking, backed by strong documentation and community support.
-    	- * RsPack has excellent documentation and a supportive community on Discord for users seeking help and resources.
-    	- * RS Build is a framework-agnostic project generator that supports various frameworks and includes first-party plugins for efficient project scaffolding.
-    	- * RS Pack significantly reduces bundle size compared to other tools like Webpack and ES Build, with ongoing improvements aimed at achieving even smaller builds.
-    	- * RsPack enhances build efficiency through improved code splitting and tree shaking, automatically removing unused code and offering multiple strategies for optimal performance.
-    	- * [27:53](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=1674) 🚀 RsPack is poised for long-term success as a popular web bundler, backed by strong infrastructure and community support, despite current integration challenges with Angular.
-    	- * NX may eventually support RsPack, but Angular's current limitations and integration with the compiler delay this possibility.
-    	- * RS Pack is positioned for long-term success due to its business focus and strong infrastructure support.
-    	- * RS build is gaining popularity as a web bundler tool, with strong documentation and community support for new users.
-    	- * Zach Jackson, known as Scripted Alchemy on Twitter, is a key figure behind the development of RS build.
-    	- * [32:49](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=1969) 🚀 Try out RsPack and explore its features, along with Kevin's YouTube channel for comparisons and insights.
+    	- [00:00](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=0) 🚀 RsPack 1's release marks a pivotal advancement in build tools, offering a Rust-based, user-friendly alternative to Webpack that enhances web development and is gaining traction in mainstream use.
+    		- Kevin joins the discussion on the release of RsPack version 1, marking a significant moment for collaboration in build tools.
+    		- RS Pack is an innovative build tool developed from a real business use case at Bance, aimed at enhancing the open-source tech experience.
+    		- RsPack, written in Rust for improved performance, offers a user-friendly alternative to Webpack with full API compatibility and simplifies the bundling process for web development.
+    		- RS Pack is widely used for backend APIs, and its integration with NX is moving towards mainstream adoption.
+    		- Migrating from Webpack to RsPack can be challenging due to the limitations of alternatives like esbuild and Vite, which don't align well with specific project needs.
+    	- [06:06](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=366) 🚀 RsPack is a versatile build tool that excels in non-web projects and simplifies ESM and CommonJS support, despite ongoing challenges in the transition to ESM.
+    		- After initial skepticism, the speaker found RsPack to be an impressive build tool that supports various features and was easy to set up.
+    		- For web development, switch to RS Build for its simplicity and defaults, while RS Pack is better suited for non-web projects like VS Code extensions.
+    		- RsPack supports both CommonJS and ESM builds natively, allowing users to choose without hassle, which is beneficial for projects still using CommonJS.
+    		- The transition to ESM in build tools is improving but still presents challenges, particularly with dependency management and compatibility issues.
+    	- [10:02](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=602) 🔧 Upgrading Node packages often causes version conflicts, while modern tools improve ESM and CJS support, but challenges persist, highlighting the need for compatibility and the utility of RS build's plug-in system.
+    		- Upgrading packages in backend Node APIs often leads to issues due to version conflicts, despite improvements in the process.
+    		- Modern tools are driving improvements in Node's ESM and CJS support, but challenges remain, particularly with testing frameworks that struggle with ESM compatibility.
+    		- The transition to ESM is beneficial but still incomplete, necessitating support for both ESM and CommonJS to ensure compatibility and smooth integration in various systems.
+    		- RS build is a plug-in based tool that offers many features out of the box, making it easy to create additional plugins if needed.
+    	- [14:16](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=857) 🚀 RsPack is a faster, simpler alternative to Webpack, evolving towards a Rust-based architecture and enhancing the developer experience with improved tools and compatibility.
+    		- RsPack is a faster alternative to Webpack for those looking to migrate to a different build tool.
+    		- RS Pack and V are evolving towards a Rust-based architecture, indicating a convergence in build tools.
+    		- RS Pack and RS Build are essential for businesses needing efficient builds and module federation, driving their adoption and improvement.
+    		- Investment in RsPack aims to enhance the developer experience with improved tools like RS Doctor, making configuration easier and diagnostics more accessible for both everyday and enterprise users.
+    		- RsPack simplifies the build process by being compatible with existing tools like Webpack while minimizing configuration and bundler issues, making it more accessible for developers.
+    		- RS Pack is a faster, simpler alternative to Webpack with a similar API, making it ideal for projects that require less complex configurations.
+    	- [20:54](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=1254) 🚀 Module Federation's evolution into a bundler-agnostic solution, along with RsPack's superior hot module replacement, is transforming code sharing and development efficiency in large projects.
+    		- Module Federation has evolved into a bundler-agnostic solution, simplifying integration in various build tools like Webpack and RsPack, driven by business needs and support from its creator.
+    		- Code sharing among large teams is enhanced by bundlers with runtime capabilities, allowing seamless module integration without traditional package management.
+    		- RsPack offers superior hot module replacement and faster development experience, making it a preferred choice for large projects over Webpack and Vite.
+    	- [23:48](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=1429) 🚀 RsPack is a powerful, framework-agnostic build tool that reduces bundle size and enhances efficiency through advanced code splitting and tree shaking, backed by strong documentation and community support.
+    		- RsPack has excellent documentation and a supportive community on Discord for users seeking help and resources.
+    		- RS Build is a framework-agnostic project generator that supports various frameworks and includes first-party plugins for efficient project scaffolding.
+    		- RS Pack significantly reduces bundle size compared to other tools like Webpack and ES Build, with ongoing improvements aimed at achieving even smaller builds.
+    		- RsPack enhances build efficiency through improved code splitting and tree shaking, automatically removing unused code and offering multiple strategies for optimal performance.
+    	- [27:53](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=1674) 🚀 RsPack is poised for long-term success as a popular web bundler, backed by strong infrastructure and community support, despite current integration challenges with Angular.
+    		- NX may eventually support RsPack, but Angular's current limitations and integration with the compiler delay this possibility.
+    		- RS Pack is positioned for long-term success due to its business focus and strong infrastructure support.
+    		- RS build is gaining popularity as a web bundler tool, with strong documentation and community support for new users.
+    		- Zach Jackson, known as Scripted Alchemy on Twitter, is a key figure behind the development of RS build.
+    	- [32:49](https://www.youtube.com/watch?v=5iVa3U0qZqM&t=1969) 🚀 Try out RsPack and explore its features, along with Kevin's YouTube channel for comparisons and insights.
