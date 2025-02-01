@@ -26,7 +26,12 @@
 	- ## Divisibility by 9 and 3
 		- An integer is divisible by 3 **if and only if the sume of its digits are divisible by 3**
 		- > An integer is congruent to 0 modulo 3 if and only if the sum of its digits is congruent to 0 modulo 3.
--
+- ## Prime Factorization
+	- The **prime factorization** of a positive integer `N` is the unique collection of prime numbers whose product is `N`.
+	- This can include more than one of the same prime number.
+	- For example, the prime factorization of `2020` is `2×2×5`.
+	-
+	-
 -
 -
 -
