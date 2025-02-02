@@ -19,17 +19,18 @@
 	  "1d": "openVault-1738170493577,
 	    "invitationSpec": (
 	      "callPipe": [
+	         [ 
 	          "getCollateralManager",
 	             [
 	                "$0.Alleged: BoardRemoteATOM brand"
 	             ],
 	             [
-	               "makeVaul tInvitation"
-	               ],
+	               "makeVaultInvitation"
+	              ],
 	           "instancePath": [
 	                  "VaultFactory"
 	               ],
-	                  "source": "agoriccontract"
+	            "source": "agoriccontract"
 	  ]
 	  ```
 	- ```
