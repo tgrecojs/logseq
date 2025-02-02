@@ -1,0 +1,12 @@
+## Overview
+	- How to download [gated] videos with Youtube DL.
+	- Step 1:
+		- execute `yt-dlg` from the command-line.
+	- Step 2.
+		- Grab vimeo `player.vimeo.*` url.
+	- Step 3.
+		- Places URL from step 2 into yt-dlg interface.
+- ### Video Demonstration
+	- ![ss_02012025_000708.mp4](../assets/ss_02012025_000708_1738457849037_0.mp4)
+-
+-
