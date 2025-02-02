@@ -15,7 +15,8 @@
 	- ```
 	  11:14 connolly@bldbox$ ja '.body | «[1:] | fromjson' /tmp/want4k. json|
 	  { 
-	  "method": "executeoffer", "offer": {
+	  "method": "executeoffer", 
+	  "offer": {
 	  "1d": "openVault-1738170493577,
 	    "invitationSpec": (
 	      "callPipe": [
@@ -26,12 +27,28 @@
 	             ],
 	             [
 	               "makeVaultInvitation"
-	              ],
+	              ]
+	            ],
 	           "instancePath": [
-	                  "VaultFactory"
-	               ],
+	             "VaultFactory"
+	            ],
 	            "source": "agoriccontract"
-	  ]
+	  	},
+	      "proposal": {
+	        "give": { "Collateral": {
+	          "brand": "S0"
+	          "value" "+1000000000"
+	          }
+	         },
+	          "want": {
+	          "Minted": {
+	          "brand": "$1.Alleged: BoardRemoteIST brand",
+	          "value": "+4000Đ00ĐĐĐ"
+	          	}
+	          }
+	        }
+	      }
+	    }    
 	  ```
 	- ```
 	  [\"makeVaultInvitation\"]],\"instancePath\": [\"VaultFactory\"], \"source)": \"agoricContract\
@@ -42,6 +59,7 @@
 	  "board0257"
 	  
 	  ```
--
+- ### CapData
+	-
 - tags:: [[Office Hours]], [[agoric sdk]]
 -

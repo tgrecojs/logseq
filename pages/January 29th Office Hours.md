@@ -15,7 +15,8 @@
 	- ```
 	  11:14 connolly@bldbox$ ja '.body | «[1:] | fromjson' /tmp/want4k. json|
 	  { 
-	  "method": "executeoffer", "offer": {
+	  "method": "executeoffer", 
+	  "offer": {
 	  "1d": "openVault-1738170493577,
 	    "invitationSpec": (
 	      "callPipe": [
@@ -58,6 +59,7 @@
 	  "board0257"
 	  
 	  ```
--
+- ### CapData
+	-
 - tags:: [[Office Hours]], [[agoric sdk]]
 -
