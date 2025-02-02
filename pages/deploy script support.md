@@ -1,7 +1,12 @@
 - Deploy Script Support
 - To install code on chain or in the a3p-integration environment, you'll have to write a script to build the core proposal. The proposals' access to bootstrap powers is limited by their manifests.
 - There are collections of proposals in /vats/src/proposals, smart-wallet/src/proposals, orchestration/src/proposals, pegasus/src/proposals, and inter-protocol/src/proposals.
-- The overall format is a proposalBuilder script (There are several in .../builders/scripts/vats/) which has a default export that passes resources to the proposal. The resources include bundled source code and string-value parameters. The script exports a CoreEvalBuilder named defaultProposalBuilder that specifies (as an import string) the proposal it uses, identifies the "manifest", (which associates permissions to access powers in the bootstrap space with functions to be called), and builds bundles of source code needed by the proposal.
+- The overall format is a `proposalBuilder` script (There are several in .../builders/scripts/vats/) which has a default export that passes resources to the proposal.
+- The resources include bundled source code and string-value parameters.
+- The script exports a CoreEvalBuilder named `defaultProposalBuilder` that specifies:
+	- (as an import string) the proposal it uses,
+	  identifies the "manifest", (which associates permissions to access powers in the bootstrap space with functions to be called),
+	- and builds bundles of source code needed by the proposal.
 - Here's a simple example:
 - ```javascript
   import { makeHelpers } from '@agoric/deploy-script-support';
