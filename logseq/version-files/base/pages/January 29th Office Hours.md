@@ -12,7 +12,26 @@
 	  ```
 	  /projects/agoric-sdk
 	  11:08 connolly@bldbox$ jq. /tmp/want4k. Json|
-	-
+	- ```
+	  11:14 connolly@bldbox$ ja '.body | «[1:] | fromjson' /tmp/want4k. json|
+	  { 
+	  "method": "executeoffer", "offer": {
+	  "1d": "openVault-1738170493577,
+	    "invitationSpec": (
+	      "callPipe": [
+	          "getCollateralManager",
+	             [
+	                "$0.Alleged: BoardRemoteATOM brand"
+	             ],
+	             [
+	               "makeVaul tInvitation"
+	               ],
+	           "instancePath": [
+	                  "VaultFactory"
+	               ],
+	                  "source": "agoriccontract"
+	  ]
+	  ```
 	- ```
 	  [\"makeVaultInvitation\"]],\"instancePath\": [\"VaultFactory\"], \"source)": \"agoricContract\
 	  ,\"proposal\": (\"give\": (\"Collateral\": (\"brand\":\"So\", \"value\":\"+1000000000\"3) ,\"war

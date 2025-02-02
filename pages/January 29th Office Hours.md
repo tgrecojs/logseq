@@ -22,10 +22,15 @@
 	          "getCollateralManager",
 	             [
 	                "$0.Alleged: BoardRemoteATOM brand"
-	             ]
-	  "makeVaul tInvitation"
-	  
-	  "source": "agoriccontract"
+	             ],
+	             [
+	               "makeVaul tInvitation"
+	               ],
+	           "instancePath": [
+	                  "VaultFactory"
+	               ],
+	                  "source": "agoriccontract"
+	  ]
 	  ```
 	- ```
 	  [\"makeVaultInvitation\"]],\"instancePath\": [\"VaultFactory\"], \"source)": \"agoricContract\
