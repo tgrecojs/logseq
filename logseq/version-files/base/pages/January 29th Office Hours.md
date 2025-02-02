@@ -62,7 +62,9 @@
 - ### CapData
 	- #### Slots
 		- Reciever has to know how to transform CapData into an object.
-		- in the context of our offer, the receiver should know the proper way to construct the offer. Specificially, the receiver will need to
+		- in the context of our offer, the receiver should know the proper way to construct the offer. Specificially, the receiver will need to map the capabilities in our offer to the correct values to that they can be sent over the wire.
+		- When working with offers in agoric, the **smart wallet** takes on the receiver role.
+		-
 	- `"$0.Alleged: BoardRemoteATOM brand"`
 		-
 - tags:: [[Office Hours]], [[agoric sdk]]
