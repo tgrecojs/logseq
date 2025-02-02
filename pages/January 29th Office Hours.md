@@ -26,12 +26,28 @@
 	             ],
 	             [
 	               "makeVaultInvitation"
-	              ],
+	              ]
+	            ],
 	           "instancePath": [
-	                  "VaultFactory"
-	               ],
+	             "VaultFactory"
+	            ],
 	            "source": "agoriccontract"
-	  ]
+	  	},
+	      "proposal": {
+	        "give": { "Collateral": {
+	          "brand": "S0"
+	          "value" "+1000000000"
+	          }
+	         },
+	          "want": {
+	          "Minted": {
+	          "brand": "$1.Alleged: BoardRemoteIST brand",
+	          "value": "+4000Đ00ĐĐĐ"
+	          	}
+	          }
+	        }
+	      }
+	    }    
 	  ```
 	- ```
 	  [\"makeVaultInvitation\"]],\"instancePath\": [\"VaultFactory\"], \"source)": \"agoricContract\
