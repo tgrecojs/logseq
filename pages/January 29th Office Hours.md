@@ -66,6 +66,7 @@
 		- When working with offers in agoric, the **smart wallet** takes on the receiver role.
 		-
 	- `"$0.Alleged: BoardRemoteATOM brand"`
-	-
+- [[deploy script support]]
+-
 - tags:: [[Office Hours]], [[agoric sdk]]
 -
