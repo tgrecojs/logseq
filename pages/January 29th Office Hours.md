@@ -14,13 +14,15 @@
 	  11:08 connolly@bldbox$ jq. /tmp/want4k. Json|
 	- ```
 	  11:14 connolly@bldbox$ ja '.body | «[1:] | fromjson' /tmp/want4k. json|
+	  { 
 	  "method": "executeoffer", "offer": {
 	  "1d": "openVault-1738170493577,
-	  "invitationSpec": (|
-	  "callPipe": [|
-	  "getCollateralManager",
-	  • -so.Alleged: BoardRemoteATOM brand"
-	  
+	    "invitationSpec": (
+	      "callPipe": [
+	          "getCollateralManager",
+	             [
+	                "$0.Alleged: BoardRemoteATOM brand"
+	             ]
 	  "makeVaul tInvitation"
 	  
 	  "source": "agoriccontract"
