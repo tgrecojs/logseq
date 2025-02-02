@@ -60,6 +60,10 @@
 	  
 	  ```
 - ### CapData
-	-
+	- #### Slots
+		- Reciever has to know how to transform CapData into an object.
+		- in the context of our offer, the receiver is the
+	- `"$0.Alleged: BoardRemoteATOM brand"`
+		-
 - tags:: [[Office Hours]], [[agoric sdk]]
 -
