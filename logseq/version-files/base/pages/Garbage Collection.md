@@ -24,11 +24,13 @@
 			- Each exported object is allocated a new integer and assigned a "vref" (vat-reference ID), in the form `o+NN`.
 			- A special initial "root object" is defined when the vat is first constructed (the return object of `buildRootObject()`) and assigned vref `o+0` (see [How Liveslots Uses the Vatstore](../../swingset-liveslots/src/vatstore-usage.md)).
 		- Objects are removed from the export table when no other vat retains a reference. If an object is not exported, and not a global, and not transitively reachable by any object in either of those two categories, then the object is unreachable and will be deleted.
+		- ![Vat Roots diagram](https://github.com/Agoric/agoric-sdk/raw/master/packages/SwingSet/docs/images/gc/vat-roots.png)
 		-
 		- In this example, A is the "root object", A and B are vat exports, and C is a Vat Global. D is kept alive by virtue of the reference from C. If C were modified and dropped its reference to D, D would be deleted.
 		- Weak References
 		- JavaScript, like many languages, offers the notion of a "Weak Reference". In JS, this is exposed in the `WeakRef` object. A weak reference can be used to reach the target *if* it is still around, but does not keep its target alive on its own.
-		- ![WeakRef diagram](./images/gc/weakref.png "WeakRef")
+		-
+			- https://github.com/Agoric/agoric-sdk/blob/master/packages/SwingSet/docs/images/gc/weakref.png{:height 32, :width 645}
 		- JavaScript `WeakRef` objects have a `.deref()` method: this will either return the target of the weak reference, or return `undefined` if the target was deleted. We describe the WeakRef as either being "alive" or "dead" depending upon the availability of its target.
 		- When the last strong reference to a target object is removed, we define the object to be "unreachable", however the JS engine does not necessarily delete it right away. As a result, there is a time window (after reference deletion, before a garbage collection sweep) during which a WeakRef might be able to resurrect the unreachable object. In the following diagram, the left-hand case is where the target is strongly reachable, the right-hand case is where the object was fully deleted, and the middle case is where the object was unreachable but not collected (and `deref` creates and returns the only strong reference to the target).
 		- ![WeakRef States](./images/gc/weakref-states.png "WeakRef States")
