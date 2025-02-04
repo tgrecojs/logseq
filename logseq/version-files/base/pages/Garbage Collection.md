@@ -50,10 +50,13 @@
 		- We'll set aside the notion of "recognizability" for a moment, and focus strictly on reachability.
 		- When tracking the reachability state of a JavaScript `Object`, we define five states:
 		- If you had a `WeakRef` for the object, it would be "alive" (i.e. `.deref()` returns a value) in the REACHABLE and UNREACHABLE states, and "dead" (`wr.deref() === undefined`) in COLLECTED and FINALIZED.
-		- ![JS Object States diagram](https://github.com/Agoric/agoric-sdk/raw/master/packages/SwingSet/docs/images/gc/js-object-states.png)
+		- ![JS Object States diagram](https://github.com/Agoric/agoric-sdk/raw/master/packages/SwingSet/docs/images/gc/js-object-states.png){:height 355, :width 627}
 		- Note that there's no actual state machine with those values, and we can't observe all of the transitions from JavaScript. But we *can* describe what operations could cause a transition, and what our observations allow us to deduce about the state:
 		- We have several subtle challenges to keep in mind:
 		- Within-Vat vs Between-Vat
 		- The SwingSet kernel manages a set of abstract entities known as "SwingSet objects" and "SwingSet promises". Within a vat, the "liveslots" layer uses concrete JavaScript `Object`s (Presences, Remotables, and Representatives) and the JavaScript `Promise` to give vat code the means to manipulate the kernel-managed objects. Vats create a Remotable, or obtain a Representative, when they want to "export" an object into the kernel (and on to some other vat). Vats receive a Presence when they "import" an object from the kernel (which was first exported by some other vat). Vats can both export a Promise and receive an imported Promise.
 		-
+- /Users/tgreco/agoric-sdk/packages/SwingSet/docs/garbage-collection.md
+- /Users/tgreco/agoric-sdk/packages/SwingSet/docs/garbage-collection.md
+-
 -
