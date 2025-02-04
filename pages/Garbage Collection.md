@@ -56,3 +56,4 @@
 		- Within-Vat vs Between-Vat
 		- The SwingSet kernel manages a set of abstract entities known as "SwingSet objects" and "SwingSet promises". Within a vat, the "liveslots" layer uses concrete JavaScript `Object`s (Presences, Remotables, and Representatives) and the JavaScript `Promise` to give vat code the means to manipulate the kernel-managed objects. Vats create a Remotable, or obtain a Representative, when they want to "export" an object into the kernel (and on to some other vat). Vats receive a Presence when they "import" an object from the kernel (which was first exported by some other vat). Vats can both export a Promise and receive an imported Promise.
 		-
+-
