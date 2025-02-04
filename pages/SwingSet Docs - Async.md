@@ -55,6 +55,7 @@ id:: 67a1e7cf-1faa-4855-9943-d82afaeb5227
 	- From the ((67a1e7cf-1faa-4855-9943-d82afaeb5227)) Docs
 		- > By being aware of the diﬀerences between Immediate, Prompt, and Delayed promises, you can design your smart contracts and applications to be more resilient and eﬃcient.
 		- > By classifying your promises appropriately, you can better manage asynchronous operations and ensure the reliability of your SwingSet applications.
-	- How
+	- How can we take this information and use it to our benefit?
+	- Are there patterns to look for?
 - tags:: [[agoric sdk]], [[SwingSet]], [[Promises]]
 -
