@@ -24,6 +24,7 @@
 			- Each exported object is allocated a new integer and assigned a "vref" (vat-reference ID), in the form `o+NN`.
 			- A special initial "root object" is defined when the vat is first constructed (the return object of `buildRootObject()`) and assigned vref `o+0` (see [How Liveslots Uses the Vatstore](../../swingset-liveslots/src/vatstore-usage.md)).
 		- Objects are removed from the export table when no other vat retains a reference. If an object is not exported, and not a global, and not transitively reachable by any object in either of those two categories, then the object is unreachable and will be deleted.
+		- ![Vat Roots diagram](https://github.com/Agoric/agoric-sdk/raw/master/packages/SwingSet/docs/images/gc/vat-roots.png)
 		-
 		- In this example, A is the "root object", A and B are vat exports, and C is a Vat Global. D is kept alive by virtue of the reference from C. If C were modified and dropped its reference to D, D would be deleted.
 		- Weak References
