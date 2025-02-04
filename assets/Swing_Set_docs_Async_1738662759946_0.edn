@@ -44,4 +44,4 @@
                           :page 1},
                :content {:text "Prompt promises are unaﬀected by vat upgrades, unless the vat getting upgraded somehow got involved in processing the I/O that triggered its own upgrade"},
                :properties {:color "yellow"}}],
- :extra {:page 1}}
+ :extra {:page 2}}
