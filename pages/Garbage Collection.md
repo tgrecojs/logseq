@@ -1,0 +1,56 @@
+-
+- # Garbage Collection in SwingSet
+	- JavaScript is an object-oriented language, and includes automatic garbage collection as part of the specification. When an object becomes unreferenced, the engine will (eventually) delete it and reclaim the memory it used for other purposes. The language provides a small number of tools that can interact with this collection mechanism:
+	- SwingSet provides an environment in which vat code works "as expected", including automatic garbage collection. This includes cross-vat and cross-host references, and some (but not all) of the language's GC primitives. To maintain deterministic execution, we deny vat code access to `WeakRef` and `FinalizationRegistry`. Vats can use `WeakMap` and `WeakSet` as usual (however SwingSet replaces them with modified versions to maintain their expected properties).
+	- This document describes the details of SwingSet's implementation, starting with a definition of terms.
+	- Preliminaries
+	- Reachability
+	- "Reachable" means a given piece of code has some way to produce the target object. In the following example, when a caller invokes `store(thing)`, the stash can now "reach" `thing` in the closed-over `stash` variable, and `retrieve()` can be called to exercise this ability:
+	- "Reachable" doesn't necessarily mean the target object can be accessed from the outside: closely-held references are still "reachable" by the holder. In this example `counter` is reachable by the incrementer, but is not revealed in its entirety to callers:
+	- For garbage-collection purposes, the incrementer can reach the counter. The platform must keep `counter` alive for at least as long as `incrementer` remain alive.
+	- References
+		- Objects reference other objects in several ways:
+		- And of course most data structures (Arrays, Maps) hold strong references to their members.
+	- ## Vat Roots
+		- Each vat has a set of "root references": these keep all other objects alive. These are the only starting points: if there is no pathway from a root reference to a target object, the target object is unreachable and will eventually be deleted.
+		- Vats have two kinds of root references.
+		- **"Vat Globals"**
+			- "Vat Globals" are top-level declarations (`const` and `let` declarations that appear in the highest scope of any module, outside any function definition).
+			- Top-level `const` declarations eternally reference the same value, while `let` declarations are mutable and their reference targets change as the value is modified.
+			- These references are controlled entirely by the code that makes up a vat.
+		- **"Vat Exports"**
+			- "Vat Exports" are the subset of objects that have been used exported through the kernel to other vats.
+			- Such objects are added to the export table when they are used as an argument in an outbound message, or in the resolution of a Promise that some other vat is following.
+			- Each exported object is allocated a new integer and assigned a "vref" (vat-reference ID), in the form `o+NN`.
+			- A special initial "root object" is defined when the vat is first constructed (the return object of `buildRootObject()`) and assigned vref `o+0` (see [How Liveslots Uses the Vatstore](../../swingset-liveslots/src/vatstore-usage.md)).
+		- Objects are removed from the export table when no other vat retains a reference. If an object is not exported, and not a global, and not transitively reachable by any object in either of those two categories, then the object is unreachable and will be deleted.
+		-
+		- In this example, A is the "root object", A and B are vat exports, and C is a Vat Global. D is kept alive by virtue of the reference from C. If C were modified and dropped its reference to D, D would be deleted.
+		- Weak References
+		- JavaScript, like many languages, offers the notion of a "Weak Reference". In JS, this is exposed in the `WeakRef` object. A weak reference can be used to reach the target *if* it is still around, but does not keep its target alive on its own.
+		- ![WeakRef diagram](./images/gc/weakref.png "WeakRef")
+		- JavaScript `WeakRef` objects have a `.deref()` method: this will either return the target of the weak reference, or return `undefined` if the target was deleted. We describe the WeakRef as either being "alive" or "dead" depending upon the availability of its target.
+		- When the last strong reference to a target object is removed, we define the object to be "unreachable", however the JS engine does not necessarily delete it right away. As a result, there is a time window (after reference deletion, before a garbage collection sweep) during which a WeakRef might be able to resurrect the unreachable object. In the following diagram, the left-hand case is where the target is strongly reachable, the right-hand case is where the object was fully deleted, and the middle case is where the object was unreachable but not collected (and `deref` creates and returns the only strong reference to the target).
+		- ![WeakRef States](./images/gc/weakref-states.png "WeakRef States")
+		- `WeakRef`'s ability to resurrect an otherwise unreachable object depends upon the internal activity of the JS engine's garbage collector. This activity is not a part of the JS specification, and will vary depending upon memory pressure and other details that vat behavior should not be sensitive to. Therefore, to maintain deterministic execution, vats are not allowed to access `WeakRef` (it is removed from global scope, and cannot be implemented from scratch). We describe it here because the "liveslots" code which helps to implement the vat platform depends heavily upon `WeakRef`.
+		- Finalization Registry
+		- `WeakRef` provides the ability to "poll" whether a given object has been garbage-collected or not, but it does not provide any sort of notification when collection happens. To enable more proactive reactions to object collection, JavaScript provides the `FinalizationRegistry`, which will run a callback some time after a given object is collected. This callback will always happen on its own turn (just like Promise `.then` callbacks), however no guarantees are made as to exactly when it is run.
+		- Swingset makes use of a `FinalizationRegistry` to implement its garbage collection code. However, it is denied to vats for the same reason that `WeakRef` is withheld.
+		- Recognizability
+		- JavaScript offers `WeakMap` and `WeakSet` collections, which behave much like the regular `Map` and `Set`, but do not hold strong references to the objects used as keys. In addition, they are not enumerable, meaning there is no way to use them to retrieve a key object, even if that object is still alive (held by a strong reference elsewhere).
+		- This makes them a form of "recognizer": despite not being usable to *reach* a given object, they can still be used to *recognize* that object. `weakmap.has(target)`, `weakmap.get(target)`, and `weakset.has(target)` are all effectively predicates that ask the question "is this a `target` that I've seen before?".
+		- In this example, a `WeakSet` is used as a recognizer. Once the target has been submitted to `remember()`, the stash cannot produce the target object (it has no strong reference). However it can still tell if `ask()` is called with the same `thing` as before, or some unrelated object.
+		- These predicates must be invoked with a strong reference to an object, so the target must be strongly reachable for the question to even be asked. However, we'll soon introduce the notion of abstract "swingset objects" (as opposed to the normal JavaScript `Object` type), and we want the predicate to answer a question about the abstract identity, even though the question is being asked with the concrete `Object` type. Hence, we must establish the difference between A being able to "reach" B, and A merely being able to "recognize" B.
+		- We use a visual notation in which (strong) reachability is marked with a double line, weak references use a single line, and recognizability is marked with a dotted line:
+		- ![Reachable vs Recognizable](./images/gc/reachable-vs-recognizable.png "Reachable vs Recognizable")
+		- SwingSet allows vats to use `WeakMap` and `WeakSet` as usual, however the semantics they provide are defined in terms of "swingset objects" instead of strictly using JavaScript `Object` objects.
+		- JS Object States: REACHABLE / UNREACHABLE / COLLECTED / FINALIZED / UNKNOWN
+		- We'll set aside the notion of "recognizability" for a moment, and focus strictly on reachability.
+		- When tracking the reachability state of a JavaScript `Object`, we define five states:
+		- If you had a `WeakRef` for the object, it would be "alive" (i.e. `.deref()` returns a value) in the REACHABLE and UNREACHABLE states, and "dead" (`wr.deref() === undefined`) in COLLECTED and FINALIZED.
+		- ![JS Object States diagram](./images/gc/js-object-states.png "JS Object States")
+		- Note that there's no actual state machine with those values, and we can't observe all of the transitions from JavaScript. But we *can* describe what operations could cause a transition, and what our observations allow us to deduce about the state:
+		- We have several subtle challenges to keep in mind:
+		- Within-Vat vs Between-Vat
+		- The SwingSet kernel manages a set of abstract entities known as "SwingSet objects" and "SwingSet promises". Within a vat, the "liveslots" layer uses concrete JavaScript `Object`s (Presences, Remotables, and Representatives) and the JavaScript `Promise` to give vat code the means to manipulate the kernel-managed objects. Vats create a Remotable, or obtain a Representative, when they want to "export" an object into the kernel (and on to some other vat). Vats receive a Presence when they "import" an object from the kernel (which was first exported by some other vat). Vats can both export a Promise and receive an imported Promise.
+		-
