@@ -17,7 +17,7 @@ id:: 67a1e7cf-1faa-4855-9943-d82afaeb5227
 				-
 		- ## Prompt
 			- A Prompt promise settles without requiring further input from outside SwingSet.
-			- Prompt Promises settle without external input before any new I/O, making them safe from being severed by vat upgrades initiated by external events.
+			- Prompt Promises settle without external input before any new I/O, making them safe from being severed by vat upgrades initiated by external events.T
 			- he following are examples of I/O that can prevent a promise from being Prompt (they "poison" promptness):
 				- Waiting on a timer
 				- Waiting on an inter-chain network call
@@ -55,5 +55,7 @@ id:: 67a1e7cf-1faa-4855-9943-d82afaeb5227
 	- From the ((67a1e7cf-1faa-4855-9943-d82afaeb5227)) Docs
 		- > By being aware of the diﬀerences between Immediate, Prompt, and Delayed promises, you can design your smart contracts and applications to be more resilient and eﬃcient.
 		- > By classifying your promises appropriately, you can better manage asynchronous operations and ensure the reliability of your SwingSet applications.
+	- How can we take this information and use it to our benefit?
+	- Are there patterns to look for?
 - tags:: [[agoric sdk]], [[SwingSet]], [[Promises]]
 -
