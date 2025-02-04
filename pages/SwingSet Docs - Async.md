@@ -1,4 +1,5 @@
 ## Async
+id:: 67a1e7cf-1faa-4855-9943-d82afaeb5227
 	- ![Swing_Set_docs_Async.pdf](../assets/Swing_Set_docs_Async_1738662759946_0.pdf)
 	- ### Notes
 	- A vat (a unit of isolated execution in SwingSet) may restart or terminate before an asynchronous operation completes.
@@ -51,9 +52,9 @@
 		  | Prompt | settle without external input before any new I/O, making them safe from being severed by vat upgrades initiated by external events. |
 		  | Delayed | depend on external input or events and settle over future cranks, making them more vulnerable to disruptions like vat restarts or terminations.
 - #### Question for Office Hours
-	-
-	- > By being aware of the diﬀerences between Immediate, Prompt, and Delayed promises, you can design your smart contracts and applications to be more resilient and eﬃcient.
-	-
-	- > By classifying your promises appropriately, you can better manage asynchronous operations and ensure the reliability of your SwingSet applications.
+	- From the ((67a1e7cf-1faa-4855-9943-d82afaeb5227)) Docs
+		- > By being aware of the diﬀerences between Immediate, Prompt, and Delayed promises, you can design your smart contracts and applications to be more resilient and eﬃcient.
+		- > By classifying your promises appropriately, you can better manage asynchronous operations and ensure the reliability of your SwingSet applications.
+	- How
 - tags:: [[agoric sdk]], [[SwingSet]], [[Promises]]
 -
