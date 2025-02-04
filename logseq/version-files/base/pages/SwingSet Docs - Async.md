@@ -17,8 +17,8 @@ id:: 67a1e7cf-1faa-4855-9943-d82afaeb5227
 				-
 		- ## Prompt
 			- A Prompt promise settles without requiring further input from outside SwingSet.
-			- Prompt Promises settle without external input before any new I/O, making them safe from being severed by vat upgrades initiated by external events.T
-			- he following are examples of I/O that can prevent a promise from being Prompt (they "poison" promptness):
+			- Prompt Promises settle without external input before any new I/O, making them safe from being severed by vat upgrades initiated by external events.
+			- The following are examples of I/O that can prevent a promise from being Prompt (they "poison" promptness):
 				- Waiting on a timer
 				- Waiting on an inter-chain network call
 				- Waiting on a bid being placed
