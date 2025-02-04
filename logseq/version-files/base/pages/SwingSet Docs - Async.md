@@ -50,4 +50,7 @@
 		  | Immediate | settle within the same crank and are safe from vat restarts or upgrades during that crank. |
 		  | Prompt | settle without external input before any new I/O, making them safe from being severed by vat upgrades initiated by external events. |
 		  | Delayed | depend on external input or events and settle over future cranks, making them more vulnerable to disruptions like vat restarts or terminations.
+- #### Question for Office Hours
+	-
+- tags:: [[agoric sdk]], [[SwingSet]], [[Promises]]
 -

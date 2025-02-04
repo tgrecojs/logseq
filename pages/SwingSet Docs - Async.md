@@ -52,5 +52,8 @@
 		  | Delayed | depend on external input or events and settle over future cranks, making them more vulnerable to disruptions like vat restarts or terminations.
 - #### Question for Office Hours
 	-
+	- > By being aware of the diﬀerences between Immediate, Prompt, and Delayed promises, you can design your smart contracts and applications to be more resilient and eﬃcient.
+	-
+	- > By classifying your promises appropriately, you can better manage asynchronous operations and ensure the reliability of your SwingSet applications.
 - tags:: [[agoric sdk]], [[SwingSet]], [[Promises]]
 -
