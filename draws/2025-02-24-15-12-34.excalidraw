@@ -1,0 +1,41 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "file://",
+  "elements": [
+    {
+      "id": "r5ewqkMnL1H--_rk2MzZW",
+      "type": "ellipse",
+      "x": 125.30859375,
+      "y": 365.203125,
+      "width": 246.98046875,
+      "height": 246.98046875,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "hachure",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1966215430,
+      "version": 82,
+      "versionNonce": 1932035142,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1740427967792,
+      "link": null,
+      "locked": false
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#FFF"
+  },
+  "files": {}
+}
