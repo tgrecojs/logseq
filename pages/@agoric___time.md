@@ -55,3 +55,6 @@ This package provides the definitions of branded time values, as well as "timerM
   * `ts.makeNotifier(delay, interval, cancelToken?)` returns a Notifier, which fires with successive Timestamp values (`now+delay`, `now+delay+interval`, `now+delay+2*interval`, etc). As with all Notifiers, the subscriber must repeatedly call `getUpdateSince()` to keep getting new values.
   
   The `TimerService` API also provides `getClock()` to retrieve a limited-authority `Clock`, and `getTimerBrand()` to return the particular brand that this service uses for all Timestamps. It also provides `getCurrentTimestamp()` directly.
+-
+- tags:: [[agoric-sdk]], [[TimerService]
+-
