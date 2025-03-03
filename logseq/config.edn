@@ -421,4 +421,4 @@
  :builtin-pages? true}
  :journal/page-title-format "MM/dd/yyyy"
  :editor/logical-outdenting? true
- :graph/forcesettings {:link-dist 130}}
+ :graph/forcesettings {:link-dist 120}}
