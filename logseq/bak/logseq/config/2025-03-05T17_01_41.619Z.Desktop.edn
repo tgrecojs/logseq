@@ -10,7 +10,7 @@
  ;; Available options:
  ;; - :now for NOW/LATER style (default)
  ;; - :todo for TODO/DOING style
- :preferred-workflow :now
+ :preferred-workflow :todo
 
  ;; Exclude directories/files.
  ;; Example usage:
@@ -46,7 +46,7 @@
 
  ;; Display all lines of a block when referencing ((block)).
  ;; Default value: false
- :ui/show-full-blocks? false
+ :ui/show-full-blocks? true
 
  ;; Automatically expand block references when zooming in.
  ;; Default value: true
@@ -297,7 +297,7 @@
  ;;  :journal?        false} ; Default value: false
 
  ;; Favorites to list on the left sidebar
- :favorites ["08/17/2023"]
+ :favorites ["scriptum"]
 
  ;; Set flashcards interval.
  ;; Expected value:
@@ -417,6 +417,8 @@
  ;;      ;use triple underscore `___` for slash `/` in page title
  ;;      ;use Percent-encoding for other invalid characters
  :file/name-format :triple-lowbar
- :graph/settings {:journal? true}
+ :graph/settings {:journal? true
+ :builtin-pages? true}
  :journal/page-title-format "MM/dd/yyyy"
- :editor/logical-outdenting? true}
+ :editor/logical-outdenting? true
+ :graph/forcesettings {:link-dist 130}}
