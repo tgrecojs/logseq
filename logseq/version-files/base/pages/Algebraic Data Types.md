@@ -1,5 +1,7 @@
 ## Overview
-	- Algebraic data types provide us with a means for transforming simple objects into  more complex objects. This transformation occurs by way of applying some operation (on an object); the most pervasive ways to combine structures are:
+	- Algebraic data types provide us with a means for transforming simple objects into  more complex objects.
+		- This transformation occurs by way of applying an operations n
+		  logseq.order-list-type:: number
 		- Product Type
 		  logseq.order-list-type:: number
 			- a.k.a. **composition**
@@ -26,5 +28,6 @@
 			  logseq.order-list-type:: number
 			- a concatenation of an element and a list.
 			  logseq.order-list-type:: number
-- ###
+- ### Product Types
+-
 -
