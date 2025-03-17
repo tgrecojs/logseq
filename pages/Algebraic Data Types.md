@@ -28,6 +28,5 @@
 			  logseq.order-list-type:: number
 			- a concatenation of an element and a list.
 			  logseq.order-list-type:: number
-- ### Product Types
--
+- ###
 -
