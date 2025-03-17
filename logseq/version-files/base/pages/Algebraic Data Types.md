@@ -19,6 +19,8 @@
 			-
 	- Algebraic Data Types provide us with a unified interface for composing across types.
 	- > The fact that a data type can be formed by applying some operations between them gives them the name algebraic. An algebraic data type is a kind of composite type.
+-
+-
 - ### `List`
 	- The algebraic definition for a list can be described as:
 		- A list is either
