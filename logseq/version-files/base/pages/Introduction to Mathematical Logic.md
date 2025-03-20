@@ -53,8 +53,8 @@
 	- ### Note
 		- **We must be cautious when interpreting the meaning of a statement with "not" in it.**
 			- Example:
-				- $\neg h$ Harry is taller than Smith
-				-
+				- $\ h$ Harry is taller than Smith
+				- $\neg h$
 			-
 	-
 	- Charlotte is NOT taller than Emma.
