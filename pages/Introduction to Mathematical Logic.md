@@ -52,9 +52,7 @@
 				  $$\neg p\equiv\overline{p}.$$
 	- ### Note
 		- **We must be cautious when interpreting the meaning of a statement with "not" in it.**
-		- Example: The statement below says Charlotte is either shorter than Emma or both have the same height.
-			- logseq.order-list-type:: number
-			  $$ \ C $$
+			- Example: *\neg *
 	-
 	- Charlotte is NOT taller than Emma.
 		-
