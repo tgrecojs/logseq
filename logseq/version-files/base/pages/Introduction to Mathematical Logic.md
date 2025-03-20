@@ -89,5 +89,9 @@ collapsed:: true
 		- Example: What is the predicate in the sentence below:
 			- Alice is a mathematician.
 		- *is a mathematician*
+	- **predicates** are propositions containing one or more variables.
+	-
+-
+-
 - tags:: #Educative
 -
