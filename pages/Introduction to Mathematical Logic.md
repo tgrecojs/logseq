@@ -66,8 +66,7 @@ collapsed:: true
 				- **D**
 	-
 		- ![ss_03202025_000833.png](../assets/ss_03202025_000833_1742494894201_0.png)
--
-- # # Precedence of Operations and Negating Compound Propositions
+- ## Precedence of Operations and Negating Compound Propositions
   collapsed:: true
 	- ## PEMDAS meet PNCD
 	- Parens
@@ -85,5 +84,8 @@ collapsed:: true
 	  | Conjunction | ∧ | 3 |
 	  | Disjunction | ∨ | 4 |
 	-
+- ## Predicates
+	- A predicate in English is **everything except the subject in a declarative sentence.**
+		- Alic
 - tags:: #Educative
 -
