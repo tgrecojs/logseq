@@ -86,8 +86,8 @@ collapsed:: true
 	-
 - ## Predicates
 	- A predicate in English is **everything except the subject in a declarative sentence.**
-		- Example: What is the predicate
+		- Example: What is the predicate in the sentence below:
 			- Alice is a mathematician.
-		-
+		- *is a mathematician*
 - tags:: #Educative
 -
