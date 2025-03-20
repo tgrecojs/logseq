@@ -1,4 +1,5 @@
 ## Conjunction (a.k.a. the AND operator)
+collapsed:: true
 	- ### Properties of Conjunction
 		- Associativity 
 		  logseq.order-list-type:: number
@@ -42,6 +43,7 @@
 			  |F|T|T| T |
 			  |F|F|F| F |
 - ## Negative (a.k.a. the NOT operator)
+  collapsed:: true
 	- #### Properties of negation
 		- It is a **unary** operation.
 		- ### Notation
@@ -65,7 +67,8 @@
 	-
 		- ![ss_03202025_000833.png](../assets/ss_03202025_000833_1742494894201_0.png)
 -
-- # Precedence of Operations and Negating Compound Propositions
+- # # Precedence of Operations and Negating Compound Propositions
+  collapsed:: true
 	- ## PEMDAS meet PNCD
 	- Parens
 	  logseq.order-list-type:: number
