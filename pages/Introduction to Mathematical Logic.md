@@ -53,6 +53,7 @@
 	- ### Note
 		- **We must be cautious when interpreting the meaning of a statement with "not" in it.**
 			- Example:
+			  collapsed:: true
 				- $\ h$ Harry is taller than Smith
 				- Why statement is $\neg h$?
 					- A. Harry is shorter than Smith
@@ -62,10 +63,8 @@
 			- Answer
 				- **D**
 	-
-	- Charlotte is NOT taller than Emma.
-		-
 		- ![ss_03202025_000833.png](../assets/ss_03202025_000833_1742494894201_0.png)
 -
--
+- ##
 - tags:: #Educative
 -
