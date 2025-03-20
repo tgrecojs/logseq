@@ -55,11 +55,12 @@
 			- Example:
 				- $\ h$ Harry is taller than Smith
 				- Why statement is $\neg h$?
-					- arry is shorter than Smith
-					- Smith is taller than Harry
-					- Harry and Smith are the same height.
-					- Harry is not taller than smith.
-			-
+					- A. Harry is shorter than Smith
+					- B. Smith is taller than Harry
+					- C. Harry and Smith are the same height.
+					- D. Harry is not taller than smith.
+			- Answer
+				- **D**
 	-
 	- Charlotte is NOT taller than Emma.
 		-
