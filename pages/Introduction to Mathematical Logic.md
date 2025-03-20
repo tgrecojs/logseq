@@ -65,6 +65,14 @@
 	-
 		- ![ss_03202025_000833.png](../assets/ss_03202025_000833_1742494894201_0.png)
 -
-- ##
+- # Precedence of Operations and Negating Compound Propositions
+	- ##
+	- | Operation | Symbol | Precedence (Order of application) |
+	  | ---- | ---- | ---- |
+	  | Parenthesis | ( )| 1 |
+	  | Negation | ¬ | 2 |
+	  | Conjunction | ∧ | 3 |
+	  | Disjunction | ∨ | 4 |
+	-
 - tags:: #Educative
 -
