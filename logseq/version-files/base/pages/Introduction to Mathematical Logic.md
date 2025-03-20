@@ -66,7 +66,15 @@
 		- ![ss_03202025_000833.png](../assets/ss_03202025_000833_1742494894201_0.png)
 -
 - # Precedence of Operations and Negating Compound Propositions
-	-
+	- ## PEMDAS meet PNCD
+	- Parens
+	  logseq.order-list-type:: number
+	- Negation
+	  logseq.order-list-type:: number
+	- Conjunction
+	  logseq.order-list-type:: number
+	- Disjunction
+	  logseq.order-list-type:: number
 	- | Operation | Symbol | Precedence (Order of application) |
 	  | ---- | ---- | ---- |
 	  | Parenthesis | ( )| 1 |
