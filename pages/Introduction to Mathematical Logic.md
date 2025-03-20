@@ -90,6 +90,7 @@ collapsed:: true
 			- Alice is a mathematician.
 		- *is a mathematician*
 	- **predicates** are propositions containing one or more variables.
+	- Variables are allowed to take any value from their domain
 	- to be considered a predicate, a predicate must become a proposition once a value is substituted from the domain.
 -
 -
