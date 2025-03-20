@@ -52,7 +52,10 @@
 				  $$\neg p\equiv\overline{p}.$$
 	- ### Note
 		- **We must be cautious when interpreting the meaning of a statement with "not" in it.**
-		-
+			- Example:
+				- $\neg h$ Harry is taller than Smith
+				-
+			-
 	-
 	- Charlotte is NOT taller than Emma.
 		-
