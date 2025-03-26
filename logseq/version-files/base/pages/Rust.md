@@ -5,7 +5,17 @@
 		- Each value in Rust has an owner.
 		- There can only be one owner at a time.
 		- When the owner goes out of scope, the value will be dropped.
-		-
+	- in Rust and once the scope ends, the value is dropped and they no longer take up memory.
+	- ```rust
+	  fn main() {
+	      let x = 5; // x is valid from this point
+	      {
+	          let y = 10; // y is valid from this point
+	          println!("The value of y is: {}", y);
+	      } // y goes out of scope here
+	      println!("The value of x is: {}", x);
+	  }
+	  ```
 - ### Macros
 	- Macros provide us with a way to "write code that writes other code". In other words, **macros unlock metaprogramming**
 	- > *Metaprogramming is the process of writing code that writes code*
