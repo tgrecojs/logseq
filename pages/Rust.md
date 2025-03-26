@@ -20,7 +20,9 @@
 		- When you assign a value to another variable, you are moving the value to the variable.
 		- If you re-assign the variable to another one, the value is moved in such a way that results the initial variable becomes invalid.
 - ## Variables
-	-
+	- ### `mut`
+		- In order to define mutable variables in rust you must use the `mut` keyword.
+		-
 - ## Macros
 	- Macros provide us with a way to "write code that writes other code". In other words, **macros unlock metaprogramming**
 	- > *Metaprogramming is the process of writing code that writes code*
