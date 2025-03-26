@@ -6,7 +6,9 @@
 		- There can only be one owner at a time.
 		- When the owner goes out of scope, the value will be dropped.
 	- in Rust and once the scope ends, the value is dropped and they no longer take up memory.
-	- ### Transfer
+	- ### Transferring Ownership
+		- When you assign a value to another variable, you are moving the value to the variable.
+		- If you re-assign the variable to another one, the value is moved in such a way that results in the
 	- ```rust
 	  fn main() {
 	      let x = 5; // x is valid from this point
