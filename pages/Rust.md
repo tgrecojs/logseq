@@ -22,7 +22,8 @@
 - ## Variables
 	- ### `mut`
 		- In order to define mutable variables in rust you must use the `mut` keyword.
-		- ![rust variables video](https://share.cleanshot.com/8MbvxYn5)
+		- ![rust variables video](https://media.cleanshot.cloud/media/56139/Mz8rML12PzNZUElz26WhH59NZOLloIBfoxN6XIB2.mp4?Expires=1743048668&Signature=pYe12Ocp1DJn6i47pW16gIvnttAKRw~0gxKQi91h8Nmjdz5Em83Sl9BxSTqZHOFaQEwrxr8ae3kuXXVg9MlMZsQz3XDHHQ2ueAVypTpRknUfcFEqvxzJOsz~cuxXzMAdRTaJGs4~dnzyDZcp-DRxipuzhBan3wuKiV~ZNQEEn-aONtJ8T5IvOMnthpLowfA2W6deddrUvXvsixll7F3QZBrw-haSRquwoRJdMFSrDrQEYZ-7UU-Oa~F-DtXgp7MYSFVDSlOPHhqVZpsZeicC7JEaAaY6bVp7zfucabSO7kS-AYtJeR916jNzudQ0yJKcGoDBNps4FC3yZHEXDLNVSg__&Key-Pair-Id=K269JMAT9ZF4GZ)
+		-
 - ## Macros
 	- Macros provide us with a way to "write code that writes other code". In other words, **macros unlock metaprogramming**
 	- > *Metaprogramming is the process of writing code that writes code*
