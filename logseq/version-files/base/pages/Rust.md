@@ -1,5 +1,5 @@
 ### Ownership Systems
-	-
+	- > If you're not careful, you can easily introduce **memory leaks**, **buffer overflows**, and other memory-related bugs. Rust tries to solve this problem by providing a set of rules and restrictions that prevent you from making these mistakes. It's like having a safety net that catches you when you fall. This set of rules is called the **[ownership](https://www.rustfinity.com/learn/rust/ownership) system**.
 -
 - ### Macros
 	- Macros provide us with a way to "write code that writes other code". In other words, **macros unlock metaprogramming**
